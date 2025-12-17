@@ -18,7 +18,9 @@
                     <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
                     <a href="tarifs.html">Tarifs</a>
-                    <a href="contact.html" class="btn-primary">Commencer</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
                 </div>
             </nav>
         </div>
@@ -29,26 +31,24 @@
         <div class="container">
             <h1>Des tarifs simples et transparents</h1>
             <p>Choisissez la formule adaptée à vos besoins. Sans surprise, sans frais cachés.</p>
-            
-            <div class="toggle-billing">
-                <span class="billing-option active" data-billing="monthly">Mensuel</span>
-                <label class="switch">
-                    <input type="checkbox" id="billing-toggle">
-                    <span class="slider"></span>
-                </label>
-                <span class="billing-option" data-billing="yearly">Annuel <span class="save-badge">-22%</span></span>
-            </div>
         </div>
     </section>
 
     <!-- Pricing Cards -->
     <section class="pricing-section">
         <div class="container">
-            <div class="pricing-grid">
+            <div style="text-align: center; max-width: 800px; margin: 0 auto 40px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; border-radius: 16px; margin-bottom: 40px;">
+                    <h3 style="color: white; margin-bottom: 12px; font-size: 1.3rem;">Pack Création inclus avec tous les abonnements</h3>
+                    <p style="margin: 0; opacity: 0.95; font-size: 1.1rem;">150€ • Création complète de votre guide personnalisé</p>
+                </div>
+            </div>
+
+            <div class="pricing-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 900px; margin: 0 auto;">
                 <!-- Abonnement Mensuel -->
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Mensuel</h3>
+                        <h3>Abonnement Mensuel</h3>
                         <div class="price">
                             <span class="price-amount">8€</span>
                             <span class="price-period">/mois</span>
@@ -56,6 +56,7 @@
                         <p class="price-description">Hébergement & mises à jour illimitées</p>
                     </div>
                     <div class="pricing-features">
+                        <div class="feature">✓ Pack création inclus (150€)</div>
                         <div class="feature">✓ Hébergement sécurisé</div>
                         <div class="feature">✓ Mises à jour illimitées</div>
                         <div class="feature">✓ Support par email</div>
@@ -63,22 +64,27 @@
                         <div class="feature">✓ Statistiques de consultation</div>
                         <div class="feature">✓ SSL & sécurité inclus</div>
                     </div>
-                    <p style="margin-top: 16px; font-size: 0.9rem; color: #666; text-align: center;">+ 150€ de création obligatoire</p>
-                    <a href="contact.html?plan=mensuel" class="btn-pricing">Choisir ce plan</a>
+                    <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                        <p style="margin: 0; font-size: 0.95rem; color: #666;"><strong>Premier paiement :</strong></p>
+                        <p style="margin: 4px 0 0 0; font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">158€</p>
+                        <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666;">Puis 8€/mois</p>
+                    </div>
+                    <a href="contact.html?plan=mensuel" class="btn-pricing" style="margin-top: 20px;">Choisir ce plan</a>
                 </div>
 
                 <!-- Abonnement Annuel -->
                 <div class="pricing-card featured">
-                    <div class="popular-badge">Plus populaire</div>
+                    <div class="popular-badge">💎 Meilleur prix</div>
                     <div class="pricing-header">
-                        <h3>Annuel</h3>
+                        <h3>Abonnement Annuel</h3>
                         <div class="price">
                             <span class="price-amount">75€</span>
                             <span class="price-period">/an</span>
                         </div>
-                        <p class="price-description">Soit 6,25€/mois • Économisez 21€</p>
+                        <p class="price-description">Soit 6,25€/mois • Économisez 21€/an</p>
                     </div>
                     <div class="pricing-features">
+                        <div class="feature">✓ Pack création inclus (150€)</div>
                         <div class="feature">✓ Hébergement sécurisé</div>
                         <div class="feature">✓ Mises à jour illimitées</div>
                         <div class="feature">✓ Support par email</div>
@@ -87,55 +93,65 @@
                         <div class="feature">✓ SSL & sécurité inclus</div>
                         <div class="feature feature-special">✓ 2 mois offerts</div>
                     </div>
-                    <p style="margin-top: 16px; font-size: 0.9rem; color: #666; text-align: center;">+ 150€ de création obligatoire</p>
-                    <a href="contact.html?plan=annuel" class="btn-pricing btn-primary">Choisir ce plan</a>
+                    <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                        <p style="margin: 0; font-size: 0.95rem; color: #666;"><strong>Premier paiement :</strong></p>
+                        <p style="margin: 4px 0 0 0; font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">225€</p>
+                        <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666;">Puis 75€/an</p>
+                    </div>
+                    <a href="contact.html?plan=annuel" class="btn-pricing btn-primary" style="margin-top: 20px;">Choisir ce plan</a>
                 </div>
-
-                <!-- Pack Création -->
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Pack Création</h3>
-                        <div class="price">
-                            <span class="price-amount">150€</span>
-                            <span class="price-period">paiement unique</span>
+            </div>
+            
+            <!-- Pack Création Détails -->
+            <div style="max-width: 900px; margin: 60px auto 0; padding: 32px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
+                <h3 style="text-align: center; margin-bottom: 24px; color: var(--text-dark);">📦 Ce qui est inclus dans le Pack Création (150€)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                        <div>
+                            <strong>Création du site complet</strong>
+                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Design professionnel et responsive</p>
                         </div>
-                        <p class="price-description">Obligatoire • Création complète de votre guide</p>
                     </div>
-                    <div class="pricing-features">
-                        <div class="feature">✓ Création du site complet</div>
-                        <div class="feature">✓ Design sur-mesure</div>
-                        <div class="feature">✓ QR code personnalisé (PDF)</div>
-                        <div class="feature">✓ 12 sections configurables</div>
-                        <div class="feature">✓ Intégration photos & cartes</div>
-                        <div class="feature">✓ Livraison en 48h</div>
-                        <div class="feature">✓ 2 révisions incluses</div>
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                        <div>
+                            <strong>QR code personnalisé</strong>
+                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Fichier PDF haute qualité</p>
+                        </div>
                     </div>
-                    <a href="contact.html?plan=creation" class="btn-pricing">En savoir plus</a>
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                        <div>
+                            <strong>12 sections configurables</strong>
+                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Wi-Fi, équipements, recommandations...</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                        <div>
+                            <strong>Intégration complète</strong>
+                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Photos, cartes, vidéos</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                        <div>
+                            <strong>Livraison en 48h</strong>
+                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Guide prêt à l'emploi</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: start; gap: 12px;">
+                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                        <div>
+                            <strong>2 révisions incluses</strong>
+                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Modifications gratuites</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Explication tarif -->
-            <div class="pricing-explanation">
-                <h3>💡 Comment ça marche ?</h3>
-                <div class="explanation-grid">
-                    <div class="explanation-item">
-                        <strong>1. Création obligatoire</strong>
-                        <p>150€ pour créer votre guide personnalisé (paiement unique)</p>
-                    </div>
-                    <div class="explanation-item">
-                        <strong>2. Abonnement</strong>
-                        <p>Choisissez entre 8€/mois ou 75€/an pour l'hébergement</p>
-                    </div>
-                    <div class="explanation-item">
-                        <strong>3. Option plaque</strong>
-                        <p>Ajoutez la plaque physique pour 45€ (optionnel)</p>
-                    </div>
-                </div>
-                <div class="pricing-example">
-                    <p><strong>Exemple :</strong> Formule annuelle = 150€ (création) + 75€ (abonnement) = <span style="color: var(--primary-color); font-weight: 700;">225€ la première année</span></p>
-                    <p>Puis seulement 75€/an les années suivantes</p>
-                </div>
-            </div>
+
 
             <!-- Plaque QR Code Section -->
             <div class="plaque-section">
@@ -216,7 +232,7 @@
         <div class="container">
             <h2>Prêt à vous lancer ?</h2>
             <p>Créez votre guide en quelques minutes</p>
-            <a href="contact.html" class="btn-hero">Commencer maintenant</a>
+            <a href="abonnement.html" class="btn-hero">Commencer maintenant</a>
             <p class="small-text">Sans engagement • Installation en 48h • Support inclus</p>
         </div>
     </section>
@@ -226,7 +242,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-col">
-                    <img src="img/logo.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
                     <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
                 </div>
                 <div class="footer-col">
@@ -244,9 +260,9 @@
                 </div>
                 <div class="footer-col">
                     <h4>Légal</h4>
-                    <a href="#">Mentions légales</a>
-                    <a href="#">CGV</a>
-                    <a href="#">Confidentialité</a>
+                    <a href="mentions-legales.html">Mentions légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="politique-confidentialite.html">Confidentialité</a>
                 </div>
             </div>
             <div class="footer-bottom">

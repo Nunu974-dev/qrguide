@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abonnement - QRGUIDE.FR</title>
+    <meta name="description" content="Choisissez votre formule QRGUIDE et créez votre guide numérique personnalisé pour location saisonnière ou hôtel.">
+    <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Style pour les options de nombre de logements */
+        .logement-option {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .logement-option:hover {
+            border-color: var(--primary-color) !important;
+            background: rgba(199, 169, 97, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .logement-option:has(input[type="radio"]:checked) {
+            border-color: var(--primary-color) !important;
+            border-width: 3px !important;
+            background: linear-gradient(to bottom, rgba(199, 169, 97, 0.08), white);
+            box-shadow: 0 4px 20px rgba(199, 169, 97, 0.3);
+        }
+        
+        /* Style pour les options de format de plaque - identique aux cartes de formule */
+        .format-option {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .format-option:hover {
+            border-color: var(--primary-color) !important;
+            background: rgba(199, 169, 97, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .format-option:has(input[type="radio"]:checked) {
+            border-color: var(--primary-color) !important;
+            border-width: 3px !important;
+            background: linear-gradient(to bottom, rgba(199, 169, 97, 0.08), white);
+            box-shadow: 0 4px 20px rgba(199, 169, 97, 0.3);
+        }
+        .format-option input[type="radio"]:checked ~ * {
+            /* Ajouter un effet visuel supplémentaire si nécessaire */
+        }
+        
+        /* Responsive pour les 4 étapes et FAQ */
+        @media (max-width: 768px) {
+            .faq-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        @media (max-width: 992px) {
+            div[style*="grid-template-columns: repeat(4, 1fr)"] {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+    </style>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <div class="nav-links">
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact Hero -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>Commencez dès aujourd'hui</h1>
+            <p>Remplissez le formulaire et recevez votre guide personnalisé en 48h</p>
+            
+            <div class="trust-badges">
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Réponse sous 24h</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Sans engagement</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Installation en 48h</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-section">
+        <div class="container" style="max-width: 900px;">
+            <div style="max-width: 100%;">
+                <!-- Form -->
+                <div class="contact-form-wrapper" style="max-width: 100%;">
+                    <form class="contact-form" id="contactForm">
+                        <!-- Sélection du nombre de logements -->
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">Combien de logements souhaitez-vous équiper ?</h3>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 600px; margin: 0 auto;">
+                                <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                                    <input type="radio" name="nb-logements" value="1-3" checked style="margin-right: 8px;">
+                                    <div>
+                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">1 à 3 logements</strong>
+                                        <small style="color: #666;">Commander directement</small>
+                                    </div>
+                                </label>
+                                <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                                    <input type="radio" name="nb-logements" value="4+" style="margin-right: 8px;">
+                                    <div>
+                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">4+ logements</strong>
+                                        <small style="color: #666;">Demander un devis</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire de commande (1-3 logements) -->
+                        <div id="order-form" style="display: block;">
+                            <div style="text-align: center; margin-bottom: 40px;">
+                                <h2 style="font-size: 2rem; margin-bottom: 12px; color: var(--text-dark);">Choisissez votre formule</h2>
+                                <p style="font-size: 1.1rem; color: #666;">Le pack création est inclus avec tous les abonnements</p>
+                            </div>
+
+                        <div class="pricing-cards">
+                            <label class="pricing-card" id="card-mensuel">
+                                <input type="radio" name="plan" value="mensuel" id="plan-mensuel" checked>
+                                <div class="card-header">
+                                    <h4>Abonnement Mensuel</h4>
+                                </div>
+                                <div class="card-price">
+                                    <span class="price-main">8€</span>
+                                    <span class="price-period">/mois</span>
+                                </div>
+                                <div class="card-economy" style="opacity: 0; visibility: hidden; height: 40px;"></div>
+                                <div class="card-features">
+                                    <div class="feature">✓ Pack création inclus (150€)</div>
+                                    <div class="feature">✓ Modifications illimitées</div>
+                                    <div class="feature">✓ Support prioritaire</div>
+                                </div>
+                                <div class="card-total">
+                                    Premier paiement : <strong>158€</strong>
+                                </div>
+                            </label>
+
+                            <label class="pricing-card recommended" id="card-annuel">
+                                <input type="radio" name="plan" value="annuel" id="plan-annuel">
+                                <div class="card-header">
+                                    <div class="badge-popular">💎 Meilleur prix</div>
+                                    <h4>Abonnement Annuel</h4>
+                                </div>
+                                <div class="card-price">
+                                    <span class="price-main">75€</span>
+                                    <span class="price-period">/an</span>
+                                </div>
+                                <div class="card-economy">Économisez 21€/an</div>
+                                <div class="card-features">
+                                    <div class="feature">✓ Pack création inclus (150€)</div>
+                                    <div class="feature">✓ Modifications illimitées</div>
+                                    <div class="feature">✓ Support prioritaire</div>
+                                </div>
+                                <div class="card-total">
+                                    Premier paiement : <strong>225€</strong>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div style="text-align: left; margin: 40px 0 12px 0;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--text-dark);">Plaques QR Code professionnelles</h3>
+                            <p style="font-size: 1rem; color: #666; margin: 0;">Optionnel - Ajoutez des plaques physiques à votre commande</p>
+                        </div>
+                        
+                        <div class="plaque-section" style="display: flex; gap: 32px; align-items: flex-start; background: #f8f9fa; padding: 24px; border-radius: 16px; border: 2px solid #e9ecef;">
+                            <div class="plaque-image" style="flex: 0 0 320px;">
+                                <img src="img/Qr guide exemple.png" alt="Plaque QR Code" style="width: 100%; border-radius: 12px; display: block;">
+                            </div>
+                            <div class="plaque-details" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 100%;">
+                                <div>
+                                    <h4 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--text-dark);">Plaque QR Code en PVC haute qualité</h4>
+                                    <p style="color: #666; margin-bottom: 12px; line-height: 1.6;">
+                                        ✓ QR code gravé haute définition<br>
+                                        ✓ Résistant aux intempéries<br>
+                                        ✓ Livraison gratuite en France
+                                    </p>
+                                    
+                                    <!-- Choix du format -->
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="font-weight: 600; color: var(--text-dark); margin-bottom: 8px; display: block;">Format :</label>
+                                        <div style="display: flex; gap: 12px;">
+                                            <label style="flex: 1; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s ease;" class="format-option">
+                                                <input type="radio" name="plaque-format" value="a4" checked onchange="calculateTotal()" style="margin-right: 8px;">
+                                                <span style="flex: 1;">
+                                                    <strong>A4</strong><br>
+                                                    <small style="color: #666;">21 x 29.7 cm</small>
+                                                </span>
+                                                <strong style="color: var(--primary-color);">45€</strong>
+                                            </label>
+                                            <label style="flex: 1; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s ease;" class="format-option">
+                                                <input type="radio" name="plaque-format" value="a5" onchange="calculateTotal()" style="margin-right: 8px;">
+                                                <span style="flex: 1;">
+                                                    <strong>A5</strong><br>
+                                                    <small style="color: #666;">14.8 x 21 cm</small>
+                                                </span>
+                                                <strong style="color: var(--primary-color);">35€</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <p id="plaque-unit-price" style="color: var(--primary-color); font-weight: 700; font-size: 1.5rem; margin: 16px 0;">45€ <span style="font-weight: 400; font-size: 1rem; color: #666;">/ unité</span></p>
+                                </div>
+                                <div style="margin-top: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                        <span style="font-weight: 600; color: var(--text-dark);">Quantité :</span>
+                                        <div class="quantity-controls" style="display: flex; align-items: center; gap: 12px;">
+                                            <button type="button" class="qty-btn-large" onclick="decrementPlaque()" style="width: 50px; height: 50px; border: 3px solid var(--primary-color); background: white; color: var(--primary-color); font-size: 1.8rem; border-radius: 10px; cursor: pointer; font-weight: 700;">−</button>
+                                            <input type="number" id="plaque-quantity" name="plaque-quantity" value="0" min="0" readonly style="width: 80px; text-align: center; font-size: 2rem; font-weight: 700; border: 2px solid #e9ecef; border-radius: 10px; padding: 8px; background: white;">
+                                            <button type="button" class="qty-btn-large" onclick="incrementPlaque()" style="width: 50px; height: 50px; border: 3px solid var(--primary-color); background: white; color: var(--primary-color); font-size: 1.8rem; border-radius: 10px; cursor: pointer; font-weight: 700;">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="plaque-total-display" style="background: white; padding: 16px; border-radius: 10px; border: 2px solid #e9ecef; text-align: center;">
+                                        <span style="font-size: 1rem; color: #666;">Total plaques : </span>
+                                        <strong id="plaqueTotal" style="font-size: 1.8rem; color: var(--primary-color);">0€</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left; margin: 40px 0 20px 0;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--text-dark);">Vos informations</h3>
+                            <p style="font-size: 1rem; color: #666; margin: 0;">Complétez vos coordonnées pour finaliser votre commande</p>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nom">Nom complet *</label>
+                                <input type="text" id="nom" name="nom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telephone">Téléphone *</label>
+                                <input type="tel" id="telephone" name="telephone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ville">code postal du logement *</label>
+                                <input type="text" id="ville" name="ville" required>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left; margin: 32px 0 16px 0;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--text-dark);">Votre logement</h3>
+                            <p style="font-size: 1rem; color: #666; margin: 0;">Indiquez le type de logement</p>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="type">Type de logement *</label>
+                                <select id="type" name="type" required>
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="appartement">Appartement</option>
+                                    <option value="maison">Maison</option>
+                                    <option value="villa">Villa</option>
+                                    <option value="chalet">Chalet</option>
+                                    <option value="studio">Studio</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Nombre exact de logements *</label>
+                                <select id="nombre" name="nombre" required>
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="1">1 logement</option>
+                                    <option value="2">2 logements</option>
+                                    <option value="3">3 logements</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message (optionnel)</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Questions, demandes spécifiques..."></textarea>
+                        </div>
+
+                        <div class="form-total">
+                            <div class="total-label">Total premier paiement :</div>
+                            <div class="total-amount" id="totalAmount">158€</div>
+                            <p style="font-size: 0.85rem; color: #666; margin-top: 8px; text-align: right;">Puis 8€/mois (ou 75€/an selon formule)</p>
+                        </div>
+
+                        <!-- What happens next -->
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 32px; border-radius: 16px; margin: 40px 0;">
+                            <h3 style="color: white; text-align: center; margin-bottom: 24px; font-size: 1.5rem;">Après votre paiement</h3>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+                                <div style="text-align: center;">
+                                    <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; margin: 0 auto 12px;">1</div>
+                                    <strong style="display: block; margin-bottom: 6px;">Validation immédiate</strong>
+                                    <span style="opacity: 0.9; font-size: 0.9rem;">Paiement sécurisé Stripe</span>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; margin: 0 auto 12px;">2</div>
+                                    <strong style="display: block; margin-bottom: 6px;">Contact sous 2h</strong>
+                                    <span style="opacity: 0.9; font-size: 0.9rem;">Pour vos informations</span>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; margin: 0 auto 12px;">3</div>
+                                    <strong style="display: block; margin-bottom: 6px;">Création 48h</strong>
+                                    <span style="opacity: 0.9; font-size: 0.9rem;">Guide personnalisé</span>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; margin: 0 auto 12px;">4</div>
+                                    <strong style="display: block; margin-bottom: 6px;">Activation</strong>
+                                    <span style="opacity: 0.9; font-size: 0.9rem;">Accès instantané</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="paymentBtn" class="btn-hero" style="width: 100%; padding: 20px; font-size: 1.2rem;">
+                            🔒 Paiement sécurisé par Stripe
+                        </button>
+                        
+                        <p class="form-notice" style="text-align: center; margin-top: 20px;">
+                            <strong>✓ Paiement 100% sécurisé</strong> • <strong>✓ Livraison gratuite</strong> • <strong>✓ Sans engagement</strong>
+                        </p>
+
+                        <div style="text-align: center; margin-top: 24px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="font-size: 0.95rem; color: #666; margin-bottom: 12px;">
+                                Une question avant de commander ?
+                            </p>
+                            <a href="contact.html" class="btn-secondary" style="display: inline-block; text-decoration: none; padding: 12px 24px;">
+                                💬 Contactez-nous
+                            </a>
+                        </div>
+                        </div>
+                        
+                        <!-- Redirection vers contact (4+ logements) -->
+                        <div id="quote-form" style="display: none;">
+                            <div style="text-align: center; margin-bottom: 32px; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white;">
+                                <h2 style="font-size: 2rem; margin-bottom: 16px; color: white;">Projet de 4 logements ou plus ?</h2>
+                                <p style="font-size: 1.2rem; margin-bottom: 24px; opacity: 0.95;">Nous vous proposons une tarification personnalisée et des conditions avantageuses</p>
+                                
+                                <div style="background: rgba(255,255,255,0.15); padding: 24px; border-radius: 12px; margin: 24px 0;">
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; text-align: left;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 1.5rem;">✓</span>
+                                            <span>Tarif dégressif</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 1.5rem;">✓</span>
+                                            <span>Support dédié</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 1.5rem;">✓</span>
+                                            <span>Formation incluse</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 1.5rem;">✓</span>
+                                            <span>Devis sous 24h</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <a href="contact.html" class="btn-hero" style="display: inline-block; background: white; color: var(--primary-color); padding: 18px 40px; font-size: 1.2rem; text-decoration: none; border-radius: 12px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                                    💬 Demander un devis personnalisé
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" style="background: #f8f9fa; padding: 60px 0;">
+        <div class="container">
+            <h2>Questions fréquentes</h2>
+            
+            <div class="faq-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+                <div class="faq-item">
+                    <h4>Quelles informations fournir ?</h4>
+                    <p>Vos coordonnées, adresse du logement, code Wi-Fi, équipements disponibles, bonnes adresses locales, règlement intérieur.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Combien de temps pour la création ?</h4>
+                    <p>48h après réception de toutes vos informations. Livraison par email avec lien vers votre guide.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Puis-je modifier après création ?</h4>
+                    <p>Oui, vous avez accès à un panneau d'administration pour modifier tout le contenu en temps réel.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Comment imprimer le QR code ?</h4>
+                    <p>Nous vous fournissons un fichier PDF haute qualité. Vous pouvez l'imprimer ou commander notre plaque professionnelle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:0692630364">06 92 63 03 64</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="mentions-legales.html">Mentions légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="politique-confidentialite.html">Confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // BASCULEMENT ENTRE FORMULAIRE COMMANDE ET REDIRECTION CONTACT
+        // ============================================
+        function toggleFormType() {
+            const selection = document.querySelector('input[name="nb-logements"]:checked');
+            if (!selection) {
+                console.error('Aucune sélection trouvée');
+                return;
+            }
+            
+            const value = selection.value;
+            const orderForm = document.getElementById('order-form');
+            const quoteForm = document.getElementById('quote-form');
+            
+            console.log('Selection value:', value);
+            console.log('Order form:', orderForm);
+            console.log('Quote form:', quoteForm);
+            
+            if (value === '1-3') {
+                if (orderForm) orderForm.style.display = 'block';
+                if (quoteForm) quoteForm.style.display = 'none';
+            } else if (value === '4+') {
+                if (orderForm) orderForm.style.display = 'none';
+                if (quoteForm) quoteForm.style.display = 'block';
+            }
+        }
+
+        // Attacher les event listeners après le chargement du DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listeners pour le basculement 1-3 / 4+ logements
+            const logementsRadios = document.querySelectorAll('input[name="nb-logements"]');
+            logementsRadios.forEach(radio => {
+                radio.addEventListener('change', toggleFormType);
+            });
+        });
+
+        // ============================================
+        // CONFIGURATION - À MODIFIER AVEC VOS CLÉS
+        // ============================================
+        
+        // 1. Remplacez avec votre clé Stripe Publishable Key (pk_test_... ou pk_live_...)
+        // Obtenir sur : https://dashboard.stripe.com/apikeys
+        const STRIPE_KEY = 'pk_test_51SfMI9Iz6IOM6VUSJNshS1uo8C4fdut9jLoTJj4Gr0NoQWoU9arxMtVxO1InU7GjWpBB3MsGhTbTI9GqM0fPDd4O00biJQWawP';
+        const stripe = Stripe(STRIPE_KEY);
+
+        // 2. Remplacez avec vos Price IDs Stripe (4 produits à créer)
+        const STRIPE_PRICES = {
+            mensuel: 'price_MENSUEL_ID',      // Abonnement 8€/mois
+            annuel: 'price_ANNUEL_ID',        // Abonnement 75€/an
+            creation: 'price_CREATION_ID',    // Pack création 150€ (toujours inclus)
+            plaque: 'price_PLAQUE_ID'         // Plaque QR 45€ (quantité variable)
+        };
+
+        // 3. Configuration EmailJS (obtenir sur https://www.emailjs.com/)
+        // INSTRUCTIONS :
+        // 1. Créez un compte sur https://dashboard.emailjs.com/sign-up
+        // 2. Ajoutez un service email (Gmail/Outlook/etc) pointant vers contact@qrguide.fr
+        // 3. Créez un template avec ces variables : {{nom}}, {{email}}, {{telephone}}, {{plan}}, {{message}}
+        // 4. Copiez vos clés ci-dessous
+        const EMAILJS_CONFIG = {
+            publicKey: 'VOTRE_PUBLIC_KEY',      // Ex: 'abcD1234EfgH5678'
+            serviceId: 'VOTRE_SERVICE_ID',      // Ex: 'service_xyz123'
+            templateId: 'VOTRE_TEMPLATE_ID'     // Ex: 'template_abc456'
+        };
+
+        // Initialiser EmailJS
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+
+        // ============================================
+        // GESTION QUANTITÉ PLAQUES
+        // ============================================
+        function incrementPlaque() {
+            const input = document.getElementById('plaque-quantity');
+            input.value = parseInt(input.value) + 1;
+            calculateTotal();
+        }
+
+        function decrementPlaque() {
+            const input = document.getElementById('plaque-quantity');
+            if (parseInt(input.value) > 0) {
+                input.value = parseInt(input.value) - 1;
+                calculateTotal();
+            }
+        }
+
+        // ============================================
+        // CALCUL DU TOTAL
+        // ============================================
+        function calculateTotal() {
+            const plan = document.querySelector('input[name="plan"]:checked');
+            const plaqueQty = parseInt(document.getElementById('plaque-quantity').value) || 0;
+            const plaqueFormat = document.querySelector('input[name="plaque-format"]:checked');
+            const plaquePrice = plaqueFormat && plaqueFormat.value === 'a5' ? 35 : 45;
+            
+            let total = 0;
+            let description = [];
+
+            if (plan) {
+                // Abonnement
+                if (plan.value === 'mensuel') {
+                    total += 8;
+                    description.push('8€/mois');
+                } else if (plan.value === 'annuel') {
+                    total += 75;
+                    description.push('75€/an');
+                }
+
+                // Création toujours incluse
+                total += 150;
+                description.push('Création : 150€');
+            }
+
+            // Plaques (quantité variable avec prix selon format)
+            if (plaqueQty > 0) {
+                const plaqueCost = plaqueQty * plaquePrice;
+                total += plaqueCost;
+                const formatLabel = plaqueFormat.value === 'a5' ? 'A5' : 'A4';
+                description.push(plaqueQty + ' plaque' + (plaqueQty > 1 ? 's' : '') + ' ' + formatLabel + ' : ' + plaqueCost + '€');
+            }
+
+            // Mettre à jour l'affichage du prix unitaire
+            document.getElementById('plaque-unit-price').innerHTML = plaquePrice + '€ <span style="font-weight: 400; font-size: 1rem; color: #666;">/ unité</span>';
+            
+            // Mettre à jour l'affichage du total des plaques
+            document.getElementById('plaqueTotal').textContent = (plaqueQty * plaquePrice) + '€';
+
+            document.getElementById('totalAmount').innerHTML = total + '€<br><small style="font-size: 14px; opacity: 0.7;">' + description.join(' + ') + '</small>';
+        }
+
+        // ============================================
+        // RÉCUPÉRATION DES DONNÉES DU FORMULAIRE
+        // ============================================
+        function getFormData() {
+            const plan = document.querySelector('input[name="plan"]:checked');
+            const plaqueQty = parseInt(document.getElementById('plaque-quantity').value) || 0;
+            const total = document.getElementById('totalAmount').textContent.split('€')[0];
+
+            let options = 'Création incluse';
+            if (plaqueQty > 0) {
+                options += ' + ' + plaqueQty + ' plaque' + (plaqueQty > 1 ? 's' : '');
+            }
+
+            return {
+                nom: document.getElementById('nom').value,
+                email: document.getElementById('email').value,
+                telephone: document.getElementById('telephone').value,
+                ville: document.getElementById('ville').value,
+                type: document.getElementById('type').value,
+                nombre: document.getElementById('nombre').value,
+                plan: plan ? plan.value : '',
+                planLabel: plan ? plan.parentElement.querySelector('strong').textContent : '',
+                options: options,
+                message: document.getElementById('message').value,
+                total: total + '€'
+            };
+        }
+
+        // ============================================
+        // ENVOI EMAIL VIA EMAILJS
+        // ============================================
+        async function sendEmail(formData) {
+            try {
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    formData
+                );
+                console.log('Email envoyé avec succès:', response);
+                return true;
+            } catch (error) {
+                console.error('Erreur envoi email:', error);
+                return false;
+            }
+        }
+
+        // ============================================
+        // PAIEMENT STRIPE
+        // ============================================
+        async function processPayment() {
+            const plan = document.querySelector('input[name="plan"]:checked');
+            const plaqueQty = parseInt(document.getElementById('plaque-quantity').value) || 0;
+
+            if (!plan) {
+                alert('Veuillez sélectionner une formule');
+                return;
+            }
+
+            // Préparer les items pour Stripe Checkout
+            const lineItems = [];
+
+            // Abonnement (mensuel ou annuel)
+            lineItems.push({
+                price: STRIPE_PRICES[plan.value],
+                quantity: 1
+            });
+
+            // Création (toujours incluse avec l'abonnement)
+            lineItems.push({
+                price: STRIPE_PRICES.creation,
+                quantity: 1
+            });
+
+            // Plaques optionnelles (quantité variable)
+            if (plaqueQty > 0) {
+                lineItems.push({
+                    price: STRIPE_PRICES.plaque,
+                    quantity: plaqueQty
+                });
+            }
+
+            // Récupérer les infos client
+            const formData = getFormData();
+
+            try {
+                // Rediriger vers Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    lineItems: lineItems,
+                    mode: plan.value === 'mensuel' ? 'subscription' : (plan.value === 'annuel' ? 'subscription' : 'payment'),
+                    successUrl: window.location.origin + '/success.html',
+                    cancelUrl: window.location.origin + '/contact.html',
+                    customerEmail: formData.email,
+                    clientReferenceId: formData.nom,
+                    billingAddressCollection: 'required',
+                    shippingAddressCollection: plaqueQty > 0 ? {
+                        allowedCountries: ['FR']
+                    } : undefined
+                });
+
+                if (error) {
+                    console.error('Erreur Stripe:', error);
+                    alert('Erreur lors du paiement. Veuillez réessayer.');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la redirection vers le paiement.');
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        // Calcul automatique du total
+        document.querySelectorAll('input[name="plan"]').forEach(radio => {
+            radio.addEventListener('change', calculateTotal);
+        });
+
+        document.getElementById('plaque-quantity').addEventListener('change', calculateTotal);
+        document.getElementById('plaque-quantity').addEventListener('input', calculateTotal);
+
+        // Formulaire de paiement
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = getFormData();
+            
+            // Envoyer l'email d'abord
+            const paymentBtn = document.getElementById('paymentBtn');
+            paymentBtn.disabled = true;
+            paymentBtn.textContent = '📧 Envoi des infos...';
+
+            await sendEmail(formData);
+
+            // Puis rediriger vers le paiement
+            paymentBtn.textContent = '💳 Redirection vers le paiement...';
+            await processPayment();
+
+            paymentBtn.disabled = false;
+            paymentBtn.textContent = '💳 Payer maintenant';
+        });
+
+        // Pre-select plan from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const planParam = urlParams.get('plan');
+        if (planParam === 'abonnement') {
+            document.getElementById('plan-mensuel').checked = true;
+        } else if (planParam === 'creation') {
+            document.getElementById('plan-complet').checked = false;
+            document.getElementById('plan-mensuel').checked = true;
+            document.getElementById('option-creation').checked = true;
+        } else if (planParam === 'plaque') {
+            document.getElementById('option-plaque').checked = true;
+        } else if (planParam === 'complet') {
+            document.getElementById('plan-complet').checked = true;
+        }
+        
+        calculateTotal();
+    </script>
+</body>
+</html>

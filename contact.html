@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - QRGUIDE.FR</title>
+    <meta name="description" content="Contactez l'équipe QRGUIDE pour toute question, demande de devis ou support. Réponse sous 24h.">
     <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Stripe.js -->
-    <script src="https://js.stripe.com/v3/"></script>
-    <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
@@ -22,260 +20,124 @@
                     <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
                     <a href="tarifs.html">Tarifs</a>
-                    <a href="contact.html" class="btn-primary">Commencer</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
                 </div>
             </nav>
         </div>
     </header>
 
-    <!-- Contact Hero -->
+    <!-- Hero Section -->
     <section class="contact-hero">
         <div class="container">
-            <h1>Commencez dès aujourd'hui</h1>
-            <p>Remplissez le formulaire et recevez votre guide personnalisé en 48h</p>
-            
-            <div class="trust-badges">
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span>Réponse sous 24h</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span>Sans engagement</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span>Installation en 48h</span>
-                </div>
-            </div>
+            <h1>Contactez-nous</h1>
+            <p>Notre équipe est là pour répondre à toutes vos questions et vous accompagner</p>
         </div>
     </section>
 
-    <!-- Contact Form Section -->
+    <!-- Contact Section -->
     <section class="contact-section">
-        <div class="container">
-            <div class="contact-grid">
-                <!-- Form -->
-                <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contactForm">
-                        <h3>Informations personnelles</h3>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nom">Nom complet *</label>
-                                <input type="text" id="nom" name="nom" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email *</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="telephone">Téléphone *</label>
-                                <input type="tel" id="telephone" name="telephone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="ville">Ville du logement *</label>
-                                <input type="text" id="ville" name="ville" required>
-                            </div>
-                        </div>
-
-                        <h3 style="margin-top: 32px;">Votre logement</h3>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="type">Type de logement *</label>
-                                <select id="type" name="type" required>
-                                    <option value="">Sélectionnez...</option>
-                                    <option value="appartement">Appartement</option>
-                                    <option value="maison">Maison</option>
-                                    <option value="villa">Villa</option>
-                                    <option value="chalet">Chalet</option>
-                                    <option value="studio">Studio</option>
-                                    <option value="autre">Autre</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="nombre">Nombre de logements *</label>
-                                <select id="nombre" name="nombre" required>
-                                    <option value="">Sélectionnez...</option>
-                                    <option value="1">1 logement</option>
-                                    <option value="2-3">2-3 logements</option>
-                                    <option value="4-5">4-5 logements</option>
-                                    <option value="6+">6+ logements</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <h3 style="margin-top: 32px;">Votre choix</h3>
-
-                        <div class="form-group">
-                            <label>Formule souhaitée *</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="plan" value="mensuel" id="plan-mensuel">
-                                    <div class="radio-content">
-                                        <strong>Abonnement Mensuel</strong>
-                                        <span>8€/mois</span>
-                                    </div>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="plan" value="annuel" id="plan-annuel">
-                                    <div class="radio-content">
-                                        <strong>Abonnement Annuel</strong>
-                                        <span>75€/an • Économisez 21€</span>
-                                    </div>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="plan" value="complet" id="plan-complet" checked>
-                                    <div class="radio-content">
-                                        <strong>Pack Complet</strong>
-                                        <span>240€ • Création + Plaque + 1 an</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Options *</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="options" value="creation" id="option-creation" checked>
-                                    <span>Pack Création (150€)</span>
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="options" value="plaque" id="option-plaque">
-                                    <span>Plaque QR Code (45€)</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message">Message (optionnel)</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Questions, demandes spécifiques..."></textarea>
-                        </div>
-
-                        <div class="form-total">
-                            <div class="total-label">Total estimé :</div>
-                            <div class="total-amount" id="totalAmount">150€</div>
-                        </div>
-
-                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button type="button" id="contactOnlyBtn" class="btn-secondary" style="flex: 1; min-width: 200px;">
-                                📧 Demander des infos
-                            </button>
-                            <button type="submit" id="paymentBtn" class="btn-hero" style="flex: 1; min-width: 200px;">
-                                💳 Payer maintenant
-                            </button>
-                        </div>
-                        
-                        <p class="form-notice">
-                            <strong>Paiement sécurisé par Stripe</strong><br>
-                            En soumettant ce formulaire, vous acceptez d'être contacté par QRGUIDE.FR concernant votre demande.
-                        </p>
-                    </form>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="contact-info">
-                    <div class="info-card">
-                        <h3>Besoin d'aide ?</h3>
-                        <p>Notre équipe est là pour répondre à toutes vos questions</p>
-                        
-                        <div class="contact-methods">
-                            <a href="mailto:contact@qrguide.fr" class="contact-method">
-                                <span class="method-icon">✉️</span>
-                                <div>
-                                    <strong>Email</strong>
-                                    <span>contact@qrguide.fr</span>
-                                </div>
-                            </a>
-                            
-                            <a href="tel:+33612345678" class="contact-method">
-                                <span class="method-icon">📞</span>
-                                <div>
-                                    <strong>Téléphone</strong>
-                                    <span>06 92 63 03 64</span>
-                                </div>
-                            </a>
-                            
-                            <div class="contact-method">
-                                <span class="method-icon">⏰</span>
-                                <div>
-                                    <strong>Horaires</strong>
-                                    <span>Lun-Ven : 9h-18h</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="info-card">
-                        <h3>Processus</h3>
-                        <div class="process-steps">
-                            <div class="process-step">
-                                <div class="step-number">1</div>
-                                <div class="step-content">
-                                    <strong>Vous remplissez le formulaire</strong>
-                                    <p>15 minutes suffisent</p>
-                                </div>
-                            </div>
-                            <div class="process-step">
-                                <div class="step-number">2</div>
-                                <div class="step-content">
-                                    <strong>Nous créons votre guide</strong>
-                                    <p>Livraison sous 48h</p>
-                                </div>
-                            </div>
-                            <div class="process-step">
-                                <div class="step-number">3</div>
-                                <div class="step-content">
-                                    <strong>Vous validez et publiez</strong>
-                                    <p>2 révisions offertes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="info-card highlight">
-                        <h3>🎁 Offre de lancement</h3>
-                        <p>Pack Complet à 240€ au lieu de 270€</p>
-                        <ul class="offer-benefits">
-                            <li>✓ Création du guide</li>
-                            <li>✓ Plaque QR Code</li>
-                            <li>✓ 1 an d'abonnement</li>
-                            <li>✓ Économisez 30€</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq-section" style="background: #f8f9fa; padding: 60px 0;">
-        <div class="container">
-            <h2>Questions fréquentes</h2>
+        <div class="container" style="max-width: 900px;">
             
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h4>Quelles informations fournir ?</h4>
-                    <p>Vos coordonnées, adresse du logement, code Wi-Fi, équipements disponibles, bonnes adresses locales, règlement intérieur.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Combien de temps pour la création ?</h4>
-                    <p>48h après réception de toutes vos informations. Livraison par email avec lien vers votre guide.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Puis-je modifier après création ?</h4>
-                    <p>Oui, vous avez accès à un panneau d'administration pour modifier tout le contenu en temps réel.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Comment imprimer le QR code ?</h4>
-                    <p>Nous vous fournissons un fichier PDF haute qualité. Vous pouvez l'imprimer ou commander notre plaque professionnelle.</p>
+            <!-- Contact Methods -->
+            <div class="contact-methods-grid">
+                <a href="mailto:contact@qrguide.fr" class="contact-card">
+                    <div class="contact-icon">✉️</div>
+                    <h3>Email</h3>
+                    <p>contact@qrguide.fr</p>
+                    <span class="contact-time">Réponse sous 24h</span>
+                </a>
+
+                <a href="tel:0692630364" class="contact-card">
+                    <div class="contact-icon">📞</div>
+                    <h3>Téléphone</h3>
+                    <p>06 92 63 03 64</p>
+                    <span class="contact-time">Lun-Ven 9h-18h</span>
+                </a>
+
+                <a href="https://wa.me/33692630364" target="_blank" class="contact-card">
+                    <div class="contact-icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p>Chat direct</p>
+                    <span class="contact-time">Réponse rapide</span>
+                </a>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="form-container" style="margin-top: 60px;">
+                <h2 style="text-align: center; margin-bottom: 12px;">Envoyez-nous un message</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 40px;">Remplissez le formulaire ci-dessous, nous vous répondons rapidement</p>
+
+                <form id="helpForm" class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nom">Nom complet *</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telephone">Téléphone (optionnel)</label>
+                            <input type="tel" id="telephone" name="telephone">
+                        </div>
+                        <div class="form-group">
+                            <label for="sujet">Sujet *</label>
+                            <select id="sujet" name="sujet" required>
+                                <option value="">Sélectionnez...</option>
+                                <option value="question-produit">Question sur le produit</option>
+                                <option value="question-tarifs">Question sur les tarifs</option>
+                                <option value="demande-demo">Demande de démo personnalisée</option>
+                                <option value="support-technique">Support technique</option>
+                                <option value="partenariat">Partenariat</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Votre message *</label>
+                        <textarea id="message" name="message" rows="6" required placeholder="Décrivez votre demande en détail..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-hero" style="width: 100%;">
+                        📧 Envoyer le message
+                    </button>
+
+                    <p class="form-notice" style="text-align: center; margin-top: 20px;">
+                        Nous nous engageons à vous répondre sous 24h ouvrées
+                    </p>
+                </form>
+            </div>
+
+            <!-- FAQ Quick Links -->
+            <div style="margin-top: 60px; padding: 40px; background: #f8f9fa; border-radius: 16px;">
+                <h3 style="text-align: center; margin-bottom: 24px;">Questions fréquentes</h3>
+                <div style="display: grid; gap: 16px;">
+                    <div style="padding: 20px; background: white; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">💳 Comment fonctionne le paiement ?</h4>
+                        <p style="color: #666; font-size: 0.95rem;">Le paiement est 100% sécurisé via Stripe. Vous payez la création (150€) puis votre abonnement mensuel ou annuel.</p>
+                    </div>
+                    <div style="padding: 20px; background: white; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">⏱️ Combien de temps pour recevoir mon guide ?</h4>
+                        <p style="color: #666; font-size: 0.95rem;">Votre guide est créé sous 48h après réception de vos informations et validation du paiement.</p>
+                    </div>
+                    <div style="padding: 20px; background: white; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">🔄 Puis-je modifier mon guide après création ?</h4>
+                        <p style="color: #666; font-size: 0.95rem;">Oui ! Avec votre abonnement, vous pouvez modifier votre guide à tout moment depuis votre espace client.</p>
+                    </div>
+                    <div style="padding: 20px; background: white; border-radius: 12px;">
+                        <h4 style="margin-bottom: 8px;">❌ Puis-je annuler mon abonnement ?</h4>
+                        <p style="color: #666; font-size: 0.95rem;">Oui, vous pouvez résilier à tout moment. Votre guide reste accessible jusqu'à la fin de la période payée.</p>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -284,7 +146,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-col">
-                    <img src="img/logo.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
                     <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
                 </div>
                 <div class="footer-col">
@@ -296,43 +158,25 @@
                 </div>
                 <div class="footer-col">
                     <h4>Support</h4>
-                    <a href="contact.html">Contact</a>
+                    <a href="contact.html">Aide</a>
                     <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
                     <a href="tel:0692630364">06 92 63 03 64</a>
                 </div>
                 <div class="footer-col">
                     <h4>Légal</h4>
-                    <a href="#">Mentions légales</a>
-                    <a href="#">CGV</a>
-                    <a href="#">Confidentialité</a>
+                    <a href="mentions-legales.html">Mentions légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="politique-confidentialite.html">Politique de confidentialité</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+                <p>&copy; 2024 QRGUIDE.FR - Tous droits réservés</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // ============================================
-        // CONFIGURATION - À MODIFIER AVEC VOS CLÉS
-        // ============================================
-        
-        // 1. Remplacez avec votre clé Stripe Publishable Key (pk_test_... ou pk_live_...)
-        // Obtenir sur : https://dashboard.stripe.com/apikeys
-        const STRIPE_KEY = 'pk_test_VOTRE_CLE_STRIPE_ICI';
-        const stripe = Stripe(STRIPE_KEY);
-
-        // 2. Remplacez avec vos Price IDs Stripe (créés dans Products sur Stripe Dashboard)
-        const STRIPE_PRICES = {
-            mensuel: 'price_MENSUEL_ID',
-            annuel: 'price_ANNUEL_ID',
-            creation: 'price_CREATION_ID',
-            plaque: 'price_PLAQUE_ID',
-            complet: 'price_PACK_COMPLET_ID'
-        };
-
-        // 3. Configuration EmailJS (obtenir sur https://www.emailjs.com/)
+        // Configuration EmailJS
         const EMAILJS_CONFIG = {
             publicKey: 'VOTRE_PUBLIC_KEY',
             serviceId: 'VOTRE_SERVICE_ID',
@@ -342,244 +186,49 @@
         // Initialiser EmailJS
         emailjs.init(EMAILJS_CONFIG.publicKey);
 
-        // ============================================
-        // CALCUL DU TOTAL
-        // ============================================
-        function calculateTotal() {
-            const plan = document.querySelector('input[name="plan"]:checked');
-            const creation = document.getElementById('option-creation').checked;
-            const plaque = document.getElementById('option-plaque').checked;
-            
-            let total = 0;
-            let description = [];
+        // Gestion du formulaire
+        document.getElementById('helpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-            // Abonnement
-            if (plan) {
-                if (plan.value === 'mensuel') {
-                    total += 8;
-                    description.push('8€/mois');
-                } else if (plan.value === 'annuel') {
-                    total += 75;
-                    description.push('75€/an');
-                } else if (plan.value === 'complet') {
-                    total = 240;
-                    description.push('Pack Complet : 240€');
-                    document.getElementById('totalAmount').innerHTML = total + '€<br><small style="font-size: 14px; opacity: 0.7;">Paiement unique</small>';
-                    return;
-                }
-            }
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '📧 Envoi en cours...';
 
-            // Création
-            if (creation) {
-                total += 150;
-                description.push('Création : 150€');
-            }
-
-            // Plaque
-            if (plaque) {
-                total += 45;
-                description.push('Plaque : 45€');
-            }
-
-            document.getElementById('totalAmount').innerHTML = total + '€<br><small style="font-size: 14px; opacity: 0.7;">' + description.join(' + ') + '</small>';
-        }
-
-        // ============================================
-        // RÉCUPÉRATION DES DONNÉES DU FORMULAIRE
-        // ============================================
-        function getFormData() {
-            const plan = document.querySelector('input[name="plan"]:checked');
-            const creation = document.getElementById('option-creation').checked;
-            const plaque = document.getElementById('option-plaque').checked;
-            const total = document.getElementById('totalAmount').textContent.split('€')[0];
-
-            return {
-                nom: document.getElementById('nom').value,
-                email: document.getElementById('email').value,
-                telephone: document.getElementById('telephone').value,
-                ville: document.getElementById('ville').value,
-                type: document.getElementById('type').value,
-                nombre: document.getElementById('nombre').value,
-                plan: plan ? plan.value : '',
-                planLabel: plan ? plan.parentElement.querySelector('strong').textContent : '',
-                options: (creation ? 'Création' : '') + (creation && plaque ? ' + ' : '') + (plaque ? 'Plaque' : ''),
-                message: document.getElementById('message').value,
-                total: total + '€'
-            };
-        }
-
-        // ============================================
-        // ENVOI EMAIL VIA EMAILJS
-        // ============================================
-        async function sendEmail(formData) {
             try {
+                const formData = {
+                    nom: document.getElementById('nom').value,
+                    email: document.getElementById('email').value,
+                    telephone: document.getElementById('telephone').value || 'Non renseigné',
+                    sujet: document.getElementById('sujet').options[document.getElementById('sujet').selectedIndex].text,
+                    message: document.getElementById('message').value
+                };
+
                 const response = await emailjs.send(
                     EMAILJS_CONFIG.serviceId,
                     EMAILJS_CONFIG.templateId,
-                    formData
+                    {
+                        from_name: formData.nom,
+                        from_email: formData.email,
+                        phone: formData.telephone,
+                        subject: formData.sujet,
+                        message: formData.message,
+                        type: 'Demande d\'aide'
+                    }
                 );
-                console.log('Email envoyé avec succès:', response);
-                return true;
+
+                // Succès
+                alert('✅ Message envoyé avec succès !\n\nNous vous répondons sous 24h.');
+                this.reset();
+
             } catch (error) {
-                console.error('Erreur envoi email:', error);
-                return false;
+                console.error('Erreur EmailJS:', error);
+                alert('❌ Erreur lors de l\'envoi.\n\nVeuillez réessayer ou nous contacter directement par téléphone au 06 92 63 03 64.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
-        }
-
-        // ============================================
-        // PAIEMENT STRIPE
-        // ============================================
-        async function processPayment() {
-            const plan = document.querySelector('input[name="plan"]:checked');
-            const creation = document.getElementById('option-creation').checked;
-            const plaque = document.getElementById('option-plaque').checked;
-
-            if (!plan) {
-                alert('Veuillez sélectionner une formule');
-                return;
-            }
-
-            // Préparer les items pour Stripe Checkout
-            const lineItems = [];
-
-            // Ajouter l'abonnement ou le pack complet
-            if (plan.value === 'complet') {
-                lineItems.push({
-                    price: STRIPE_PRICES.complet,
-                    quantity: 1
-                });
-            } else {
-                // Abonnement
-                lineItems.push({
-                    price: STRIPE_PRICES[plan.value],
-                    quantity: 1
-                });
-
-                // Création (obligatoire pour abonnements)
-                if (creation) {
-                    lineItems.push({
-                        price: STRIPE_PRICES.creation,
-                        quantity: 1
-                    });
-                }
-
-                // Plaque optionnelle
-                if (plaque) {
-                    lineItems.push({
-                        price: STRIPE_PRICES.plaque,
-                        quantity: 1
-                    });
-                }
-            }
-
-            // Récupérer les infos client
-            const formData = getFormData();
-
-            try {
-                // Rediriger vers Stripe Checkout
-                const { error } = await stripe.redirectToCheckout({
-                    lineItems: lineItems,
-                    mode: plan.value === 'mensuel' ? 'subscription' : (plan.value === 'annuel' ? 'subscription' : 'payment'),
-                    successUrl: window.location.origin + '/success.html',
-                    cancelUrl: window.location.origin + '/contact.html',
-                    customerEmail: formData.email,
-                    clientReferenceId: formData.nom,
-                    billingAddressCollection: 'required',
-                    shippingAddressCollection: plaque ? {
-                        allowedCountries: ['FR']
-                    } : undefined
-                });
-
-                if (error) {
-                    console.error('Erreur Stripe:', error);
-                    alert('Erreur lors du paiement. Veuillez réessayer.');
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                alert('Erreur lors de la redirection vers le paiement.');
-            }
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-        
-        // Calcul automatique du total
-        document.querySelectorAll('input[name="plan"]').forEach(radio => {
-            radio.addEventListener('change', () => {
-                if (radio.value !== 'complet') {
-                    document.getElementById('option-creation').checked = true;
-                }
-                calculateTotal();
-            });
         });
-
-        document.getElementById('option-creation').addEventListener('change', calculateTotal);
-        document.getElementById('option-plaque').addEventListener('change', calculateTotal);
-
-        // Bouton "Demander des infos" (email uniquement)
-        document.getElementById('contactOnlyBtn').addEventListener('click', async function() {
-            const form = document.getElementById('contactForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const formData = getFormData();
-            this.disabled = true;
-            this.textContent = '📧 Envoi en cours...';
-
-            const success = await sendEmail(formData);
-            
-            if (success) {
-                alert('✅ Votre demande a été envoyée avec succès !\n\nNous vous répondons sous 24h.');
-                form.reset();
-                calculateTotal();
-            } else {
-                alert('❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter par téléphone.');
-            }
-
-            this.disabled = false;
-            this.textContent = '📧 Demander des infos';
-        });
-
-        // Bouton "Payer maintenant" (email + paiement)
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const formData = getFormData();
-            
-            // Envoyer l'email d'abord
-            const paymentBtn = document.getElementById('paymentBtn');
-            paymentBtn.disabled = true;
-            paymentBtn.textContent = '📧 Envoi des infos...';
-
-            await sendEmail(formData);
-
-            // Puis rediriger vers le paiement
-            paymentBtn.textContent = '💳 Redirection vers le paiement...';
-            await processPayment();
-
-            paymentBtn.disabled = false;
-            paymentBtn.textContent = '💳 Payer maintenant';
-        });
-
-        // Pre-select plan from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const planParam = urlParams.get('plan');
-        if (planParam === 'abonnement') {
-            document.getElementById('plan-mensuel').checked = true;
-        } else if (planParam === 'creation') {
-            document.getElementById('plan-complet').checked = false;
-            document.getElementById('plan-mensuel').checked = true;
-            document.getElementById('option-creation').checked = true;
-        } else if (planParam === 'plaque') {
-            document.getElementById('option-plaque').checked = true;
-        } else if (planParam === 'complet') {
-            document.getElementById('plan-complet').checked = true;
-        }
-        
-        calculateTotal();
     </script>
 </body>
 </html>

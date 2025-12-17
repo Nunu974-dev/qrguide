@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution pour Hôtels - QRGUIDE.FR | Guide Numérique Hôtelier</title>
+    <meta name="description" content="QRGUIDE.FR - Solution de guide numérique pour hôtels. Améliorez l'expérience client, réduisez les appels à la réception et valorisez vos services.">
+    <meta name="keywords" content="guide numérique hôtel, QR code hôtel, digitalisation hôtellerie, expérience client hôtel, services hôteliers">
+    <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <div class="nav-links">
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="hotels.html" class="active">Hôtels</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient">
+        <div class="container" style="max-width: 1200px; padding: 100px 20px 80px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <h1 style="font-size: 3.2rem; margin-bottom: 24px; line-height: 1.2; margin-top: 40px;">QRGUIDE pour Hôtels</h1>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+                        <a href="contact.html" class="btn-hero">Demander une démo</a>
+                        <a href="#avantages" class="btn-secondary">Découvrir les avantages</a>
+                    </div>
+                    <p style="font-size: 1.3rem; margin-bottom: 0; line-height: 1.6; color: rgba(255,255,255,0.95);">Modernisez l'expérience de vos clients avec un guide numérique interactif accessible en un scan</p>
+                </div>
+                <div style="position: relative;">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=600&fit=crop" alt="QR Code Hôtel" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="position: absolute; bottom: -20px; right: -20px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 4px;">-60%</div>
+                            <div style="font-size: 0.85rem; color: #666; font-weight: 600;">Appels réception</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problèmes Hôteliers -->
+    <section class="section-white" id="problemes">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Les défis de l'hôtellerie moderne</h2>
+                <p style="font-size: 1.1rem; color: #666;">Vous reconnaissez ces situations ?</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <div class="feature-card" style="border-left: 4px solid #e74c3c; padding: 32px;">
+                    <div class="feature-icon">📞</div>
+                    <h3 style="margin: 16px 0;">Réception surchargée</h3>
+                    <p style="line-height: 1.7;">Appels répétitifs pour le WiFi, le parking, les horaires du restaurant... Votre équipe passe son temps à répondre aux mêmes questions.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #e67e22;">
+                    <div class="feature-icon">📄</div>
+                    <h3>Livrets papier obsolètes</h3>
+                    <p>Coûts d'impression élevés, informations périmées, mises à jour impossibles en temps réel.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #f39c12;">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Barrière linguistique</h3>
+                    <p>Difficile de communiquer avec des clients internationaux dans leur langue maternelle.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #3498db;">
+                    <div class="feature-icon">💰</div>
+                    <h3>Services sous-utilisés</h3>
+                    <p>Spa, restaurant, room service... Vos clients ne connaissent pas tous vos services premium.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #9b59b6;">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Avis Google difficiles</h3>
+                    <p>Les clients oublient de laisser un avis positif, mais n'hésitent pas pour les négatifs.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #2ecc71;">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Mise à jour complexe</h3>
+                    <p>Changement d'horaires, nouveau partenariat... Impossible de tout mettre à jour rapidement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution QRGUIDE -->
+    <section class="section-gray" id="avantages">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">QRGUIDE : Votre solution tout-en-un</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Un simple QR code dans chaque chambre révolutionne l'expérience client</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">📱</div>
+                    <h3 style="color: white;">Accès instantané</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Un scan du QR code et toutes les informations de l'hôtel sont accessibles sur le smartphone du client. Zéro téléchargement, zéro inscription.</p>
+                </div>
+
+                <div class="feature-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">🌍</div>
+                    <h3 style="color: white;">Multilingue automatique</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Votre guide s'adapte automatiquement à la langue du navigateur. Anglais, espagnol, allemand, chinois... Tous vos clients sont servis dans leur langue.</p>
+                </div>
+
+                <div class="feature-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">⚡</div>
+                    <h3 style="color: white;">Mise à jour en temps réel</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Modifiez vos horaires, ajoutez une offre spéciale, changez un menu... Les changements sont instantanés pour tous vos clients.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📉</div>
+                    <h3>-60% d'appels à la réception</h3>
+                    <p>Toutes les informations essentielles sont disponibles 24/7 : WiFi, parking, horaires, services... Votre équipe se concentre sur l'accueil.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Valorisez vos services</h3>
+                    <p>Spa, restaurant, room service, partenariats locaux... Mettez en avant tous vos services avec photos, descriptions et liens de réservation directs.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Boostez vos avis</h3>
+                    <p>Liens directs vers Google, TripAdvisor... Au moment où votre client est le plus satisfait, facilitez-lui la démarche d'avis positif.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Zéro papier</h3>
+                    <p>Plus d'impression, plus de stocks, plus de gaspillage. Démarche écoresponsable appréciée par vos clients.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics & insights</h3>
+                    <p>Quelles pages sont les plus consultées ? Quels services intéressent le plus ? Optimisez votre offre grâce aux données.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>À vos couleurs</h3>
+                    <p>Logo, couleurs, photos... Votre guide reflète parfaitement l'identité visuelle de votre établissement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cas d'usage -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Comment vos clients utilisent QRGUIDE</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Des scénarios concrets d'utilisation</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🛎️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Check-in à 22h</h3>
+                    <p style="color: #666;">Marie arrive tard à l'hôtel. Elle scanne le QR code dans sa chambre et trouve instantanément les horaires du petit-déjeuner, le code WiFi, et la carte du room service pour commander un en-cas.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🌍</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Touriste chinois</h3>
+                    <p style="color: #666;">Zhang ne parle ni français ni anglais. Son smartphone détecte automatiquement sa langue et affiche tout le guide en chinois : services, restaurants, attractions à proximité.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">💆</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Découverte du spa</h3>
+                    <p style="color: #666;">Julie découvre dans le guide que l'hôtel a un spa avec une offre spéciale. Elle clique sur "Réserver" et prend rendez-vous directement. Vente additionnelle sans intervention de la réception.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🚨</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Urgence la nuit</h3>
+                    <p style="color: #666;">Pierre a un problème de santé à 3h du matin. Le guide affiche les numéros d'urgence, la pharmacie de garde la plus proche et l'itinéraire vers l'hôpital.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🍽️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Découverte gastronomique</h3>
+                    <p style="color: #666;">Sophie consulte les bonnes adresses recommandées par l'hôtel avec photos et avis. Elle clique et réserve directement son restaurant via Google Maps.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">⭐</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Avis spontané</h3>
+                    <p style="color: #666;">Thomas a passé un excellent séjour. Avant de partir, il voit le bouton "Laisser un avis" dans le guide et partage son expérience positive sur Google en 2 clics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="section-gray">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Retour sur investissement rapide</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Calculez vos économies et gains</p>
+            </div>
+
+            <div style="max-width: 1100px; margin: 0 auto; background: white; padding: 48px 32px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #e74c3c; margin-bottom: 8px;">-1500€/an</div>
+                        <p style="color: #666; font-size: 0.9rem;">Économies impression<br>livrets papier</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #f39c12; margin-bottom: 8px;">-60%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Appels répétitifs<br>à la réception</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #2ecc71; margin-bottom: 8px;">+35%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Utilisation des<br>services additionnels</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #3498db; margin-bottom: 8px;">+40%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Avis Google<br>positifs</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 32px; border-radius: 16px; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 16px;">Pour un hôtel de 30 chambres</h3>
+                    <div style="font-size: 3rem; font-weight: 700; margin-bottom: 8px;">ROI en 2-3 mois</div>
+                    <p style="opacity: 0.95; margin-bottom: 24px;">Économies + revenus additionnels > coût de la solution</p>
+                    <a href="contact.html" class="btn-hero" style="background: white; color: var(--primary-color);">Demander une étude personnalisée</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tarifs Hôtels - Sur Devis -->
+    <section class="section-gray" id="tarifs">
+        <div class="container" style="max-width: 1000px;">
+            <div style="text-align: center; margin-bottom: 48px;">
+                <h2 style="margin-bottom: 16px;">Une solution sur-mesure pour votre hôtel</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Chaque hôtel est unique. Nous établissons un devis personnalisé selon vos besoins spécifiques.</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 48px 40px; border-radius: 20px; text-align: center; margin-bottom: 48px;">
+                <h3 style="color: white; font-size: 2rem; margin-bottom: 24px;">💰 Tarification sur devis</h3>
+                <p style="font-size: 1.2rem; opacity: 0.95; margin-bottom: 32px; line-height: 1.6;">Nous analysons vos besoins pour vous proposer la solution la plus adaptée et le meilleur rapport qualité-prix</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 32px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 8px;">✓</div>
+                        <strong style="display: block; margin-bottom: 4px;">Nombre de chambres</strong>
+                        <span style="opacity: 0.9; font-size: 0.9rem;">Tarif dégressif</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 8px;">✓</div>
+                        <strong style="display: block; margin-bottom: 4px;">Services inclus</strong>
+                        <span style="opacity: 0.9; font-size: 0.9rem;">Personnalisés</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 8px;">✓</div>
+                        <strong style="display: block; margin-bottom: 4px;">Formation</strong>
+                        <span style="opacity: 0.9; font-size: 0.9rem;">Équipe incluse</span>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="btn-hero" style="background: white; color: var(--primary-color); font-size: 1.1rem; padding: 16px 40px;">💬 Demander un devis gratuit</a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 48px;">
+                <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">🏨</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">Petits hôtels</h3>
+                    <p style="color: #666; margin-bottom: 16px;">1 à 20 chambres</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Configuration initiale</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Guide multilingue</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ QR codes personnalisés</li>
+                        <li style="padding: 8px 0;">✓ Support email</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 3px solid var(--primary-color);">
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">🏛️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">Hôtels moyens</h3>
+                    <p style="color: #666; margin-bottom: 16px;">21 à 50 chambres</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Tout du pack Petit hôtel</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Analytics avancés</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Intégrations PMS</li>
+                        <li style="padding: 8px 0;">✓ Formation équipe</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">🏙️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">Grands hôtels & Chaînes</h3>
+                    <p style="color: #666; margin-bottom: 16px;">51+ chambres</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Tout du pack Moyen</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ API personnalisée</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Account manager dédié</li>
+                        <li style="padding: 8px 0;">✓ SLA garanti 24/7</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 32px; background: #f8f9fa; border-radius: 16px;">
+                <h3 style="margin-bottom: 16px; color: var(--primary-color);">Questions fréquentes</h3>
+                <div style="max-width: 700px; margin: 0 auto; text-align: left;">
+                    <details style="margin-bottom: 16px; padding: 16px; background: white; border-radius: 8px; cursor: pointer;">
+                        <summary style="font-weight: 600; color: var(--text-dark);">Quel est le délai pour obtenir un devis ?</summary>
+                        <p style="margin-top: 12px; color: #666; line-height: 1.6;">Nous vous répondons sous 24h avec un devis détaillé et personnalisé.</p>
+                    </details>
+                    <details style="margin-bottom: 16px; padding: 16px; background: white; border-radius: 8px; cursor: pointer;">
+                        <summary style="font-weight: 600; color: var(--text-dark);">Y a-t-il des frais cachés ?</summary>
+                        <p style="margin-top: 12px; color: #666; line-height: 1.6;">Non, le devis est transparent et inclut tous les services convenus (configuration, formation, support).</p>
+                    </details>
+                    <details style="margin-bottom: 16px; padding: 16px; background: white; border-radius: 8px; cursor: pointer;">
+                        <summary style="font-weight: 600; color: var(--text-dark);">Proposez-vous des tarifs dégressifs pour les chaînes ?</summary>
+                        <p style="margin-top: 12px; color: #666; line-height: 1.6;">Oui, nous offrons des conditions spéciales pour les groupes hôteliers et chaînes avec plusieurs établissements.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto; padding: 60px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white; box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);">
+                <h2 style="color: white; font-size: 2.5rem; margin-bottom: 24px;">Prêt à moderniser votre hôtel ?</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 32px; opacity: 0.95;">Rejoignez les hôteliers qui ont choisi QRGUIDE pour améliorer l'expérience de leurs clients</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="contact.html" class="btn-hero" style="background: white; color: var(--primary-color);">Demander une démo gratuite</a>
+                    <a href="contact.html" class="btn-secondary" style="background: rgba(255,255,255,0.2); border-color: white; color: white; backdrop-filter: blur(10px);">Poser vos questions</a>
+                </div>
+                <p style="margin-top: 24px; font-size: 0.9rem; opacity: 0.8;">✓ Sans engagement • ✓ Configuration en 48h • ✓ Support en français</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>La solution de guide numérique pour locations saisonnières et hôtels</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="index.html#fonctionnalites">Fonctionnalités</a></li>
+                        <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+                        <li><a href="tarifs.html">Tarifs</a></li>
+                        <li><a href="hotels.html">Hôtels</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="abonnement.html">S'abonner</a></li>
+                        <li><a href="demo-guide/index.html" target="_blank">Voir la démo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="mentions-legales.html">Mentions légales</a></li>
+                        <li><a href="cgv.html">CGV</a></li>
+                        <li><a href="politique-confidentialite.html">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

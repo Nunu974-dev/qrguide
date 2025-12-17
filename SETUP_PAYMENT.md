@@ -15,10 +15,10 @@
    const stripe = Stripe('pk_test_VOTRE_CLE_ICI');
    ```
 
-### 3. Créer les produits Stripe
+### 3. Créer les 3 produits Stripe OBLIGATOIRES
 Dans le Dashboard Stripe :
 1. **Products** → **Add Product**
-2. Créez ces produits :
+2. Créez UNIQUEMENT ces 3 produits :
 
    **Abonnement Mensuel**
    - Name: "QRGuide - Abonnement Mensuel"
@@ -30,22 +30,25 @@ Dans le Dashboard Stripe :
    - Price: 75€/year (recurring)
    - Copiez le Price ID
 
-   **Pack Création**
+   **Pack Création** (inclus automatiquement avec chaque abonnement)
    - Name: "QRGuide - Pack Création"
    - Price: 150€ (one-time)
    - Copiez le Price ID
 
-   **Plaque QR Code**
+   **Plaque QR Code** (optionnel, quantité variable)
    - Name: "QRGuide - Plaque Professionnelle"
    - Price: 45€ (one-time)
    - Copiez le Price ID
 
-   **Pack Complet**
-   - Name: "QRGuide - Pack Complet"
-   - Price: 240€ (one-time)
-   - Copiez le Price ID
-
-4. Remplacez les Price IDs dans `contact.html` (fonction `processPayment`)
+4. Remplacez les 4 Price IDs dans `contact.html` lignes 328-332 :
+   ```javascript
+   const STRIPE_PRICES = {
+       mensuel: 'price_VOTRE_ID_MENSUEL',
+       annuel: 'price_VOTRE_ID_ANNUEL',
+       creation: 'price_VOTRE_ID_CREATION',
+       plaque: 'price_VOTRE_ID_PLAQUE'
+   };
+   ```
 
 ### 4. Configurer le Success/Cancel URLs
 Dans chaque produit Stripe, configurez :
