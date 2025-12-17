@@ -1434,12 +1434,14 @@ input:checked + .slider:before {
 
 .process-step {
     display: flex;
+    align-items: flex-start;
     gap: 16px;
 }
 
 .process-step .step-number {
     width: 40px;
     height: 40px;
+    min-width: 40px;
     background: var(--primary-color);
     color: var(--white);
     border-radius: 50%;

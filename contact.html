@@ -7,6 +7,10 @@
     <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
     <link rel="stylesheet" href="style.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -158,9 +162,19 @@
                             <div class="total-amount" id="totalAmount">150€</div>
                         </div>
 
-                        <button type="submit" class="btn-hero">Envoyer ma demande</button>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button type="button" id="contactOnlyBtn" class="btn-secondary" style="flex: 1; min-width: 200px;">
+                                📧 Demander des infos
+                            </button>
+                            <button type="submit" id="paymentBtn" class="btn-hero" style="flex: 1; min-width: 200px;">
+                                💳 Payer maintenant
+                            </button>
+                        </div>
                         
-                        <p class="form-notice">En soumettant ce formulaire, vous acceptez d'être contacté par QRGUIDE.FR concernant votre demande.</p>
+                        <p class="form-notice">
+                            <strong>Paiement sécurisé par Stripe</strong><br>
+                            En soumettant ce formulaire, vous acceptez d'être contacté par QRGUIDE.FR concernant votre demande.
+                        </p>
                     </form>
                 </div>
 
@@ -278,7 +292,7 @@
                     <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
                     <a href="tarifs.html">Tarifs</a>
-                    <a href="../index.html" target="_blank">Voir la démo</a>
+                    <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
                 </div>
                 <div class="footer-col">
                     <h4>Support</h4>
@@ -300,7 +314,37 @@
     </footer>
 
     <script>
-        // Calculate total price based on selections
+        // ============================================
+        // CONFIGURATION - À MODIFIER AVEC VOS CLÉS
+        // ============================================
+        
+        // 1. Remplacez avec votre clé Stripe Publishable Key (pk_test_... ou pk_live_...)
+        // Obtenir sur : https://dashboard.stripe.com/apikeys
+        const STRIPE_KEY = 'pk_test_VOTRE_CLE_STRIPE_ICI';
+        const stripe = Stripe(STRIPE_KEY);
+
+        // 2. Remplacez avec vos Price IDs Stripe (créés dans Products sur Stripe Dashboard)
+        const STRIPE_PRICES = {
+            mensuel: 'price_MENSUEL_ID',
+            annuel: 'price_ANNUEL_ID',
+            creation: 'price_CREATION_ID',
+            plaque: 'price_PLAQUE_ID',
+            complet: 'price_PACK_COMPLET_ID'
+        };
+
+        // 3. Configuration EmailJS (obtenir sur https://www.emailjs.com/)
+        const EMAILJS_CONFIG = {
+            publicKey: 'VOTRE_PUBLIC_KEY',
+            serviceId: 'VOTRE_SERVICE_ID',
+            templateId: 'VOTRE_TEMPLATE_ID'
+        };
+
+        // Initialiser EmailJS
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+
+        // ============================================
+        // CALCUL DU TOTAL
+        // ============================================
         function calculateTotal() {
             const plan = document.querySelector('input[name="plan"]:checked');
             const creation = document.getElementById('option-creation').checked;
@@ -340,10 +384,129 @@
             document.getElementById('totalAmount').innerHTML = total + '€<br><small style="font-size: 14px; opacity: 0.7;">' + description.join(' + ') + '</small>';
         }
 
-        // Add event listeners
+        // ============================================
+        // RÉCUPÉRATION DES DONNÉES DU FORMULAIRE
+        // ============================================
+        function getFormData() {
+            const plan = document.querySelector('input[name="plan"]:checked');
+            const creation = document.getElementById('option-creation').checked;
+            const plaque = document.getElementById('option-plaque').checked;
+            const total = document.getElementById('totalAmount').textContent.split('€')[0];
+
+            return {
+                nom: document.getElementById('nom').value,
+                email: document.getElementById('email').value,
+                telephone: document.getElementById('telephone').value,
+                ville: document.getElementById('ville').value,
+                type: document.getElementById('type').value,
+                nombre: document.getElementById('nombre').value,
+                plan: plan ? plan.value : '',
+                planLabel: plan ? plan.parentElement.querySelector('strong').textContent : '',
+                options: (creation ? 'Création' : '') + (creation && plaque ? ' + ' : '') + (plaque ? 'Plaque' : ''),
+                message: document.getElementById('message').value,
+                total: total + '€'
+            };
+        }
+
+        // ============================================
+        // ENVOI EMAIL VIA EMAILJS
+        // ============================================
+        async function sendEmail(formData) {
+            try {
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    formData
+                );
+                console.log('Email envoyé avec succès:', response);
+                return true;
+            } catch (error) {
+                console.error('Erreur envoi email:', error);
+                return false;
+            }
+        }
+
+        // ============================================
+        // PAIEMENT STRIPE
+        // ============================================
+        async function processPayment() {
+            const plan = document.querySelector('input[name="plan"]:checked');
+            const creation = document.getElementById('option-creation').checked;
+            const plaque = document.getElementById('option-plaque').checked;
+
+            if (!plan) {
+                alert('Veuillez sélectionner une formule');
+                return;
+            }
+
+            // Préparer les items pour Stripe Checkout
+            const lineItems = [];
+
+            // Ajouter l'abonnement ou le pack complet
+            if (plan.value === 'complet') {
+                lineItems.push({
+                    price: STRIPE_PRICES.complet,
+                    quantity: 1
+                });
+            } else {
+                // Abonnement
+                lineItems.push({
+                    price: STRIPE_PRICES[plan.value],
+                    quantity: 1
+                });
+
+                // Création (obligatoire pour abonnements)
+                if (creation) {
+                    lineItems.push({
+                        price: STRIPE_PRICES.creation,
+                        quantity: 1
+                    });
+                }
+
+                // Plaque optionnelle
+                if (plaque) {
+                    lineItems.push({
+                        price: STRIPE_PRICES.plaque,
+                        quantity: 1
+                    });
+                }
+            }
+
+            // Récupérer les infos client
+            const formData = getFormData();
+
+            try {
+                // Rediriger vers Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    lineItems: lineItems,
+                    mode: plan.value === 'mensuel' ? 'subscription' : (plan.value === 'annuel' ? 'subscription' : 'payment'),
+                    successUrl: window.location.origin + '/success.html',
+                    cancelUrl: window.location.origin + '/contact.html',
+                    customerEmail: formData.email,
+                    clientReferenceId: formData.nom,
+                    billingAddressCollection: 'required',
+                    shippingAddressCollection: plaque ? {
+                        allowedCountries: ['FR']
+                    } : undefined
+                });
+
+                if (error) {
+                    console.error('Erreur Stripe:', error);
+                    alert('Erreur lors du paiement. Veuillez réessayer.');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la redirection vers le paiement.');
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        // Calcul automatique du total
         document.querySelectorAll('input[name="plan"]').forEach(radio => {
             radio.addEventListener('change', () => {
-                // Auto-select creation for non-complet plans
                 if (radio.value !== 'complet') {
                     document.getElementById('option-creation').checked = true;
                 }
@@ -353,6 +516,53 @@
 
         document.getElementById('option-creation').addEventListener('change', calculateTotal);
         document.getElementById('option-plaque').addEventListener('change', calculateTotal);
+
+        // Bouton "Demander des infos" (email uniquement)
+        document.getElementById('contactOnlyBtn').addEventListener('click', async function() {
+            const form = document.getElementById('contactForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const formData = getFormData();
+            this.disabled = true;
+            this.textContent = '📧 Envoi en cours...';
+
+            const success = await sendEmail(formData);
+            
+            if (success) {
+                alert('✅ Votre demande a été envoyée avec succès !\n\nNous vous répondons sous 24h.');
+                form.reset();
+                calculateTotal();
+            } else {
+                alert('❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter par téléphone.');
+            }
+
+            this.disabled = false;
+            this.textContent = '📧 Demander des infos';
+        });
+
+        // Bouton "Payer maintenant" (email + paiement)
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = getFormData();
+            
+            // Envoyer l'email d'abord
+            const paymentBtn = document.getElementById('paymentBtn');
+            paymentBtn.disabled = true;
+            paymentBtn.textContent = '📧 Envoi des infos...';
+
+            await sendEmail(formData);
+
+            // Puis rediriger vers le paiement
+            paymentBtn.textContent = '💳 Redirection vers le paiement...';
+            await processPayment();
+
+            paymentBtn.disabled = false;
+            paymentBtn.textContent = '💳 Payer maintenant';
+        });
 
         // Pre-select plan from URL parameter
         const urlParams = new URLSearchParams(window.location.search);
@@ -368,14 +578,8 @@
         } else if (planParam === 'complet') {
             document.getElementById('plan-complet').checked = true;
         }
+        
         calculateTotal();
-
-        // Form submission
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Merci pour votre demande ! Nous vous contactons sous 24h.');
-            // Here you would normally send the form data to your server
-        });
     </script>
 </body>
 </html>
