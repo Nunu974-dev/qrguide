@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wi-Fi & Multimédia - Guide de séjour</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page-container">
+        <a href="../index.html" class="back-button">← Retour</a>
+
+        <!-- Image d'en-tête -->
+        <div style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&h=400&fit=crop&q=90" 
+                 alt="Connexion Wi-Fi" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0;">📶 Wi-Fi</h1>
+            </div>
+        </div>
+
+        <main class="page-content">
+            <!-- QR Code Wi-Fi -->
+            <section class="info-section">
+                <h2 class="section-title">📱 Connexion rapide</h2>
+                <div class="info-card" style="text-align: center; padding: 32px;">
+                    <p style="font-size: 1.1rem; margin-bottom: 24px; color: #666;">
+                        Scannez le QR code avec votre appareil photo
+                    </p>
+                    
+                    <!-- QR Code placeholder -->
+                    <div style="width: 220px; height: 220px; margin: 0 auto 20px; background: white; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--primary-color);">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WIFI:T:WPA;S:MyVilla_WiFi;P:Bienvenue2024!;;" 
+                             alt="QR Code Wi-Fi" 
+                             style="width: 200px; height: 200px; border-radius: 12px;">
+                    </div>
+                    
+                    <p style="font-size: 0.95rem; color: var(--primary-color); font-weight: 600;">
+                        ✨ Connexion automatique en 1 scan !
+                    </p>
+                </div>
+            </section>
+
+            <!-- Connexion manuelle -->
+            <section class="info-section">
+                <h2 class="section-title">🔑 Connexion manuelle</h2>
+                <div class="info-card">
+                    <div style="background: rgba(var(--primary-rgb), 0.08); padding: 20px; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(var(--primary-rgb), 0.2); position: relative;">
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 8px;">Nom du réseau</p>
+                        <p id="wifi-ssid" style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0 0 12px 0;">MyVilla_WiFi</p>
+                        <button onclick="copyWifiInfo('wifi-ssid')" style="width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            📋 Copier le nom du réseau
+                        </button>
+                    </div>
+                    
+                    <div style="background: rgba(var(--primary-rgb), 0.08); padding: 20px; border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); position: relative;">
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 8px;">Mot de passe</p>
+                        <p id="wifi-pass" style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0 0 12px 0; letter-spacing: 1px;">Bienvenue2024!</p>
+                        <button onclick="copyWifiInfo('wifi-pass')" style="width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            📋 Copier le mot de passe
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Caractéristiques -->
+            <section class="info-section">
+                <h2 class="section-title">⚡ Caractéristiques</h2>
+                <div class="info-card">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+                        <div style="background: rgba(var(--primary-rgb), 0.05); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; margin-bottom: 8px;">⚡</div>
+                            <p style="font-size: 0.9rem; font-weight: 600; margin: 0;">Fibre optique</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 4px 0 0 0;">500 Mbps</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.05); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; margin-bottom: 8px;">📱</div>
+                            <p style="font-size: 0.9rem; font-weight: 600; margin: 0;">Multi-appareils</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 4px 0 0 0;">Illimité</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.05); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; margin-bottom: 8px;">🔒</div>
+                            <p style="font-size: 0.9rem; font-weight: 600; margin: 0;">Sécurisé</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 4px 0 0 0;">WPA2</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Problème Wi-Fi -->
+            <section class="info-section">
+                <h2 class="section-title">❓ Problème de connexion ?</h2>
+                <div class="info-card">
+                    <p style="font-size: 1rem; margin-bottom: 20px; color: #666;">
+                        Essayez ces solutions dans l'ordre :
+                    </p>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <p style="font-weight: 600;">Redémarrez votre appareil</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Smartphone, tablette ou ordinateur</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <p style="font-weight: 600;">Oubliez le réseau Wi-Fi</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Puis reconnectez-vous avec le mot de passe</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <p style="font-weight: 600;">Vérifiez le mot de passe</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Attention aux majuscules/minuscules</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <p style="font-weight: 600;">Redémarrez la box internet</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Bouton rouge à l'arrière, attendre 2 minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 24px; padding: 20px; background: rgba(var(--primary-rgb), 0.1); border-radius: 12px; border: 2px solid var(--primary-color); text-align: center;">
+                        <p style="font-weight: 600; margin-bottom: 12px; color: #333;">📞 Ça ne fonctionne toujours pas ?</p>
+                        <a href="tel:+33612345678" style="display: inline-block; padding: 12px 24px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                            Appelez-nous : 06 12 34 56 78
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Télévision -->
+            <section class="info-section">
+                <h2 class="section-title">📺 Télévision</h2>
+                <div class="info-card">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--primary-color);">Smart TV Samsung 55"</h3>
+                    
+                    <!-- Plateformes streaming -->
+                    <div style="margin-bottom: 24px;">
+                        <p style="font-weight: 600; margin-bottom: 12px;">🎬 Plateformes disponibles</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <div style="padding: 8px 16px; background: #E50914; color: white; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">Netflix</div>
+                            <div style="padding: 8px 16px; background: #00A8E1; color: white; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">Prime Video</div>
+                            <div style="padding: 8px 16px; background: #FF0000; color: white; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">YouTube</div>
+                            <div style="padding: 8px 16px; background: #113CCF; color: white; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">Disney+</div>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 8px;">✓ Connectez-vous avec vos identifiants</p>
+                    </div>
+
+                    <!-- Box TV -->
+                    <div style="padding: 16px; background: rgba(var(--primary-rgb), 0.08); border-radius: 12px; margin-bottom: 20px; border: 2px solid rgba(var(--primary-rgb), 0.2);">
+                        <p style="font-weight: 600; margin-bottom: 4px;">📡 Box TV</p>
+                        <p style="font-size: 0.95rem; color: #666; margin: 0;">200+ chaînes (TNT, sport, cinéma, documentaires)</p>
+                    </div>
+
+                    <!-- Mode d'emploi -->
+                    <p style="font-weight: 600; margin-bottom: 12px;">🎮 Mode d'emploi</p>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <p style="font-weight: 600;">Allumer la TV</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Bouton rouge sur la télécommande noire</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <p style="font-weight: 600;">Changer de source</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Bouton "Source" → HDMI 1 (Box) ou Smart TV (apps)</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <p style="font-weight: 600;">Régler le volume</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Boutons + / - sur le côté de la télécommande</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 16px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px; font-size: 0.95rem;">
+                        📍 <strong>Télécommandes</strong> sur le meuble TV dans le salon
+                    </p>
+                </div>
+            </section>
+
+            <!-- Enceinte Bluetooth -->
+            <section class="info-section">
+                <h2 class="section-title">🔊 Enceinte Bluetooth</h2>
+                <div class="info-card">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--primary-color);">🎵 JBL Charge 5</h3>
+                    
+                    <p style="font-weight: 600; margin-bottom: 12px;">📱 Connexion en 4 étapes</p>
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <p style="font-weight: 600;">Allumez l'enceinte</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Bouton power sur le dessus (voyant bleu)</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <p style="font-weight: 600;">Activez le Bluetooth</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Sur votre smartphone : Paramètres → Bluetooth</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <p style="font-weight: 600;">Recherchez "JBL Charge 5"</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Cliquez pour connecter</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <p style="font-weight: 600;">C'est prêt ! 🎶</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Lancez votre musique préférée</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Caractéristiques -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 24px;">
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; margin-bottom: 4px;">🔋</div>
+                            <p style="font-size: 0.85rem; font-weight: 600; margin: 0;">Autonomie</p>
+                            <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0 0;">20 heures</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; margin-bottom: 4px;">💧</div>
+                            <p style="font-size: 0.85rem; font-weight: 600; margin: 0;">Étanche</p>
+                            <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0 0;">Piscine OK</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; margin-bottom: 4px;">🔊</div>
+                            <p style="font-size: 0.85rem; font-weight: 600; margin: 0;">Son 360°</p>
+                            <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0 0;">Puissant</p>
+                        </div>
+                    </div>
+
+                    <!-- Localisation -->
+                    <div style="margin-top: 20px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;">
+                        <p style="font-size: 0.95rem; margin: 0 0 8px 0;">📍 <strong>Emplacement :</strong> Sur l'étagère du salon</p>
+                        <p style="font-size: 0.95rem; margin: 0;">🔌 <strong>Chargeur :</strong> Dans le tiroir sous la TV</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Autres équipements -->
+            <section class="info-section">
+                <h2 class="section-title">🎮 Autres équipements</h2>
+                <div class="info-card">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2.5rem; margin-bottom: 8px;">💻</div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 0.95rem;">Espace bureau</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 0;">Chambre + prises USB</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2.5rem; margin-bottom: 8px;">🔌</div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 0.95rem;">Prises USB</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 0;">Chaque pièce</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2.5rem; margin-bottom: 8px;">📱</div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 0.95rem;">Chargeurs</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 0;">Multi-USB salon</p>
+                        </div>
+                        <div style="background: rgba(var(--primary-rgb), 0.08); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2.5rem; margin-bottom: 8px;">🎧</div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 0.95rem;">Casque audio</p>
+                            <p style="font-size: 0.85rem; color: #666; margin: 0;">Jack 3.5mm TV</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conseils -->
+            <section class="info-section">
+                <h2 class="section-title">💡 Conseils</h2>
+                <div class="info-card">
+                    <div class="checklist">
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px; border: 2px solid rgba(var(--primary-rgb), 0.1);">
+                            <span style="font-size: 1.5rem;">🔋</span>
+                            <p style="margin: 0; font-size: 0.95rem;">Rechargez l'enceinte après utilisation</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px; border: 2px solid rgba(var(--primary-rgb), 0.1);">
+                            <span style="font-size: 1.5rem;">📺</span>
+                            <p style="margin: 0; font-size: 0.95rem;">Déconnectez-vous des apps avant de partir</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px; border: 2px solid rgba(var(--primary-rgb), 0.1);">
+                            <span style="font-size: 1.5rem;">🔌</span>
+                            <p style="margin: 0; font-size: 0.95rem;">Utilisez librement toutes les prises USB</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Fonction pour copier le Wi-Fi
+        function copyWifiInfo(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Feedback visuel
+                const button = event.target;
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '✓ Copié !';
+                button.style.background = '#28A745';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                alert('Erreur lors de la copie');
+            });
+        }
+
+        // Générer le QR Code Wi-Fi
+        window.addEventListener('DOMContentLoaded', function() {
+            const ssid = document.getElementById('wifi-ssid').textContent;
+            const password = document.getElementById('wifi-pass').textContent;
+            
+            // Format Wi-Fi pour QR Code : WIFI:T:WPA;S:SSID;P:PASSWORD;;
+            const wifiString = `WIFI:T:WPA;S:${ssid};P:${password};;`;
+            
+            const canvas = document.getElementById('wifi-qr-code');
+            
+            QRCode.toCanvas(canvas, wifiString, {
+                width: 280,
+                margin: 2,
+                color: {
+                    dark: '#1A1A1A',
+                    light: '#FFFFFF'
+                },
+                errorCorrectionLevel: 'H'
+            }, function(error) {
+                if (error) {
+                    console.error('Erreur génération QR Code:', error);
+                } else {
+                    console.log('✓ QR Code Wi-Fi généré avec succès');
+                }
+            });
+        });
+    </script>
+
+    <footer style="text-align: center; padding: 0; margin-top: 32px;">
+        <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 100px; width: auto; opacity: 0.9; display: block; margin: 0 auto -10px; padding: 0;">
+    </footer>
+</body>
+</html>

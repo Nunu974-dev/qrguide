@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - QRGUIDE.FR</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="../img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <div class="nav-links">
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="contact.html" class="btn-primary">Commencer</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact Hero -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>Commencez dès aujourd'hui</h1>
+            <p>Remplissez le formulaire et recevez votre guide personnalisé en 48h</p>
+            
+            <div class="trust-badges">
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Réponse sous 24h</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Sans engagement</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Installation en 48h</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Form -->
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contactForm">
+                        <h3>Informations personnelles</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nom">Nom complet *</label>
+                                <input type="text" id="nom" name="nom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telephone">Téléphone *</label>
+                                <input type="tel" id="telephone" name="telephone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ville">Ville du logement *</label>
+                                <input type="text" id="ville" name="ville" required>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px;">Votre logement</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="type">Type de logement *</label>
+                                <select id="type" name="type" required>
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="appartement">Appartement</option>
+                                    <option value="maison">Maison</option>
+                                    <option value="villa">Villa</option>
+                                    <option value="chalet">Chalet</option>
+                                    <option value="studio">Studio</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Nombre de logements *</label>
+                                <select id="nombre" name="nombre" required>
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="1">1 logement</option>
+                                    <option value="2-3">2-3 logements</option>
+                                    <option value="4-5">4-5 logements</option>
+                                    <option value="6+">6+ logements</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 32px;">Votre choix</h3>
+
+                        <div class="form-group">
+                            <label>Formule souhaitée *</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="plan" value="mensuel" id="plan-mensuel">
+                                    <div class="radio-content">
+                                        <strong>Abonnement Mensuel</strong>
+                                        <span>8€/mois</span>
+                                    </div>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="plan" value="annuel" id="plan-annuel">
+                                    <div class="radio-content">
+                                        <strong>Abonnement Annuel</strong>
+                                        <span>75€/an • Économisez 21€</span>
+                                    </div>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="plan" value="complet" id="plan-complet" checked>
+                                    <div class="radio-content">
+                                        <strong>Pack Complet</strong>
+                                        <span>240€ • Création + Plaque + 1 an</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Options *</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="options" value="creation" id="option-creation" checked>
+                                    <span>Pack Création (150€)</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="options" value="plaque" id="option-plaque">
+                                    <span>Plaque QR Code (45€)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message (optionnel)</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Questions, demandes spécifiques..."></textarea>
+                        </div>
+
+                        <div class="form-total">
+                            <div class="total-label">Total estimé :</div>
+                            <div class="total-amount" id="totalAmount">150€</div>
+                        </div>
+
+                        <button type="submit" class="btn-hero">Envoyer ma demande</button>
+                        
+                        <p class="form-notice">En soumettant ce formulaire, vous acceptez d'être contacté par QRGUIDE.FR concernant votre demande.</p>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <div class="info-card">
+                        <h3>Besoin d'aide ?</h3>
+                        <p>Notre équipe est là pour répondre à toutes vos questions</p>
+                        
+                        <div class="contact-methods">
+                            <a href="mailto:contact@qrguide.fr" class="contact-method">
+                                <span class="method-icon">✉️</span>
+                                <div>
+                                    <strong>Email</strong>
+                                    <span>contact@qrguide.fr</span>
+                                </div>
+                            </a>
+                            
+                            <a href="tel:+33612345678" class="contact-method">
+                                <span class="method-icon">📞</span>
+                                <div>
+                                    <strong>Téléphone</strong>
+                                    <span>06 92 63 03 64</span>
+                                </div>
+                            </a>
+                            
+                            <div class="contact-method">
+                                <span class="method-icon">⏰</span>
+                                <div>
+                                    <strong>Horaires</strong>
+                                    <span>Lun-Ven : 9h-18h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Processus</h3>
+                        <div class="process-steps">
+                            <div class="process-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <strong>Vous remplissez le formulaire</strong>
+                                    <p>15 minutes suffisent</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <strong>Nous créons votre guide</strong>
+                                    <p>Livraison sous 48h</p>
+                                </div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <strong>Vous validez et publiez</strong>
+                                    <p>2 révisions offertes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card highlight">
+                        <h3>🎁 Offre de lancement</h3>
+                        <p>Pack Complet à 240€ au lieu de 270€</p>
+                        <ul class="offer-benefits">
+                            <li>✓ Création du guide</li>
+                            <li>✓ Plaque QR Code</li>
+                            <li>✓ 1 an d'abonnement</li>
+                            <li>✓ Économisez 30€</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" style="background: #f8f9fa; padding: 60px 0;">
+        <div class="container">
+            <h2>Questions fréquentes</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Quelles informations fournir ?</h4>
+                    <p>Vos coordonnées, adresse du logement, code Wi-Fi, équipements disponibles, bonnes adresses locales, règlement intérieur.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Combien de temps pour la création ?</h4>
+                    <p>48h après réception de toutes vos informations. Livraison par email avec lien vers votre guide.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Puis-je modifier après création ?</h4>
+                    <p>Oui, vous avez accès à un panneau d'administration pour modifier tout le contenu en temps réel.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Comment imprimer le QR code ?</h4>
+                    <p>Nous vous fournissons un fichier PDF haute qualité. Vous pouvez l'imprimer ou commander notre plaque professionnelle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <img src="../img/logo.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="../index.html" target="_blank">Voir la démo</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:0692630364">06 92 63 03 64</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="#">Mentions légales</a>
+                    <a href="#">CGV</a>
+                    <a href="#">Confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Calculate total price based on selections
+        function calculateTotal() {
+            const plan = document.querySelector('input[name="plan"]:checked');
+            const creation = document.getElementById('option-creation').checked;
+            const plaque = document.getElementById('option-plaque').checked;
+            
+            let total = 0;
+            let description = [];
+
+            // Abonnement
+            if (plan) {
+                if (plan.value === 'mensuel') {
+                    total += 8;
+                    description.push('8€/mois');
+                } else if (plan.value === 'annuel') {
+                    total += 75;
+                    description.push('75€/an');
+                } else if (plan.value === 'complet') {
+                    total = 240;
+                    description.push('Pack Complet : 240€');
+                    document.getElementById('totalAmount').innerHTML = total + '€<br><small style="font-size: 14px; opacity: 0.7;">Paiement unique</small>';
+                    return;
+                }
+            }
+
+            // Création
+            if (creation) {
+                total += 150;
+                description.push('Création : 150€');
+            }
+
+            // Plaque
+            if (plaque) {
+                total += 45;
+                description.push('Plaque : 45€');
+            }
+
+            document.getElementById('totalAmount').innerHTML = total + '€<br><small style="font-size: 14px; opacity: 0.7;">' + description.join(' + ') + '</small>';
+        }
+
+        // Add event listeners
+        document.querySelectorAll('input[name="plan"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                // Auto-select creation for non-complet plans
+                if (radio.value !== 'complet') {
+                    document.getElementById('option-creation').checked = true;
+                }
+                calculateTotal();
+            });
+        });
+
+        document.getElementById('option-creation').addEventListener('change', calculateTotal);
+        document.getElementById('option-plaque').addEventListener('change', calculateTotal);
+
+        // Pre-select plan from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const planParam = urlParams.get('plan');
+        if (planParam === 'abonnement') {
+            document.getElementById('plan-mensuel').checked = true;
+        } else if (planParam === 'creation') {
+            document.getElementById('plan-complet').checked = false;
+            document.getElementById('plan-mensuel').checked = true;
+            document.getElementById('option-creation').checked = true;
+        } else if (planParam === 'plaque') {
+            document.getElementById('option-plaque').checked = true;
+        } else if (planParam === 'complet') {
+            document.getElementById('plan-complet').checked = true;
+        }
+        calculateTotal();
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Merci pour votre demande ! Nous vous contactons sous 24h.');
+            // Here you would normally send the form data to your server
+        });
+    </script>
+</body>
+</html>

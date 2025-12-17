@@ -1,0 +1,41 @@
+{
+  "arrival": {
+    "time": "15h00",
+    "procedure": [
+      "Rendez-vous devant l'entrée principale",
+      "Code de la boîte à clés : 1234A",
+      "La clé ouvre la porte d'entrée"
+    ],
+    "wifi": {
+      "name": "MyAirbnb_WiFi",
+      "password": "Bienvenue2024!"
+    }
+  },
+  "departure": {
+    "time": "11h00",
+    "cleaning": "Le ménage est inclus dans votre réservation.",
+    "keyReturn": [
+      "Déposez les clés sur la table de l'entrée",
+      "Fermez la porte en tirant bien"
+    ]
+  },
+  "contact": {
+    "phone": "+33612345678",
+    "name": "Jean Dupont"
+  },
+  "property": {
+    "name": "Appartement Vue Mer",
+    "address": "123 Avenue de la Plage, 06000 Nice"
+  },
+  "rules": {
+    "quietHours": "22h00 - 8h00",
+    "smoking": false,
+    "pets": false,
+    "maxGuests": 4
+  },
+  "parking": {
+    "included": true,
+    "spot": "Place n°12",
+    "code": "4567B"
+  }
+}

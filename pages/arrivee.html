@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bienvenue - Guide de séjour</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page-container">
+        <!-- Bouton retour -->
+        <a href="../index.html" class="back-button">← Retour</a>
+
+        <!-- Image d'accueil -->
+        <div style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=400&fit=crop&q=90" 
+                 alt="Intérieur villa" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.3); margin: 0;">👋 Bienvenue !</h1>
+            </div>
+        </div>
+
+        <!-- Contenu de la page -->
+        <main class="page-content">
+            <!-- Section Message de bienvenue -->
+            <section class="info-section">
+                <h2 class="section-title">✨ Vous êtes arrivés !</h2>
+                <div class="info-card">
+                    <p class="info-text">Bienvenue dans votre villa ! Nous espérons que vous passerez un séjour exceptionnel.</p>
+                    <p class="info-note">Voici les informations essentielles pour commencer :</p>
+                </div>
+            </section>
+
+            <!-- Section Premiers pas -->
+            <section class="info-section">
+                <h2 class="section-title">🎯 Premiers pas</h2>
+                <div class="info-card">
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <p><strong>Connectez-vous au Wi-Fi</strong> (voir ci-dessous)</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <p><strong>Climatisation & Chauffage</strong> : télécommandes dans le salon</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <p><strong>Poubelles</strong> : cuisine (tri sélectif obligatoire)</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <p><strong>Volets roulants</strong> : interrupteurs près des fenêtres</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Wi-Fi -->
+            <section class="info-section">
+                <h2 class="section-title">📶 Wi-Fi</h2>
+                <div class="info-card">
+                    <p class="info-text">Connectez-vous facilement au Wi-Fi avec le QR code :</p>
+                    <a href="wifi-multimedia.html" class="contact-button" style="margin-top: 16px;">
+                        📱 Scanner le QR Code Wi-Fi
+                    </a>
+                </div>
+            </section>
+
+            <!-- Section Infos importantes -->
+            <section class="info-section">
+                <h2 class="section-title">💡 À savoir</h2>
+                <div class="info-card">
+                    <div class="info-list">
+                        <p>🔇 <strong>Respect du voisinage :</strong> Calme après 22h</p>
+                        <p>🚭 <strong>Non fumeur</strong> à l'intérieur (terrasse autorisée)</p>
+                        <p>🅿️ <strong>Parking :</strong> <span id="parking-info">2 places privées à l'entrée</span></p>
+                        <p>🧺 <strong>Ménage :</strong> Kit de nettoyage sous l'évier</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Contact -->
+            <section class="info-section">
+                <h2 class="section-title">📞 Besoin d'aide ?</h2>
+                <div class="info-card">
+                    <p class="info-text">N'hésitez pas à nous contacter pour toute question :</p>
+                    <a href="tel:+33612345678" class="contact-button" id="contact-arrival">
+                        📱 Appeler votre hôte
+                    </a>
+                    <p class="contact-number" id="contact-number">+33 6 12 34 56 78</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 0; margin-top: 32px;">
+        <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 100px; width: auto; opacity: 0.9; display: block; margin: 0 auto -10px; padding: 0;">
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

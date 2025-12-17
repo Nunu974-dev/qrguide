@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Urgence - Guide de séjour</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page-container">
+        <a href="../index.html" class="back-button">← Retour</a>
+
+        <!-- Image d'en-tête -->
+        <div style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img src="https://images.unsplash.com/photo-1587745416684-47953f16f02f?w=800&h=400&fit=crop&q=90" 
+                 alt="Urgence" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(220,38,38,0.4) 0%, rgba(220,38,38,0.2) 50%, rgba(220,38,38,0.6) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0;">🚨 Urgence</h1>
+            </div>
+        </div>
+        
+        <div style="padding: 16px; background: rgba(220, 38, 38, 0.1); border-radius: 12px; border-left: 4px solid #dc2626; margin-bottom: 24px;">
+            <p style="margin: 0; font-weight: 600; color: #991b1b;">Restez calme, nous sommes là pour vous aider 24h/24</p>
+        </div>
+
+        <main class="page-content">
+            <!-- Contact propriétaire -->
+            <section class="info-section">
+                <h2 class="section-title">📞 Contacter le propriétaire</h2>
+                <div class="info-card" style="text-align: center; background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); border: 3px solid var(--primary-color);">
+                    <p style="margin: 0 0 16px 0; font-size: 1rem;">En cas de problème dans le logement :</p>
+                    <a href="tel:+33612345678" style="display: inline-block; padding: 14px 32px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;">
+                        📱 Appeler maintenant
+                    </a>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin: 12px 0;">+33 6 12 34 56 78</p>
+                    <p style="margin: 0; font-size: 0.9rem; color: #666;">Disponible 24h/24 pour les urgences</p>
+                </div>
+            </section>
+
+            <!-- Numéros d'urgence locaux -->
+            <section class="info-section">
+                <h2 class="section-title">🚑 Numéros d'urgence</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 8px;">🚒</div>
+                        <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">Pompiers</h3>
+                        <a href="tel:18" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">18</a>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 8px;">👮</div>
+                        <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">Police</h3>
+                        <a href="tel:17" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">17</a>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 8px;">🏭</div>
+                        <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">SAMU</h3>
+                        <a href="tel:15" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">15</a>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 8px;">🇪🇺</div>
+                        <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">Urgences UE</h3>
+                        <a href="tel:112" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">112</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Procédures en cas d'incident -->
+            <section class="info-section">
+                <h2 class="section-title">⚠️ En cas d'incident</h2>
+                
+                <!-- Panne d'électricité -->
+                <div class="info-card" style="margin-bottom: 16px;">
+                    <h3 style="font-size: 1.2rem; margin: 0 0 12px 0;">💡 Panne d'électricité</h3>
+                    <div class="step-list">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <p style="margin: 0;">Vérifiez si le disjoncteur a sauté (tableau électrique dans l'entrée)</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <p style="margin: 0;">Réenclenchez le disjoncteur en poussant le levier vers le haut</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <p style="margin: 0;">Si le problème persiste, contactez-nous</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fuite d'eau -->
+                <div class="info-card" style="margin-bottom: 16px;">
+                    <h3 style="font-size: 1.2rem; margin: 0 0 12px 0;">💧 Fuite d'eau</h3>
+                    <div class="step-list">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <p style="margin: 0;">Fermez immédiatement le robinet d'arrivée d'eau (sous l'évier de la cuisine)</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <p style="margin: 0;">Coupez l'électricité si l'eau est proche d'une prise</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <p style="margin: 0;">Appelez-nous immédiatement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Odeur de gaz -->
+                <div class="info-card" style="margin-bottom: 16px; background: rgba(220, 38, 38, 0.1); border: 2px solid #dc2626;">
+                    <h3 style="font-size: 1.2rem; margin: 0 0 12px 0; color: #991b1b;">⛽ Odeur de gaz</h3>
+                    <div class="step-list">
+                        <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                            <span class="step-number" style="background: #dc2626;">1</span>
+                            <p style="margin: 0;">N'allumez rien (lumière, téléphone)</p>
+                        </div>
+                        <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                            <span class="step-number" style="background: #dc2626;">2</span>
+                            <p style="margin: 0;">Ouvrez toutes les fenêtres</p>
+                        </div>
+                        <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                            <span class="step-number" style="background: #dc2626;">3</span>
+                            <p style="margin: 0;">Sortez du logement</p>
+                        </div>
+                        <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                            <span class="step-number" style="background: #dc2626;">4</span>
+                            <p style="margin: 0;">Appelez les pompiers : 18</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enfermé dehors -->
+                <div class="info-card">
+                    <h3 style="font-size: 1.2rem; margin: 0 0 12px 0;">🔒 Enfermé dehors</h3>
+                    <div class="step-list">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <p style="margin: 0;">Vérifiez si vous avez laissé une fenêtre ouverte</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <p style="margin: 0;">Contactez-nous, nous avons une clé de secours</p>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <p style="margin: 0;">Temps d'intervention : environ 30 minutes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hôpital le plus proche -->
+            <section class="info-section">
+                <h2 class="section-title">🏥 Hôpital le plus proche</h2>
+                <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%);">
+                    <h3 style="font-size: 1.3rem; margin: 0 0 8px 0; color: var(--primary-color);">Centre Hospitalier</h3>
+                    <p style="margin: 0 0 4px 0;">123 Avenue de la Santé</p>
+                    <p style="margin: 0 0 16px 0; color: #666;">🚗 15 minutes en voiture</p>
+                    <a href="https://www.google.com/maps/search/Centre+Hospitalier" target="_blank" style="display: inline-block; padding: 10px 20px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem;">
+                        📍 Ouvrir dans Google Maps
+                    </a>
+                </div>
+            </section>
+
+            <!-- Pharmacie de garde -->
+            <section class="info-section">
+                <h2 class="section-title">💊 Pharmacie de garde</h2>
+                <div class="info-card" style="text-align: center;">
+                    <p style="margin: 0 0 16px 0;">Pour connaître la pharmacie de garde :</p>
+                    <a href="tel:3237" style="display: inline-block; padding: 12px 24px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1rem;">
+                        📞 Appeler le 32 37
+                    </a>
+                </div>
+            </section>
+
+            <!-- Message rassurant -->
+            <section class="info-section">
+                <div class="info-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid #3b82f6; text-align: center;">
+                    <p style="font-size: 1.2rem; margin: 0 0 8px 0;">💙 <strong>Ne vous inquiétez pas</strong></p>
+                    <p style="margin: 0;">La plupart des problèmes peuvent être résolus rapidement. N'hésitez pas à nous contacter, même pour une question qui vous semble mineure.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 0; margin-top: 32px;">
+        <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 100px; width: auto; opacity: 0.9; display: block; margin: 0 auto -10px; padding: 0;">
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

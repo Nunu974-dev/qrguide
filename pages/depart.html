@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Départ - Guide de séjour</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page-container">
+        <a href="../index.html" class="back-button">← Retour</a>
+
+        <!-- Image d'en-tête -->
+        <div style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=400&fit=crop&q=90" 
+                 alt="Au revoir" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0;">👋 À bientôt !</h1>
+            </div>
+        </div>
+
+        <main class="page-content">
+            <!-- Heure de départ -->
+            <section class="info-section">
+                <h2 class="section-title">⏰ Heure de départ</h2>
+                <div class="info-card">
+                    <p class="info-text" style="font-size: 1.1rem; margin-bottom: 8px;">
+                        Check-out avant <strong id="checkout-time" style="color: var(--primary-color); font-size: 1.3rem;">11h00</strong>
+                    </p>
+                    <p class="info-note">💬 Un départ tardif ? Contactez-nous, c'est parfois possible !</p>
+                </div>
+            </section>
+
+            <!-- Checklist avant de partir -->
+            <section class="info-section">
+                <h2 class="section-title">✅ Checklist départ</h2>
+                <div class="info-card">
+                    <p class="info-note" style="margin-bottom: 16px;">Quelques petits gestes avant de partir :</p>
+                    <div class="checklist" id="checkout-checklist">
+                        <label class="checklist-item">
+                            <input type="checkbox">
+                            <span>💡 Éteindre toutes les lumières</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox">
+                            <span>❄️ Éteindre climatisation / chauffage</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox">
+                            <span>🪟 Fermer les fenêtres</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox">
+                            <span>🗑️ Sortir les poubelles (si possible)</span>
+                        </label>
+                        <label class="checklist-item">
+                            <input type="checkbox">
+                            <span>🍽️ Ranger la vaisselle</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ménage -->
+            <section class="info-section">
+                <h2 class="section-title">🧹 Concernant le ménage</h2>
+                <div class="info-card">
+                    <p class="info-text" id="cleaning-info" style="font-size: 1rem; line-height: 1.6;">
+                        <strong>Le ménage professionnel est inclus</strong> dans votre réservation. 
+                    </p>
+                    <p class="info-note" style="margin-top: 12px;">
+                        Merci simplement de laisser les lieux dans un état correct 😊
+                    </p>
+                </div>
+            </section>
+
+            <!-- Restitution des clés -->
+            <section class="info-section">
+                <h2 class="section-title">🔑 Les clés</h2>
+                <div class="info-card">
+                    <p class="info-text" style="margin-bottom: 16px;">Au choix :</p>
+                    <div class="step-list" id="key-return">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <p style="font-weight: 600;">Laisser sur la table d'entrée</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Puis fermer la porte en tirant bien</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <p style="font-weight: 600;">Remettre dans la boîte à clés</p>
+                                <p style="font-size: 0.9rem; color: #666; margin-top: 4px;">Code : même qu'à l'arrivée</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Message de remerciement stylisé -->
+            <section class="info-section" style="margin-top: 32px;">
+                <div style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%); 
+                            border: 2px solid rgba(var(--primary-rgb), 0.3); 
+                            border-radius: 16px; 
+                            padding: 32px 24px; 
+                            text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">💙</div>
+                    <p style="font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-color);">
+                        Merci pour votre séjour !
+                    </p>
+                    <p style="font-size: 1rem; line-height: 1.6; color: #333;">
+                        Nous espérons que vous avez passé un moment exceptionnel.
+                    </p>
+                    <a href="../pages/livre-or.html" 
+                       style="display: inline-block; 
+                              margin-top: 20px; 
+                              padding: 14px 32px; 
+                              background: var(--primary-color); 
+                              color: white; 
+                              text-decoration: none; 
+                              border-radius: 12px; 
+                              font-weight: 600; 
+                              font-size: 1rem;
+                              box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+                              transition: all 0.3s ease;">
+                        ⭐ Laissez-nous un avis
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 0; margin-top: 32px;">
+        <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 100px; width: auto; opacity: 0.9; display: block; margin: 0 auto -10px; padding: 0;">
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

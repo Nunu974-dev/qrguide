@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Guide de séjour digital pour votre logement Airbnb">
+    <title>Bienvenue dans votre logement</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="luxury-body">
+    <!-- Hero Section avec Photo -->
+    <header class="luxury-hero">
+        <div class="hero-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1400&h=700&fit=crop&q=90" alt="Villa" class="hero-image">
+            <div class="hero-gradient"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="rating-badge">
+                <span class="stars">⭐⭐⭐⭐</span>
+                <span class="rating-text">Villa Premium</span>
+            </div>
+            <h1 class="hero-title">Villa Vue Mer Cannes</h1>
+            <p class="hero-location">
+                <svg class="location-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                Cannes, Côte d'Azur
+            </p>
+            <p class="hero-tagline">Votre guide numérique pour un séjour d'exception</p>
+        </div>
+    </header>
+
+        <!-- Grille de Services Premium -->
+        <main class="luxury-grid">
+            <!-- Service Arrivée -->
+            <a href="pages/arrivee.html" class="luxury-card card-blue">
+                <div class="card-icon-luxury">🔑</div>
+                <h3 class="card-title-luxury">Arrivée</h3>
+                <p class="card-desc-luxury">Accès & Procédure</p>
+            </a>
+
+            <!-- Service Départ -->
+            <a href="pages/depart.html" class="luxury-card card-orange">
+                <div class="card-icon-luxury">🚪</div>
+                <h3 class="card-title-luxury">Départ</h3>
+                <p class="card-desc-luxury">Check-out</p>
+            </a>
+
+            <!-- Service Wi-Fi -->
+            <a href="pages/wifi-multimedia.html" class="luxury-card card-cyan">
+                <div class="card-icon-luxury">📶</div>
+                <h3 class="card-title-luxury">Wi-Fi</h3>
+                <p class="card-desc-luxury">Connexion QR</p>
+            </a>
+
+            <!-- Service Équipements -->
+            <a href="pages/equipements.html" class="luxury-card card-gray">
+                <div class="card-icon-luxury">🏠</div>
+                <h3 class="card-title-luxury">Équipements</h3>
+                <p class="card-desc-luxury">Mode d'emploi</p>
+            </a>
+
+            <!-- Service Restaurants -->
+            <a href="pages/bonnes-adresses.html" class="luxury-card card-gold">
+                <div class="card-icon-luxury">🍽️</div>
+                <h3 class="card-title-luxury">Restaurants</h3>
+                <p class="card-desc-luxury">Nos sélections</p>
+            </a>
+
+            <!-- Service Activités -->
+            <a href="pages/activites.html" class="luxury-card card-green">
+                <div class="card-icon-luxury">🌴</div>
+                <h3 class="card-title-luxury">Activités</h3>
+                <p class="card-desc-luxury">Loisirs & Sorties</p>
+            </a>
+
+            <!-- Service Urgence -->
+            <a href="pages/urgence.html" class="luxury-card card-red">
+                <div class="card-icon-luxury">🚨</div>
+                <h3 class="card-title-luxury">Urgence</h3>
+                <p class="card-desc-luxury">Contacts SOS</p>
+            </a>
+
+            <!-- Service Hôte -->
+            <a href="pages/votre-hote.html" class="luxury-card card-pink">
+                <div class="card-icon-luxury">❤️</div>
+                <h3 class="card-title-luxury">Votre Hôte</h3>
+                <p class="card-desc-luxury">À votre service</p>
+            </a>
+        </main>
+
+        <!-- Section Apps Secondaires (cachée par défaut) -->
+        <div class="more-apps-section" id="more-apps" style="display: none;">
+            <h3 class="apps-section-title">Plus d'informations</h3>
+            <div class="apps-grid secondary-apps">
+                <a href="pages/proximite.html" class="app-icon">
+                    <div class="app-bg app-purple">
+                        <div class="app-emoji">📍</div>
+                    </div>
+                    <span class="app-name">À proximité</span>
+                </a>
+
+                <a href="pages/infos.html" class="app-icon">
+                    <div class="app-bg app-yellow">
+                        <div class="app-emoji">📋</div>
+                    </div>
+                    <span class="app-name">Règlement</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Dock iPhone -->
+        <div class="iphone-dock">
+            <a href="tel:+33612345678" class="dock-app">
+                <div class="app-bg app-phone">
+                    <div class="app-emoji">📞</div>
+                </div>
+            </a>
+            
+            <a href="pages/urgence.html" class="dock-app">
+                <div class="app-bg app-emergency">
+                    <div class="app-emoji">🚨</div>
+                </div>
+            </a>
+            
+            <button class="dock-app" onclick="toggleMoreInfo()">
+                <div class="app-bg app-blue">
+                    <div class="app-emoji" id="dock-more-icon">➕</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Indicateur de page (Page dots) -->
+        <div class="page-indicator">
+            <span class="dot active"></span>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarifs - QRGUIDE.FR</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="../img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <div class="nav-links">
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="contact.html" class="btn-primary">Commencer</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Tarifs -->
+    <section class="pricing-hero">
+        <div class="container">
+            <h1>Des tarifs simples et transparents</h1>
+            <p>Choisissez la formule adaptée à vos besoins. Sans surprise, sans frais cachés.</p>
+            
+            <div class="toggle-billing">
+                <span class="billing-option active" data-billing="monthly">Mensuel</span>
+                <label class="switch">
+                    <input type="checkbox" id="billing-toggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="billing-option" data-billing="yearly">Annuel <span class="save-badge">-22%</span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-grid">
+                <!-- Abonnement Mensuel -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Mensuel</h3>
+                        <div class="price">
+                            <span class="price-amount">8€</span>
+                            <span class="price-period">/mois</span>
+                        </div>
+                        <p class="price-description">Hébergement & mises à jour illimitées</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature">✓ Hébergement sécurisé</div>
+                        <div class="feature">✓ Mises à jour illimitées</div>
+                        <div class="feature">✓ Support par email</div>
+                        <div class="feature">✓ Modifications en temps réel</div>
+                        <div class="feature">✓ Statistiques de consultation</div>
+                        <div class="feature">✓ SSL & sécurité inclus</div>
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.9rem; color: #666; text-align: center;">+ 150€ de création obligatoire</p>
+                    <a href="contact.html?plan=mensuel" class="btn-pricing">Choisir ce plan</a>
+                </div>
+
+                <!-- Abonnement Annuel -->
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Plus populaire</div>
+                    <div class="pricing-header">
+                        <h3>Annuel</h3>
+                        <div class="price">
+                            <span class="price-amount">75€</span>
+                            <span class="price-period">/an</span>
+                        </div>
+                        <p class="price-description">Soit 6,25€/mois • Économisez 21€</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature">✓ Hébergement sécurisé</div>
+                        <div class="feature">✓ Mises à jour illimitées</div>
+                        <div class="feature">✓ Support par email</div>
+                        <div class="feature">✓ Modifications en temps réel</div>
+                        <div class="feature">✓ Statistiques de consultation</div>
+                        <div class="feature">✓ SSL & sécurité inclus</div>
+                        <div class="feature feature-special">✓ 2 mois offerts</div>
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.9rem; color: #666; text-align: center;">+ 150€ de création obligatoire</p>
+                    <a href="contact.html?plan=annuel" class="btn-pricing btn-primary">Choisir ce plan</a>
+                </div>
+
+                <!-- Pack Création -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Pack Création</h3>
+                        <div class="price">
+                            <span class="price-amount">150€</span>
+                            <span class="price-period">paiement unique</span>
+                        </div>
+                        <p class="price-description">Obligatoire • Création complète de votre guide</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature">✓ Création du site complet</div>
+                        <div class="feature">✓ Design sur-mesure</div>
+                        <div class="feature">✓ QR code personnalisé (PDF)</div>
+                        <div class="feature">✓ 12 sections configurables</div>
+                        <div class="feature">✓ Intégration photos & cartes</div>
+                        <div class="feature">✓ Livraison en 48h</div>
+                        <div class="feature">✓ 2 révisions incluses</div>
+                    </div>
+                    <a href="contact.html?plan=creation" class="btn-pricing">En savoir plus</a>
+                </div>
+            </div>
+
+            <!-- Explication tarif -->
+            <div class="pricing-explanation">
+                <h3>💡 Comment ça marche ?</h3>
+                <div class="explanation-grid">
+                    <div class="explanation-item">
+                        <strong>1. Création obligatoire</strong>
+                        <p>150€ pour créer votre guide personnalisé (paiement unique)</p>
+                    </div>
+                    <div class="explanation-item">
+                        <strong>2. Abonnement</strong>
+                        <p>Choisissez entre 8€/mois ou 75€/an pour l'hébergement</p>
+                    </div>
+                    <div class="explanation-item">
+                        <strong>3. Option plaque</strong>
+                        <p>Ajoutez la plaque physique pour 45€ (optionnel)</p>
+                    </div>
+                </div>
+                <div class="pricing-example">
+                    <p><strong>Exemple :</strong> Formule annuelle = 150€ (création) + 75€ (abonnement) = <span style="color: var(--primary-color); font-weight: 700;">225€ la première année</span></p>
+                    <p>Puis seulement 75€/an les années suivantes</p>
+                </div>
+            </div>
+
+            <!-- Plaque QR Code Section -->
+            <div class="plaque-section">
+                <h3>Option : Plaque QR Code professionnelle</h3>
+                <div class="plaque-product">
+                    <div class="plaque-carousel">
+                        <div class="carousel-images">
+                            <img src="../img/Qr%20guide%20exemple.png" alt="Plaque QR Guide" class="carousel-img active">
+                            <img src="../img/Qr%20guide%20mock%20up.png" alt="Plaque QR Guide mockup" class="carousel-img">
+                            <img src="../img/Qr%20guide%20exemple%202.png" alt="Plaque QR Guide exemple 2" class="carousel-img">
+                        </div>
+                        <div class="carousel-dots">
+                            <span class="dot active" onclick="currentSlide(0)"></span>
+                            <span class="dot" onclick="currentSlide(1)"></span>
+                            <span class="dot" onclick="currentSlide(2)"></span>
+                        </div>
+                    </div>
+                    <div class="plaque-details">
+                        <div class="plaque-price-tag">
+                            <span class="plaque-amount">45€</span>
+                            <span class="plaque-label">Option</span>
+                        </div>
+                        <h4>Plaque professionnelle en PVC rigide</h4>
+                        <p class="plaque-description">Une plaque élégante et durable pour mettre en valeur votre QR code à l'entrée de votre logement.</p>
+                        
+                        <ul class="plaque-features">
+                            <li>📏 <strong>Dimensions :</strong> 15 x 20 cm</li>
+                            <li>🎨 <strong>Matériau :</strong> PVC rigide haute qualité</li>
+                            <li>☀️ <strong>Résistance :</strong> UV et eau</li>
+                            <li>✨ <strong>Design :</strong> Logo QRGUIDE professionnel</li>
+                            <li>📦 <strong>Livraison :</strong> 5-7 jours ouvrés</li>
+                            <li>🔧 <strong>Installation :</strong> Adhésif double-face inclus</li>
+                        </ul>
+                        
+                        <a href="contact.html?plan=plaque" class="btn-hero">Commander la plaque - 45€</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Pricing -->
+    <section class="faq-section">
+        <div class="container">
+            <h2>Questions fréquentes</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Puis-je changer de formule ?</h4>
+                    <p>Oui, vous pouvez passer du mensuel à l'annuel à tout moment. La différence sera calculée au prorata.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Y a-t-il un engagement ?</h4>
+                    <p>Aucun. Vous pouvez annuler votre abonnement à tout moment. Pas de pénalité.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Que se passe-t-il si j'annule ?</h4>
+                    <p>Votre guide reste accessible jusqu'à la fin de la période payée. Vous pouvez exporter vos données.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Combien de modifications puis-je faire ?</h4>
+                    <p>Illimitées ! Modifiez votre guide autant que vous voulez, en temps réel.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Le support est-il inclus ?</h4>
+                    <p>Oui, le support par email est inclus dans tous les plans. Réponse sous 24h ouvrées.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Puis-je avoir plusieurs guides ?</h4>
+                    <p>Oui, contactez-nous pour un devis personnalisé si vous gérez plusieurs logements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Prêt à vous lancer ?</h2>
+            <p>Créez votre guide en quelques minutes</p>
+            <a href="contact.html" class="btn-hero">Commencer maintenant</a>
+            <p class="small-text">Sans engagement • Installation en 48h • Support inclus</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <img src="../img/logo.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="../index.html" target="_blank">Voir la démo</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:0692630364">06 92 63 03 64</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="#">Mentions légales</a>
+                    <a href="#">CGV</a>
+                    <a href="#">Confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Carousel functionality
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.carousel-img');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            if (index >= images.length) currentIndex = 0;
+            if (index < 0) currentIndex = images.length - 1;
+            
+            images.forEach((img, i) => {
+                img.classList.remove('active');
+                dots[i].classList.remove('active');
+            });
+            
+            images[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            currentIndex += direction;
+            showSlide(currentIndex);
+        }
+
+        function currentSlide(index) {
+            currentIndex = index;
+            showSlide(currentIndex);
+        }
+    </script>
+
+    <script>
+        // Toggle between monthly and yearly pricing
+        const toggle = document.getElementById('billing-toggle');
+        const monthlyElements = document.querySelectorAll('.monthly-price, .monthly-period, .monthly-desc');
+        const yearlyElements = document.querySelectorAll('.yearly-price, .yearly-period, .yearly-desc');
+        const billingOptions = document.querySelectorAll('.billing-option');
+
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                monthlyElements.forEach(el => el.style.display = 'none');
+                yearlyElements.forEach(el => el.style.display = 'inline');
+                billingOptions[0].classList.remove('active');
+                billingOptions[1].classList.add('active');
+            } else {
+                monthlyElements.forEach(el => el.style.display = 'inline');
+                yearlyElements.forEach(el => el.style.display = 'none');
+                billingOptions[0].classList.add('active');
+                billingOptions[1].classList.remove('active');
+            }
+        });
+
+        billingOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const billing = this.dataset.billing;
+                if (billing === 'yearly') {
+                    toggle.checked = true;
+                } else {
+                    toggle.checked = false;
+                }
+                toggle.dispatchEvent(new Event('change'));
+            });
+        });
+    </script>
+</body>
+</html>

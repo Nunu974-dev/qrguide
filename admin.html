@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - QRGUIDE</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="admin-header">
+        <div class="header-content">
+            <h1>🏡 QRGUIDE Dashboard</h1>
+            <p class="header-subtitle">Gestion de vos logements Airbnb</p>
+        </div>
+        <button class="btn-logout" onclick="logout()">🚪 Déconnexion</button>
+    </header>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="admin-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#clients" class="nav-item active" data-section="clients">
+                    <span class="nav-icon">📋</span>
+                    <span>Mes Clients</span>
+                    <span class="badge" id="clients-count">0</span>
+                </a>
+                <a href="#new-client" class="nav-item" data-section="new-client">
+                    <span class="nav-icon">➕</span>
+                    <span>Nouveau Client</span>
+                </a>
+                <a href="#settings" class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="main-content">
+            
+            <!-- SECTION: LISTE DES CLIENTS -->
+            <section id="section-clients" class="content-section active">
+                <div class="section-header">
+                    <h2>📋 Mes Clients</h2>
+                    <button class="btn-primary" onclick="showSection('new-client')">
+                        ➕ Nouveau Client
+                    </button>
+                </div>
+
+                <!-- Barre de recherche -->
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="🔍 Rechercher un client..." onkeyup="filterClients()">
+                </div>
+
+                <!-- Liste des clients -->
+                <div class="clients-grid" id="clients-list">
+                    <!-- Les clients seront ajoutés dynamiquement ici -->
+                </div>
+
+                <!-- Message si aucun client -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>Aucun client pour le moment</h3>
+                    <p>Commencez par créer votre premier client</p>
+                    <button class="btn-primary" onclick="showSection('new-client')">
+                        ➕ Créer un client
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION: NOUVEAU CLIENT / ÉDITION -->
+            <section id="section-new-client" class="content-section">
+                <div class="section-header">
+                    <h2 id="form-title">➕ Nouveau Client</h2>
+                    <button class="btn-secondary" onclick="showSection('clients')">
+                        ← Retour
+                    </button>
+                </div>
+
+                <form id="client-form" class="client-form">
+                    <input type="hidden" id="client-id">
+
+                    <!-- 1️⃣ INFORMATIONS GÉNÉRALES -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🏠 1. Informations générales du logement</h3>
+                        
+                        <div class="form-group">
+                            <label for="property-name">Nom du logement (tel qu'affiché sur Airbnb) *</label>
+                            <input type="text" id="property-name" required placeholder="Ex: Appartement Vue Mer Cannes">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Type de logement *</label>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="property-type" value="appartement" checked> Appartement</label>
+                                <label><input type="radio" name="property-type" value="maison"> Maison</label>
+                                <label><input type="radio" name="property-type" value="studio"> Studio</label>
+                                <label><input type="radio" name="property-type" value="villa"> Villa</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">Ville / Quartier *</label>
+                                <input type="text" id="city" required placeholder="Ex: Cannes - Centre-ville">
+                            </div>
+                            <div class="form-group">
+                                <label for="floor">Étage (si applicable)</label>
+                                <input type="text" id="floor" placeholder="Ex: 3ème étage avec ascenseur">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="property-address">Adresse complète *</label>
+                            <input type="text" id="property-address" required placeholder="Ex: 15 Rue d'Antibes, 06400 Cannes">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="max-guests">Capacité d'accueil (nombre de voyageurs) *</label>
+                                <input type="number" id="max-guests" required placeholder="4" value="4">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cible principale</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="target-couple"> Couple</label>
+                                <label><input type="checkbox" id="target-family"> Famille</label>
+                                <label><input type="checkbox" id="target-pro"> Pro</label>
+                                <label><input type="checkbox" id="target-tourists" checked> Touristes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="primary-color">🎨 Couleur d'accent du site (personnalisation)</label>
+                            <div class="color-picker-group">
+                                <input type="color" id="primary-color" value="#C9A961">
+                                <input type="text" id="primary-color-hex" value="#C9A961" placeholder="#C9A961" pattern="^#[0-9A-Fa-f]{6}$">
+                                <span class="color-hint">Cette couleur sera utilisée pour les accents du site (or par défaut)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2️⃣ ARRIVÉE -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🕓 2. Arrivée</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="checkin-time">Heure d'arrivée autorisée *</label>
+                                <input type="time" id="checkin-time" required value="15:00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Procédure d'accès *</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="access-keybox"> Boîte à clés</label>
+                                <label><input type="checkbox" id="access-digicode"> Digicode</label>
+                                <label><input type="checkbox" id="access-physical"> Accueil physique</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Code / Instructions d'entrée *</label>
+                            <div id="entry-procedure-list">
+                                <div class="procedure-item">
+                                    <input type="text" class="procedure-input" placeholder="Étape 1" value="Rendez-vous devant l'entrée principale">
+                                    <button type="button" class="btn-remove" onclick="removeProcedureStep(this)">🗑️</button>
+                                </div>
+                                <div class="procedure-item">
+                                    <input type="text" class="procedure-input" placeholder="Étape 2" value="Code de la boîte à clés : 1234A">
+                                    <button type="button" class="btn-remove" onclick="removeProcedureStep(this)">🗑️</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-add" onclick="addProcedureStep()">➕ Ajouter une étape</button>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="arrival-contact-name">Contact en cas de souci (nom) *</label>
+                                <input type="text" id="arrival-contact-name" required placeholder="Ex: Marie">
+                            </div>
+                            <div class="form-group">
+                                <label for="arrival-contact-phone">Téléphone contact *</label>
+                                <input type="tel" id="arrival-contact-phone" required placeholder="Ex: +33612345678">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="arrival-instructions">Instructions particulières (parking, ascenseur, portail...)</label>
+                            <textarea id="arrival-instructions" rows="3" placeholder="Ex: Portail code 1234, ascenseur au fond du hall, parking souterrain niveau -1"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 3️⃣ DÉPART -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🚪 3. Départ</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="checkout-time">Heure de départ *</label>
+                                <input type="time" id="checkout-time" required value="11:00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Consignes spécifiques avant départ</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="departure-trash" checked> Poubelles</label>
+                                <label><input type="checkbox" id="departure-dishes" checked> Vaisselle</label>
+                                <label><input type="checkbox" id="departure-linen"> Linge</label>
+                                <label><input type="checkbox" id="departure-ac"> Clim / Chauffage</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="departure-requested">Ce qui est demandé</label>
+                            <textarea id="departure-requested" rows="2" placeholder="Ex: Merci de laisser les clés sur la table, éteindre la climatisation, et fermer les volets">Merci de laisser les clés sur la table et éteindre toutes les lumières.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="departure-not-requested">Ce qui N'est PAS demandé (important)</label>
+                            <textarea id="departure-not-requested" rows="2" placeholder="Ex: Pas besoin de faire le ménage complet, nous nous en chargeons">Pas besoin de refaire les lits ni de passer l'aspirateur, le ménage professionnel est inclus.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Où laisser les clés</label>
+                            <div id="key-return-list">
+                                <div class="procedure-item">
+                                    <input type="text" class="key-return-input" placeholder="Étape 1" value="Déposez les clés sur la table de l'entrée">
+                                    <button type="button" class="btn-remove" onclick="removeKeyReturnStep(this)">🗑️</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-add" onclick="addKeyReturnStep()">➕ Ajouter une étape</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="departure-message">Message de fin souhaité (optionnel)</label>
+                            <textarea id="departure-message" rows="2" placeholder="Ex: Merci pour votre séjour ! À bientôt ☀️"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 4️⃣ ÉQUIPEMENTS -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🏠 4. Équipements du logement</h3>
+                        
+                        <div class="form-group">
+                            <label><strong>Cuisine</strong></label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="equip-oven"> Four</label>
+                                <label><input type="checkbox" id="equip-microwave"> Micro-ondes</label>
+                                <label><input type="checkbox" id="equip-coffee"> Cafetière</label>
+                                <label><input type="checkbox" id="equip-kettle"> Bouilloire</label>
+                                <label><input type="checkbox" id="equip-toaster"> Grille-pain</label>
+                                <label><input type="checkbox" id="equip-dishwasher"> Lave-vaisselle</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><strong>Salle de bain</strong></label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="equip-shower"> Douche</label>
+                                <label><input type="checkbox" id="equip-bathtub"> Baignoire</label>
+                                <label><input type="checkbox" id="equip-hairdryer"> Sèche-cheveux</label>
+                                <label><input type="checkbox" id="equip-towels"> Serviettes fournies</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><strong>Confort</strong></label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="equip-ac"> Climatisation</label>
+                                <label><input type="checkbox" id="equip-fan"> Ventilateur</label>
+                                <label><input type="checkbox" id="equip-washing"> Machine à laver</label>
+                                <label><input type="checkbox" id="equip-iron"> Fer à repasser</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><strong>Multimédia</strong></label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="equip-tv"> TV</label>
+                                <label><input type="checkbox" id="equip-netflix"> Netflix</label>
+                                <label><input type="checkbox" id="equip-speaker"> Enceinte Bluetooth</label>
+                                <label><input type="checkbox" id="equip-usb"> Ports USB</label>
+                                <label><input type="checkbox" id="equip-games"> Jeux / Livres</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="equipment-notes">Notes supplémentaires sur les équipements</label>
+                            <textarea id="equipment-notes" rows="3" placeholder="Ex: La cafetière Nespresso a des capsules fournies. Le lave-vaisselle utilise des tablettes sous l'évier."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 5️⃣ WI-FI & MULTIMÉDIA -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">📶 5. Wi-Fi & Multimédia</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="wifi-name">Nom du réseau Wi-Fi *</label>
+                                <input type="text" id="wifi-name" required placeholder="Ex: MyAirbnb_WiFi">
+                            </div>
+                            <div class="form-group">
+                                <label for="wifi-password">Mot de passe Wi-Fi *</label>
+                                <input type="text" id="wifi-password" required placeholder="Ex: Bienvenue2024!">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tv-instructions">Instructions TV / Box</label>
+                            <textarea id="tv-instructions" rows="2" placeholder="Ex: Allumez la TV avec la télécommande noire. Netflix est sur l'icône rouge.">Télécommande noire pour la TV, télécommande blanche pour la box.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Comptes streaming accessibles</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="streaming-netflix"> Netflix</label>
+                                <label><input type="checkbox" id="streaming-prime"> Amazon Prime Video</label>
+                                <label><input type="checkbox" id="streaming-disney"> Disney+</label>
+                                <label><input type="checkbox" id="streaming-youtube"> YouTube Premium</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="streaming-notes">Notes streaming / multimédia</label>
+                            <textarea id="streaming-notes" rows="2" placeholder="Ex: Netflix est déjà connecté. L'enceinte Bluetooth s'appelle 'Speaker Living'"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 6️⃣ URGENCE -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🚨 6. Urgence</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergency-name">Nom du propriétaire / gestionnaire *</label>
+                                <input type="text" id="emergency-name" required placeholder="Ex: Sophie Martin">
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency-phone">Téléphone urgence *</label>
+                                <input type="tel" id="emergency-phone" required placeholder="Ex: +33612345678">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency-local">Numéro de secours local (optionnel)</label>
+                            <input type="tel" id="emergency-local" placeholder="Ex: Gardien : +33687654321">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency-water">Procédure en cas de coupure d'eau</label>
+                            <textarea id="emergency-water" rows="2" placeholder="Ex: Vérifiez le compteur au sous-sol ou contactez le propriétaire"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency-electricity">Procédure en cas de coupure d'électricité</label>
+                            <textarea id="emergency-electricity" rows="2" placeholder="Ex: Le disjoncteur est dans le placard de l'entrée"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency-equipment">Procédure en cas de panne équipement</label>
+                            <textarea id="emergency-equipment" rows="2" placeholder="Ex: Contactez-nous immédiatement, nous interviendrons sous 2h"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="safety-instructions">Consignes de sécurité spécifiques</label>
+                            <textarea id="safety-instructions" rows="2" placeholder="Ex: Extincteur dans la cuisine. Issue de secours par l'escalier B."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 7️⃣ À PROXIMITÉ -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">📍 7. À proximité</h3>
+                        
+                        <div class="form-group">
+                            <label>Lieux à proximité (Nom | Type | Distance | Lien Google Maps)</label>
+                            <div id="proximity-list">
+                                <div class="proximity-item">
+                                    <input type="text" class="proximity-name" placeholder="Nom" value="Carrefour City">
+                                    <select class="proximity-type">
+                                        <option value="supermarche" selected>Supermarché</option>
+                                        <option value="restaurant">Restaurant</option>
+                                        <option value="plage">Plage</option>
+                                        <option value="activite">Activité</option>
+                                        <option value="transport">Transport</option>
+                                    </select>
+                                    <input type="text" class="proximity-distance" placeholder="Distance" value="200m">
+                                    <input type="url" class="proximity-link" placeholder="Lien Google Maps" value="">
+                                    <button type="button" class="btn-remove" onclick="removeProximityItem(this)">🗑️</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-add" onclick="addProximityItem()">➕ Ajouter un lieu</button>
+                        </div>
+                    </div>
+
+                    <!-- 8️⃣ BONNES ADRESSES -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🍽️ 8. Bonnes adresses (optionnel mais recommandé)</h3>
+                        
+                        <div class="form-group">
+                            <label for="restaurants">Restaurants préférés (un par ligne : Nom - Description - Prix)</label>
+                            <textarea id="restaurants" rows="4" placeholder="Ex: Le Bistrot du Port - Cuisine méditerranéenne authentique - €€€&#10;Pizza Luna - Pizzas au feu de bois - €€"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bars-snacks">Bars / Snacks recommandés</label>
+                            <textarea id="bars-snacks" rows="3" placeholder="Ex: Bar de la Plage - Cocktails et tapas - Terrasse vue mer"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="local-specialties">Spécialités locales à goûter</label>
+                            <textarea id="local-specialties" rows="3" placeholder="Ex: Socca, Pissaladière, Pan Bagnat, Salade niçoise"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="market-info">Informations marché local</label>
+                            <textarea id="market-info" rows="2" placeholder="Ex: Marché Forville - Tous les matins sauf lundi - Produits frais et locaux"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 9️⃣ ACTIVITÉS & LOISIRS -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🌴 9. Activités & Loisirs</h3>
+                        
+                        <div class="form-group">
+                            <label for="activities-nature">Activités nature (Nom - Difficulté - Distance)</label>
+                            <textarea id="activities-nature" rows="4" placeholder="Ex: Plage du Midi - Facile - 500m&#10;Randonnée Cap d'Antibes - Moyen - 5km&#10;Sentier du littoral - Facile - 2km"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activities-kids">Activités enfants</label>
+                            <textarea id="activities-kids" rows="3" placeholder="Ex: Parc aquatique Marineland - 15 min en voiture&#10;Aire de jeux Parc de la Roseraie - 10 min à pied"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activities-rain">Activités par temps de pluie</label>
+                            <textarea id="activities-rain" rows="3" placeholder="Ex: Musée d'Art Moderne - 5 min en voiture&#10;Cinéma Les Arcades - Centre-ville&#10;Bowling - Zone commerciale"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tourist-sites">Sites touristiques incontournables</label>
+                            <textarea id="tourist-sites" rows="3" placeholder="Ex: Palais des Festivals - 15 min à pied&#10;Îles de Lérins - Bateau depuis le vieux port&#10;Vieux Cannes - 10 min à pied"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 🔟 MÉNAGE & ENTRETIEN -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🧹 10. Ménage & Entretien</h3>
+                        
+                        <div class="form-group">
+                            <label for="trash-management">Gestion des poubelles (où / quand)</label>
+                            <textarea id="trash-management" rows="2" placeholder="Ex: Local poubelles au rez-de-chaussée. Tri : jaune (recyclable), vert (verre), noir (ordures)">Local poubelles au rez-de-chaussée, accès par le hall.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="linen-management">Linge (à laisser où ?)</label>
+                            <textarea id="linen-management" rows="2" placeholder="Ex: Laissez les serviettes dans la salle de bain, draps sur le lit">Laissez le linge utilisé dans le panier de la salle de bain.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cleaning-products">Produits disponibles</label>
+                            <textarea id="cleaning-products" rows="2" placeholder="Ex: Produits d'entretien sous l'évier, éponges et sacs poubelles fournis">Produits ménagers sous l'évier de la cuisine.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="long-stay-cleaning">Fréquence ménage si long séjour</label>
+                            <input type="text" id="long-stay-cleaning" placeholder="Ex: Ménage hebdomadaire inclus pour séjours > 7 jours">
+                        </div>
+                    </div>
+
+                    <!-- 1️⃣1️⃣ RÈGLEMENT & BON VOISINAGE -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🤫 11. Règlement & Bon voisinage</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quiet-hours">Heures de calme *</label>
+                                <input type="text" id="quiet-hours" required placeholder="Ex: 22h00 - 8h00" value="22h00 - 8h00">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Règles</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="smoking-allowed"> Fumeurs autorisés</label>
+                                <label><input type="checkbox" id="pets-allowed"> Animaux autorisés</label>
+                                <label><input type="checkbox" id="parties-allowed"> Fêtes autorisées</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pets-policy">Politique animaux (si applicable)</label>
+                            <textarea id="pets-policy" rows="2" placeholder="Ex: Animaux < 10kg acceptés avec supplément de 15€/nuit">Non autorisés sauf accord préalable du propriétaire.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="building-rules">Règles spécifiques de la copropriété</label>
+                            <textarea id="building-rules" rows="2" placeholder="Ex: Pas de bruit dans les parties communes. Respecter les horaires de l'ascenseur après 22h."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 1️⃣2️⃣ STATIONNEMENT & ACCÈS -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🚗 12. Stationnement & Accès</h3>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="parking-included" checked> Parking disponible
+                            </label>
+                        </div>
+
+                        <div id="parking-details-section">
+                            <div class="form-group">
+                                <label>Type de parking</label>
+                                <div class="checkbox-group">
+                                    <label><input type="radio" name="parking-type" value="gratuit" checked> Gratuit</label>
+                                    <label><input type="radio" name="parking-type" value="payant"> Payant</label>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="parking-spot">Numéro de place / Instructions</label>
+                                    <input type="text" id="parking-spot" placeholder="Ex: Place n°12 - Sous-sol niveau -1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="parking-code">Code d'accès parking</label>
+                                    <input type="text" id="parking-code" placeholder="Ex: 4567B">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="parking-instructions">Instructions précises parking</label>
+                                <textarea id="parking-instructions" rows="2" placeholder="Ex: Entrée parking par l'arrière du bâtiment. Badge magnétique fourni dans l'appartement."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1️⃣3️⃣ FAMILLE & ENFANTS -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">👶 13. Famille & Enfants (si applicable)</h3>
+                        
+                        <div class="form-group">
+                            <label>Équipements bébé disponibles</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="baby-bed"> Lit bébé</label>
+                                <label><input type="checkbox" id="high-chair"> Chaise haute</label>
+                                <label><input type="checkbox" id="baby-bath"> Baignoire bébé</label>
+                                <label><input type="checkbox" id="baby-monitor"> Babyphone</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="child-safety">Sécurité enfants</label>
+                            <textarea id="child-safety" rows="2" placeholder="Ex: Cache-prises installées. Barrière d'escalier disponible sur demande."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kids-activities-nearby">Activités enfants à proximité</label>
+                            <textarea id="kids-activities-nearby" rows="2" placeholder="Ex: Parc avec aire de jeux à 200m. Club de plage enfants en été."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 1️⃣4️⃣ MESSAGE DE L'HÔTE -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">❤️ 14. Message de l'hôte</h3>
+                        
+                        <div class="form-group">
+                            <label for="host-name">Prénom de l'hôte *</label>
+                            <input type="text" id="host-name" required placeholder="Ex: Sophie">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="welcome-message">Message de bienvenue personnalisé *</label>
+                            <textarea id="welcome-message" rows="4" required placeholder="Ex: Bienvenue dans notre petit coin de paradis ! Nous avons préparé ce logement avec soin pour que vous vous sentiez comme chez vous...">Bienvenue dans notre logement ! Nous espérons que vous passerez un excellent séjour.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ton souhaité</label>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="message-tone" value="chaleureux" checked> Chaleureux</label>
+                                <label><input type="radio" name="message-tone" value="neutre"> Neutre</label>
+                                <label><input type="radio" name="message-tone" value="premium"> Premium</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thank-you-message">Message de remerciement de fin de séjour</label>
+                            <textarea id="thank-you-message" rows="3" placeholder="Ex: Merci d'avoir choisi notre logement ! Nous espérons vous revoir bientôt. ☀️">Merci pour votre séjour !</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="invite-review" checked> Inviter à laisser un avis
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="host-favorites">Vos coups de cœur à partager (restaurants, lieux...)</label>
+                            <textarea id="host-favorites" rows="3" placeholder="Ex: Notre restaurant préféré est Le Petit Bistrot pour l'ambiance familiale..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 1️⃣5️⃣ VISUELS -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🖼️ 15. Visuels (optionnel)</h3>
+                        
+                        <div class="form-group">
+                            <label for="logo-url">URL du logo (si marque)</label>
+                            <input type="url" id="logo-url" placeholder="https://exemple.com/logo.png">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="primary-color">Couleur principale du guide</label>
+                            <input type="color" id="primary-color" value="#FF385C">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo-urls">URLs des photos (une par ligne - accès, parking, etc.)</label>
+                            <textarea id="photo-urls" rows="3" placeholder="https://exemple.com/photo-entree.jpg&#10;https://exemple.com/photo-parking.jpg"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 1️⃣6️⃣ PARAMÈTRES TECHNIQUES -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">⚙️ 16. Paramètres techniques</h3>
+                        
+                        <div class="form-group">
+                            <label>Langue(s) souhaitée(s)</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="lang-fr" checked> Français</label>
+                                <label><input type="checkbox" id="lang-en"> Anglais</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ton global du guide</label>
+                            <div class="checkbox-group">
+                                <label><input type="radio" name="guide-tone" value="simple"> Simple</label>
+                                <label><input type="radio" name="guide-tone" value="moderne" checked> Moderne</label>
+                                <label><input type="radio" name="guide-tone" value="premium"> Premium</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="allow-updates" checked> Autoriser les mises à jour futures
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 🎯 BONUS PRO -->
+                    <div class="form-card">
+                        <h3 class="form-section-title">🎯 Bonus Pro</h3>
+                        
+                        <div class="form-group">
+                            <label for="faq-notes">Avez-vous des informations ou conseils que vous donnez souvent à vos voyageurs ? (questions fréquentes Airbnb)</label>
+                            <textarea id="faq-notes" rows="5" placeholder="Notez ici toutes les questions que vos voyageurs posent régulièrement...&#10;Ex: Comment fonctionne le chauffage ? Où trouver des serviettes supplémentaires ? etc."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- BOUTONS D'ACTION -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="showSection('clients')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            💾 Enregistrer le client
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- SECTION: PARAMÈTRES -->
+            <section id="section-settings" class="content-section">
+                <div class="section-header">
+                    <h2>⚙️ Paramètres</h2>
+                </div>
+
+                <div class="form-card">
+                    <h3>🎨 Apparence</h3>
+                    <div class="form-group">
+                        <label for="theme-color">Couleur principale</label>
+                        <input type="color" id="theme-color" value="#FF385C">
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <h3>💾 Données</h3>
+                    <button class="btn-secondary" onclick="exportAllData()">
+                        📥 Exporter tous les clients
+                    </button>
+                    <button class="btn-secondary" onclick="importData()">
+                        📤 Importer des clients
+                    </button>
+                    <button class="btn-danger" onclick="clearAllData()">
+                        🗑️ Supprimer toutes les données
+                    </button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL PRÉVISUALISATION -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👁️ Prévisualisation</h3>
+                <button class="btn-close" onclick="closePreview()">✕</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="preview-iframe" src=""></iframe>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closePreview()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL QR CODE -->
+    <div id="qr-modal" class="modal">
+        <div class="modal-content modal-qr">
+            <div class="modal-header">
+                <h3>📱 QR Code</h3>
+                <button class="btn-close" onclick="closeQRModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="qr-code-container"></div>
+                <p class="qr-url" id="qr-url"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="downloadQR()">💾 Télécharger</button>
+                <button class="btn-secondary" onclick="closeQRModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

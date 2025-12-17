@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>À proximité - Guide de séjour</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page-container">
+        <a href="../index.html" class="back-button">← Retour</a>
+
+        <!-- Image d'en-tête -->
+        <div style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=400&fit=crop&q=90" 
+                 alt="À proximité" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0;">📍 À proximité</h1>
+            </div>
+        </div>
+
+        <main class="page-content">
+            <!-- Supermarchés -->
+            <section class="info-section">
+                <h2 class="section-title">🛒 Supermarchés</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                    <div class="info-card">
+                        <h3 style="font-size: 1.2rem; margin: 0 0 8px 0;">Carrefour City</h3>
+                        <p style="margin: 0 0 4px 0; color: #666;">🚶 5 min à pied</p>
+                        <p style="margin: 0 0 12px 0; color: #666;">Ouvert 8h-21h</p>
+                        <a href="https://www.google.com/maps/search/Carrefour+City" target="_blank" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📍 Voir sur la carte</a>
+                    </div>
+                    <div class="info-card">
+                        <h3 style="font-size: 1.2rem; margin: 0 0 8px 0;">Monoprix</h3>
+                        <p style="margin: 0 0 4px 0; color: #666;">🚗 3 min en voiture</p>
+                        <p style="margin: 0 0 12px 0; color: #666;">Ouvert 9h-20h</p>
+                        <a href="https://www.google.com/maps/search/Monoprix" target="_blank" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📍 Voir sur la carte</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Restaurants -->
+            <section class="info-section">
+                <h2 class="section-title">🍽️ Restaurants</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                    <div class="info-card">
+                        <h3 style="font-size: 1.2rem; margin: 0 0 8px 0;">Le Bistrot du Port</h3>
+                        <p style="margin: 0 0 4px 0; color: #666;">🚶 10 min à pied</p>
+                        <p style="margin: 0 0 12px 0;">Cuisine française - Vue sur mer</p>
+                        <a href="https://www.google.com/maps/search/Le+Bistrot+du+Port" target="_blank" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📍 Voir sur la carte</a>
+                    </div>
+                    <div class="info-card">
+                        <h3 style="font-size: 1.2rem; margin: 0 0 8px 0;">Pizzeria Bella Vista</h3>
+                        <p style="margin: 0 0 4px 0; color: #666;">🚶 7 min à pied</p>
+                        <p style="margin: 0 0 12px 0;">Pizzas au feu de bois - Terrasse</p>
+                        <a href="https://www.google.com/maps/search/Pizzeria" target="_blank" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📍 Voir sur la carte</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Plages & Activités -->
+            <section class="info-section">
+                <h2 class="section-title">🏖️ Plages & Activités</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                    <div class="info-card">
+                        <h3 style="font-size: 1.2rem; margin: 0 0 8px 0;">Plage principale</h3>
+                        <p style="margin: 0 0 4px 0; color: #666;">🚶 15 min à pied</p>
+                        <p style="margin: 0 0 12px 0;">Plage de sable - Surveillée en été</p>
+                        <a href="https://www.google.com/maps/search/Plage" target="_blank" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📍 Voir sur la carte</a>
+                    </div>
+                    <div class="info-card">
+                        <h3 style="font-size: 1.2rem; margin: 0 0 8px 0;">Location de vélos</h3>
+                        <p style="margin: 0 0 4px 0; color: #666;">🚶 5 min à pied</p>
+                        <p style="margin: 0 0 12px 0;">Vélos électriques disponibles</p>
+                        <a href="https://www.google.com/maps/search/Location+vélos" target="_blank" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📍 Voir sur la carte</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transports -->
+            <section class="info-section">
+                <h2 class="section-title">🚌 Transports</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                    <div class="info-card" style="display: flex; gap: 14px;">
+                        <span style="font-size: 2rem;">🚍</span>
+                        <div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0;">Arrêt de bus "Centre-Ville"</p>
+                            <p style="margin: 0; font-size: 0.9rem; color: #666;">🚶 3 min - Lignes 5, 12, 18</p>
+                        </div>
+                    </div>
+                    <div class="info-card" style="display: flex; gap: 14px;">
+                        <span style="font-size: 2rem;">🚉</span>
+                        <div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0;">Gare SNCF</p>
+                            <p style="margin: 0; font-size: 0.9rem; color: #666;">🚗 10 min en voiture</p>
+                        </div>
+                    </div>
+                    <div class="info-card" style="display: flex; gap: 14px;">
+                        <span style="font-size: 2rem;">🚕</span>
+                        <div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0;">Station de taxis</p>
+                            <p style="margin: 0; font-size: 0.9rem; color: #666;">🚶 5 min - Devant la mairie</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Astuce -->
+            <section class="info-section">
+                <div class="info-card" style="background: rgba(var(--primary-rgb), 0.08); border-left: 4px solid var(--primary-color);">
+                    <p style="margin: 0;"><strong>💡 Astuce locale :</strong> Le marché du samedi matin (8h-13h) sur la place centrale est un incontournable !</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 0; margin-top: 32px;">
+        <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 100px; width: auto; opacity: 0.9; display: block; margin: 0 auto -10px; padding: 0;">
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

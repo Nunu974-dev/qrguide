@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - QRGUIDE.FR</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="../img/logo.png" alt="QRGUIDE.FR" class="logo-img">
+            </div>
+            <nav class="nav">
+                <a href="index.html">Accueil</a>
+                <a href="index.html#fonctionnement">Comment ça marche</a>
+                <a href="tarifs.html">Tarifs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Contact -->
+    <section class="hero-small">
+        <div class="container">
+            <h1>Contactez-nous</h1>
+            <p>Une question ? Un projet ? Notre équipe vous répond rapidement</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Formulaire -->
+                <div class="contact-form-wrapper">
+                    <h2>Envoyez-nous un message</h2>
+                    <form class="contact-form" action="#" method="POST">
+                        <div class="form-group">
+                            <label for="name">Nom complet *</label>
+                            <input type="text" id="name" name="name" required placeholder="Votre nom">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+33 6 12 34 56 78">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Sujet *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Choisissez un sujet</option>
+                                <option value="demo">Demande de démonstration</option>
+                                <option value="quote">Demande de devis</option>
+                                <option value="question">Question sur le service</option>
+                                <option value="support">Support technique</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="6" required placeholder="Décrivez votre projet ou votre question..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">Envoyer le message</button>
+                    </form>
+                </div>
+
+                <!-- Info Contact -->
+                <div class="contact-info">
+                    <h2>Autres moyens de nous joindre</h2>
+                    
+                    <div class="contact-method">
+                        <div class="contact-method-icon">📧</div>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                            <p>Réponse sous 24h</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">📱</div>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <a href="tel:+33612345678">+33 6 12 34 56 78</a>
+                            <p>Lun-Ven : 9h-18h</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">💬</div>
+                        <div>
+                            <h4>WhatsApp</h4>
+                            <a href="https://wa.me/33612345678">+33 6 12 34 56 78</a>
+                            <p>Réponse rapide</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-cta">
+                        <h3>Besoin d'une démo ?</h3>
+                        <p>Découvrez QRGUIDE en action avec un exemple de guide interactif</p>
+                        <a href="../index.html" class="btn btn-secondary" target="_blank">Voir la démo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 60px;">
+                    <p>Le guide numérique pour locations saisonnières</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <a href="index.html">Accueil</a>
+                    <a href="tarifs.html">Tarifs</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:+33612345678">+33 6 12 34 56 78</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
