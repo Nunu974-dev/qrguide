@@ -495,20 +495,10 @@
         // CONFIGURATION - À MODIFIER AVEC VOS CLÉS
         // ============================================
         
-        // 1. Remplacez avec votre clé Stripe Publishable Key (pk_test_... ou pk_live_...)
-        // Obtenir sur : https://dashboard.stripe.com/apikeys
-        const STRIPE_KEY = 'pk_test_51SfMI9Iz6IOM6VUSJNshS1uo8C4fdut9jLoTJj4Gr0NoQWoU9arxMtVxO1InU7GjWpBB3MsGhTbTI9GqM0fPDd4O00biJQWawP';
-        const stripe = Stripe(STRIPE_KEY);
-
-        // 2. Remplacez avec vos Price IDs Stripe (4 produits à créer)
-        const STRIPE_PRICES = {
-            mensuel: 'price_MENSUEL_ID',      // Abonnement 8€/mois
-            annuel: 'price_ANNUEL_ID',        // Abonnement 75€/an
-            creation: 'price_CREATION_ID',    // Pack création 150€ (toujours inclus)
-            plaque: 'price_PLAQUE_ID'         // Plaque QR 45€ (quantité variable)
-        };
-
-        // 3. Configuration EmailJS (obtenir sur https://www.emailjs.com/)
+        // NOTE: Le paiement Stripe est géré par le fichier create-checkout-session.php
+        // Vous devez configurer votre clé secrète Stripe dans ce fichier PHP
+        
+        // Configuration EmailJS (obtenir sur https://www.emailjs.com/)
         // INSTRUCTIONS :
         // 1. Créez un compte sur https://dashboard.emailjs.com/sign-up
         // 2. Ajoutez un service email (Gmail/Outlook/etc) pointant vers contact@qrguide.fr
@@ -631,7 +621,7 @@
         }
 
         // ============================================
-        // PAIEMENT STRIPE
+        // PAIEMENT STRIPE - VERSION SIMPLIFIÉE (comme Airbnb)
         // ============================================
         async function processPayment() {
             const plan = document.querySelector('input[name="plan"]:checked');
@@ -642,54 +632,53 @@
                 return;
             }
 
-            // Préparer les items pour Stripe Checkout
-            const lineItems = [];
-
-            // Abonnement (mensuel ou annuel)
-            lineItems.push({
-                price: STRIPE_PRICES[plan.value],
-                quantity: 1
-            });
-
-            // Création (toujours incluse avec l'abonnement)
-            lineItems.push({
-                price: STRIPE_PRICES.creation,
-                quantity: 1
-            });
-
-            // Plaques optionnelles (quantité variable)
-            if (plaqueQty > 0) {
-                lineItems.push({
-                    price: STRIPE_PRICES.plaque,
-                    quantity: plaqueQty
-                });
-            }
-
             // Récupérer les infos client
             const formData = getFormData();
 
+            // Calculer le montant total (récupérer depuis l'affichage)
+            const totalElement = document.getElementById('totalAmount');
+            const totalText = totalElement.textContent.replace('€', '').trim();
+            const totalAmount = parseFloat(totalText) * 100; // Convertir en centimes
+
+            // Construire la description
+            let description = `Pack Création (150€) + Abonnement ${plan.value === 'mensuel' ? 'Mensuel (8€/mois)' : 'Annuel (75€/an)'}`;
+            if (plaqueQty > 0) {
+                const plaqueFormat = document.querySelector('input[name="plaque-format"]:checked');
+                const plaquePrice = plaqueFormat && plaqueFormat.value === 'a5' ? 35 : 45;
+                description += ` + ${plaqueQty} plaque(s) QR (${plaquePrice}€)`;
+            }
+
             try {
-                // Rediriger vers Stripe Checkout
-                const { error } = await stripe.redirectToCheckout({
-                    lineItems: lineItems,
-                    mode: plan.value === 'mensuel' ? 'subscription' : (plan.value === 'annuel' ? 'subscription' : 'payment'),
-                    successUrl: window.location.origin + '/success.html',
-                    cancelUrl: window.location.origin + '/contact.html',
-                    customerEmail: formData.email,
-                    clientReferenceId: formData.nom,
-                    billingAddressCollection: 'required',
-                    shippingAddressCollection: plaqueQty > 0 ? {
-                        allowedCountries: ['FR']
-                    } : undefined
+                // Appeler le script PHP pour créer la session Stripe
+                const response = await fetch('create-checkout-session.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: totalAmount,
+                        currency: 'eur',
+                        email: formData.email,
+                        name: formData.nom,
+                        planType: plan.value,
+                        description: description,
+                        success_url: window.location.origin + '/success.html?session_id={CHECKOUT_SESSION_ID}',
+                        cancel_url: window.location.origin + '/abonnement.html'
+                    })
                 });
 
-                if (error) {
-                    console.error('Erreur Stripe:', error);
-                    alert('Erreur lors du paiement. Veuillez réessayer.');
+                const session = await response.json();
+
+                if (session.error) {
+                    throw new Error(session.error);
                 }
+
+                // Rediriger vers Stripe Checkout
+                window.location.href = session.url;
+
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('Erreur lors de la redirection vers le paiement.');
+                alert('Erreur lors de la création du paiement: ' + error.message);
             }
         }
 
