@@ -21,7 +21,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ===========================
 const STRIPE_PRICE_IDS = {
     mensuel: process.env.STRIPE_PRICE_MENSUEL || 'price_1SfjUQIuJcG0yZsyQmc6oFBE',
-    annuel: process.env.STRIPE_PRICE_ANNUEL || 'price_VOTRE_PRICE_ANNUEL_ICI'
+    annuel: process.env.STRIPE_PRICE_ANNUEL || 'price_1SfjVAIuJcG0yZsyaL4WutuC'
 };
 
 // Template email de confirmation
