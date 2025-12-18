@@ -497,18 +497,11 @@
         
         // Configuration EmailJS (obtenir sur https://www.emailjs.com/)
         // INSTRUCTIONS :
-        // 1. Créez un compte sur https://dashboard.emailjs.com/sign-up
-        // 2. Ajoutez un service email (Gmail/Outlook/etc) pointant vers contact@qrguide.fr
-        // 3. Créez un template avec ces variables : {{nom}}, {{email}}, {{telephone}}, {{plan}}, {{message}}
-        // 4. Copiez vos clés ci-dessous
-        const EMAILJS_CONFIG = {
-            publicKey: 'VOTRE_PUBLIC_KEY',      // Ex: 'abcD1234EfgH5678'
-            serviceId: 'VOTRE_SERVICE_ID',      // Ex: 'service_xyz123'
-            templateId: 'VOTRE_TEMPLATE_ID'     // Ex: 'template_abc456'
-        };
-
-        // Initialiser EmailJS
-        emailjs.init(EMAILJS_CONFIG.publicKey);
+        // ============================================
+        // EMAIL AUTOMATIQUE APRÈS PAIEMENT
+        // ============================================
+        // L'email de confirmation avec identifiants de connexion est envoyé
+        // automatiquement par le backend via webhook Stripe après validation du paiement
 
         // ============================================
         // GESTION QUANTITÉ PLAQUES
@@ -600,22 +593,10 @@
         }
 
         // ============================================
-        // ENVOI EMAIL VIA EMAILJS
+        // EMAIL AUTOMATIQUE
         // ============================================
-        async function sendEmail(formData) {
-            try {
-                const response = await emailjs.send(
-                    EMAILJS_CONFIG.serviceId,
-                    EMAILJS_CONFIG.templateId,
-                    formData
-                );
-                console.log('Email envoyé avec succès:', response);
-                return true;
-            } catch (error) {
-                console.error('Erreur envoi email:', error);
-                return false;
-            }
-        }
+        // L'email avec identifiants est envoyé automatiquement par le backend
+        // après validation du paiement via webhook Stripe
 
         // ============================================
         // PAIEMENT STRIPE - AVEC BACKEND NODE.JS (comme Cinnad'moun)
@@ -704,21 +685,9 @@
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const formData = getFormData();
-            
-            // Envoyer l'email d'abord
-            const paymentBtn = document.getElementById('paymentBtn');
-            paymentBtn.disabled = true;
-            paymentBtn.textContent = '📧 Envoi des infos...';
-
-            await sendEmail(formData);
-
-            // Puis rediriger vers le paiement
-            paymentBtn.textContent = '💳 Redirection vers le paiement...';
+            // Rediriger directement vers le paiement Stripe
+            // L'email avec identifiants sera envoyé automatiquement par le backend après paiement
             await processPayment();
-
-            paymentBtn.disabled = false;
-            paymentBtn.textContent = '💳 Payer maintenant';
         });
 
         // Pre-select plan from URL parameter
