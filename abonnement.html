@@ -667,18 +667,39 @@
                     })
                 });
 
-                const session = await response.json();
+                // Vérifier le statut de la réponse
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Erreur serveur:', errorText);
+                    throw new Error(`Erreur serveur (${response.status}). Vérifiez que Stripe PHP est installé et que le fichier .env existe.`);
+                }
+
+                const responseText = await response.text();
+                console.log('Réponse PHP:', responseText);
+
+                // Parser le JSON
+                let session;
+                try {
+                    session = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('Réponse reçue:', responseText);
+                    throw new Error('Le serveur PHP ne répond pas correctement. Vérifiez les logs PHP.');
+                }
 
                 if (session.error) {
                     throw new Error(session.error);
+                }
+
+                if (!session.url) {
+                    throw new Error('URL de paiement manquante dans la réponse');
                 }
 
                 // Rediriger vers Stripe Checkout
                 window.location.href = session.url;
 
             } catch (error) {
-                console.error('Erreur:', error);
-                alert('Erreur lors de la création du paiement: ' + error.message);
+                console.error('Erreur complète:', error);
+                alert('❌ Erreur paiement: ' + error.message + '\n\nVérifiez la console pour plus de détails.');
             }
         }
 
