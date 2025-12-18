@@ -1,15 +1,15 @@
 // ===================================================
 // 🔥 Configuration Firebase QRGUIDE
 // ===================================================
-// Remplacez ces valeurs par celles de votre projet Firebase
 
 const firebaseConfig = {
-    apiKey: "VOTRE_API_KEY",
-    authDomain: "VOTRE_PROJECT_ID.firebaseapp.com",
-    projectId: "VOTRE_PROJECT_ID",
-    storageBucket: "VOTRE_PROJECT_ID.appspot.com",
-    messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
-    appId: "VOTRE_APP_ID"
+    apiKey: "AIzaSyC4e3AVTuNPJSd3WySAiXkD19rRrHGRUqw",
+    authDomain: "qrguide-59f5f.firebaseapp.com",
+    projectId: "qrguide-59f5f",
+    storageBucket: "qrguide-59f5f.firebasestorage.app",
+    messagingSenderId: "712367149712",
+    appId: "1:712367149712:web:48c9f0fd95be1f940d3e15",
+    measurementId: "G-H6DL6HDWSN"
 };
 
 // Initialiser Firebase

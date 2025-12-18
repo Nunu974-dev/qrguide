@@ -6,9 +6,25 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const admin = require('firebase-admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ===========================
+// Configuration Firebase Admin
+// ===========================
+if (process.env.FIREBASE_PROJECT_ID) {
+    admin.initializeApp({
+        credential: admin.credential.cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+        })
+    });
+    console.log('✅ Firebase Admin initialisé');
+}
+const firestore = admin.firestore();
 
 // ===========================
 // Configuration EmailJS
@@ -29,13 +45,15 @@ const STRIPE_PRICE_IDS = {
 };
 
 // Fonction pour envoyer email via EmailJS
-async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total) {
+async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, tempPassword = null) {
     const templateParams = {
         to_email: customerEmail,
         customer_name: customerName,
         plan: plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)',
         plaques: plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''}` : 'Aucune',
-        total: total + '€'
+        total: total + '€',
+        login_url: 'https://qrguide.fr/login.html',
+        temp_password: tempPassword || 'Voir email précédent'
     };
 
     try {
@@ -302,18 +320,61 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) =
                 plan: session.metadata.plan
             });
             
-            // Envoyer email de confirmation via EmailJS
+            // ============================================
+            // CRÉER LE COMPTE UTILISATEUR FIREBASE
+            // ============================================
             const customerName = session.metadata.customerName || 'Client';
+            const customerEmail = session.customer_email;
+            const customerPhone = session.metadata.customerPhone || '';
             const plan = session.metadata.plan;
             const plaques = parseInt(session.metadata.plaqueQty || 0);
             const total = session.metadata.totalAmount;
 
+            let tempPassword = null;
+
+            try {
+                // Générer un mot de passe temporaire
+                tempPassword = Math.random().toString(36).slice(-8) + 'Aa1!';
+                
+                // Créer l'utilisateur Firebase Auth
+                const userRecord = await admin.auth().createUser({
+                    email: customerEmail,
+                    password: tempPassword,
+                    displayName: customerName,
+                    emailVerified: false
+                });
+                
+                console.log('✅ Utilisateur Firebase créé:', userRecord.uid);
+                
+                // Créer le document Firestore
+                await firestore.collection('users').doc(userRecord.uid).set({
+                    email: customerEmail,
+                    displayName: customerName,
+                    phone: customerPhone,
+                    role: 'client',
+                    plan: plan,
+                    maxLogements: 3,
+                    stripeCustomerId: session.customer,
+                    stripeSubscriptionId: session.subscription || null,
+                    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                    firstLogin: true
+                });
+                
+                console.log('✅ Document Firestore créé');
+                
+            } catch (firebaseError) {
+                console.error('❌ Erreur Firebase:', firebaseError.message);
+                // Continue quand même pour envoyer l'email
+            }
+
+            // Envoyer email de confirmation via EmailJS
             await sendConfirmationEmail(
-                session.customer_email,
+                customerEmail,
                 customerName,
                 plan,
                 plaques,
-                total
+                total,
+                tempPassword
             );
         }
 
