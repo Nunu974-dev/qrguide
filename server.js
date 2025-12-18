@@ -6,9 +6,100 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ===========================
+// Configuration Email
+// ===========================
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+// Template email de confirmation
+const getConfirmationEmail = (customerName, plan, plaques, total) => `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
+        .header { background: linear-gradient(135deg, #C7A961 0%, #B89544 100%); padding: 40px 20px; text-align: center; }
+        .header img { max-width: 200px; height: auto; }
+        .content { padding: 40px 30px; }
+        .success-icon { text-align: center; font-size: 60px; margin: 20px 0; }
+        h1 { color: #C7A961; margin: 0 0 10px; }
+        .info-box { background: #f8f9fa; border-left: 4px solid #C7A961; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .steps { margin: 30px 0; }
+        .step { padding: 15px; margin: 10px 0; background: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; }
+        .step-number { display: inline-block; width: 30px; height: 30px; background: #C7A961; color: white; border-radius: 50%; text-align: center; line-height: 30px; font-weight: bold; margin-right: 10px; }
+        .footer { background: #f8f9fa; padding: 30px; text-align: center; color: #666; font-size: 14px; }
+        .button { display: inline-block; background: #C7A961; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://qrguide.fr/img/logo_blanc.png" alt="QRGUIDE">
+        </div>
+        
+        <div class="content">
+            <div class="success-icon">🎉</div>
+            <h1 style="text-align: center;">Paiement confirmé !</h1>
+            <p style="text-align: center; font-size: 18px; color: #666;">Merci ${customerName} pour votre confiance</p>
+            
+            <div class="info-box">
+                <strong>📋 Récapitulatif de votre commande :</strong><br><br>
+                <strong>Formule :</strong> ${plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)'}<br>
+                ${plaques > 0 ? `<strong>Plaques QR :</strong> ${plaques} plaque${plaques > 1 ? 's' : ''}<br>` : ''}
+                <strong>Pack Création :</strong> 150€ (inclus)<br><br>
+                <strong style="font-size: 20px; color: #C7A961;">Total payé : ${total}€</strong>
+            </div>
+            
+            <div class="steps">
+                <h2 style="color: #C7A961;">Prochaines étapes :</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Contact sous 2h</strong><br>
+                    Nous vous appelons pour confirmer les détails
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Création de votre guide</strong><br>
+                    Nous créons votre guide personnalisé sous 48h
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Livraison</strong><br>
+                    Vous recevez votre guide + QR code + plaques si commandées
+                </div>
+            </div>
+            
+            <p style="text-align: center;">
+                <strong>Des questions ?</strong><br>
+                📧 <a href="mailto:contact@qrguide.fr" style="color: #C7A961;">contact@qrguide.fr</a><br>
+                📞 <a href="tel:0692630364" style="color: #C7A961;">06 92 63 03 64</a>
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>QRGUIDE.FR</strong> - Le guide numérique nouvelle génération</p>
+            <p>© 2025 QRGUIDE.FR - Tous droits réservés</p>
+        </div>
+    </div>
+</body>
+</html>
+`;
 
 // ===========================
 // Middleware
@@ -152,14 +243,15 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 // ===========================
-// Webhook Stripe (optionnel - pour recevoir confirmation de paiement)
+// Webhook Stripe - ENVOI EMAIL AUTOMATIQUE
 // ===========================
 app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
     if (!endpointSecret) {
-        return res.sendStatus(200); // Pas de webhook configuré
+        console.log('⚠️ Webhook non configuré');
+        return res.sendStatus(200);
     }
 
     try {
@@ -168,13 +260,31 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) =
         // Gérer l'événement de paiement réussi
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object;
+            
             console.log('💰 Paiement réussi:', {
                 email: session.customer_email,
                 amount: session.amount_total / 100 + '€',
                 plan: session.metadata.plan
             });
             
-            // TODO: Envoyer email de confirmation, créer compte utilisateur, etc.
+            // Envoyer email de confirmation
+            try {
+                const customerName = session.metadata.customerName || 'Client';
+                const plan = session.metadata.plan;
+                const plaques = parseInt(session.metadata.plaqueQty || 0);
+                const total = session.metadata.totalAmount;
+
+                await transporter.sendMail({
+                    from: `"QRGUIDE" <${process.env.EMAIL_USER}>`,
+                    to: session.customer_email,
+                    subject: '✅ Confirmation de votre commande QRGUIDE',
+                    html: getConfirmationEmail(customerName, plan, plaques, total)
+                });
+
+                console.log('📧 Email de confirmation envoyé à:', session.customer_email);
+            } catch (emailError) {
+                console.error('❌ Erreur envoi email:', emailError);
+            }
         }
 
         res.json({ received: true });
