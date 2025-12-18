@@ -618,15 +618,14 @@
         }
 
         // ============================================
-        // PAIEMENT STRIPE - AVEC PAYMENT LINKS (ULTRA SIMPLE)
+        // PAIEMENT STRIPE - AVEC BACKEND NODE.JS (comme Cinnad'moun)
         // ============================================
-        
-        // Configuration des Payment Links Stripe
-        // À créer sur : https://dashboard.stripe.com/test/payment-links
-        const STRIPE_PAYMENT_LINKS = {
-            mensuel: 'https://buy.stripe.com/LIEN_MENSUEL_ICI',  // Remplacer par votre lien
-            annuel: 'https://buy.stripe.com/LIEN_ANNUEL_ICI'     // Remplacer par votre lien
-        };
+
+        // URL du backend Stripe (à modifier après déploiement sur Render.com)
+        const BACKEND_URL = 'https://qrguide-backend.onrender.com'; // ⚠️ À MODIFIER après déploiement
+
+        // Initialiser Stripe.js
+        const stripe = Stripe('pk_test_VOTRE_CLE_PUBLIQUE_STRIPE'); // ⚠️ À MODIFIER avec votre clé publique
 
         async function processPayment() {
             const plan = document.querySelector('input[name="plan"]:checked');
@@ -637,25 +636,56 @@
                 return;
             }
 
-            // Pour l'instant, on ne gère que les formules de base (sans plaques)
-            // TODO : Créer des Payment Links supplémentaires pour les formules avec plaques
-            if (plaqueQty > 0) {
-                alert('⚠️ Les plaques ne sont pas encore disponibles en ligne. Contactez-nous pour les commander.');
-                return;
+            // Collecter les infos du formulaire
+            const formData = getFormData();
+
+            // Désactiver le bouton pendant le traitement
+            const paymentBtn = document.getElementById('paymentBtn');
+            paymentBtn.disabled = true;
+            paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Connexion sécurisée...';
+
+            try {
+                // Appeler le backend pour créer la session Stripe
+                const response = await fetch(`${BACKEND_URL}/create-checkout-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        plan: plan.value,
+                        plaqueQty: plaqueQty,
+                        customerInfo: {
+                            firstName: formData.firstName,
+                            lastName: formData.lastName,
+                            email: formData.email,
+                            phone: formData.phone
+                        },
+                        successUrl: `${window.location.origin}/success.html`,
+                        cancelUrl: `${window.location.origin}/abonnement.html`
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur serveur lors de la création de la session');
+                }
+
+                const { sessionId } = await response.json();
+
+                // Rediriger vers Stripe Checkout
+                const result = await stripe.redirectToCheckout({ sessionId });
+
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+
+            } catch (error) {
+                console.error('❌ Erreur paiement:', error);
+                alert('❌ Erreur lors du paiement : ' + error.message);
+                
+                // Réactiver le bouton
+                paymentBtn.disabled = false;
+                paymentBtn.textContent = '💳 Payer maintenant';
             }
-
-            // Récupérer le Payment Link correspondant
-            const paymentLink = STRIPE_PAYMENT_LINKS[plan.value];
-
-            if (!paymentLink || paymentLink.includes('LIEN_')) {
-                alert('⚠️ Les paiements ne sont pas encore configurés. Veuillez configurer vos Payment Links Stripe.');
-                console.error('Payment Link manquant pour:', plan.value);
-                return;
-            }
-
-            // Rediriger directement vers le Payment Link Stripe
-            window.location.href = paymentLink;
-        }
 
         // ============================================
         // EVENT LISTENERS
