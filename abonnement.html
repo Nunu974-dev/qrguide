@@ -625,7 +625,7 @@
         const BACKEND_URL = 'https://qrguide-backend.onrender.com'; // ⚠️ À MODIFIER après déploiement
 
         // Initialiser Stripe.js
-        const stripe = Stripe('pk_test_VOTRE_CLE_PUBLIQUE_STRIPE'); // ⚠️ À MODIFIER avec votre clé publique
+        const stripe = Stripe('pk_test_51SfMI9Iz6IOM6VUSJNshS1uo8C4fdut9jLoTJj4Gr0NoQWoU9arxMtVxO1InU7GjWpBB3MsGhTbTI9GqM0fPDd4O00biJQWawP'); // ⚠️ À MODIFIER avec votre clé publique
 
         async function processPayment() {
             const plan = document.querySelector('input[name="plan"]:checked');
@@ -686,6 +686,7 @@
                 paymentBtn.disabled = false;
                 paymentBtn.textContent = '💳 Payer maintenant';
             }
+        }
 
         // ============================================
         // EVENT LISTENERS
