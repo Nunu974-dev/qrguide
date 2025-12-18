@@ -6,15 +6,19 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { Resend } = require('resend');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ===========================
-// Configuration Resend
+// Configuration EmailJS
 // ===========================
-const resend = new Resend(process.env.RESEND_API_KEY);
+const EMAILJS_CONFIG = {
+    publicKey: process.env.EMAILJS_PUBLIC_KEY,
+    privateKey: process.env.EMAILJS_PRIVATE_KEY,
+    serviceId: process.env.EMAILJS_SERVICE_ID,
+    templateId: process.env.EMAILJS_TEMPLATE_ID
+};
 
 // ===========================
 // Price IDs Stripe (abonnements)
@@ -24,8 +28,43 @@ const STRIPE_PRICE_IDS = {
     annuel: process.env.STRIPE_PRICE_ANNUEL || 'price_1SfjVAIuJcG0yZsyaL4WutuC'
 };
 
-// Template email de confirmation
-const getConfirmationEmail = (customerName, plan, plaques, total) => `
+// Fonction pour envoyer email via EmailJS
+async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total) {
+    const templateParams = {
+        to_email: customerEmail,
+        customer_name: customerName,
+        plan: plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)',
+        plaques: plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''}` : 'Aucune',
+        total: total + '€'
+    };
+
+    try {
+        const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                service_id: EMAILJS_CONFIG.serviceId,
+                template_id: EMAILJS_CONFIG.templateId,
+                user_id: EMAILJS_CONFIG.publicKey,
+                accessToken: EMAILJS_CONFIG.privateKey,
+                template_params: templateParams
+            })
+        });
+
+        if (response.ok) {
+            console.log('📧 Email envoyé via EmailJS à:', customerEmail);
+            return true;
+        } else {
+            throw new Error('EmailJS request failed');
+        }
+    } catch (error) {
+        console.error('❌ Erreur EmailJS:', error.message);
+        return false;
+    }
+}
+
+// Template email de confirmation (pour référence - utilisé dans EmailJS dashboard)
+const getConfirmationEmailTemplate = () => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,6 +140,13 @@ const getConfirmationEmail = (customerName, plan, plaques, total) => `
     </div>
 </body>
 </html>
+
+Créez ce template dans EmailJS avec les variables :
+- {{to_email}}
+- {{customer_name}}
+- {{plan}}
+- {{plaques}}
+- {{total}}
 `;
 
 // ===========================
@@ -256,24 +302,19 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) =
                 plan: session.metadata.plan
             });
             
-            // Envoyer email de confirmation via Resend
-            try {
-                const customerName = session.metadata.customerName || 'Client';
-                const plan = session.metadata.plan;
-                const plaques = parseInt(session.metadata.plaqueQty || 0);
-                const total = session.metadata.totalAmount;
+            // Envoyer email de confirmation via EmailJS
+            const customerName = session.metadata.customerName || 'Client';
+            const plan = session.metadata.plan;
+            const plaques = parseInt(session.metadata.plaqueQty || 0);
+            const total = session.metadata.totalAmount;
 
-                await resend.emails.send({
-                    from: 'QRGUIDE <contact@qrguide.fr>',
-                    to: session.customer_email,
-                    subject: '✅ Confirmation de votre abonnement QRGUIDE',
-                    html: getConfirmationEmail(customerName, plan, plaques, total)
-                });
-
-                console.log('📧 Email de confirmation envoyé à:', session.customer_email);
-            } catch (emailError) {
-                console.error('❌ Erreur envoi email:', emailError.message);
-            }
+            await sendConfirmationEmail(
+                session.customer_email,
+                customerName,
+                plan,
+                plaques,
+                total
+            );
         }
 
         res.json({ received: true });
