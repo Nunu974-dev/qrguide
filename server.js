@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,14 +28,19 @@ if (process.env.FIREBASE_PROJECT_ID) {
 const firestore = admin.firestore();
 
 // ===========================
-// Configuration EmailJS
+// Configuration Nodemailer (SMTP Hostinger)
 // ===========================
-const EMAILJS_CONFIG = {
-    publicKey: process.env.EMAILJS_PUBLIC_KEY,
-    privateKey: process.env.EMAILJS_PRIVATE_KEY,
-    serviceId: process.env.EMAILJS_SERVICE_ID,
-    templateId: process.env.EMAILJS_TEMPLATE_ID
-};
+const transporter = nodemailer.createTransport({
+    host: 'smtp.hostinger.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+    }
+});
+
+console.log('✅ Nodemailer configuré avec SMTP Hostinger');
 
 // ===========================
 // Price IDs Stripe (abonnements)
@@ -44,39 +50,109 @@ const STRIPE_PRICE_IDS = {
     annuel: process.env.STRIPE_PRICE_ANNUEL || 'price_1SfjVAIuJcG0yZsyaL4WutuC'
 };
 
-// Fonction pour envoyer email via EmailJS
+// Fonction pour envoyer email via Nodemailer
 async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, tempPassword = null) {
-    const templateParams = {
-        to_email: customerEmail,
-        customer_name: customerName,
-        plan: plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)',
-        plaques: plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''}` : 'Aucune',
-        total: total + '€',
-        login_url: 'https://qrguide.fr/login.html',
-        temp_password: tempPassword || 'Voir email précédent'
+    const planText = plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)';
+    const plaquesText = plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''}` : 'Aucune';
+    
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; padding: 40px 0;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
+                            <img src="https://qrguide.fr/img/logo.png" alt="QRGUIDE" style="height: 50px; margin-bottom: 20px;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Bienvenue chez QRGUIDE !</h1>
+                            <p style="color: #ffffff; margin: 10px 0 0 0; opacity: 0.9;">Votre compte a été créé avec succès</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 40px;">
+                            <p style="font-size: 16px; color: #333; margin: 0 0 20px 0;">Bonjour <strong>${customerName}</strong>,</p>
+                            <p style="font-size: 16px; color: #666; line-height: 1.6; margin: 0 0 30px 0;">
+                                Nous vous remercions pour votre abonnement ! Votre paiement a bien été enregistré et votre compte est maintenant actif.
+                            </p>
+                            <table width="100%" cellpadding="12" cellspacing="0" style="background: #f8f9fa; border-radius: 8px; margin-bottom: 30px;">
+                                <tr>
+                                    <td style="color: #666; font-size: 14px;"><strong>📋 Formule :</strong></td>
+                                    <td style="color: #333; font-size: 14px; text-align: right;">${planText}</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #666; font-size: 14px;"><strong>🏷️ Plaques QR :</strong></td>
+                                    <td style="color: #333; font-size: 14px; text-align: right;">${plaquesText}</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #666; font-size: 14px; padding-top: 8px; border-top: 2px solid #e9ecef;"><strong>💰 Total :</strong></td>
+                                    <td style="color: #667eea; font-size: 18px; font-weight: bold; text-align: right; padding-top: 8px; border-top: 2px solid #e9ecef;">${total}€</td>
+                                </tr>
+                            </table>
+                            ${tempPassword ? `
+                            <table width="100%" cellpadding="20" cellspacing="0" style="background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%); border-radius: 8px; border: 2px solid #ffc107; margin-bottom: 30px;">
+                                <tr>
+                                    <td>
+                                        <h2 style="color: #856404; margin: 0 0 15px 0; font-size: 20px;">🔐 Vos identifiants de connexion</h2>
+                                        <p style="color: #856404; margin: 0 0 10px 0; font-size: 14px;"><strong>Email :</strong> ${customerEmail}</p>
+                                        <p style="color: #856404; margin: 0 0 20px 0; font-size: 14px;"><strong>Mot de passe temporaire :</strong></p>
+                                        <div style="background: #ffffff; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 18px; font-weight: bold; color: #333; text-align: center; letter-spacing: 2px; margin-bottom: 20px;">
+                                            ${tempPassword}
+                                        </div>
+                                        <p style="color: #856404; margin: 0; font-size: 13px;">⚠️ Changez ce mot de passe dès votre première connexion</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            ` : ''}
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td align="center" style="padding: 20px 0;">
+                                        <a href="https://qrguide.fr/login.html" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+                                            🚀 Accéder à mon compte
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="font-size: 14px; color: #666; line-height: 1.6; margin: 30px 0 0 0;">
+                                Vous pouvez maintenant créer jusqu'à <strong>3 logements</strong> et générer vos guides QR personnalisés.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
+                            <p style="margin: 0 0 10px 0; font-size: 13px; color: #999;">
+                                Besoin d'aide ? Contactez-nous à <a href="mailto:contact@qrguide.fr" style="color: #667eea; text-decoration: none;">contact@qrguide.fr</a>
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #999;">
+                                © 2024 QRGUIDE - Tous droits réservés
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
+
+    const mailOptions = {
+        from: '"QRGUIDE" <noreply@qrguide.fr>',
+        to: customerEmail,
+        subject: tempPassword ? '🎉 Bienvenue sur QRGUIDE - Vos identifiants' : '✅ Confirmation de paiement QRGUIDE',
+        html: htmlContent
     };
 
     try {
-        const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                service_id: EMAILJS_CONFIG.serviceId,
-                template_id: EMAILJS_CONFIG.templateId,
-                user_id: EMAILJS_CONFIG.publicKey,
-                accessToken: EMAILJS_CONFIG.privateKey,
-                template_params: templateParams
-            })
-        });
-
-        if (response.ok) {
-            console.log('📧 Email envoyé via EmailJS à:', customerEmail);
-            return true;
-        } else {
-            throw new Error('EmailJS request failed');
-        }
+        await transporter.sendMail(mailOptions);
+        console.log('📧 Email envoyé via SMTP Hostinger à:', customerEmail);
+        return true;
     } catch (error) {
-        console.error('❌ Erreur EmailJS:', error.message);
+        console.error('❌ Erreur Nodemailer:', error.message);
         return false;
     }
 }
