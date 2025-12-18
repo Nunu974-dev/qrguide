@@ -495,9 +495,6 @@
         // CONFIGURATION - À MODIFIER AVEC VOS CLÉS
         // ============================================
         
-        // NOTE: Le paiement Stripe est géré par le fichier create-checkout-session.php
-        // Vous devez configurer votre clé secrète Stripe dans ce fichier PHP
-        
         // Configuration EmailJS (obtenir sur https://www.emailjs.com/)
         // INSTRUCTIONS :
         // 1. Créez un compte sur https://dashboard.emailjs.com/sign-up
@@ -621,8 +618,16 @@
         }
 
         // ============================================
-        // PAIEMENT STRIPE - VERSION SIMPLIFIÉE (comme Airbnb)
+        // PAIEMENT STRIPE - AVEC PAYMENT LINKS (ULTRA SIMPLE)
         // ============================================
+        
+        // Configuration des Payment Links Stripe
+        // À créer sur : https://dashboard.stripe.com/test/payment-links
+        const STRIPE_PAYMENT_LINKS = {
+            mensuel: 'https://buy.stripe.com/LIEN_MENSUEL_ICI',  // Remplacer par votre lien
+            annuel: 'https://buy.stripe.com/LIEN_ANNUEL_ICI'     // Remplacer par votre lien
+        };
+
         async function processPayment() {
             const plan = document.querySelector('input[name="plan"]:checked');
             const plaqueQty = parseInt(document.getElementById('plaque-quantity').value) || 0;
@@ -632,75 +637,24 @@
                 return;
             }
 
-            // Récupérer les infos client
-            const formData = getFormData();
-
-            // Calculer le montant total (récupérer depuis l'affichage)
-            const totalElement = document.getElementById('totalAmount');
-            const totalText = totalElement.textContent.replace('€', '').trim();
-            const totalAmount = parseFloat(totalText) * 100; // Convertir en centimes
-
-            // Construire la description
-            let description = `Pack Création (150€) + Abonnement ${plan.value === 'mensuel' ? 'Mensuel (8€/mois)' : 'Annuel (75€/an)'}`;
+            // Pour l'instant, on ne gère que les formules de base (sans plaques)
+            // TODO : Créer des Payment Links supplémentaires pour les formules avec plaques
             if (plaqueQty > 0) {
-                const plaqueFormat = document.querySelector('input[name="plaque-format"]:checked');
-                const plaquePrice = plaqueFormat && plaqueFormat.value === 'a5' ? 35 : 45;
-                description += ` + ${plaqueQty} plaque(s) QR (${plaquePrice}€)`;
+                alert('⚠️ Les plaques ne sont pas encore disponibles en ligne. Contactez-nous pour les commander.');
+                return;
             }
 
-            try {
-                // Appeler le script PHP pour créer la session Stripe
-                const response = await fetch('create-checkout-session.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        amount: totalAmount,
-                        currency: 'eur',
-                        email: formData.email,
-                        name: formData.nom,
-                        planType: plan.value,
-                        description: description,
-                        success_url: window.location.origin + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-                        cancel_url: window.location.origin + '/abonnement.html'
-                    })
-                });
+            // Récupérer le Payment Link correspondant
+            const paymentLink = STRIPE_PAYMENT_LINKS[plan.value];
 
-                // Vérifier le statut de la réponse
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Erreur serveur:', errorText);
-                    throw new Error(`Erreur serveur (${response.status}). Vérifiez que Stripe PHP est installé et que le fichier .env existe.`);
-                }
-
-                const responseText = await response.text();
-                console.log('Réponse PHP:', responseText);
-
-                // Parser le JSON
-                let session;
-                try {
-                    session = JSON.parse(responseText);
-                } catch (e) {
-                    console.error('Réponse reçue:', responseText);
-                    throw new Error('Le serveur PHP ne répond pas correctement. Vérifiez les logs PHP.');
-                }
-
-                if (session.error) {
-                    throw new Error(session.error);
-                }
-
-                if (!session.url) {
-                    throw new Error('URL de paiement manquante dans la réponse');
-                }
-
-                // Rediriger vers Stripe Checkout
-                window.location.href = session.url;
-
-            } catch (error) {
-                console.error('Erreur complète:', error);
-                alert('❌ Erreur paiement: ' + error.message + '\n\nVérifiez la console pour plus de détails.');
+            if (!paymentLink || paymentLink.includes('LIEN_')) {
+                alert('⚠️ Les paiements ne sont pas encore configurés. Veuillez configurer vos Payment Links Stripe.');
+                console.error('Payment Link manquant pour:', plan.value);
+                return;
             }
+
+            // Rediriger directement vers le Payment Link Stripe
+            window.location.href = paymentLink;
         }
 
         // ============================================
