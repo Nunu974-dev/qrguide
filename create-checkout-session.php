@@ -21,9 +21,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Charger Stripe PHP (via Composer ou installation manuelle)
 require_once('vendor/autoload.php');
 
-// Configuration Stripe
-// IMPORTANT: Remplacez par votre clé secrète Stripe
-$stripeSecretKey = 'sk_test_VOTRE_CLE_SECRETE_ICI';
+// Charger les variables d'environnement depuis .env
+if (file_exists('.env')) {
+    $env = parse_ini_file('.env');
+    $stripeSecretKey = $env['STRIPE_SECRET_KEY'];
+} else {
+    // Fallback : utiliser une variable d'environnement du serveur
+    $stripeSecretKey = getenv('STRIPE_SECRET_KEY');
+}
+
+if (!$stripeSecretKey) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Configuration Stripe manquante']);
+    exit();
+}
+
 \Stripe\Stripe::setApiKey($stripeSecretKey);
 
 try {
