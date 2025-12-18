@@ -15,7 +15,15 @@ const PORT = process.env.PORT || 3000;
 // ===========================
 // Configuration Firebase Admin
 // ===========================
-if (process.env.FIREBASE_PROJECT_ID) {
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    // Option 1: JSON complet (recommandé pour Render)
+    const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
+    console.log('✅ Firebase Admin initialisé (JSON)');
+} else if (process.env.FIREBASE_PROJECT_ID) {
+    // Option 2: Variables séparées
     admin.initializeApp({
         credential: admin.credential.cert({
             projectId: process.env.FIREBASE_PROJECT_ID,
