@@ -6,21 +6,23 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ===========================
-// Configuration Email
+// Configuration Resend
 // ===========================
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// ===========================
+// Price IDs Stripe (abonnements)
+// ===========================
+const STRIPE_PRICE_IDS = {
+    mensuel: process.env.STRIPE_PRICE_MENSUEL || 'price_1SfjUQIuJcG0yZsyQmc6oFBE',
+    annuel: process.env.STRIPE_PRICE_ANNUEL || 'price_VOTRE_PRICE_ANNUEL_ICI'
+};
 
 // Template email de confirmation
 const getConfirmationEmail = (customerName, plan, plaques, total) => `
@@ -129,7 +131,7 @@ const PRICES = {
 };
 
 // ===========================
-// Créer une session de paiement Stripe
+// Créer une session de paiement Stripe (ABONNEMENT RÉCURRENT)
 // ===========================
 app.post('/create-checkout-session', async (req, res) => {
     try {
@@ -141,78 +143,65 @@ app.post('/create-checkout-session', async (req, res) => {
             cancelUrl       // URL si annulation
         } = req.body;
 
-        // ===========================
-        // Calcul du montant total
-        // ===========================
-        let totalAmount = PRICES.packCreation; // Toujours le pack création
-
-        // Ajouter l'abonnement
-        if (plan === 'mensuel') {
-            totalAmount += PRICES.mensuel;
-        } else if (plan === 'annuel') {
-            totalAmount += PRICES.annuel;
-        } else {
+        if (!plan || !['mensuel', 'annuel'].includes(plan)) {
             return res.status(400).json({ error: 'Plan invalide. Choisissez "mensuel" ou "annuel".' });
         }
 
-        // Ajouter les plaques QR
+        // ===========================
+        // Pack Création + Plaques (paiement unique)
+        // ===========================
+        let setupFeeAmount = PRICES.packCreation; // 150€
         const plaques = parseInt(plaqueQty) || 0;
         if (plaques > 0) {
-            totalAmount += PRICES.plaqueQR * plaques;
+            setupFeeAmount += PRICES.plaqueQR * plaques;
         }
 
         // ===========================
-        // Description détaillée
+        // Line items : Abonnement + Frais uniques
         // ===========================
-        let description = `Pack Création QRGUIDE (${PRICES.packCreation}€) + Abonnement ${plan} `;
-        
-        if (plan === 'mensuel') {
-            description += `(${PRICES.mensuel}€)`;
-        } else {
-            description += `(${PRICES.annuel}€)`;
-        }
+        const line_items = [
+            // 1. Abonnement récurrent (8€/mois ou 75€/an)
+            {
+                price: STRIPE_PRICE_IDS[plan],
+                quantity: 1
+            },
+            // 2. Pack Création + Plaques (paiement unique)
+            {
+                price_data: {
+                    currency: 'eur',
+                    product_data: {
+                        name: 'Pack Création QRGUIDE' + (plaques > 0 ? ` + ${plaques} plaque(s) QR` : ''),
+                        description: 'Paiement unique (non récurrent)'
+                    },
+                    unit_amount: Math.round(setupFeeAmount * 100)
+                },
+                quantity: 1
+            }
+        ];
 
-        if (plaques > 0) {
-            description += ` + ${plaques} plaque${plaques > 1 ? 's' : ''} QR (${PRICES.plaqueQR * plaques}€)`;
-        }
+        // Calcul total premier paiement
+        const abonnementPrice = plan === 'mensuel' ? PRICES.mensuel : PRICES.annuel;
+        const totalAmount = setupFeeAmount + abonnementPrice;
 
         // ===========================
-        // Créer la session Stripe
+        // Créer la session Stripe en mode SUBSCRIPTION
         // ===========================
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            mode: 'payment',
+            mode: 'subscription',  // ← MODE ABONNEMENT RÉCURRENT
             
-            // Informations client
             customer_email: customerInfo.email,
+            line_items: line_items,
             
-            // Ligne de commande
-            line_items: [
-                {
-                    price_data: {
-                        currency: 'eur',
-                        product_data: {
-                            name: 'QRGUIDE - Guide Numérique',
-                            description: description,
-                            images: ['https://qrguide.fr/img/logo.png'] // Logo optionnel
-                        },
-                        unit_amount: Math.round(totalAmount * 100) // Convertir en centimes
-                    },
-                    quantity: 1
-                }
-            ],
-            
-            // URLs de retour
             success_url: successUrl,
             cancel_url: cancelUrl,
             
-            // Métadonnées (pour référence)
+            // Métadonnées
             metadata: {
                 plan: plan,
                 plaqueQty: plaques.toString(),
                 customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
                 customerPhone: customerInfo.phone,
-                packCreation: PRICES.packCreation.toString(),
                 totalAmount: totalAmount.toString()
             }
         });
@@ -267,23 +256,23 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (req, res) =
                 plan: session.metadata.plan
             });
             
-            // Envoyer email de confirmation
+            // Envoyer email de confirmation via Resend
             try {
                 const customerName = session.metadata.customerName || 'Client';
                 const plan = session.metadata.plan;
                 const plaques = parseInt(session.metadata.plaqueQty || 0);
                 const total = session.metadata.totalAmount;
 
-                await transporter.sendMail({
-                    from: `"QRGUIDE" <${process.env.EMAIL_USER}>`,
+                await resend.emails.send({
+                    from: 'QRGUIDE <contact@qrguide.fr>',
                     to: session.customer_email,
-                    subject: '✅ Confirmation de votre commande QRGUIDE',
+                    subject: '✅ Confirmation de votre abonnement QRGUIDE',
                     html: getConfirmationEmail(customerName, plan, plaques, total)
                 });
 
                 console.log('📧 Email de confirmation envoyé à:', session.customer_email);
             } catch (emailError) {
-                console.error('❌ Erreur envoi email:', emailError);
+                console.error('❌ Erreur envoi email:', emailError.message);
             }
         }
 
