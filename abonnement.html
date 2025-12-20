@@ -244,8 +244,8 @@
                             </div>
                         </div>
 
-                        <div style="text-align: left; margin: 24px 0 12px 0;">
-                            <h3 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--text-dark);">Plaques QR Code professionnelles</h3>
+                        <div style="text-align: left; margin: 24px 0 8px 0;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 4px; color: var(--text-dark);">Plaques QR Code professionnelles</h3>
                             <p style="font-size: 1rem; color: #666; margin: 0;">Optionnel - Ajoutez des plaques physiques à votre commande</p>
                         </div>
                         
@@ -688,26 +688,34 @@
 
             try {
                 // Appeler le backend pour créer la session Stripe
+                const requestData = {
+                    plan: plan.value,
+                    plaqueQty: plaqueQty,
+                    customerInfo: {
+                        name: formData.nom,
+                        email: formData.email,
+                        phone: formData.telephone
+                    },
+                    successUrl: `${window.location.origin}/success.html`,
+                    cancelUrl: `${window.location.origin}/abonnement.html`
+                };
+                
+                console.log('📤 Envoi vers backend:', requestData);
+
                 const response = await fetch(`${BACKEND_URL}/create-checkout-session`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        plan: plan.value,
-                        plaqueQty: plaqueQty,
-                        customerInfo: {
-                            name: formData.nom,
-                            email: formData.email,
-                            phone: formData.telephone
-                        },
-                        successUrl: `${window.location.origin}/success.html`,
-                        cancelUrl: `${window.location.origin}/abonnement.html`
-                    })
+                    body: JSON.stringify(requestData)
                 });
 
+                console.log('📥 Réponse backend:', response.status, response.statusText);
+
                 if (!response.ok) {
-                    throw new Error('Erreur serveur lors de la création de la session');
+                    const errorData = await response.text();
+                    console.error('❌ Erreur backend:', errorData);
+                    throw new Error(`Erreur serveur (${response.status}): ${errorData}`);
                 }
 
                 const { sessionId } = await response.json();
