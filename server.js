@@ -255,7 +255,16 @@ Créez ce template dans EmailJS avec les variables :
 // Middleware
 // ===========================
 app.use(cors());
-app.use(express.json());
+
+// ⚠️ IMPORTANT: Le webhook Stripe doit recevoir le body RAW
+// On parse JSON SAUF pour la route /webhook
+app.use((req, res, next) => {
+    if (req.originalUrl === '/webhook') {
+        next(); // Skip JSON parsing pour le webhook
+    } else {
+        express.json()(req, res, next);
+    }
+});
 
 // ===========================
 // Route de base (health check)
