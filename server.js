@@ -24,11 +24,17 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     console.log('✅ Firebase Admin initialisé (JSON)');
 } else if (process.env.FIREBASE_PROJECT_ID) {
     // Option 2: Variables séparées
+    let privateKey = process.env.FIREBASE_PRIVATE_KEY || '';
+    
+    // Nettoyer la clé : enlever guillemets et remplacer \n
+    privateKey = privateKey.replace(/^["']|["']$/g, ''); // Enlève guillemets début/fin
+    privateKey = privateKey.replace(/\\n/g, '\n'); // Convertit \n en vrais retours
+    
     admin.initializeApp({
         credential: admin.credential.cert({
             projectId: process.env.FIREBASE_PROJECT_ID,
             clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
+            privateKey: privateKey
         })
     });
     console.log('✅ Firebase Admin initialisé');
