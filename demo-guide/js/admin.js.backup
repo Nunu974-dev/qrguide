@@ -1,0 +1,565 @@
+/* ===================================
+   QRGUIDE - ADMIN JAVASCRIPT
+   Gestion des clients et configuration
+   =================================== */
+
+// === STOCKAGE DES DONNÉES ===
+const STORAGE_KEY = 'qrguide_clients';
+let clients = [];
+let currentClientId = null;
+
+// === INITIALISATION ===
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎛️ Dashboard Admin chargé');
+    loadClients();
+    renderClients();
+    updateClientsCount();
+    initNavigation();
+    initFormListeners();
+});
+
+// === NAVIGATION ===
+function initNavigation() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const section = this.dataset.section;
+            showSection(section);
+        });
+    });
+}
+
+function showSection(sectionName) {
+    // Retirer active de toutes les sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Activer la section demandée
+    document.getElementById(`section-${sectionName}`).classList.add('active');
+    document.querySelector(`[data-section="${sectionName}"]`)?.classList.add('active');
+    
+    // Réinitialiser le formulaire si on va sur nouveau client
+    if (sectionName === 'new-client' && !currentClientId) {
+        resetForm();
+    }
+}
+
+// === GESTION DES CLIENTS ===
+function loadClients() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    clients = stored ? JSON.parse(stored) : [];
+}
+
+function saveClients() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
+    renderClients();
+    updateClientsCount();
+}
+
+function updateClientsCount() {
+    document.getElementById('clients-count').textContent = clients.length;
+}
+
+// === RENDU DE LA LISTE ===
+function renderClients() {
+    const container = document.getElementById('clients-list');
+    const emptyState = document.getElementById('empty-state');
+    
+    if (clients.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.add('show');
+        return;
+    }
+    
+    emptyState.classList.remove('show');
+    
+    container.innerHTML = clients.map(client => `
+        <div class="client-card" data-id="${client.id}">
+            <div class="client-card-header">
+                <div>
+                    <h3>${client.propertyName}</h3>
+                    <p>👤 ${client.clientName}</p>
+                    <p>📞 ${client.phone}</p>
+                </div>
+                <span class="client-status">✓ Actif</span>
+            </div>
+            <p style="margin-top: 12px;">
+                <strong>Wi-Fi:</strong> ${client.wifiName}<br>
+                <strong>Arrivée:</strong> ${client.checkinTime} | <strong>Départ:</strong> ${client.checkoutTime}
+            </p>
+            <div class="client-card-actions">
+                <button class="btn-icon" onclick="viewClient('${client.id}')">👁️ Voir</button>
+                <button class="btn-icon" onclick="editClient('${client.id}')">✏️ Éditer</button>
+                <button class="btn-icon" onclick="generateQR('${client.id}')">📱 QR</button>
+                <button class="btn-icon" onclick="exportClient('${client.id}')">📥 Export</button>
+                <button class="btn-icon danger" onclick="deleteClient('${client.id}')">🗑️</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// === FILTRAGE ===
+function filterClients() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const cards = document.querySelectorAll('.client-card');
+    
+    cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+    });
+}
+
+// === FORMULAIRE ===
+function initFormListeners() {
+    const form = document.getElementById('client-form');
+    form.addEventListener('submit', handleFormSubmit);
+    
+    // Toggle parking details
+    document.getElementById('parking-included').addEventListener('change', function() {
+        document.getElementById('parking-details').style.display = 
+            this.checked ? 'flex' : 'none';
+    });
+}
+
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const clientData = {
+        id: currentClientId || generateId(),
+        propertyName: getValue('property-name'),
+        clientName: getValue('client-name'),
+        phone: getValue('client-phone'),
+        address: getValue('property-address'),
+        checkinTime: getValue('checkin-time'),
+        entryProcedure: getProcedureSteps(),
+        wifiName: getValue('wifi-name'),
+        wifiPassword: getValue('wifi-password'),
+        checkoutTime: getValue('checkout-time'),
+        cleaningInfo: getValue('cleaning-info'),
+        keyReturn: getKeyReturnSteps(),
+        quietHours: getValue('quiet-hours'),
+        maxGuests: getValue('max-guests'),
+        smokingAllowed: document.getElementById('smoking-allowed').checked,
+        petsAllowed: document.getElementById('pets-allowed').checked,
+        petsPolicy: getValue('pets-policy'),
+        parkingIncluded: document.getElementById('parking-included').checked,
+        parkingSpot: getValue('parking-spot'),
+        parkingCode: getValue('parking-code'),
+        createdAt: currentClientId ? 
+            clients.find(c => c.id === currentClientId).createdAt : 
+            new Date().toISOString()
+    };
+    
+    if (currentClientId) {
+        // Mise à jour
+        const index = clients.findIndex(c => c.id === currentClientId);
+        clients[index] = clientData;
+        showNotification('✅ Client mis à jour avec succès');
+    } else {
+        // Nouveau client
+        clients.push(clientData);
+        showNotification('✅ Client créé avec succès');
+    }
+    
+    saveClients();
+    resetForm();
+    showSection('clients');
+}
+
+function getValue(id) {
+    return document.getElementById(id).value.trim();
+}
+
+function getProcedureSteps() {
+    return Array.from(document.querySelectorAll('.procedure-input'))
+        .map(input => input.value.trim())
+        .filter(val => val !== '');
+}
+
+function getKeyReturnSteps() {
+    return Array.from(document.querySelectorAll('.key-return-input'))
+        .map(input => input.value.trim())
+        .filter(val => val !== '');
+}
+
+function resetForm() {
+    currentClientId = null;
+    document.getElementById('client-form').reset();
+    document.getElementById('form-title').textContent = '➕ Nouveau Client';
+    document.getElementById('checkin-time').value = '15:00';
+    document.getElementById('checkout-time').value = '11:00';
+    
+    // Réinitialiser les étapes de procédure
+    document.getElementById('entry-procedure-list').innerHTML = `
+        <div class="procedure-item">
+            <input type="text" class="procedure-input" placeholder="Étape 1" value="Rendez-vous devant l'entrée principale">
+            <button type="button" class="btn-remove" onclick="removeProcedureStep(this)">🗑️</button>
+        </div>
+    `;
+    
+    document.getElementById('key-return-list').innerHTML = `
+        <div class="procedure-item">
+            <input type="text" class="key-return-input" placeholder="Étape 1" value="Déposez les clés sur la table de l'entrée">
+            <button type="button" class="btn-remove" onclick="removeKeyReturnStep(this)">🗑️</button>
+        </div>
+    `;
+}
+
+// === ACTIONS SUR LES CLIENTS ===
+function viewClient(clientId) {
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return;
+    
+    // Générer une page temporaire pour prévisualisation
+    const tempPage = generateClientPage(client);
+    const blob = new Blob([tempPage], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    
+    document.getElementById('preview-iframe').src = url;
+    document.getElementById('preview-modal').classList.add('show');
+}
+
+function editClient(clientId) {
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return;
+    
+    currentClientId = clientId;
+    
+    // Remplir le formulaire
+    document.getElementById('property-name').value = client.propertyName;
+    document.getElementById('client-name').value = client.clientName;
+    document.getElementById('client-phone').value = client.phone;
+    document.getElementById('property-address').value = client.address || '';
+    document.getElementById('checkin-time').value = client.checkinTime;
+    document.getElementById('wifi-name').value = client.wifiName;
+    document.getElementById('wifi-password').value = client.wifiPassword;
+    document.getElementById('checkout-time').value = client.checkoutTime;
+    document.getElementById('cleaning-info').value = client.cleaningInfo;
+    document.getElementById('quiet-hours').value = client.quietHours || '22h00 - 8h00';
+    document.getElementById('max-guests').value = client.maxGuests || '4';
+    document.getElementById('smoking-allowed').checked = client.smokingAllowed || false;
+    document.getElementById('pets-allowed').checked = client.petsAllowed || false;
+    document.getElementById('pets-policy').value = client.petsPolicy || '';
+    document.getElementById('parking-included').checked = client.parkingIncluded || false;
+    document.getElementById('parking-spot').value = client.parkingSpot || '';
+    document.getElementById('parking-code').value = client.parkingCode || '';
+    
+    // Remplir les procédures
+    fillProcedureSteps(client.entryProcedure);
+    fillKeyReturnSteps(client.keyReturn);
+    
+    document.getElementById('form-title').textContent = '✏️ Éditer le client';
+    showSection('new-client');
+}
+
+function fillProcedureSteps(steps) {
+    const container = document.getElementById('entry-procedure-list');
+    container.innerHTML = '';
+    
+    (steps || []).forEach(step => {
+        const div = document.createElement('div');
+        div.className = 'procedure-item';
+        div.innerHTML = `
+            <input type="text" class="procedure-input" value="${step}">
+            <button type="button" class="btn-remove" onclick="removeProcedureStep(this)">🗑️</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function fillKeyReturnSteps(steps) {
+    const container = document.getElementById('key-return-list');
+    container.innerHTML = '';
+    
+    (steps || []).forEach(step => {
+        const div = document.createElement('div');
+        div.className = 'procedure-item';
+        div.innerHTML = `
+            <input type="text" class="key-return-input" value="${step}">
+            <button type="button" class="btn-remove" onclick="removeKeyReturnStep(this)">🗑️</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function deleteClient(clientId) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) return;
+    
+    clients = clients.filter(c => c.id !== clientId);
+    saveClients();
+    showNotification('🗑️ Client supprimé');
+}
+
+function generateQR(clientId) {
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return;
+    
+    // URL de la page du client (vous devrez la remplacer par votre vraie URL)
+    const clientUrl = `https://votre-site.com/client/${client.id}`;
+    
+    document.getElementById('qr-url').textContent = clientUrl;
+    document.getElementById('qr-modal').classList.add('show');
+    
+    // Générer le QR Code
+    const container = document.getElementById('qr-code-container');
+    container.innerHTML = '';
+    
+    QRCode.toCanvas(clientUrl, {
+        width: 300,
+        margin: 2,
+        color: {
+            dark: '#000000',
+            light: '#FFFFFF'
+        }
+    }, (error, canvas) => {
+        if (error) {
+            console.error('Erreur QR Code:', error);
+            return;
+        }
+        canvas.id = 'qr-canvas';
+        container.appendChild(canvas);
+    });
+}
+
+function exportClient(clientId) {
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return;
+    
+    // Générer la page complète du client
+    const fullPage = generateClientPage(client);
+    
+    // Télécharger en HTML
+    downloadFile(
+        `${client.propertyName.replace(/\s+/g, '_')}.html`,
+        fullPage,
+        'text/html'
+    );
+    
+    showNotification('📥 Page exportée avec succès');
+}
+
+// === GÉNÉRATION DE PAGE CLIENT ===
+function generateClientPage(client) {
+    const config = {
+        arrival: {
+            time: client.checkinTime,
+            procedure: client.entryProcedure,
+            wifi: {
+                name: client.wifiName,
+                password: client.wifiPassword
+            }
+        },
+        departure: {
+            time: client.checkoutTime,
+            cleaning: client.cleaningInfo,
+            keyReturn: client.keyReturn
+        },
+        contact: {
+            phone: client.phone,
+            name: client.clientName
+        },
+        property: {
+            name: client.propertyName,
+            address: client.address
+        },
+        rules: {
+            quietHours: client.quietHours,
+            smoking: client.smokingAllowed,
+            pets: client.petsAllowed,
+            maxGuests: client.maxGuests
+        },
+        parking: {
+            included: client.parkingIncluded,
+            spot: client.parkingSpot,
+            code: client.parkingCode
+        }
+    };
+    
+    // Générer le contenu JSON pour le client
+    const configJson = JSON.stringify(config, null, 2);
+    
+    return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${client.propertyName} - Guide de séjour</title>
+    <style>
+        /* Inclure ici le CSS complet ou lien vers style.css */
+        body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+        h1 { color: #FF385C; }
+    </style>
+</head>
+<body>
+    <h1>🏡 ${client.propertyName}</h1>
+    <p>Guide de séjour généré</p>
+    <p><strong>Client:</strong> ${client.clientName}</p>
+    <p><strong>Wi-Fi:</strong> ${client.wifiName}</p>
+    <script>
+        const config = ${configJson};
+        console.log('Configuration chargée:', config);
+    </script>
+</body>
+</html>`;
+}
+
+// === GESTION DES PROCÉDURES ===
+function addProcedureStep() {
+    const container = document.getElementById('entry-procedure-list');
+    const div = document.createElement('div');
+    div.className = 'procedure-item';
+    div.innerHTML = `
+        <input type="text" class="procedure-input" placeholder="Nouvelle étape">
+        <button type="button" class="btn-remove" onclick="removeProcedureStep(this)">🗑️</button>
+    `;
+    container.appendChild(div);
+}
+
+function removeProcedureStep(button) {
+    button.parentElement.remove();
+}
+
+function addKeyReturnStep() {
+    const container = document.getElementById('key-return-list');
+    const div = document.createElement('div');
+    div.className = 'procedure-item';
+    div.innerHTML = `
+        <input type="text" class="key-return-input" placeholder="Nouvelle étape">
+        <button type="button" class="btn-remove" onclick="removeKeyReturnStep(this)">🗑️</button>
+    `;
+    container.appendChild(div);
+}
+
+function removeKeyReturnStep(button) {
+    button.parentElement.remove();
+}
+
+// === MODALS ===
+function closePreview() {
+    document.getElementById('preview-modal').classList.remove('show');
+}
+
+function closeQRModal() {
+    document.getElementById('qr-modal').classList.remove('show');
+}
+
+function downloadQR() {
+    const canvas = document.getElementById('qr-canvas');
+    if (!canvas) return;
+    
+    canvas.toBlob(blob => {
+        downloadFile('qrcode.png', blob, 'image/png');
+    });
+}
+
+// === PARAMÈTRES ===
+function exportAllData() {
+    const data = JSON.stringify(clients, null, 2);
+    downloadFile('qrguide_clients.json', data, 'application/json');
+    showNotification('📥 Données exportées');
+}
+
+function importData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = event => {
+            try {
+                const imported = JSON.parse(event.target.result);
+                if (confirm(`Importer ${imported.length} clients ? Cela remplacera les données actuelles.`)) {
+                    clients = imported;
+                    saveClients();
+                    showNotification('✅ Données importées');
+                }
+            } catch (error) {
+                alert('❌ Erreur lors de l\'import');
+            }
+        };
+        
+        reader.readAsText(file);
+    };
+    
+    input.click();
+}
+
+function clearAllData() {
+    if (!confirm('⚠️ ATTENTION : Supprimer toutes les données ? Cette action est irréversible.')) return;
+    if (!confirm('Êtes-vous VRAIMENT sûr ?')) return;
+    
+    clients = [];
+    saveClients();
+    showNotification('🗑️ Toutes les données ont été supprimées');
+}
+
+function logout() {
+    if (confirm('Voulez-vous vous déconnecter ?')) {
+        // Ici vous pouvez ajouter une vraie logique d'authentification
+        window.location.href = 'index.html';
+    }
+}
+
+// === UTILITAIRES ===
+function generateId() {
+    return 'client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function downloadFile(filename, content, type) {
+    const blob = content instanceof Blob ? content : new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function showNotification(message) {
+    // Simple notification (vous pouvez améliorer avec une librairie)
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28A745;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Ajouter les animations CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+console.log('✅ Admin JS chargé et prêt');
