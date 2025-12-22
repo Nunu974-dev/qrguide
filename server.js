@@ -567,10 +567,6 @@ app.post('/webhook', async (req, res) => {
                         throw authError; // Autre erreur
                     }
                 }
-                    firstLogin: true
-                });
-                
-                console.log('✅ Document Firestore créé');
                 
             } catch (firebaseError) {
                 console.error('❌ Erreur Firebase:', firebaseError.message);

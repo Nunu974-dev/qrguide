@@ -16,6 +16,11 @@
         <div class="container">
             <nav class="nav">
                 <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <div class="nav-links">
                     <a href="#fonctionnalites">Fonctionnalités</a>
                     <a href="#comment-ca-marche">Comment ça marche</a>
@@ -304,7 +309,7 @@
                     <p>"Mes voyageurs adorent ! Plus de messages à 23h pour le code Wi-Fi. Et les avis 5 étoiles ont explosé depuis que j'utilise QRGUIDE."</p>
                     <div class="testimonial-author">
                         <strong>Marie L.</strong>
-                        <span>Villa à Nice</span>
+                        <span>Villa à Saint Leu</span>
                     </div>
                 </div>
                 <div class="testimonial">
@@ -312,7 +317,7 @@
                     <p>"J'ai 3 appartements. Avant je passais des heures à répondre aux mêmes questions. Maintenant tout est dans le guide, c'est un gain de temps fou."</p>
                     <div class="testimonial-author">
                         <strong>Thomas B.</strong>
-                        <span>Appartements à Cannes</span>
+                        <span>Appartements Saint paul</span>
                     </div>
                 </div>
                 <div class="testimonial">
@@ -320,7 +325,7 @@
                     <p>"Hyper facile à mettre à jour. Quand je découvre un bon restaurant, je l'ajoute en 2 minutes. Mes voyageurs me remercient !"</p>
                     <div class="testimonial-author">
                         <strong>Sophie M.</strong>
-                        <span>Maison à Antibes</span>
+                        <span>Maison à Saint Denis</span>
                     </div>
                 </div>
             </div>
@@ -370,5 +375,28 @@
             </div>
         </div>
     </footer>
+    
+    <script>
+        // Menu mobile toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Fermer le menu en cliquant sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+        }
+    </script>
 </body>
 </html>
