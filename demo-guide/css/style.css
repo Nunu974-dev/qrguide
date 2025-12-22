@@ -672,6 +672,9 @@
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    height: 70vh;
+    min-height: 600px;
+    max-height: 800px;
   }
   
   /* Limiter la largeur du footer sur desktop */
