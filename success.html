@@ -182,7 +182,7 @@
                 await firebase.firestore().collection('users').doc(user.uid).set({
                     email: data.email,
                     name: data.name,
-                    role: 'user',
+                    role: 'client',
                     plan: data.planType,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     status: 'active'
