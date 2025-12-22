@@ -109,9 +109,9 @@
 
 /* Bouton retour au site */
 .back-to-site-btn {
-  position: absolute !important;
+  position: fixed !important;
   top: 20px !important;
-  right: 600px !important;
+  right: 20px !important;
   background: rgba(255, 255, 255, 0.9);
   color: rgb(37, 35, 35);
   padding: 10px 20px;
@@ -123,6 +123,8 @@
   transition: all var(--transition-smooth);
   z-index: 9999 !important;
   display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
