@@ -87,6 +87,10 @@
     </style>
     <!-- Stripe.js -->
     <script src="https://js.stripe.com/v3/"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
@@ -753,10 +757,35 @@
 
             // Désactiver le bouton pendant le traitement
             const paymentBtn = document.getElementById('paymentBtn');
+            paymentBtn.disabled = true;
+            paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Vérification...';
+
+            try {
+                // 1. VÉRIFIER SI L'EMAIL EXISTE DÉJÀ
+                console.log('🔍 Vérification email:', formData.email);
+                
+                const signInMethods = await firebase.auth().fetchSignInMethodsForEmail(formData.email);
+                
+                if (signInMethods && signInMethods.length > 0) {
+                    // Le compte existe déjà
+                    alert('❌ Un compte existe déjà avec cet email.\n\nVeuillez vous connecter ou utiliser une autre adresse email.');
+                    paymentBtn.disabled = false;
+                    paymentBtn.innerHTML = '💳 Payer maintenant';
+                    return;
+                }
+                
+                console.log('✅ Email disponible');
+                
+            } catch (error) {
+                console.error('Erreur vérification email:', error);
+                alert('❌ Erreur de vérification de l\'email. Veuillez réessayer.');
+                paymentBtn.disabled = false;
+                paymentBtn.innerHTML = '💳 Payer maintenant';
+                return;
+            }
             
-            // Si le backend n'est pas encore prêt, attendre
+            // 2. Si le backend n'est pas encore prêt, attendre
             if (!backendReady) {
-                paymentBtn.disabled = true;
                 paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Préparation du serveur...';
                 
                 // Attendre max 30 secondes
@@ -768,11 +797,10 @@
                 }
             }
             
-            paymentBtn.disabled = true;
             paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Connexion sécurisée...';
 
             try {
-                // Appeler le backend pour créer la session Stripe
+                // 3. Appeler le backend pour créer la session Stripe
                 const requestData = {
                     plan: plan.value,
                     plaqueQty: plaqueQty,
