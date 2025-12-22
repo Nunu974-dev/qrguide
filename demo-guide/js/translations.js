@@ -7,8 +7,8 @@ const translations = {
     fr: {
         // Hero
         villa_premium: "Villa Premium",
-        villa_title: "Villa Vue Mer Cannes",
-        location: "Cannes, Côte d'Azur",
+        villa_title: "Villa Vue Mer Saint-Paul",
+        location: "Île de la Réunion - Saint-Paul",
         tagline_1: "Votre guide numérique",
         tagline_2: "pour un séjour d'exception",
         
@@ -47,8 +47,8 @@ const translations = {
     en: {
         // Hero
         villa_premium: "Premium Villa",
-        villa_title: "Sea View Villa Cannes",
-        location: "Cannes, French Riviera",
+        villa_title: "Sea View Villa Saint-Paul",
+        location: "Reunion Island - Saint-Paul",
         tagline_1: "Your digital guide",
         tagline_2: "for an exceptional stay",
         
@@ -87,8 +87,8 @@ const translations = {
     es: {
         // Hero
         villa_premium: "Villa Premium",
-        villa_title: "Villa Vista al Mar Cannes",
-        location: "Cannes, Costa Azul",
+        villa_title: "Villa Vista al Mar Saint-Paul",
+        location: "Isla de la Reunión - Saint-Paul",
         tagline_1: "Tu guía digital",
         tagline_2: "para una estancia excepcional",
         
@@ -127,8 +127,8 @@ const translations = {
     de: {
         // Hero
         villa_premium: "Premium Villa",
-        villa_title: "Meerblick Villa Cannes",
-        location: "Cannes, Côte d'Azur",
+        villa_title: "Meerblick Villa Saint-Paul",
+        location: "Réunion - Saint-Paul",
         tagline_1: "Ihr digitaler Reiseführer",
         tagline_2: "für einen außergewöhnlichen Aufenthalt",
         
