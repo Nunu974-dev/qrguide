@@ -1909,6 +1909,19 @@ input:checked + .slider:before {
         display: flex;
     }
     
+    /* Container avec padding pour éviter les débordements */
+    .container {
+        padding: 0 16px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    /* Empêcher tous les éléments de dépasser */
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
     /* Masquer les liens de navigation par défaut */
     .nav-links {
         position: fixed;
@@ -1949,6 +1962,7 @@ input:checked + .slider:before {
     .nav-links .btn-primary {
         margin-top: 12px;
         padding: 16px 28px;
+        width: 100%;
     }
     
     /* Empêcher le scroll quand le menu est ouvert */
@@ -1977,22 +1991,55 @@ input:checked + .slider:before {
     
     .hero-image {
         order: -1;
+        max-height: 300px;
+        overflow: hidden;
     }
     
     .hero-image img {
         max-width: 100%;
         height: auto;
+        object-fit: contain;
     }
     
     .hero-buttons {
         flex-direction: column;
         gap: 12px;
+        width: 100%;
     }
     
     .hero-buttons .btn-hero,
     .hero-buttons .btn-secondary {
         width: 100%;
         text-align: center;
+        padding: 14px 20px;
+        white-space: normal;
+    }
+    
+    /* Tous les boutons en pleine largeur sur mobile */
+    .btn-primary,
+    .btn-secondary,
+    .btn-hero {
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 20px;
+        font-size: 0.95rem;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    /* Grilles en une colonne sur mobile */
+    .problem-grid,
+    .solution-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* Cards avec padding réduit */
+    .problem-card,
+    .feature-card {
+        padding: 20px;
+        margin: 0;
     }
     
     .hero-stats {
@@ -2141,5 +2188,40 @@ input:checked + .slider:before {
     
     .mobile-menu-toggle span {
         width: 25px;
+    }
+}
+
+/* ===========================
+   Dark Mode System Support
+   =========================== */
+@media (prefers-color-scheme: dark) {
+    /* Header avec fond sombre */
+    .header {
+        background: rgba(26, 26, 26, 0.95);
+        border-bottom: 1px solid #333;
+    }
+    
+    /* Logo blanc en dark mode */
+    .logo {
+        content: url('img/logo_blanc.png');
+    }
+    
+    /* Menu hamburger en blanc */
+    .mobile-menu-toggle span {
+        background: #ffffff;
+    }
+    
+    /* Navigation links en blanc */
+    .nav-links a {
+        color: #ffffff;
+    }
+    
+    /* Menu mobile avec fond sombre */
+    .nav-links {
+        background: rgba(26, 26, 26, 0.98);
+    }
+    
+    .nav-links a {
+        border-bottom: 1px solid #333;
     }
 }
