@@ -69,9 +69,14 @@ const STRIPE_PRICE_IDS = {
 };
 
 // Fonction pour envoyer email via Nodemailer
-async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, tempPassword = null) {
+async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, tempPassword = null, isNewUser = true) {
     const planText = plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)';
     const plaquesText = plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''}` : 'Aucune';
+    
+    const titleText = isNewUser ? 'Bienvenue chez QRGUIDE !' : 'Abonnement renouvelé !';
+    const messageText = isNewUser 
+        ? 'Votre compte a été créé avec succès.' 
+        : 'Votre abonnement a été mis à jour.';
     
     const htmlContent = `
 <!DOCTYPE html>
@@ -87,8 +92,8 @@ async function sendConfirmationEmail(customerEmail, customerName, plan, plaques,
                     <tr>
                         <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
                             <img src="https://qrguide.fr/img/logo.png" alt="QRGUIDE" style="height: 50px; margin-bottom: 20px;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Bienvenue chez QRGUIDE !</h1>
-                            <p style="color: #ffffff; margin: 10px 0 0 0; opacity: 0.9;">Votre compte a été créé avec succès</p>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">${titleText}</h1>
+                            <p style="color: #ffffff; margin: 10px 0 0 0; opacity: 0.9;">${messageText}</p>
                         </td>
                     </tr>
                     <tr>
@@ -492,32 +497,76 @@ app.post('/webhook', async (req, res) => {
             const total = session.metadata.totalAmount;
 
             let tempPassword = null;
+            let userRecord = null;
+            let isNewUser = false;
 
             try {
-                // Générer un mot de passe temporaire
-                tempPassword = Math.random().toString(36).slice(-8) + 'Aa1!';
-                
-                // Créer l'utilisateur Firebase Auth
-                const userRecord = await admin.auth().createUser({
-                    email: customerEmail,
-                    password: tempPassword,
-                    displayName: customerName,
-                    emailVerified: false
-                });
-                
-                console.log('✅ Utilisateur Firebase créé:', userRecord.uid);
-                
-                // Créer le document Firestore
-                await firestore.collection('users').doc(userRecord.uid).set({
-                    email: customerEmail,
-                    displayName: customerName,
-                    phone: customerPhone,
-                    role: 'client',
-                    plan: plan,
-                    maxLogements: 3,
-                    stripeCustomerId: session.customer,
-                    stripeSubscriptionId: session.subscription || null,
-                    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                // ====================================
+                // VÉRIFIER SI L'EMAIL EXISTE DÉJÀ
+                // ====================================
+                try {
+                    userRecord = await admin.auth().getUserByEmail(customerEmail);
+                    console.log('⚠️ Compte existant détecté:', userRecord.uid);
+                    
+                    // Récupérer le mot de passe depuis Firestore (si stocké)
+                    const userDoc = await firestore.collection('users').doc(userRecord.uid).get();
+                    if (userDoc.exists && userDoc.data().tempPassword) {
+                        tempPassword = userDoc.data().tempPassword;
+                        console.log('📧 Utilisation du mot de passe existant');
+                    } else {
+                        // Pas de mot de passe stocké, on envoie juste une notification
+                        tempPassword = null;
+                        console.log('📧 Compte existant sans mot de passe temporaire');
+                    }
+                    
+                    // Mettre à jour l'abonnement dans Firestore
+                    await firestore.collection('users').doc(userRecord.uid).update({
+                        plan: plan,
+                        stripeCustomerId: session.customer,
+                        stripeSubscriptionId: session.subscription || null,
+                        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    console.log('✅ Abonnement mis à jour pour utilisateur existant');
+                    
+                } catch (authError) {
+                    // L'email n'existe pas → Créer un nouveau compte
+                    if (authError.code === 'auth/user-not-found') {
+                        isNewUser = true;
+                        
+                        // Générer un mot de passe temporaire
+                        tempPassword = Math.random().toString(36).slice(-8) + 'Aa1!';
+                        
+                        // Créer l'utilisateur Firebase Auth
+                        userRecord = await admin.auth().createUser({
+                            email: customerEmail,
+                            password: tempPassword,
+                            displayName: customerName,
+                            emailVerified: false
+                        });
+                        
+                        console.log('✅ Nouvel utilisateur Firebase créé:', userRecord.uid);
+                        
+                        // Créer le document Firestore
+                        await firestore.collection('users').doc(userRecord.uid).set({
+                            email: customerEmail,
+                            displayName: customerName,
+                            phone: customerPhone,
+                            role: 'client',
+                            plan: plan,
+                            maxLogements: 3,
+                            stripeCustomerId: session.customer,
+                            stripeSubscriptionId: session.subscription || null,
+                            tempPassword: tempPassword, // Sauvegarder le mot de passe temporaire
+                            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                            firstLogin: true
+                        });
+                        
+                        console.log('✅ Document Firestore créé');
+                    } else {
+                        throw authError; // Autre erreur
+                    }
+                }
                     firstLogin: true
                 });
                 
@@ -535,7 +584,8 @@ app.post('/webhook', async (req, res) => {
                 plan,
                 plaques,
                 total,
-                tempPassword
+                tempPassword,
+                isNewUser
             );
             
             // Envoyer notification à l'admin
@@ -547,7 +597,7 @@ app.post('/webhook', async (req, res) => {
                 total
             );
             
-            console.log('📧 Emails envoyés (client + admin)');
+            console.log(`📧 Emails envoyés (client ${isNewUser ? 'nouveau' : 'existant'} + admin)`);
         }
 
         res.json({ received: true });
