@@ -8,7 +8,7 @@
     <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
     <link rel="stylesheet" href="style.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -182,17 +182,7 @@
     </footer>
 
     <script>
-        // Configuration EmailJS
-        const EMAILJS_CONFIG = {
-            publicKey: 'VOTRE_PUBLIC_KEY',
-            serviceId: 'VOTRE_SERVICE_ID',
-            templateId: 'VOTRE_TEMPLATE_ID'
-        };
-
-        // Initialiser EmailJS
-        emailjs.init(EMAILJS_CONFIG.publicKey);
-
-        // Gestion du formulaire
+        // Gestion du formulaire de contact
         document.getElementById('helpForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -210,25 +200,25 @@
                     message: document.getElementById('message').value
                 };
 
-                const response = await emailjs.send(
-                    EMAILJS_CONFIG.serviceId,
-                    EMAILJS_CONFIG.templateId,
-                    {
-                        from_name: formData.nom,
-                        from_email: formData.email,
-                        phone: formData.telephone,
-                        subject: formData.sujet,
-                        message: formData.message,
-                        type: 'Demande d\'aide'
-                    }
-                );
+                const response = await fetch('send-contact.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
 
-                // Succès
-                alert('✅ Message envoyé avec succès !\n\nNous vous répondons sous 24h.');
-                this.reset();
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Message envoyé avec succès !\n\nNous vous répondons sous 24h.');
+                    this.reset();
+                } else {
+                    throw new Error(result.message || 'Erreur inconnue');
+                }
 
             } catch (error) {
-                console.error('Erreur EmailJS:', error);
+                console.error('Erreur:', error);
                 alert('❌ Erreur lors de l\'envoi.\n\nVeuillez réessayer ou nous contacter directement par téléphone au 06 92 63 03 64.');
             } finally {
                 submitBtn.disabled = false;
