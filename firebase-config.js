@@ -18,4 +18,4 @@ firebase.initializeApp(firebaseConfig);
 // Services Firebase
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
+// const storage = firebase.storage(); // Non utilisé pour l'instant

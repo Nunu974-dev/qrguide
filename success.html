@@ -246,8 +246,13 @@
             }
         }
         
-        // Exécuter au chargement de la page
-        setupUserAccount();
+        // Exécuter APRÈS que Firebase soit chargé
+        window.addEventListener('load', async () => {
+            // Attendre que Firebase soit initialisé
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log('🔥 Firebase prêt, création du compte...');
+            setupUserAccount();
+        });
     </script>
 </body>
 </html>
