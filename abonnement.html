@@ -679,6 +679,51 @@
         // URL du backend Stripe (à modifier après déploiement sur Render.com)
         const BACKEND_URL = 'https://qrguide-backend.onrender.com'; // ⚠️ À MODIFIER après déploiement
 
+        // ============================================
+        // WARM-UP DU SERVEUR BACKEND (Render.com se met en veille)
+        // ============================================
+        // Réveiller le serveur dès le chargement de la page pour éviter le délai lors du paiement
+        async function warmupBackend() {
+            try {
+                console.log('🔥 Réveil du serveur backend...');
+                const startTime = Date.now();
+                
+                // Requête ping simple avec timeout court
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 secondes max
+                
+                const response = await fetch(`${BACKEND_URL}/health`, {
+                    method: 'GET',
+                    signal: controller.signal
+                }).catch(() => {
+                    // Si /health n'existe pas, essayer avec OPTIONS sur create-checkout-session
+                    return fetch(`${BACKEND_URL}/create-checkout-session`, {
+                        method: 'OPTIONS',
+                        signal: controller.signal
+                    });
+                });
+                
+                clearTimeout(timeoutId);
+                const duration = Date.now() - startTime;
+                
+                if (response && response.ok) {
+                    console.log(`✅ Serveur backend prêt (${duration}ms)`);
+                } else {
+                    console.log(`⚠️ Serveur backend réveillé (${duration}ms)`);
+                }
+            } catch (error) {
+                console.log('⚠️ Impossible de contacter le serveur backend:', error.message);
+                // Ne pas bloquer le chargement de la page
+            }
+        }
+        
+        // Lancer le warm-up dès que possible
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', warmupBackend);
+        } else {
+            warmupBackend();
+        }
+
         // Initialiser Stripe.js
         const stripe = Stripe('pk_test_51SfMI0IuJcG0yZsyft4aaNpPWOL1r8jmOzoiJY4i3ChsAraAkywvATuBSaQopIcYQov0De84WONpRBwJkZ46jcvP00m1x3EDLD');
 
