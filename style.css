@@ -877,15 +877,36 @@ a {
 
 .demo-qr {
     background: var(--white);
-    padding: 32px;
+    padding: 40px;
     border-radius: 12px;
-    display: inline-block;
-    margin-bottom: 24px;
+    display: block;
+    text-align: center;
+    margin: 0 auto 24px;
+    width: fit-content;
 }
 
 .demo-qr img {
     width: 200px;
     height: 200px;
+    display: block;
+    margin: 0 auto 16px auto;
+}
+
+.demo-qr p {
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.demo-qr a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.demo-qr a:hover {
+    text-decoration: underline;
 }
 
 /* ===========================
@@ -993,6 +1014,20 @@ a {
     margin-top: 16px;
     font-size: 0.95rem;
     opacity: 0.9;
+}
+
+.final-cta .btn-hero {
+    background: white !important;
+    background-image: none !important;
+    color: #1a1a1a !important;
+    border: 2px solid white !important;
+}
+
+.final-cta .btn-hero:hover {
+    background: transparent !important;
+    background-image: none !important;
+    color: white !important;
+    border-color: white !important;
 }
 
 /* ===========================
@@ -1409,6 +1444,52 @@ input:checked + .slider:before {
     margin-top: 12px;
     width: 100%;
     text-align: center;
+}
+
+/* Modal image plein écran */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    cursor: zoom-out;
+}
+
+.image-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10001;
+}
+
+.image-modal-close:hover {
+    color: var(--primary-color);
 }
 
 .pack-complet {
@@ -1997,8 +2078,9 @@ input:checked + .slider:before {
     
     .hero-image img {
         max-width: 100%;
-        height: auto;
-        object-fit: contain;
+        height: 400px;
+        object-fit: cover;
+        object-position: center;
     }
     
     .hero-buttons {
@@ -2025,6 +2107,14 @@ input:checked + .slider:before {
         font-size: 0.95rem;
         white-space: normal;
         text-align: center;
+    }
+    
+    /* Bouton blanc dans final-cta (doit être APRÈS la règle générale) */
+    .final-cta .btn-hero {
+        background: white !important;
+        background-image: none !important;
+        color: #1a1a1a !important;
+        border: 2px solid white !important;
     }
     
     /* Grilles en une colonne sur mobile */
@@ -2057,8 +2147,12 @@ input:checked + .slider:before {
     .steps-grid,
     .pricing-grid,
     .solution-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
         gap: 20px;
+    }
+    
+    .pricing-card {
+        max-width: 100%;
     }
     
     .solution-image {
@@ -2072,6 +2166,14 @@ input:checked + .slider:before {
     /* Pricing cards */
     .pricing-cards {
         grid-template-columns: 1fr;
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .pricing-card {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .pricing-card.featured {
@@ -2081,17 +2183,19 @@ input:checked + .slider:before {
     /* Form total responsive */
     .form-total {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 8px;
+        text-align: center;
     }
     
     .total-label {
         font-size: 1rem;
+        text-align: center;
     }
     
     .total-amount {
         font-size: 1.75rem;
-        text-align: left;
+        text-align: center;
     }
     
     /* Contact grid */
@@ -2119,6 +2223,22 @@ input:checked + .slider:before {
         gap: 40px !important;
     }
     
+    .section-white .container {
+        padding: 40px 15px !important;
+        max-width: 100% !important;
+        overflow: hidden;
+    }
+    
+    .section-white div[style*="background: linear-gradient(135deg, #667eea"] {
+        padding: 20px !important;
+        margin: 0 !important;
+    }
+    
+    .section-white div[style*="grid-template-columns: 1fr 1fr"][style*="gap: 16px"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
     .section-white h2 {
         font-size: 2rem !important;
     }
@@ -2134,6 +2254,66 @@ input:checked + .slider:before {
     
     .plaque-product {
         grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 24px;
+    }
+    
+    /* Section plaque dans abonnement.html */
+    .plaque-section {
+        flex-direction: column !important;
+        gap: 16px !important;
+        padding: 16px !important;
+    }
+    
+    .plaque-image {
+        flex: 1 1 auto !important;
+        max-width: 100% !important;
+    }
+    
+    .plaque-details {
+        flex: 1 1 auto !important;
+    }
+    
+    .carousel-images {
+        min-height: 250px !important;
+        max-height: 350px !important;
+        padding: 0;
+        width: 100%;
+    }
+    
+    .carousel-img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+    
+    .plaque-details h4 {
+        font-size: 1.25rem !important;
+    }
+    
+    .plaque-amount {
+        font-size: 1rem !important;
+    }
+    
+    .plaque-label {
+        font-size: 0.85rem !important;
+    }
+    
+    .plaque-price-tag {
+        padding: 8px 16px !important;
+        gap: 8px !important;
+    }
+    
+    .plaque-features li {
+        font-size: 0.9rem !important;
+        padding: 8px !important;
+    }
+    
+    .plaque-features strong {
+        min-width: 80px !important;
+        font-size: 0.85rem;
     }
     
     .explanation-grid {
@@ -2143,6 +2323,11 @@ input:checked + .slider:before {
     .screenshots-grid {
         flex-direction: column;
         align-items: center;
+        gap: 48px;
+    }
+    
+    .screenshot-item {
+        margin-bottom: 24px;
     }
     
     .testimonials-grid {
@@ -2174,8 +2359,8 @@ input:checked + .slider:before {
     }
     
     .logo {
-        height: 50px;
-        margin: -10px 0;
+        height: 100px;
+        margin: -20px 0;
     }
     
     .stat-number {

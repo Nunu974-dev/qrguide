@@ -1275,3 +1275,13 @@ body {
     background: rgba(255, 255, 255, 0.95) !important;
   }
 }
+
+/* Mobile: repositionner le bouton retour au site */
+@media (max-width: 768px) {
+  .back-to-site-btn {
+    right: 10px !important;
+    top: 10px !important;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+}

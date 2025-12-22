@@ -16,6 +16,11 @@
         <div class="container">
             <nav class="nav">
                 <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <div class="nav-links">
                     <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
@@ -148,7 +153,7 @@
             <div class="footer-content">
                 <div class="footer-col">
                     <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
-                    <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières et hôtels</p>
                 </div>
                 <div class="footer-col">
                     <h4>Produit</h4>
@@ -159,7 +164,7 @@
                 </div>
                 <div class="footer-col">
                     <h4>Support</h4>
-                    <a href="contact.html">Aide</a>
+                    <a href="contact.html">Contact</a>
                     <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
                     <a href="tel:0692630364">06 92 63 03 64</a>
                 </div>
@@ -230,6 +235,29 @@
                 submitBtn.innerHTML = originalText;
             }
         });
+    </script>
+
+    <script>
+        // Menu mobile toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Fermer le menu en cliquant sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+        }
     </script>
 </body>
 </html>

@@ -14,6 +14,11 @@
         <div class="container">
             <nav class="nav">
                 <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <div class="nav-links">
                     <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
@@ -159,7 +164,7 @@
                 <h3>Option : Plaque QR Code professionnelle</h3>
                 <div class="plaque-product">
                     <div class="plaque-carousel">
-                        <div class="carousel-images">
+                        <div class="carousel-images" onclick="openImageModal(event)">
                             <img src="img/Qr%20guide%20exemple.png" alt="Plaque QR Guide" class="carousel-img active">
                             <img src="img/Qr%20guide%20mock%20up.png" alt="Plaque QR Guide mockup" class="carousel-img">
                             <img src="img/Qr%20guide%20exemple%202.png" alt="Plaque QR Guide exemple 2" class="carousel-img">
@@ -172,14 +177,15 @@
                     </div>
                     <div class="plaque-details">
                         <div class="plaque-price-tag">
-                            <span class="plaque-amount">45€</span>
+                            <span class="plaque-amount">À partir de 35€</span>
                             <span class="plaque-label">Option</span>
                         </div>
                         <h4>Plaque professionnelle en PVC rigide</h4>
-                        <p class="plaque-description">Une plaque élégante et durable pour mettre en valeur votre QR code à l'entrée de votre logement.</p>
+                        <p class="plaque-description">Une plaque élégante et durable pour mettre en valeur votre QR code à l'entrée de votre logement. Disponible en 2 formats.</p>
                         
                         <ul class="plaque-features">
-                            <li>📏 <strong>Dimensions :</strong> 15 x 20 cm</li>
+                            <li>📏 <strong>Format A4 :</strong> 21 x 29.7 cm - 45€</li>
+                            <li>📏 <strong>Format A5 :</strong> 14.8 x 21 cm - 35€</li>
                             <li>🎨 <strong>Matériau :</strong> PVC rigide haute qualité</li>
                             <li>☀️ <strong>Résistance :</strong> UV et eau</li>
                             <li>✨ <strong>Design :</strong> Logo QRGUIDE professionnel</li>
@@ -187,7 +193,7 @@
                             <li>🔧 <strong>Installation :</strong> Adhésif double-face inclus</li>
                         </ul>
                         
-                        <a href="contact.html?plan=plaque" class="btn-hero">Commander la plaque - 45€</a>
+                        <a href="abonnement.html" class="btn-hero">Commander une plaque</a>
                     </div>
                 </div>
             </div>
@@ -244,7 +250,7 @@
             <div class="footer-content">
                 <div class="footer-col">
                     <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
-                    <p>Le guide numérique nouvelle génération pour locations saisonnières</p>
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières et hôtels</p>
                 </div>
                 <div class="footer-col">
                     <h4>Produit</h4>
@@ -334,6 +340,53 @@
                 toggle.dispatchEvent(new Event('change'));
             });
         });
+    </script>
+
+    <!-- Modal pour image plein écran -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="image-modal-close">&times;</span>
+        <img id="modalImg" src="" alt="">
+    </div>
+
+    <script>
+        function openImageModal(event) {
+            if (event.target.tagName === 'IMG') {
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('modalImg');
+                modalImg.src = event.target.src;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    </script>
+
+    <script>
+        // Menu mobile toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Fermer le menu en cliquant sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+        }
     </script>
 </body>
 </html>
