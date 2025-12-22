@@ -311,22 +311,29 @@
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="nom">Nom complet *</label>
+                                <label for="prenom">Prénom *</label>
+                                <input type="text" id="prenom" name="prenom" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nom">Nom *</label>
                                 <input type="text" id="nom" name="nom" required>
                             </div>
+                        </div>
+                        
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="email">Email *</label>
                                 <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telephone">Téléphone *</label>
+                                <input type="tel" id="telephone" name="telephone" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="telephone">Téléphone *</label>
-                                <input type="tel" id="telephone" name="telephone" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="ville">code postal du logement *</label>
+                                <label for="ville">Code postal du logement *</label>
                                 <input type="text" id="ville" name="ville" required>
                             </div>
                         </div>
@@ -639,6 +646,7 @@
             }
 
             return {
+                prenom: document.getElementById('prenom').value,
                 nom: document.getElementById('nom').value,
                 email: document.getElementById('email').value,
                 telephone: document.getElementById('telephone').value,
@@ -680,11 +688,6 @@
 
             // Collecter les infos du formulaire
             const formData = getFormData();
-            
-            // Séparer nom et prénom
-            const nameParts = formData.nom.trim().split(' ');
-            const firstName = nameParts[0] || '';
-            const lastName = nameParts.slice(1).join(' ') || '';
 
             // Désactiver le bouton pendant le traitement
             const paymentBtn = document.getElementById('paymentBtn');
@@ -697,8 +700,8 @@
                     plan: plan.value,
                     plaqueQty: plaqueQty,
                     customerInfo: {
-                        firstName: firstName,
-                        lastName: lastName,
+                        firstName: formData.prenom,
+                        lastName: formData.nom,
                         email: formData.email,
                         phone: formData.telephone
                     },
