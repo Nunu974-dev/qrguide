@@ -8,6 +8,21 @@
     <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
     <link rel="stylesheet" href="style.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Pré-warmup du backend TRÈS TÔT -->
+    <script>
+        (function() {
+            const BACKEND_URL = 'https://qrguide-backend.onrender.com';
+            console.log('🔥 Pré-warmup backend (avant chargement page)...');
+            
+            // Lancer la requête immédiatement sans attendre
+            fetch(BACKEND_URL + '/health', { method: 'GET' })
+                .catch(() => fetch(BACKEND_URL + '/create-checkout-session', { method: 'OPTIONS' }))
+                .then(() => console.log('✅ Pré-warmup terminé'))
+                .catch(() => console.log('⚠️ Pré-warmup timeout'));
+        })();
+    </script>
+    
     <style>
         /* Style pour les options de nombre de logements */
         .logement-option {
@@ -677,26 +692,25 @@
         // ============================================
 
         // URL du backend Stripe (à modifier après déploiement sur Render.com)
-        const BACKEND_URL = 'https://qrguide-backend.onrender.com'; // ⚠️ À MODIFIER après déploiement
+        const BACKEND_URL = 'https://qrguide-backend.onrender.com';
+        let backendReady = false;
 
         // ============================================
         // WARM-UP DU SERVEUR BACKEND (Render.com se met en veille)
         // ============================================
-        // Réveiller le serveur dès le chargement de la page pour éviter le délai lors du paiement
         async function warmupBackend() {
             try {
                 console.log('🔥 Réveil du serveur backend...');
                 const startTime = Date.now();
                 
-                // Requête ping simple avec timeout court
+                // Timeout de 30 secondes au lieu de 10
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 secondes max
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
                 
                 const response = await fetch(`${BACKEND_URL}/health`, {
                     method: 'GET',
                     signal: controller.signal
                 }).catch(() => {
-                    // Si /health n'existe pas, essayer avec OPTIONS sur create-checkout-session
                     return fetch(`${BACKEND_URL}/create-checkout-session`, {
                         method: 'OPTIONS',
                         signal: controller.signal
@@ -707,22 +721,20 @@
                 const duration = Date.now() - startTime;
                 
                 if (response && response.ok) {
+                    backendReady = true;
                     console.log(`✅ Serveur backend prêt (${duration}ms)`);
                 } else {
+                    backendReady = true;
                     console.log(`⚠️ Serveur backend réveillé (${duration}ms)`);
                 }
             } catch (error) {
-                console.log('⚠️ Impossible de contacter le serveur backend:', error.message);
-                // Ne pas bloquer le chargement de la page
+                backendReady = true;
+                console.log('⚠️ Timeout warmup, tentative quand même');
             }
         }
         
-        // Lancer le warm-up dès que possible
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', warmupBackend);
-        } else {
-            warmupBackend();
-        }
+        // Lancer IMMÉDIATEMENT, pas besoin d'attendre DOMContentLoaded
+        warmupBackend();
 
         // Initialiser Stripe.js
         const stripe = Stripe('pk_test_51SfMI0IuJcG0yZsyft4aaNpPWOL1r8jmOzoiJY4i3ChsAraAkywvATuBSaQopIcYQov0De84WONpRBwJkZ46jcvP00m1x3EDLD');
@@ -741,6 +753,21 @@
 
             // Désactiver le bouton pendant le traitement
             const paymentBtn = document.getElementById('paymentBtn');
+            
+            // Si le backend n'est pas encore prêt, attendre
+            if (!backendReady) {
+                paymentBtn.disabled = true;
+                paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Préparation du serveur...';
+                
+                // Attendre max 30 secondes
+                const maxWait = 30000;
+                const startWait = Date.now();
+                
+                while (!backendReady && (Date.now() - startWait) < maxWait) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+            
             paymentBtn.disabled = true;
             paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Connexion sécurisée...';
 
