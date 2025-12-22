@@ -839,7 +839,12 @@
                     email: formData.email,
                     name: `${formData.prenom} ${formData.nom}`,
                     amount: totalAmount,
-                    planType: plan.value === 'monthly' ? 'mensuel' : 'annuel'
+                    planType: plan.value === 'monthly' ? 'mensuel' : 'annuel',
+                    plaqueQty: plaqueQty,
+                    planDetails: {
+                        monthly: plan.value === 'monthly' ? '79€/mois' : '790€/an',
+                        plaques: plaqueQty
+                    }
                 }));
 
                 // Rediriger vers Stripe Checkout
