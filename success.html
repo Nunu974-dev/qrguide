@@ -135,5 +135,51 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Envoyer l'email de confirmation automatiquement
+        async function sendConfirmationEmail() {
+            // Récupérer les infos du localStorage (sauvegardées lors du paiement)
+            const orderData = localStorage.getItem('qrguide_order');
+            
+            if (!orderData) {
+                console.log('Aucune donnée de commande trouvée');
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(orderData);
+                
+                const response = await fetch('send-confirmation-email.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: data.email,
+                        name: data.name,
+                        amount: data.amount / 100, // Convertir centimes en euros
+                        planType: data.planType
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('✅ Email de confirmation envoyé');
+                    // Supprimer les données après envoi
+                    localStorage.removeItem('qrguide_order');
+                } else {
+                    console.error('❌ Erreur envoi email:', result.error);
+                }
+                
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+            }
+        }
+        
+        // Envoyer l'email au chargement de la page
+        sendConfirmationEmail();
+    </script>
 </body>
 </html>

@@ -1,10 +1,24 @@
 <?php
-// Fichier de test pour vérifier l'envoi d'email de confirmation
-// SUPPRIMEZ CE FICHIER après les tests
+// Script simple pour envoyer l'email de confirmation depuis success.html
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json');
 
-require 'vendor/phpmailer/phpmailer/src/Exception.php';
-require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed']);
+    exit();
+}
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -12,14 +26,20 @@ use PHPMailer\PHPMailer\Exception;
 // Charger la configuration email
 $config = require 'email-config.php';
 
-// ⚠️ REMPLACEZ PAR VOTRE EMAIL DE TEST
-$testEmail = 'contact@qrguide.fr';
-$testName = 'Test Client';
-$testAmount = 158;
-$testPlan = 'mensuel';
+// Récupérer les données
+$json = file_get_contents('php://input');
+$data = json_decode($json, true);
 
-echo "<h1>Test d'envoi d'email de confirmation</h1>";
-echo "<p>Envoi à : $testEmail</p>";
+$customerEmail = $data['email'] ?? '';
+$customerName = $data['name'] ?? 'Client';
+$amount = $data['amount'] ?? 0;
+$planType = $data['planType'] ?? 'mensuel';
+
+if (!$customerEmail) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Email manquant']);
+    exit();
+}
 
 try {
     $mail = new PHPMailer(true);
@@ -36,11 +56,12 @@ try {
     
     // Expéditeur et destinataire
     $mail->setFrom($config['from_email'], 'QRGUIDE.FR');
-    $mail->addAddress($testEmail, $testName);
+    $mail->addAddress($customerEmail, $customerName);
+    $mail->addBCC($config['to_email']); // Copie admin
     
     // Contenu
     $mail->isHTML(true);
-    $mail->Subject = '🎉 [TEST] Confirmation de votre commande QRGUIDE';
+    $mail->Subject = '🎉 Confirmation de votre commande QRGUIDE';
     
     $mail->Body = "
     <!DOCTYPE html>
@@ -67,9 +88,9 @@ try {
             </div>
             
             <div class='content'>
-                <p>Bonjour <strong>$testName</strong>,</p>
+                <p>Bonjour <strong>$customerName</strong>,</p>
                 
-                <p>Nous avons bien reçu votre paiement de <strong>$testAmount€</strong> pour votre abonnement <strong>$testPlan</strong>.</p>
+                <p>Nous avons bien reçu votre paiement de <strong>$amount€</strong> pour votre abonnement <strong>$planType</strong>.</p>
                 
                 <div class='box'>
                     <h2>✅ Paiement confirmé</h2>
@@ -79,7 +100,7 @@ try {
                 <div class='steps'>
                     <h3>📋 Prochaines étapes :</h3>
                     <ol>
-                        <li><strong>Sous 24h</strong> : Nous vous enverrons un formulaire à remplir avec les informations de votre location</li>
+                        <li><strong>Sous 24h</strong> : Nous vous enverrons un formulaire à remplir avec les informations de votre location (adresse, équipements, wifi, etc.)</li>
                         <li><strong>Sous 48h</strong> : Notre équipe créera votre guide personnalisé</li>
                         <li><strong>Livraison</strong> : Vous recevrez votre guide digital + le QR code par email</li>
                         <li><strong>Support</strong> : Nous restons disponibles pour toute modification ou question</li>
@@ -114,22 +135,14 @@ try {
     </html>
     ";
     
-    $mail->AltBody = "Bonjour $testName,\n\nMerci pour votre commande de $testAmount€ !\n\nCeci est un email de test.";
+    $mail->AltBody = "Bonjour $customerName,\n\nMerci pour votre commande de $amount€ pour l'abonnement $planType.\n\nPROCHAINES ÉTAPES:\n1. Sous 24h : Formulaire à remplir\n2. Sous 48h : Création de votre guide\n3. Livraison : Guide + QR code par email\n\nContact : contact@qrguide.fr | 06 92 63 03 64";
     
     $mail->send();
     
-    echo "<div style='background: #d4edda; color: #155724; padding: 20px; border-radius: 8px; margin: 20px 0;'>";
-    echo "<h2>✅ Email envoyé avec succès !</h2>";
-    echo "<p>Vérifiez la boîte mail de <strong>$testEmail</strong></p>";
-    echo "</div>";
+    echo json_encode(['success' => true, 'message' => 'Email envoyé']);
     
 } catch (Exception $e) {
-    echo "<div style='background: #f8d7da; color: #721c24; padding: 20px; border-radius: 8px; margin: 20px 0;'>";
-    echo "<h2>❌ Erreur lors de l'envoi</h2>";
-    echo "<p>Message d'erreur : " . $mail->ErrorInfo . "</p>";
-    echo "</div>";
+    http_response_code(500);
+    echo json_encode(['error' => $mail->ErrorInfo]);
 }
-
-echo "<hr>";
-echo "<p><strong>⚠️ N'oubliez pas de supprimer ce fichier après les tests !</strong></p>";
 ?>

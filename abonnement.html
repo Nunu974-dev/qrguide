@@ -779,6 +779,14 @@
 
                 const { sessionId } = await response.json();
 
+                // Sauvegarder les infos pour l'email de confirmation
+                localStorage.setItem('qrguide_order', JSON.stringify({
+                    email: formData.email,
+                    name: `${formData.prenom} ${formData.nom}`,
+                    amount: totalAmount,
+                    planType: plan.value === 'monthly' ? 'mensuel' : 'annuel'
+                }));
+
                 // Rediriger vers Stripe Checkout
                 const result = await stripe.redirectToCheckout({ sessionId });
 
