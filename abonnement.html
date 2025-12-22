@@ -680,6 +680,11 @@
 
             // Collecter les infos du formulaire
             const formData = getFormData();
+            
+            // Séparer nom et prénom
+            const nameParts = formData.nom.trim().split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
 
             // Désactiver le bouton pendant le traitement
             const paymentBtn = document.getElementById('paymentBtn');
@@ -692,7 +697,8 @@
                     plan: plan.value,
                     plaqueQty: plaqueQty,
                     customerInfo: {
-                        name: formData.nom,
+                        firstName: firstName,
+                        lastName: lastName,
                         email: formData.email,
                         phone: formData.telephone
                     },

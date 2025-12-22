@@ -46,12 +46,16 @@ const firestore = admin.firestore();
 // ===========================
 const transporter = nodemailer.createTransport({
     host: 'smtp.hostinger.com',
-    port: 465,
-    secure: true,
+    port: 587, // TLS au lieu de SSL (plus compatible avec Render)
+    secure: false, // false pour port 587
+    requireTLS: true,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
-    }
+    },
+    connectionTimeout: 10000, // 10 secondes
+    greetingTimeout: 5000,
+    socketTimeout: 10000
 });
 
 console.log('✅ Nodemailer configuré avec SMTP Hostinger');
@@ -167,6 +171,52 @@ async function sendConfirmationEmail(customerEmail, customerName, plan, plaques,
         return true;
     } catch (error) {
         console.error('❌ Erreur Nodemailer:', error.message);
+        return false;
+    }
+}
+
+// Fonction pour notifier l'admin d'un nouvel achat
+async function sendAdminNotification(customerEmail, customerName, plan, plaques, total) {
+    const planText = plan === 'mensuel' ? 'Mensuel (8€/mois)' : 'Annuel (75€/an)';
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; padding: 30px;">
+        <h2 style="color: #C7A961; margin-top: 0;">🎉 Nouvelle vente QRGUIDE !</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0 0 10px;"><strong>Client :</strong> ${customerName}</p>
+            <p style="margin: 0 0 10px;"><strong>Email :</strong> ${customerEmail}</p>
+            <p style="margin: 0 0 10px;"><strong>Formule :</strong> ${planText}</p>
+            <p style="margin: 0 0 10px;"><strong>Plaques :</strong> ${plaques}</p>
+            <p style="margin: 0 0 10px;"><strong style="font-size: 18px; color: #C7A961;">Total : ${total}€</strong></p>
+        </div>
+        
+        <p style="color: #666; font-size: 14px;">
+            L'utilisateur a été créé automatiquement dans Firebase et a reçu ses identifiants par email.
+        </p>
+    </div>
+</body>
+</html>
+    `;
+
+    const mailOptions = {
+        from: '"QRGUIDE System" <noreply@qrguide.fr>',
+        to: 'contact@qrguide.fr',
+        subject: `💰 Nouvelle vente ${plan} - ${customerName}`,
+        html: htmlContent
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('📧 Notification admin envoyée');
+        return true;
+    } catch (error) {
+        console.error('❌ Erreur notification admin:', error.message);
         return false;
     }
 }
@@ -478,7 +528,7 @@ app.post('/webhook', async (req, res) => {
                 // Continue quand même pour envoyer l'email
             }
 
-            // Envoyer email de confirmation
+            // Envoyer email de confirmation au client
             await sendConfirmationEmail(
                 customerEmail,
                 customerName,
@@ -488,7 +538,16 @@ app.post('/webhook', async (req, res) => {
                 tempPassword
             );
             
-            console.log('📧 Email envoyé avec mot de passe temporaire');
+            // Envoyer notification à l'admin
+            await sendAdminNotification(
+                customerEmail,
+                customerName,
+                plan,
+                plaques,
+                total
+            );
+            
+            console.log('📧 Emails envoyés (client + admin)');
         }
 
         res.json({ received: true });
