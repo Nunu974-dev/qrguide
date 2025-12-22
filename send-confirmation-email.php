@@ -34,6 +34,8 @@ $customerEmail = $data['email'] ?? '';
 $customerName = $data['name'] ?? 'Client';
 $amount = $data['amount'] ?? 0;
 $planType = $data['planType'] ?? 'mensuel';
+$password = $data['password'] ?? null;
+$existingAccount = $data['existingAccount'] ?? false;
 
 if (!$customerEmail) {
     http_response_code(400);
@@ -63,6 +65,40 @@ try {
     $mail->isHTML(true);
     $mail->Subject = '🎉 Confirmation de votre commande QRGUIDE';
     
+    // Préparer la section des identifiants si nouveau compte
+    $credentialsSection = '';
+    $credentialsText = '';
+    
+    if ($password && !$existingAccount) {
+        $credentialsSection = "
+                <div class='box' style='background: #fff3cd; border-left: 4px solid #FFD700;'>
+                    <h2>🔑 Vos identifiants de connexion</h2>
+                    <p><strong>URL :</strong> <a href='https://qrguide.fr/login.html'>https://qrguide.fr/login.html</a></p>
+                    <p><strong>Email :</strong> $customerEmail</p>
+                    <p><strong>Mot de passe :</strong> <code style='background: #f4f4f4; padding: 8px 12px; border-radius: 4px; font-size: 1.1em;'>$password</code></p>
+                    <p style='margin-top: 16px; color: #856404;'>⚠️ <strong>Important :</strong> Conservez précieusement ces identifiants. Vous pourrez modifier votre mot de passe après connexion.</p>
+                    <div style='text-align: center; margin-top: 20px;'>
+                        <a href='https://qrguide.fr/login.html' class='btn'>Se connecter maintenant</a>
+                    </div>
+                </div>
+        ";
+        
+        $credentialsText = "\n\n🔑 VOS IDENTIFIANTS DE CONNEXION:\nURL: https://qrguide.fr/login.html\nEmail: $customerEmail\nMot de passe: $password\n\n⚠️ Conservez ces identifiants précieusement.\n";
+    } else if ($existingAccount) {
+        $credentialsSection = "
+                <div class='box' style='background: #d1ecf1; border-left: 4px solid #0c5460;'>
+                    <h2>🔑 Connexion à votre compte</h2>
+                    <p>Vous avez déjà un compte QRGUIDE.</p>
+                    <p>Connectez-vous avec vos identifiants habituels :</p>
+                    <div style='text-align: center; margin-top: 20px;'>
+                        <a href='https://qrguide.fr/login.html' class='btn'>Se connecter</a>
+                    </div>
+                </div>
+        ";
+        
+        $credentialsText = "\n\n🔑 CONNEXION:\nConnectez-vous avec vos identifiants habituels sur https://qrguide.fr/login.html\n";
+    }
+    
     $mail->Body = "
     <!DOCTYPE html>
     <html>
@@ -79,6 +115,7 @@ try {
             .steps li { margin: 10px 0; }
             .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
             .btn { display: inline-block; background: #FFD700; color: #333; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }
+            code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
         </style>
     </head>
     <body>
@@ -96,6 +133,8 @@ try {
                     <h2>✅ Paiement confirmé</h2>
                     <p>Votre commande a été validée avec succès.</p>
                 </div>
+                
+                $credentialsSection
                 
                 <div class='steps'>
                     <h3>📋 Prochaines étapes :</h3>
@@ -117,10 +156,6 @@ try {
                         <li>Instructions d'arrivée et de départ</li>
                     </ul>
                 </div>
-                
-                <div style='text-align: center;'>
-                    <a href='https://qrguide.fr/contact.html' class='btn'>Nous contacter</a>
-                </div>
             </div>
             
             <div class='footer'>
@@ -135,7 +170,7 @@ try {
     </html>
     ";
     
-    $mail->AltBody = "Bonjour $customerName,\n\nMerci pour votre commande de $amount€ pour l'abonnement $planType.\n\nPROCHAINES ÉTAPES:\n1. Sous 24h : Formulaire à remplir\n2. Sous 48h : Création de votre guide\n3. Livraison : Guide + QR code par email\n\nContact : contact@qrguide.fr | 06 92 63 03 64";
+    $mail->AltBody = "Bonjour $customerName,\n\nMerci pour votre commande de $amount€ pour l'abonnement $planType.$credentialsText\n\nPROCHAINES ÉTAPES:\n1. Sous 24h : Formulaire à remplir\n2. Sous 48h : Création de votre guide\n3. Livraison : Guide + QR code par email\n\nContact : contact@qrguide.fr | 06 92 63 03 64";
     
     $mail->send();
     

@@ -136,10 +136,26 @@
         </div>
     </footer>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script>
-        // Envoyer l'email de confirmation automatiquement
-        async function sendConfirmationEmail() {
-            // Récupérer les infos du localStorage (sauvegardées lors du paiement)
+        // Fonction pour générer un mot de passe aléatoire sécurisé
+        function generatePassword() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#$%';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+
+        // Créer le compte Firebase et envoyer l'email de confirmation
+        async function setupUserAccount() {
+            // Récupérer les infos du localStorage
             const orderData = localStorage.getItem('qrguide_order');
             
             if (!orderData) {
@@ -149,7 +165,32 @@
             
             try {
                 const data = JSON.parse(orderData);
+                const generatedPassword = generatePassword();
                 
+                console.log('📧 Création du compte pour:', data.email);
+                
+                // 1. Créer le compte Firebase
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(
+                    data.email,
+                    generatedPassword
+                );
+                
+                const user = userCredential.user;
+                console.log('✅ Compte Firebase créé:', user.uid);
+                
+                // 2. Ajouter les informations utilisateur dans Firestore
+                await firebase.firestore().collection('users').doc(user.uid).set({
+                    email: data.email,
+                    name: data.name,
+                    role: 'user',
+                    plan: data.planType,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'active'
+                });
+                
+                console.log('✅ Données Firestore enregistrées');
+                
+                // 3. Envoyer l'email avec les identifiants
                 const response = await fetch('send-confirmation-email.php', {
                     method: 'POST',
                     headers: {
@@ -158,16 +199,19 @@
                     body: JSON.stringify({
                         email: data.email,
                         name: data.name,
-                        amount: data.amount / 100, // Convertir centimes en euros
-                        planType: data.planType
+                        amount: data.amount / 100,
+                        planType: data.planType,
+                        password: generatedPassword
                     })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    console.log('✅ Email de confirmation envoyé');
-                    // Supprimer les données après envoi
+                    console.log('✅ Email de confirmation envoyé avec identifiants');
+                    // Déconnecter l'utilisateur (il devra se reconnecter avec ses identifiants)
+                    await firebase.auth().signOut();
+                    // Supprimer les données
                     localStorage.removeItem('qrguide_order');
                 } else {
                     console.error('❌ Erreur envoi email:', result.error);
@@ -175,11 +219,34 @@
                 
             } catch (error) {
                 console.error('❌ Erreur:', error);
+                // Si le compte existe déjà, envoyer quand même l'email
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('⚠️ Compte existant, envoi email sans mot de passe');
+                    try {
+                        const data = JSON.parse(orderData);
+                        await fetch('send-confirmation-email.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: data.email,
+                                name: data.name,
+                                amount: data.amount / 100,
+                                planType: data.planType,
+                                existingAccount: true
+                            })
+                        });
+                        localStorage.removeItem('qrguide_order');
+                    } catch (e) {
+                        console.error('Erreur envoi email:', e);
+                    }
+                }
             }
         }
         
-        // Envoyer l'email au chargement de la page
-        sendConfirmationEmail();
+        // Exécuter au chargement de la page
+        setupUserAccount();
     </script>
 </body>
 </html>
