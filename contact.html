@@ -181,7 +181,147 @@
         </div>
     </footer>
 
+    <!-- Modal de confirmation -->
+    <div id="messageModal" class="message-modal">
+        <div class="message-modal-content">
+            <button class="message-modal-close" onclick="closeMessageModal()">&times;</button>
+            <div class="message-modal-icon" id="modalIcon">✓</div>
+            <h3 id="modalTitle">Message envoyé !</h3>
+            <p id="modalMessage">Nous vous répondons sous 24h.</p>
+            <button onclick="closeMessageModal()" class="btn-hero" style="margin-top: 24px;">Fermer</button>
+        </div>
+    </div>
+
+    <style>
+        .message-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+        .message-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .message-modal-content {
+            background: white;
+            padding: 48px 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .message-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+        .message-modal-close:hover {
+            color: #333;
+        }
+        .message-modal-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 24px;
+            animation: scaleIn 0.5s ease;
+        }
+        .message-modal-icon.success {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
+        }
+        .message-modal-icon.error {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            color: white;
+        }
+        #modalTitle {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        #modalMessage {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+
     <script>
+        // Fonctions du modal
+        function showMessageModal(type, title, message) {
+            const modal = document.getElementById('messageModal');
+            const icon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            
+            icon.className = 'message-modal-icon ' + type;
+            icon.textContent = type === 'success' ? '✓' : '✕';
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMessageModal() {
+            const modal = document.getElementById('messageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Fermer le modal en cliquant en dehors
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('messageModal');
+            if (e.target === modal) {
+                closeMessageModal();
+            }
+        });
+
         // Gestion du formulaire de contact
         document.getElementById('helpForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -200,7 +340,7 @@
                     message: document.getElementById('message').value
                 };
 
-                const response = await fetch('send-contact.php', {
+                const response = await fetch('send-contact-smtp.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -211,7 +351,7 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('✅ Message envoyé avec succès !\n\nNous vous répondons sous 24h.');
+                    showMessageModal('success', 'Message envoyé avec succès !', 'Nous vous répondons sous 24h.');
                     this.reset();
                 } else {
                     throw new Error(result.message || 'Erreur inconnue');
@@ -219,7 +359,7 @@
 
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('❌ Erreur lors de l\'envoi.\n\nVeuillez réessayer ou nous contacter directement par téléphone au 06 92 63 03 64.');
+                showMessageModal('error', 'Erreur lors de l\'envoi', 'Veuillez réessayer ou nous contacter directement par téléphone au 06 92 63 03 64.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
