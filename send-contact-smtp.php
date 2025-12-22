@@ -42,24 +42,27 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 try {
+    // Charger la configuration depuis le fichier séparé
+    $config = require 'email-config.php';
+    
     $mail = new PHPMailer(true);
 
     // Configuration SMTP Hostinger
     $mail->isSMTP();
-    $mail->Host = 'smtp.hostinger.com';  // Serveur SMTP Hostinger
+    $mail->Host = $config['smtp_host'];
     $mail->SMTPAuth = true;
-    $mail->Username = 'contact@qrguide.fr';  // VOTRE ADRESSE EMAIL HOSTINGER
-    $mail->Password = 'VOTRE_MOT_DE_PASSE';   // MOT DE PASSE DE L'EMAIL
+    $mail->Username = $config['smtp_user'];
+    $mail->Password = $config['smtp_pass'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Port = $config['smtp_port'];
     $mail->CharSet = 'UTF-8';
 
     // Expéditeur
-    $mail->setFrom('contact@qrguide.fr', 'QRGUIDE Contact');
+    $mail->setFrom($config['from_email'], $config['from_name']);
     $mail->addReplyTo($email, $nom);
 
     // Destinataire
-    $mail->addAddress('contact@qrguide.fr');  // Où vous recevez les messages
+    $mail->addAddress($config['to_email']);  // Où vous recevez les messages
 
     // Contenu
     $mail->isHTML(true);

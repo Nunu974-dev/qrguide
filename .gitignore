@@ -5,3 +5,6 @@ node_modules/
 *.tmp
 .env
 vendor/
+
+# Fichiers de configuration avec mots de passe sensibles
+email-config.php
