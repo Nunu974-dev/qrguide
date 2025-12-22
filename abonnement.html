@@ -9,17 +9,19 @@
     <link rel="stylesheet" href="style.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Pré-warmup du backend TRÈS TÔT -->
+    <!-- Pré-warmup du backend TRÈS TÔT - TRIPLE TENTATIVE -->
     <script>
         (function() {
             const BACKEND_URL = 'https://qrguide-backend.onrender.com';
-            console.log('🔥 Pré-warmup backend (avant chargement page)...');
+            console.log('🔥🔥🔥 Pré-warmup TRIPLE backend (avant chargement page)...');
             
-            // Lancer la requête immédiatement sans attendre
-            fetch(BACKEND_URL + '/health', { method: 'GET' })
-                .catch(() => fetch(BACKEND_URL + '/create-checkout-session', { method: 'OPTIONS' }))
-                .then(() => console.log('✅ Pré-warmup terminé'))
-                .catch(() => console.log('⚠️ Pré-warmup timeout'));
+            // Lancer 3 requêtes en parallèle pour maximiser les chances
+            Promise.all([
+                fetch(BACKEND_URL + '/health', { method: 'GET' }).catch(() => null),
+                fetch(BACKEND_URL + '/create-checkout-session', { method: 'OPTIONS' }).catch(() => null),
+                fetch(BACKEND_URL + '/health', { method: 'GET' }).catch(() => null)
+            ]).then(() => console.log('✅ Pré-warmup TRIPLE terminé'))
+              .catch(() => console.log('⚠️ Pré-warmup timeout'));
         })();
     </script>
     
@@ -701,39 +703,41 @@
 
         // ============================================
         // WARM-UP DU SERVEUR BACKEND (Render.com se met en veille)
+        // STRATÉGIE : Multiples requêtes en parallèle + timeout 60s
         // ============================================
         async function warmupBackend() {
             try {
-                console.log('🔥 Réveil du serveur backend...');
+                console.log('🔥🔥🔥 Réveil INTENSIF du serveur backend...');
                 const startTime = Date.now();
                 
-                // Timeout de 30 secondes au lieu de 10
+                // Timeout de 60 secondes pour Render.com gratuit
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 30000);
+                const timeoutId = setTimeout(() => controller.abort(), 60000);
                 
-                const response = await fetch(`${BACKEND_URL}/health`, {
-                    method: 'GET',
-                    signal: controller.signal
-                }).catch(() => {
-                    return fetch(`${BACKEND_URL}/create-checkout-session`, {
-                        method: 'OPTIONS',
-                        signal: controller.signal
-                    });
-                });
+                // Faire 5 requêtes en parallèle pour accélérer le réveil
+                const requests = [
+                    fetch(`${BACKEND_URL}/health`, { method: 'GET', signal: controller.signal }),
+                    fetch(`${BACKEND_URL}/create-checkout-session`, { method: 'OPTIONS', signal: controller.signal }),
+                    fetch(`${BACKEND_URL}/health`, { method: 'GET', signal: controller.signal }),
+                    fetch(`${BACKEND_URL}/create-checkout-session`, { method: 'OPTIONS', signal: controller.signal }),
+                    fetch(`${BACKEND_URL}/health`, { method: 'GET', signal: controller.signal })
+                ];
+                
+                // Attendre que AU MOINS une requête réussisse
+                const response = await Promise.race(requests.map(r => r.catch(() => null)));
                 
                 clearTimeout(timeoutId);
                 const duration = Date.now() - startTime;
                 
+                backendReady = true;
                 if (response && response.ok) {
-                    backendReady = true;
-                    console.log(`✅ Serveur backend prêt (${duration}ms)`);
+                    console.log(`✅ Serveur backend prêt RAPIDEMENT (${duration}ms)`);
                 } else {
-                    backendReady = true;
                     console.log(`⚠️ Serveur backend réveillé (${duration}ms)`);
                 }
             } catch (error) {
                 backendReady = true;
-                console.log('⚠️ Timeout warmup, tentative quand même');
+                console.log('⚠️ Timeout warmup après 60s, tentative quand même');
             }
         }
         
@@ -784,15 +788,17 @@
                 return;
             }
             
-            // 2. Si le backend n'est pas encore prêt, attendre
+            // 2. Si le backend n'est pas encore prêt, attendre avec message informatif
             if (!backendReady) {
-                paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Préparation du serveur...';
+                paymentBtn.innerHTML = '<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Réveil du serveur (peut prendre 60s)...';
                 
-                // Attendre max 30 secondes
-                const maxWait = 30000;
+                // Attendre max 60 secondes
+                const maxWait = 60000;
                 const startWait = Date.now();
                 
                 while (!backendReady && (Date.now() - startWait) < maxWait) {
+                    const elapsed = Math.floor((Date.now() - startWait) / 1000);
+                    paymentBtn.innerHTML = `<span style="display: inline-block; animation: pulse 1.5s infinite;">⏳</span> Réveil du serveur... (${elapsed}s)`;
                     await new Promise(resolve => setTimeout(resolve, 500));
                 }
             }
