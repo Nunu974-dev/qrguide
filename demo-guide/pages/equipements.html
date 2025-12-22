@@ -2,69 +2,183 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Équipements - Villa Paradis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Équipements - Guide de séjour</title>
+    <link rel="icon" type="image/jpeg" href="../img/logo_icone.jpg">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="luxury-header">
-            <a href="../index.html" class="back-button">← Retour</a>
-            <h1>🏠 Équipements</h1>
-        </header>
+    <div class="container page-container">
+        <a href="../index.html" class="back-button">← Retour</a>
 
-        <section class="content-section">
-            <h2>Cuisine</h2>
-            <div class="info-list">
-                <p>☕ Machine à café Nespresso</p>
-                <p>🍽️ Lave-vaisselle</p>
-                <p>🧊 Réfrigérateur américain</p>
-                <p>🔥 Plaque de cuisson 4 feux</p>
-                <p>🍞 Grille-pain</p>
-                <p>🥣 Batterie de cuisine complète</p>
+        <!-- Image d'en-tête -->
+        <div style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&h=400&fit=crop&q=90" 
+                 alt="Équipements" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin: 0;">🏠 Équipements</h1>
             </div>
+        </div>
 
-            <h2>Salon</h2>
-            <div class="info-list">
-                <p>📺 TV 55" Smart TV</p>
-                <p>🎮 Netflix, Prime Video, Disney+</p>
-                <p>🔊 Enceinte Bluetooth</p>
-                <p>❄️ Climatisation réversible</p>
-            </div>
+        <main class="page-content">
+            <!-- Cuisine -->
+            <section class="info-section">
+                <h2 class="section-title">🍳 Cuisine équipée</h2>
+                <div class="info-card">
+                    <div style="display: grid; gap: 12px;">
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🔥</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Plaques de cuisson</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Induction - Allumage tactile</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🌡️</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Four</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Préchauffer 10 min avant utilisation</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">☕</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Machine à café Nespresso</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Capsules fournies</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">❄️</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Réfrigérateur</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Température réglable (molette intérieure)</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🍽️</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Lave-vaisselle</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Tablettes sous l'évier</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Chambres</h2>
-            <div class="info-list">
-                <p>🛏️ Literie premium (160x200)</p>
-                <p>🧺 Linge de lit fourni</p>
-                <p>🚪 Placards de rangement</p>
-                <p>💨 Ventilateurs</p>
-            </div>
+            <!-- Salle de bain -->
+            <section class="info-section">
+                <h2 class="section-title">🚿 Salle de bain</h2>
+                <div class="info-card">
+                    <div style="display: grid; gap: 12px;">
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">💧</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Douche à l'italienne</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Eau chaude instantanée - Pression réglable</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🧴</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Produits de douche</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Gel douche & shampoing fournis</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">💨</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Sèche-cheveux</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Dans le tiroir sous le lavabo</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🧺</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Serviettes</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Bain + visage + piscine fournies</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Salle de bain</h2>
-            <div class="info-list">
-                <p>🚿 Douche italienne</p>
-                <p>🧴 Produits d'accueil (shampoing, gel douche)</p>
-                <p>🔌 Sèche-cheveux</p>
-                <p>🧺 Serviettes fournies</p>
-            </div>
+            <!-- Climatisation / Chauffage -->
+            <section class="info-section">
+                <h2 class="section-title">❄️ Climatisation & Chauffage</h2>
+                <div class="info-card">
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(var(--primary-rgb), 0.08); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); margin-bottom: 16px;">
+                        <div style="font-size: 3rem;">🌡️</div>
+                        <div>
+                            <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 1.1rem;">Télécommande sur la table du salon</p>
+                            <p style="font-size: 0.95rem; color: #666; margin: 0;">Contrôle climatisation et chauffage</p>
+                        </div>
+                    </div>
+                    <div style="padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border-left: 4px solid var(--primary-color);">
+                        <p style="margin: 0;"><strong>💡 Conseil écologique :</strong></p>
+                        <p style="margin: 8px 0 0 0; font-size: 0.95rem; color: #666;">Fermez les fenêtres quand la climatisation fonctionne</p>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Extérieur</h2>
-            <div class="info-list">
-                <p>🏊 Piscine privée (8x4m)</p>
-                <p>🌴 Transat x4</p>
-                <p>☂️ Parasol</p>
-                <p>🍖 Barbecue</p>
-                <p>🌿 Jardin tropical</p>
-            </div>
+            <!-- Linge & Nettoyage -->
+            <section class="info-section">
+                <h2 class="section-title">🧺 Linge & Nettoyage</h2>
+                <div class="info-card">
+                    <div style="display: grid; gap: 12px;">
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🌀</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Lave-linge</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Dans la buanderie - Lessive fournie</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🧹</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Aspirateur</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Placard de l'entrée</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                            <div style="font-size: 2rem; flex-shrink: 0;">🧴</div>
+                            <div style="flex: 1;">
+                                <p style="font-weight: 600; margin: 0 0 4px 0;">Produits d'entretien</p>
+                                <p style="font-size: 0.9rem; color: #666; margin: 0;">Sous l'évier de la cuisine</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <h2>Services</h2>
-            <div class="info-list">
-                <p>🧹 Ménage de fin de séjour inclus</p>
-                <p>🧺 Machine à laver</p>
-                <p>🅿️ Parking privé</p>
-                <p>🔒 Coffre-fort</p>
-            </div>
-        </section>
+            <!-- Règles importantes -->
+            <section class="info-section">
+                <h2 class="section-title">⚠️ Important</h2>
+                <div class="info-card">
+                    <div class="checklist">
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px solid rgba(255, 193, 7, 0.3);">
+                            <span style="font-size: 1.5rem;">⚡</span>
+                            <p style="margin: 0; font-size: 0.95rem;">Ne pas utiliser d'appareils défectueux</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px solid rgba(255, 193, 7, 0.3);">
+                            <span style="font-size: 1.5rem;">🔌</span>
+                            <p style="margin: 0; font-size: 0.95rem;">Débrancher les appareils non utilisés</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px solid rgba(255, 193, 7, 0.3);">
+                            <span style="font-size: 1.5rem;">🚽</span>
+                            <p style="margin: 0; font-size: 0.95rem;">Ne rien jeter dans les toilettes (sauf papier WC)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
+
+    <footer style="text-align: center; padding: 0; margin-top: 32px;">
+        <img src="../img/logo.png" alt="QRGUIDE.FR" style="height: 100px; width: auto; opacity: 0.9; display: block; margin: 0 auto -10px; padding: 0;">
+    </footer>
+
+    <script src="../js/main.js"></script>
 </body>
 </html>
