@@ -423,8 +423,10 @@ app.post('/create-checkout-session', async (req, res) => {
             metadata: {
                 plan: plan,
                 plaqueQty: plaques.toString(),
-                customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
+                firstName: customerInfo.firstName,
+                lastName: customerInfo.lastName,
                 customerPhone: customerInfo.phone,
+                postalCode: customerInfo.postalCode || '',
                 totalAmount: totalAmount.toString()
             }
         });
@@ -489,9 +491,12 @@ app.post('/webhook', async (req, res) => {
             // ============================================
             // CRÉER LE COMPTE UTILISATEUR FIREBASE
             // ============================================
-            const customerName = session.metadata.customerName || 'Client';
+            const firstName = session.metadata.firstName || '';
+            const lastName = session.metadata.lastName || '';
+            const customerName = `${firstName} ${lastName}`.trim() || 'Client';
             const customerEmail = session.customer_email;
             const customerPhone = session.metadata.customerPhone || '';
+            const postalCode = session.metadata.postalCode || '';
             const plan = session.metadata.plan;
             const plaques = parseInt(session.metadata.plaqueQty || 0);
             const total = session.metadata.totalAmount;
@@ -550,8 +555,11 @@ app.post('/webhook', async (req, res) => {
                         // Créer le document Firestore
                         await firestore.collection('users').doc(userRecord.uid).set({
                             email: customerEmail,
+                            firstname: firstName,
+                            lastname: lastName,
                             displayName: customerName,
                             phone: customerPhone,
+                            postalCode: postalCode,
                             role: 'client',
                             plan: plan,
                             maxLogements: 3,
