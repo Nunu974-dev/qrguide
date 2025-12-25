@@ -7,6 +7,27 @@
     <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
     <link rel="stylesheet" href="style.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 🔥 Pré-warmup du backend dès le chargement de la page tarifs -->
+    <script>
+        (function() {
+            const BACKEND_URL = 'https://qrguide-backend.onrender.com';
+            console.log('🔥 Pré-warmup backend depuis tarifs.html...');
+            
+            // Faire 3 requêtes en parallèle pour réveiller le serveur
+            const requests = [
+                fetch(`${BACKEND_URL}/health`, { method: 'GET' }).catch(() => null),
+                fetch(`${BACKEND_URL}/create-checkout-session`, { method: 'OPTIONS' }).catch(() => null),
+                fetch(`${BACKEND_URL}/health`, { method: 'GET' }).catch(() => null)
+            ];
+            
+            Promise.race(requests).then(() => {
+                console.log('✅ Backend pré-réchauffé depuis tarifs.html');
+            }).catch(() => {
+                console.log('⚠️ Warmup backend en cours...');
+            });
+        })();
+    </script>
 </head>
 <body>
     <!-- Header -->
