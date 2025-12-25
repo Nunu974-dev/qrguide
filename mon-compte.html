@@ -692,6 +692,12 @@
                 <div class="form-step" data-step="2">
                     <h3>✨ Arrivée & Connectivité</h3>
                     
+                    <div class="form-section-title">Message de bienvenue</div>
+                    <div class="form-group">
+                        <label>Message personnalisé d'accueil</label>
+                        <textarea id="message_bienvenue" name="message_bienvenue" rows="3" placeholder="Bienvenue dans notre villa ! Nous espérons que vous passerez un séjour exceptionnel..."></textarea>
+                    </div>
+                    
                     <div class="form-section-title">Check-in / Check-out</div>
                     <div class="form-row">
                         <div class="form-group">
@@ -712,6 +718,30 @@
                     <div class="form-group">
                         <label>Code d'accès (portail, porte...)</label>
                         <input type="text" id="code_acces" name="code_acces" placeholder="Ex: 1234 ou A56B">
+                    </div>
+                    
+                    <div class="form-section-title">🎯 Premiers pas (4 étapes affichées)</div>
+                    <div class="form-group">
+                        <label>Étape 1 - Premiers pas</label>
+                        <input type="text" id="premier_pas_1" name="premier_pas_1" placeholder="Connectez-vous au Wi-Fi">
+                    </div>
+                    <div class="form-group">
+                        <label>Étape 2 - Premiers pas</label>
+                        <input type="text" id="premier_pas_2" name="premier_pas_2" placeholder="Climatisation & Chauffage : télécommandes dans le salon">
+                    </div>
+                    <div class="form-group">
+                        <label>Étape 3 - Premiers pas</label>
+                        <input type="text" id="premier_pas_3" name="premier_pas_3" placeholder="Poubelles : cuisine (tri sélectif obligatoire)">
+                    </div>
+                    <div class="form-group">
+                        <label>Étape 4 - Premiers pas</label>
+                        <input type="text" id="premier_pas_4" name="premier_pas_4" placeholder="Volets roulants : interrupteurs près des fenêtres">
+                    </div>
+                    
+                    <div class="form-section-title">🅿️ Parking & Accès</div>
+                    <div class="form-group">
+                        <label>Informations parking</label>
+                        <input type="text" id="parking_info" name="parking_info" placeholder="Ex: 2 places privées à l'entrée">
                     </div>
                     
                     <div class="form-section-title">📶 WiFi</div>
@@ -736,15 +766,41 @@
                 <div class="form-step" data-step="3">
                     <h3>🏠 Équipements & Instructions</h3>
                     
+                    <div class="form-section-title">🍳 Cuisine</div>
                     <div class="form-group">
-                        <label>Liste des équipements (un par ligne)</label>
-                        <textarea id="equipements" name="equipements" rows="8" placeholder="Machine à café Nespresso&#10;Lave-vaisselle Bosch&#10;Climatisation réversible&#10;Piscine chauffée&#10;Barbecue gaz&#10;..."></textarea>
-                        <small>Listez tous les équipements disponibles, un par ligne</small>
+                        <label>Équipements cuisine (format: Nom | Description)</label>
+                        <textarea id="equipements_cuisine" name="equipements_cuisine" rows="6" placeholder="Plaques de cuisson | Induction - Allumage tactile&#10;Four | Préchauffer 10 min avant utilisation&#10;Machine à café Nespresso | Capsules fournies&#10;Réfrigérateur | Température réglable&#10;Lave-vaisselle | Tablettes sous l'évier&#10;..."></textarea>
+                        <small>Un équipement par ligne, séparez nom et description par |</small>
                     </div>
                     
+                    <div class="form-section-title">🚿 Salle de bain</div>
                     <div class="form-group">
-                        <label>Instructions d'utilisation des équipements</label>
-                        <textarea id="equipements_instructions" name="equipements_instructions" rows="4" placeholder="Comment utiliser la piscine, le barbecue, la climatisation, etc."></textarea>
+                        <label>Équipements salle de bain (format: Nom | Description)</label>
+                        <textarea id="equipements_sdb" name="equipements_sdb" rows="5" placeholder="Douche à l'italienne | Eau chaude instantanée - Pression réglable&#10;Produits de douche | Gel douche & shampoing fournis&#10;Sèche-cheveux | Dans le tiroir sous le lavabo&#10;Serviettes | Bain + visage + piscine fournies&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">❄️ Climatisation & Chauffage</div>
+                    <div class="form-group">
+                        <label>Instructions climatisation/chauffage</label>
+                        <textarea id="instructions_clim" name="instructions_clim" rows="3" placeholder="Télécommande sur la table du salon. Fermez les fenêtres quand la climatisation fonctionne."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🏊 Piscine & Extérieur</div>
+                    <div class="form-group">
+                        <label>Équipements piscine & extérieur (format: Nom | Description)</label>
+                        <textarea id="equipements_ext" name="equipements_ext" rows="4" placeholder="Piscine chauffée | Température 28°C - Alarme activée&#10;Jacuzzi | Bouton ON/OFF sous le couvercle&#10;Barbecue gaz | Bouteille dans le local technique&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">📺 Multimédia</div>
+                    <div class="form-group">
+                        <label>Équipements multimédia (format: Nom | Description)</label>
+                        <textarea id="equipements_multimedia" name="equipements_multimedia" rows="3" placeholder="TV Smart | Netflix, Amazon Prime inclus&#10;Enceinte Bluetooth | Code 0000&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🧺 Autres équipements</div>
+                    <div class="form-group">
+                        <label>Autres équipements utiles</label>
+                        <textarea id="equipements_autres" name="equipements_autres" rows="3" placeholder="Lave-linge, fer à repasser, aspirateur, etc."></textarea>
                     </div>
                     
                     <div class="form-section-title">🚪 Instructions de départ</div>
@@ -760,22 +816,31 @@
                     
                     <div class="form-section-title">Restaurants recommandés</div>
                     <div class="form-group">
-                        <label>Restaurants (Format: Nom | Type | Distance | Lien Google Maps)</label>
-                        <textarea id="restaurants" name="restaurants" rows="6" placeholder="Le Bouchon Créole | Cuisine locale | 500m | https://maps.google.com/...&#10;La Plage Restaurant | Fruits de mer | 1km | https://maps.google.com/...&#10;..."></textarea>
-                        <small>Un restaurant par ligne, séparez les infos par |</small>
+                        <label>Restaurants (Format détaillé sur 3 lignes par restaurant)</label>
+                        <textarea id="restaurants" name="restaurants" rows="12" placeholder="Restaurant Le Bouchon Créole&#10;Cuisine locale authentique, ambiance créole chaleureuse | ⭐ Coup de coeur | 🚶 5 min (400m) | 💰 25-35€/pers | 🕐 Mar-Dim 12h-14h, 19h-22h | 📍 https://maps.google.com/...&#10;&#10;La Plage Restaurant&#10;Fruits de mer frais, vue sur l'océan | 🚶 10 min (800m) | 💰 30-45€/pers | 🕐 Tlj 12h-22h | 📍 https://maps.google.com/...&#10;&#10;Snack Ti'Kaz&#10;Plats à emporter, samoussas & bouchons | 🚶 3 min (200m) | 💰 8-15€/pers | 🕐 Lun-Sam 11h-20h | 📍 https://maps.google.com/..."></textarea>
+                        <small>Ligne 1: Nom du restaurant<br>
+                        Ligne 2: Description | ⭐ Coup de coeur (si applicable) | 🚶 Distance | 💰 Prix | 🕐 Horaires | 📍 Lien Maps<br>
+                        Ligne 3: Ligne vide pour séparer<br>
+                        Mettez "⭐ Coup de coeur" pour vos favoris !</small>
+                    </div>
+                    
+                    <div class="form-section-title">🥐 Snacks & Boulangeries</div>
+                    <div class="form-group">
+                        <label>Snacks, boulangeries, glaciers (même format que restaurants)</label>
+                        <textarea id="snacks" name="snacks" rows="8" placeholder="Boulangerie Paul & Virginie&#10;Pain frais tous les matins, viennoiseries artisanales | 🚶 3 min (200m) | 💰 3-8€ | 🕐 6h30-19h30 | 📍 https://maps.google.com/...&#10;&#10;Glacier Marmaille&#10;Glaces artisanales, parfums locaux (coco, fruits de la passion) | 🚶 8 min (600m) | 💰 3-6€ | 🕐 Tlj 14h-22h | 📍 https://maps.google.com/..."></textarea>
                     </div>
                     
                     <div class="form-section-title">🌴 Activités & Loisirs</div>
                     <div class="form-group">
-                        <label>Activités à faire (Format: Nom | Type | Description | Lien)</label>
-                        <textarea id="activites" name="activites" rows="6" placeholder="Plage de l'Hermitage | Plage | Plage de sable blanc, idéale snorkeling | https://maps.google.com/...&#10;Marché de Saint-Paul | Shopping | Marché forain tous les vendredis | https://...&#10;..."></textarea>
-                        <small>Une activité par ligne, séparez les infos par |</small>
+                        <label>Activités recommandées (Format: Nom | Type | Description | Lien)</label>
+                        <textarea id="activites" name="activites" rows="8" placeholder="Plage de l'Hermitage | Plage & Snorkeling | Plage de sable blanc protégée par le lagon, idéale pour le snorkeling. Masques et tubas dans le placard de l'entrée ! | https://maps.google.com/...&#10;&#10;Marché de Saint-Paul | Shopping & Culture | Marché forain coloré tous les vendredis et samedis matin. Fruits, épices, artisanat local. | https://maps.google.com/...&#10;&#10;Randonnée Piton Maïdo | Randonnée | Vue spectaculaire sur le cirque de Mafate. Prévoir 3-4h, départ tôt le matin. | https://maps.google.com/..."></textarea>
+                        <small>Une activité par ligne (séparées par ligne vide), format: Nom | Type | Description | Lien</small>
                     </div>
                     
                     <div class="form-section-title">📍 Commerces & Services à proximité</div>
                     <div class="form-group">
-                        <label>Commerces proches</label>
-                        <textarea id="commerces" name="commerces" rows="4" placeholder="Super U - 800m - Ouvert 7j/7 8h-20h&#10;Pharmacie - 500m - Lun-Sam 9h-19h&#10;Boulangerie - 300m - 6h30-19h30&#10;..."></textarea>
+                        <label>Commerces de proximité</label>
+                        <textarea id="commerces" name="commerces" rows="5" placeholder="🛒 Super U - 800m - Ouvert 7j/7 8h-20h - Livraison possible&#10;💊 Pharmacie du Port - 500m - Lun-Sam 9h-19h - Garde le dimanche&#10;🥖 Boulangerie Paul & Virginie - 200m - 6h30-19h30&#10;⛽ Station essence Total - 1,2km - 24h/24&#10;..."></textarea>
                     </div>
                 </div>
                 
@@ -783,10 +848,22 @@
                 <div class="form-step" data-step="5">
                     <h3>📋 Informations Pratiques</h3>
                     
-                    <div class="form-section-title">Règlement & Consignes</div>
+                    <div class="form-section-title">📜 Règlement & Consignes</div>
                     <div class="form-group">
                         <label>Règles de la maison</label>
-                        <textarea id="regles" name="regles" rows="5" placeholder="- Non fumeur à l'intérieur&#10;- Pas de fêtes/événements&#10;- Respecter le calme après 22h&#10;- Animaux non acceptés&#10;..."></textarea>
+                        <textarea id="regles" name="regles" rows="6" placeholder="🚭 Non fumeur à l'intérieur (espace fumeur: terrasse)&#10;🎉 Pas de fêtes/événements sans autorisation&#10;🔇 Respecter le calme après 22h (voisinage résidentiel)&#10;🐕 Animaux non acceptés&#10;👥 Nombre maximum de personnes: 6&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🧹 Ménage & Tri</div>
+                    <div class="form-group">
+                        <label>Instructions ménage et tri des déchets</label>
+                        <textarea id="menage_tri" name="menage_tri" rows="5" placeholder="🗑️ Poubelles: jaune (recyclage) sous l'évier, verte (ordures) dans le garage&#10;♻️ Collecte: mardi et vendredi matin&#10;🧽 Ménage de départ: vaisselle, ranger, vider poubelles, éteindre équipements&#10;🧺 Linge de lit: laisser sur le lit (pas besoin de laver)&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🔑 Accès & Clés</div>
+                    <div class="form-group">
+                        <label>Instructions pour les clés</label>
+                        <textarea id="instructions_cles" name="instructions_cles" rows="3" placeholder="📍 Récupération: boîte à clés sécurisée à gauche de la porte d'entrée (code communiqué par SMS)&#10;🔙 Restitution au départ: remettre les clés dans la boîte à clés et refermer"></textarea>
                     </div>
                     
                     <div class="form-section-title">👤 Votre contact</div>
@@ -806,10 +883,21 @@
                         <input type="email" id="hote_email" name="hote_email" placeholder="contact@exemple.fr">
                     </div>
                     
+                    <div class="form-group">
+                        <label>Message personnalisé pour vos voyageurs</label>
+                        <textarea id="message_hote" name="message_hote" rows="3" placeholder="N'hésitez pas à me contacter pour toute question. Je suis disponible 7j/7 et parle français, anglais et créole."></textarea>
+                    </div>
+                    
                     <div class="form-section-title">🚨 Numéros d'urgence locaux</div>
                     <div class="form-group">
                         <label>Numéros d'urgence (laisser les numéros par défaut ou personnaliser)</label>
-                        <textarea id="urgences" name="urgences" rows="4" placeholder="SAMU - 15&#10;Police - 17&#10;Pompiers - 18&#10;Hôpital le plus proche - +262 262 XX XX XX"></textarea>
+                        <textarea id="urgences" name="urgences" rows="5" placeholder="🚑 SAMU - 15&#10;👮 Police - 17&#10;🚒 Pompiers - 18&#10;🏥 Hôpital CHU Félix Guyon - +262 262 90 50 50&#10;🔧 Plombier d'urgence - ..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">💡 Conseils & Astuces</div>
+                    <div class="form-group">
+                        <label>Conseils pour profiter au mieux du logement et de la région</label>
+                        <textarea id="conseils" name="conseils" rows="4" placeholder="🌅 Meilleur moment pour la plage: tôt le matin (moins de monde)&#10;🛒 Marché local le vendredi et samedi matin à Saint-Paul&#10;⛰️ Pour les randonnées, partir avant 8h (éviter la chaleur)&#10;..."></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -975,7 +1063,7 @@
             try {
                 // Récupérer toutes les données du formulaire
                 const formData = {
-                    // Étape 1
+                    // Étape 1: Informations générales
                     nom: document.getElementById('nom').value,
                     adresse: document.getElementById('adresse').value,
                     ville: document.getElementById('ville').value,
@@ -984,31 +1072,46 @@
                     type: document.getElementById('type').value,
                     photo_url: document.getElementById('photo_url').value,
                     
-                    // Étape 2
+                    // Étape 2: Arrivée & WiFi
                     checkin_time: document.getElementById('checkin_time').value,
                     checkout_time: document.getElementById('checkout_time').value,
+                    message_bienvenue: document.getElementById('message_bienvenue').value,
+                    premier_pas_1: document.getElementById('premier_pas_1').value,
+                    premier_pas_2: document.getElementById('premier_pas_2').value,
+                    premier_pas_3: document.getElementById('premier_pas_3').value,
+                    premier_pas_4: document.getElementById('premier_pas_4').value,
+                    parking_info: document.getElementById('parking_info').value,
                     instructions_arrivee: document.getElementById('instructions_arrivee').value,
                     code_acces: document.getElementById('code_acces').value,
                     wifi_nom: document.getElementById('wifi_nom').value,
                     wifi_password: document.getElementById('wifi_password').value,
                     multimedia_instructions: document.getElementById('multimedia_instructions').value,
                     
-                    // Étape 3
-                    equipements: document.getElementById('equipements').value,
-                    equipements_instructions: document.getElementById('equipements_instructions').value,
+                    // Étape 3: Équipements
+                    equipements_cuisine: document.getElementById('equipements_cuisine').value,
+                    equipements_sdb: document.getElementById('equipements_sdb').value,
+                    instructions_clim: document.getElementById('instructions_clim').value,
+                    equipements_ext: document.getElementById('equipements_ext').value,
+                    equipements_multimedia: document.getElementById('equipements_multimedia').value,
+                    equipements_autres: document.getElementById('equipements_autres').value,
                     instructions_depart: document.getElementById('instructions_depart').value,
                     
-                    // Étape 4
+                    // Étape 4: Restaurants & Activités
                     restaurants: document.getElementById('restaurants').value,
+                    snacks: document.getElementById('snacks').value,
                     activites: document.getElementById('activites').value,
                     commerces: document.getElementById('commerces').value,
                     
-                    // Étape 5
+                    // Étape 5: Infos pratiques
                     regles: document.getElementById('regles').value,
+                    menage_tri: document.getElementById('menage_tri').value,
+                    instructions_cles: document.getElementById('instructions_cles').value,
                     hote_nom: document.getElementById('hote_nom').value,
                     hote_telephone: document.getElementById('hote_telephone').value,
                     hote_email: document.getElementById('hote_email').value,
+                    message_hote: document.getElementById('message_hote').value,
                     urgences: document.getElementById('urgences').value,
+                    conseils: document.getElementById('conseils').value,
                     infos_supplementaires: document.getElementById('infos_supplementaires').value,
                     
                     // Métadonnées
