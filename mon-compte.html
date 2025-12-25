@@ -436,6 +436,68 @@
             border-bottom: 2px solid #e9ecef;
         }
         
+        .equipement-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr auto;
+            gap: 12px;
+            align-items: start;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .equipement-item input,
+        .equipement-item textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        
+        .equipement-item textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .btn-remove-item {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-remove-item:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+        
+        .btn-add-item {
+            background: #d4af37;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .btn-add-item:hover {
+            background: #c09a2a;
+            transform: translateY(-2px);
+        }
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -733,17 +795,12 @@
                     <h3>🏠 Équipements & Instructions</h3>
                     
                     <div class="form-section-title">🍳 Cuisine</div>
-                    <div class="form-group">
-                        <label>Équipements cuisine (format: Nom | Description)</label>
-                        <textarea id="equipements_cuisine" name="equipements_cuisine" rows="6" placeholder="Plaques de cuisson | Induction - Allumage tactile&#10;Four | Préchauffer 10 min avant utilisation&#10;Machine à café Nespresso | Capsules fournies&#10;Réfrigérateur | Température réglable&#10;Lave-vaisselle | Tablettes sous l'évier&#10;..."></textarea>
-                        <small>Un équipement par ligne, séparez nom et description par |</small>
-                    </div>
+                    <div id="equipements-cuisine-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addEquipement('cuisine')">➕ Ajouter un équipement</button>
                     
                     <div class="form-section-title">🚿 Salle de bain</div>
-                    <div class="form-group">
-                        <label>Équipements salle de bain (format: Nom | Description)</label>
-                        <textarea id="equipements_sdb" name="equipements_sdb" rows="5" placeholder="Douche à l'italienne | Eau chaude instantanée - Pression réglable&#10;Produits de douche | Gel douche & shampoing fournis&#10;Sèche-cheveux | Dans le tiroir sous le lavabo&#10;Serviettes | Bain + visage + piscine fournies&#10;..."></textarea>
-                    </div>
+                    <div id="equipements-sdb-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addEquipement('sdb')">➕ Ajouter un équipement</button>
                     
                     <div class="form-section-title">❄️ Climatisation & Chauffage</div>
                     <div class="form-group">
@@ -752,22 +809,16 @@
                     </div>
                     
                     <div class="form-section-title">🏊 Piscine & Extérieur</div>
-                    <div class="form-group">
-                        <label>Équipements piscine & extérieur (format: Nom | Description)</label>
-                        <textarea id="equipements_ext" name="equipements_ext" rows="4" placeholder="Piscine chauffée | Température 28°C - Alarme activée&#10;Jacuzzi | Bouton ON/OFF sous le couvercle&#10;Barbecue gaz | Bouteille dans le local technique&#10;..."></textarea>
-                    </div>
+                    <div id="equipements-ext-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addEquipement('ext')">➕ Ajouter un équipement</button>
                     
                     <div class="form-section-title">📺 Multimédia</div>
-                    <div class="form-group">
-                        <label>Équipements multimédia (format: Nom | Description)</label>
-                        <textarea id="equipements_multimedia" name="equipements_multimedia" rows="3" placeholder="TV Smart | Netflix, Amazon Prime inclus&#10;Enceinte Bluetooth | Code 0000&#10;..."></textarea>
-                    </div>
+                    <div id="equipements-multimedia-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addEquipement('multimedia')">➕ Ajouter un équipement</button>
                     
                     <div class="form-section-title">🧺 Autres équipements</div>
-                    <div class="form-group">
-                        <label>Autres équipements utiles</label>
-                        <textarea id="equipements_autres" name="equipements_autres" rows="3" placeholder="Lave-linge, fer à repasser, aspirateur, etc."></textarea>
-                    </div>
+                    <div id="equipements-autres-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addEquipement('autres')">➕ Ajouter un équipement</button>
                     
                     <div class="form-section-title">🚪 Instructions de départ</div>
                     <div class="form-group">
@@ -984,6 +1035,20 @@
             document.getElementById('logement-form').reset();
             document.getElementById('photo_preview').style.display = 'none';
             document.getElementById('photo_url').value = '';
+            
+            // Réinitialiser les équipements et ajouter des exemples
+            equipementsData.cuisine = [];
+            equipementsData.sdb = [];
+            equipementsData.ext = [];
+            equipementsData.multimedia = [];
+            equipementsData.autres = [];
+            
+            ['cuisine', 'sdb', 'ext', 'multimedia', 'autres'].forEach(cat => {
+                document.getElementById(`equipements-${cat}-list`).innerHTML = '';
+            });
+            
+            initDefaultEquipements();
+            
             showStep(1);
             document.getElementById('logement-modal').classList.add('active');
         }
@@ -993,6 +1058,83 @@
             // Réinitialiser à l'étape 1
             currentFormStep = 1;
             showStep(1);
+        }
+        
+        // Gestion dynamique des équipements
+        const equipementsData = {
+            cuisine: [],
+            sdb: [],
+            ext: [],
+            multimedia: [],
+            autres: []
+        };
+        
+        function addEquipement(category, nom = '', description = '') {
+            const listId = `equipements-${category}-list`;
+            const list = document.getElementById(listId);
+            const index = equipementsData[category].length;
+            
+            equipementsData[category].push({ nom, description });
+            
+            const item = document.createElement('div');
+            item.className = 'equipement-item';
+            item.setAttribute('data-category', category);
+            item.setAttribute('data-index', index);
+            item.innerHTML = `
+                <input type="text" 
+                       placeholder="Nom" 
+                       value="${nom}"
+                       onchange="updateEquipement('${category}', ${index}, 'nom', this.value)">
+                <textarea placeholder="Description / Instructions"
+                          onchange="updateEquipement('${category}', ${index}, 'description', this.value)">${description}</textarea>
+                <button type="button" class="btn-remove-item" onclick="removeEquipement('${category}', ${index})">🗑️</button>
+            `;
+            list.appendChild(item);
+        }
+        
+        function updateEquipement(category, index, field, value) {
+            if (equipementsData[category][index]) {
+                equipementsData[category][index][field] = value;
+            }
+        }
+        
+        function removeEquipement(category, index) {
+            equipementsData[category].splice(index, 1);
+            refreshEquipementsList(category);
+        }
+        
+        function refreshEquipementsList(category) {
+            const listId = `equipements-${category}-list`;
+            const list = document.getElementById(listId);
+            list.innerHTML = '';
+            
+            equipementsData[category].forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'equipement-item';
+                div.setAttribute('data-category', category);
+                div.setAttribute('data-index', idx);
+                div.innerHTML = `
+                    <input type="text" 
+                           placeholder="Nom" 
+                           value="${item.nom || ''}"
+                           onchange="updateEquipement('${category}', ${idx}, 'nom', this.value)">
+                    <textarea placeholder="Description / Instructions"
+                              onchange="updateEquipement('${category}', ${idx}, 'description', this.value)">${item.description || ''}</textarea>
+                    <button type="button" class="btn-remove-item" onclick="removeEquipement('${category}', ${idx})">🗑️</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+        
+        function initDefaultEquipements() {
+            // Exemples par défaut pour la cuisine
+            addEquipement('cuisine', 'Plaques de cuisson', 'Induction - Allumage tactile');
+            addEquipement('cuisine', 'Four', 'Préchauffer 10 min avant utilisation');
+            addEquipement('cuisine', 'Machine à café', 'Capsules fournies');
+            
+            // Exemples pour salle de bain
+            addEquipement('sdb', 'Douche', 'Eau chaude instantanée');
+            addEquipement('sdb', 'Sèche-cheveux', 'Dans le tiroir sous le lavabo');
         }
         
         // Upload de la photo de couverture
@@ -1140,13 +1282,13 @@
                     wifi_password: document.getElementById('wifi_password').value,
                     multimedia_instructions: document.getElementById('multimedia_instructions').value,
                     
-                    // Étape 3: Équipements
-                    equipements_cuisine: document.getElementById('equipements_cuisine').value,
-                    equipements_sdb: document.getElementById('equipements_sdb').value,
+                    // Étape 3: Équipements (conversion des données dynamiques)
+                    equipements_cuisine: equipementsData.cuisine.map(e => `${e.nom} | ${e.description}`).join('\n'),
+                    equipements_sdb: equipementsData.sdb.map(e => `${e.nom} | ${e.description}`).join('\n'),
                     instructions_clim: document.getElementById('instructions_clim').value,
-                    equipements_ext: document.getElementById('equipements_ext').value,
-                    equipements_multimedia: document.getElementById('equipements_multimedia').value,
-                    equipements_autres: document.getElementById('equipements_autres').value,
+                    equipements_ext: equipementsData.ext.map(e => `${e.nom} | ${e.description}`).join('\n'),
+                    equipements_multimedia: equipementsData.multimedia.map(e => `${e.nom} | ${e.description}`).join('\n'),
+                    equipements_autres: equipementsData.autres.map(e => `${e.nom} | ${e.description}`).join('\n'),
                     instructions_depart: document.getElementById('instructions_depart').value,
                     
                     // Étape 4: Restaurants & Activités
