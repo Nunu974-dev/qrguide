@@ -20,6 +20,14 @@
             z-index: 1000 !important;
         }
         
+        #mon-compte-header .container {
+            background: transparent !important;
+        }
+        
+        #mon-compte-header .nav {
+            background: transparent !important;
+        }
+        
         .nav-links a:not(.btn-primary) {
             color: rgba(255, 255, 255, 0.9) !important;
         }
@@ -1524,6 +1532,7 @@
         
         // Upload de la photo de couverture
         let uploadedPhotoURL = '';
+        let isUploading = false;
         
         document.getElementById('photo_file').addEventListener('change', async (e) => {
             const file = e.target.files[0];
@@ -1549,40 +1558,60 @@
             };
             reader.readAsDataURL(file);
             
+            // Vérifier que Firebase Storage est disponible
+            if (!storage) {
+                alert('❌ Erreur: Firebase Storage non disponible');
+                console.error('Firebase Storage non initialisé');
+                return;
+            }
+            
             // Upload vers Firebase Storage
             const statusEl = document.getElementById('photo_upload_status');
             statusEl.textContent = '📤 Upload en cours...';
             statusEl.style.color = '#d4af37';
+            isUploading = true;
             
             try {
                 const fileName = `logements/${currentUser.uid}/${Date.now()}_${file.name}`;
-                const storageRef = storage.ref(fileName);
+                console.log('Upload vers:', fileName);
                 
-                // Upload avec progression
+                const storageRef = storage.ref(fileName);
                 const uploadTask = storageRef.put(file);
                 
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Progression:', progress + '%');
                         statusEl.textContent = `📤 Upload : ${Math.round(progress)}%`;
                     },
                     (error) => {
                         console.error('Erreur upload:', error);
-                        statusEl.textContent = '❌ Erreur lors de l\'upload';
+                        statusEl.textContent = '❌ Erreur: ' + error.message;
                         statusEl.style.color = '#dc3545';
+                        isUploading = false;
                     },
                     async () => {
-                        // Upload terminé
-                        uploadedPhotoURL = await uploadTask.snapshot.ref.getDownloadURL();
-                        document.getElementById('photo_url').value = uploadedPhotoURL;
-                        statusEl.textContent = '✅ Photo uploadée avec succès !';
-                        statusEl.style.color = '#28a745';
+                        try {
+                            // Upload terminé
+                            uploadedPhotoURL = await uploadTask.snapshot.ref.getDownloadURL();
+                            document.getElementById('photo_url').value = uploadedPhotoURL;
+                            console.log('URL obtenue:', uploadedPhotoURL);
+                            statusEl.textContent = '✅ Photo uploadée avec succès !';
+                            statusEl.style.color = '#28a745';
+                            isUploading = false;
+                        } catch (error) {
+                            console.error('Erreur getDownloadURL:', error);
+                            statusEl.textContent = '❌ Erreur URL: ' + error.message;
+                            statusEl.style.color = '#dc3545';
+                            isUploading = false;
+                        }
                     }
                 );
             } catch (error) {
                 console.error('Erreur:', error);
-                statusEl.textContent = '❌ Erreur lors de l\'upload';
+                statusEl.textContent = '❌ Erreur: ' + error.message;
                 statusEl.style.color = '#dc3545';
+                isUploading = false;
             }
         });
         
@@ -1601,6 +1630,11 @@
                 
                 if (!nom || !adresse || !ville || !description) {
                     alert('Veuillez remplir tous les champs obligatoires (*)');
+                    return;
+                }
+                
+                if (isUploading) {
+                    alert('Veuillez attendre la fin de l\'upload de la photo...');
                     return;
                 }
                 
