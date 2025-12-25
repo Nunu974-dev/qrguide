@@ -643,9 +643,14 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>URL de la photo de couverture *</label>
-                        <input type="url" id="photo_url" name="photo_url" required placeholder="https://... (lien Unsplash ou votre image)">
-                        <small>Utilisez Unsplash.com pour des images gratuites de qualité</small>
+                        <label>Photo de couverture *</label>
+                        <input type="file" id="photo_file" name="photo_file" accept="image/*" style="display: block; padding: 12px; border: 2px dashed #d4af37; border-radius: 8px; background: #fffbf0; cursor: pointer;">
+                        <small style="color: #666; display: block; margin-top: 8px;">Sélectionnez une image depuis votre ordinateur (JPG, PNG, WebP)</small>
+                        <div id="photo_preview" style="margin-top: 12px; display: none;">
+                            <img id="photo_preview_img" style="max-width: 300px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <p id="photo_upload_status" style="margin-top: 8px; font-size: 0.9rem; color: #666;"></p>
+                        </div>
+                        <input type="hidden" id="photo_url" name="photo_url">
                     </div>
                 </div>
                 
@@ -881,6 +886,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="firebase-config.js"></script>
 
     <script>
@@ -976,6 +982,8 @@
             currentFormStep = 1;
             document.getElementById('modal-title').textContent = 'Créer votre Guide Numérique';
             document.getElementById('logement-form').reset();
+            document.getElementById('photo_preview').style.display = 'none';
+            document.getElementById('photo_url').value = '';
             showStep(1);
             document.getElementById('logement-modal').classList.add('active');
         }
@@ -987,10 +995,94 @@
             showStep(1);
         }
         
+        // Upload de la photo de couverture
+        let uploadedPhotoURL = '';
+        
+        document.getElementById('photo_file').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Vérifier le type de fichier
+            if (!file.type.startsWith('image/')) {
+                alert('Veuillez sélectionner une image (JPG, PNG, WebP)');
+                return;
+            }
+            
+            // Vérifier la taille (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('L\'image est trop volumineuse. Taille maximum : 5 MB');
+                return;
+            }
+            
+            // Prévisualisation
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('photo_preview_img').src = e.target.result;
+                document.getElementById('photo_preview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            
+            // Upload vers Firebase Storage
+            const statusEl = document.getElementById('photo_upload_status');
+            statusEl.textContent = '📤 Upload en cours...';
+            statusEl.style.color = '#d4af37';
+            
+            try {
+                const fileName = `logements/${currentUser.uid}/${Date.now()}_${file.name}`;
+                const storageRef = storage.ref(fileName);
+                
+                // Upload avec progression
+                const uploadTask = storageRef.put(file);
+                
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        statusEl.textContent = `📤 Upload : ${Math.round(progress)}%`;
+                    },
+                    (error) => {
+                        console.error('Erreur upload:', error);
+                        statusEl.textContent = '❌ Erreur lors de l\'upload';
+                        statusEl.style.color = '#dc3545';
+                    },
+                    async () => {
+                        // Upload terminé
+                        uploadedPhotoURL = await uploadTask.snapshot.ref.getDownloadURL();
+                        document.getElementById('photo_url').value = uploadedPhotoURL;
+                        statusEl.textContent = '✅ Photo uploadée avec succès !';
+                        statusEl.style.color = '#28a745';
+                    }
+                );
+            } catch (error) {
+                console.error('Erreur:', error);
+                statusEl.textContent = '❌ Erreur lors de l\'upload';
+                statusEl.style.color = '#dc3545';
+            }
+        });
+        
         // Navigation formulaire multi-étapes
         let currentFormStep = 1;
         
         function changeStep(direction) {
+            // Validation avant de passer à l'étape suivante
+            if (direction === 1 && currentFormStep === 1) {
+                // Vérifier que tous les champs obligatoires de l'étape 1 sont remplis
+                const nom = document.getElementById('nom').value.trim();
+                const adresse = document.getElementById('adresse').value.trim();
+                const ville = document.getElementById('ville').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const photoUrl = document.getElementById('photo_url').value.trim();
+                
+                if (!nom || !adresse || !ville || !description) {
+                    alert('Veuillez remplir tous les champs obligatoires (*)');
+                    return;
+                }
+                
+                if (!photoUrl) {
+                    alert('Veuillez télécharger une photo de couverture avant de continuer');
+                    return;
+                }
+            }
+            
             const newStep = currentFormStep + direction;
             if (newStep >= 1 && newStep <= 5) {
                 currentFormStep = newStep;
