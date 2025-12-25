@@ -612,9 +612,9 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header" id="mon-compte-header">
-        <div class="container">
-            <nav class="nav">
+    <header class="header" id="mon-compte-header" style="background: #1a202c !important;">
+        <div class="container" style="background: transparent !important;">
+            <nav class="nav" style="background: transparent !important;">
                 <a href="index.html"><img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="logo"></a>
                 <button class="mobile-menu-toggle" aria-label="Menu">
                     <span></span>
@@ -1020,6 +1020,10 @@
     <script>
         let currentUser = null;
         let currentLogementId = null;
+
+        // Vérifier Firebase Storage au chargement
+        console.log('🔥 Firebase Storage initialisé:', !!storage);
+        console.log('🔥 Storage:', storage);
 
         // Vérifier connexion
         auth.onAuthStateChanged(async (user) => {
@@ -1565,6 +1569,16 @@
                 return;
             }
             
+            // Vérifier que l'utilisateur est connecté
+            if (!currentUser) {
+                alert('❌ Erreur: Utilisateur non connecté');
+                console.error('currentUser non défini');
+                return;
+            }
+            
+            console.log('✅ currentUser:', currentUser.uid);
+            console.log('✅ Storage:', storage);
+            
             // Upload vers Firebase Storage
             const statusEl = document.getElementById('photo_upload_status');
             statusEl.textContent = '📤 Upload en cours...';
@@ -1573,15 +1587,20 @@
             
             try {
                 const fileName = `logements/${currentUser.uid}/${Date.now()}_${file.name}`;
-                console.log('Upload vers:', fileName);
+                console.log('📁 Upload vers:', fileName);
                 
                 const storageRef = storage.ref(fileName);
+                console.log('📦 StorageRef créé:', storageRef);
+                
                 const uploadTask = storageRef.put(file);
+                console.log('🚀 UploadTask démarré');
                 
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Progression:', progress + '%');
+                        console.log('📊 Progression:', Math.round(progress) + '%', 
+                                    'Bytes:', snapshot.bytesTransferred, '/', snapshot.totalBytes,
+                                    'State:', snapshot.state);
                         statusEl.textContent = `📤 Upload : ${Math.round(progress)}%`;
                     },
                     (error) => {
