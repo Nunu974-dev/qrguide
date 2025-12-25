@@ -408,6 +408,105 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        
+        /* Formulaire multi-étapes */
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            opacity: 0.4;
+        }
+        
+        .progress-step.active {
+            opacity: 1;
+        }
+        
+        .progress-step .step-number {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 8px;
+            background: #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #666;
+        }
+        
+        .progress-step.active .step-number {
+            background: #d4af37;
+            color: white;
+        }
+        
+        .progress-step .step-label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .form-step h3 {
+            color: #d4af37;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+        }
+        
+        .form-section-title {
+            font-weight: 700;
+            color: #333;
+            margin: 24px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        @media (max-width: 768px) {
+            .form-progress {
+                flex-wrap: wrap;
+            }
+            
+            .progress-step {
+                flex-basis: 33.333%;
+                margin-bottom: 16px;
+            }
+            
+            .progress-step .step-label {
+                font-size: 0.7rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -505,15 +604,226 @@
     </div>
 
     <!-- Modal Logement -->
+    <!-- Modal Logement COMPLET -->
     <div id="logement-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 900px;">
             <button class="modal-close" onclick="closeLogementModal()">✕</button>
-            <h2 id="modal-title">Nouveau Logement</h2>
+            <h2 id="modal-title">Créer votre Guide Numérique</h2>
+            
+            <!-- Indicateur de progression -->
+            <div class="form-progress">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Informations générales</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Arrivée & WiFi</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Équipements</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Restaurants & Activités</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Infos pratiques</div>
+                </div>
+            </div>
             
             <form id="logement-form">
-                <input type="hidden" id="logement-id">
+                <!-- ÉTAPE 1: Informations générales -->
+                <div class="form-step active" data-step="1">
+                    <h3>📍 Informations générales</h3>
+                    
+                    <div class="form-group">
+                        <label>Nom du logement *</label>
+                        <input type="text" id="nom" name="nom" required placeholder="Ex: Villa Vue Mer Saint-Paul">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Adresse complète *</label>
+                            <input type="text" id="adresse" name="adresse" required placeholder="15 Rue des Cocotiers">
+                        </div>
+                        <div class="form-group">
+                            <label>Ville *</label>
+                            <input type="text" id="ville" name="ville" required placeholder="Saint-Paul">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description du logement *</label>
+                        <textarea id="description" name="description" rows="4" required placeholder="Décrivez votre logement, ses atouts, son environnement..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Note/Classement</label>
+                            <select id="note" name="note">
+                                <option value="3">⭐⭐⭐ 3 étoiles</option>
+                                <option value="4" selected>⭐⭐⭐⭐ 4 étoiles</option>
+                                <option value="5">⭐⭐⭐⭐⭐ 5 étoiles</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Type de logement</label>
+                            <select id="type" name="type">
+                                <option value="villa">Villa</option>
+                                <option value="appartement">Appartement</option>
+                                <option value="maison">Maison</option>
+                                <option value="studio">Studio</option>
+                                <option value="bungalow">Bungalow</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>URL de la photo de couverture *</label>
+                        <input type="url" id="photo_url" name="photo_url" required placeholder="https://... (lien Unsplash ou votre image)">
+                        <small>Utilisez Unsplash.com pour des images gratuites de qualité</small>
+                    </div>
+                </div>
                 
-                <!-- SUITE DU FORMULAIRE DANS LE PROCHAIN MESSAGE CAR LIMITE DE TAILLE -->
+                <!-- ÉTAPE 2: Arrivée & WiFi -->
+                <div class="form-step" data-step="2">
+                    <h3>✨ Arrivée & Connectivité</h3>
+                    
+                    <div class="form-section-title">Check-in / Check-out</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Heure d'arrivée</label>
+                            <input type="time" id="checkin_time" name="checkin_time" value="15:00">
+                        </div>
+                        <div class="form-group">
+                            <label>Heure de départ</label>
+                            <input type="time" id="checkout_time" name="checkout_time" value="11:00">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Instructions d'arrivée *</label>
+                        <textarea id="instructions_arrivee" name="instructions_arrivee" rows="4" required placeholder="Comment accéder au logement, où trouver les clés, code portail, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Code d'accès (portail, porte...)</label>
+                        <input type="text" id="code_acces" name="code_acces" placeholder="Ex: 1234 ou A56B">
+                    </div>
+                    
+                    <div class="form-section-title">📶 WiFi</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom du réseau WiFi *</label>
+                            <input type="text" id="wifi_nom" name="wifi_nom" required placeholder="Ex: Villa_WiFi_5G">
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de passe WiFi *</label>
+                            <input type="text" id="wifi_password" name="wifi_password" required placeholder="Le mot de passe WiFi">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Instructions TV / Multimédia</label>
+                        <textarea id="multimedia_instructions" name="multimedia_instructions" rows="3" placeholder="Comment utiliser la TV, Netflix, etc."></textarea>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 3: Équipements -->
+                <div class="form-step" data-step="3">
+                    <h3>🏠 Équipements & Instructions</h3>
+                    
+                    <div class="form-group">
+                        <label>Liste des équipements (un par ligne)</label>
+                        <textarea id="equipements" name="equipements" rows="8" placeholder="Machine à café Nespresso&#10;Lave-vaisselle Bosch&#10;Climatisation réversible&#10;Piscine chauffée&#10;Barbecue gaz&#10;..."></textarea>
+                        <small>Listez tous les équipements disponibles, un par ligne</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Instructions d'utilisation des équipements</label>
+                        <textarea id="equipements_instructions" name="equipements_instructions" rows="4" placeholder="Comment utiliser la piscine, le barbecue, la climatisation, etc."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🚪 Instructions de départ</div>
+                    <div class="form-group">
+                        <label>Que faire avant de partir</label>
+                        <textarea id="instructions_depart" name="instructions_depart" rows="4" placeholder="Vider les poubelles, éteindre la clim, fermer les volets, où laisser les clés, etc."></textarea>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 4: Restaurants & Activités -->
+                <div class="form-step" data-step="4">
+                    <h3>🍽️ Bonnes Adresses & Activités</h3>
+                    
+                    <div class="form-section-title">Restaurants recommandés</div>
+                    <div class="form-group">
+                        <label>Restaurants (Format: Nom | Type | Distance | Lien Google Maps)</label>
+                        <textarea id="restaurants" name="restaurants" rows="6" placeholder="Le Bouchon Créole | Cuisine locale | 500m | https://maps.google.com/...&#10;La Plage Restaurant | Fruits de mer | 1km | https://maps.google.com/...&#10;..."></textarea>
+                        <small>Un restaurant par ligne, séparez les infos par |</small>
+                    </div>
+                    
+                    <div class="form-section-title">🌴 Activités & Loisirs</div>
+                    <div class="form-group">
+                        <label>Activités à faire (Format: Nom | Type | Description | Lien)</label>
+                        <textarea id="activites" name="activites" rows="6" placeholder="Plage de l'Hermitage | Plage | Plage de sable blanc, idéale snorkeling | https://maps.google.com/...&#10;Marché de Saint-Paul | Shopping | Marché forain tous les vendredis | https://...&#10;..."></textarea>
+                        <small>Une activité par ligne, séparez les infos par |</small>
+                    </div>
+                    
+                    <div class="form-section-title">📍 Commerces & Services à proximité</div>
+                    <div class="form-group">
+                        <label>Commerces proches</label>
+                        <textarea id="commerces" name="commerces" rows="4" placeholder="Super U - 800m - Ouvert 7j/7 8h-20h&#10;Pharmacie - 500m - Lun-Sam 9h-19h&#10;Boulangerie - 300m - 6h30-19h30&#10;..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 5: Infos pratiques -->
+                <div class="form-step" data-step="5">
+                    <h3>📋 Informations Pratiques</h3>
+                    
+                    <div class="form-section-title">Règlement & Consignes</div>
+                    <div class="form-group">
+                        <label>Règles de la maison</label>
+                        <textarea id="regles" name="regles" rows="5" placeholder="- Non fumeur à l'intérieur&#10;- Pas de fêtes/événements&#10;- Respecter le calme après 22h&#10;- Animaux non acceptés&#10;..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">👤 Votre contact</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Votre nom / Prénom</label>
+                            <input type="text" id="hote_nom" name="hote_nom" placeholder="Julien">
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone de contact *</label>
+                            <input type="tel" id="hote_telephone" name="hote_telephone" required placeholder="+262 692 XX XX XX">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email de contact</label>
+                        <input type="email" id="hote_email" name="hote_email" placeholder="contact@exemple.fr">
+                    </div>
+                    
+                    <div class="form-section-title">🚨 Numéros d'urgence locaux</div>
+                    <div class="form-group">
+                        <label>Numéros d'urgence (laisser les numéros par défaut ou personnaliser)</label>
+                        <textarea id="urgences" name="urgences" rows="4" placeholder="SAMU - 15&#10;Police - 17&#10;Pompiers - 18&#10;Hôpital le plus proche - +262 262 XX XX XX"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Informations supplémentaires</label>
+                        <textarea id="infos_supplementaires" name="infos_supplementaires" rows="3" placeholder="Toute autre information utile pour vos voyageurs..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Boutons de navigation -->
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">← Précédent</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Suivant →</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">✅ Créer le guide</button>
+                </div>
             </form>
         </div>
     </div>
@@ -614,14 +924,113 @@
         // Modal
         function openNewLogementModal() {
             currentLogementId = null;
-            document.getElementById('modal-title').textContent = 'Nouveau Logement';
+            currentFormStep = 1;
+            document.getElementById('modal-title').textContent = 'Créer votre Guide Numérique';
             document.getElementById('logement-form').reset();
+            showStep(1);
             document.getElementById('logement-modal').classList.add('active');
         }
 
         function closeLogementModal() {
             document.getElementById('logement-modal').classList.remove('active');
+            // Réinitialiser à l'étape 1
+            currentFormStep = 1;
+            showStep(1);
         }
+        
+        // Navigation formulaire multi-étapes
+        let currentFormStep = 1;
+        
+        function changeStep(direction) {
+            const newStep = currentFormStep + direction;
+            if (newStep >= 1 && newStep <= 5) {
+                currentFormStep = newStep;
+                showStep(currentFormStep);
+            }
+        }
+        
+        function showStep(step) {
+            // Masquer toutes les étapes
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active'));
+            
+            // Afficher l'étape actuelle
+            document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+            document.querySelector(`.progress-step[data-step="${step}"]`).classList.add('active');
+            
+            // Gérer les boutons
+            document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').style.display = step === 5 ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = step === 5 ? 'inline-block' : 'none';
+        }
+        
+        // Soumettre le formulaire
+        document.getElementById('logement-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '⏳ Création en cours...';
+            
+            try {
+                // Récupérer toutes les données du formulaire
+                const formData = {
+                    // Étape 1
+                    nom: document.getElementById('nom').value,
+                    adresse: document.getElementById('adresse').value,
+                    ville: document.getElementById('ville').value,
+                    description: document.getElementById('description').value,
+                    note: document.getElementById('note').value,
+                    type: document.getElementById('type').value,
+                    photo_url: document.getElementById('photo_url').value,
+                    
+                    // Étape 2
+                    checkin_time: document.getElementById('checkin_time').value,
+                    checkout_time: document.getElementById('checkout_time').value,
+                    instructions_arrivee: document.getElementById('instructions_arrivee').value,
+                    code_acces: document.getElementById('code_acces').value,
+                    wifi_nom: document.getElementById('wifi_nom').value,
+                    wifi_password: document.getElementById('wifi_password').value,
+                    multimedia_instructions: document.getElementById('multimedia_instructions').value,
+                    
+                    // Étape 3
+                    equipements: document.getElementById('equipements').value,
+                    equipements_instructions: document.getElementById('equipements_instructions').value,
+                    instructions_depart: document.getElementById('instructions_depart').value,
+                    
+                    // Étape 4
+                    restaurants: document.getElementById('restaurants').value,
+                    activites: document.getElementById('activites').value,
+                    commerces: document.getElementById('commerces').value,
+                    
+                    // Étape 5
+                    regles: document.getElementById('regles').value,
+                    hote_nom: document.getElementById('hote_nom').value,
+                    hote_telephone: document.getElementById('hote_telephone').value,
+                    hote_email: document.getElementById('hote_email').value,
+                    urgences: document.getElementById('urgences').value,
+                    infos_supplementaires: document.getElementById('infos_supplementaires').value,
+                    
+                    // Métadonnées
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                // Sauvegarder dans Firestore
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('logements').add(formData);
+                
+                showAlert('✅ Guide créé avec succès !', 'success');
+                closeLogementModal();
+                loadLogements();
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                showAlert('❌ Erreur lors de la création: ' + error.message, 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '✅ Créer le guide';
+            }
+        });
 
         async function editLogement(id) {
             currentLogementId = id;
