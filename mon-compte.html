@@ -498,6 +498,73 @@
             transform: translateY(-2px);
         }
         
+        .restaurant-item,
+        .activite-item,
+        .commerce-item {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid #d4af37;
+        }
+        
+        .restaurant-item .item-row,
+        .activite-item .item-row,
+        .commerce-item .item-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .restaurant-item input,
+        .restaurant-item textarea,
+        .activite-item input,
+        .activite-item textarea,
+        .commerce-item input,
+        .commerce-item textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        
+        .restaurant-item textarea,
+        .activite-item textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .item-header h4 {
+            color: #d4af37;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -832,33 +899,20 @@
                     <h3>🍽️ Bonnes Adresses & Activités</h3>
                     
                     <div class="form-section-title">Restaurants recommandés</div>
-                    <div class="form-group">
-                        <label>Restaurants (Format détaillé sur 3 lignes par restaurant)</label>
-                        <textarea id="restaurants" name="restaurants" rows="12" placeholder="Restaurant Le Bouchon Créole&#10;Cuisine locale authentique, ambiance créole chaleureuse | ⭐ Coup de coeur | 🚶 5 min (400m) | 💰 25-35€/pers | 🕐 Mar-Dim 12h-14h, 19h-22h | 📍 https://maps.google.com/...&#10;&#10;La Plage Restaurant&#10;Fruits de mer frais, vue sur l'océan | 🚶 10 min (800m) | 💰 30-45€/pers | 🕐 Tlj 12h-22h | 📍 https://maps.google.com/...&#10;&#10;Snack Ti'Kaz&#10;Plats à emporter, samoussas & bouchons | 🚶 3 min (200m) | 💰 8-15€/pers | 🕐 Lun-Sam 11h-20h | 📍 https://maps.google.com/..."></textarea>
-                        <small>Ligne 1: Nom du restaurant<br>
-                        Ligne 2: Description | ⭐ Coup de coeur (si applicable) | 🚶 Distance | 💰 Prix | 🕐 Horaires | 📍 Lien Maps<br>
-                        Ligne 3: Ligne vide pour séparer<br>
-                        Mettez "⭐ Coup de coeur" pour vos favoris !</small>
-                    </div>
+                    <div id="restaurants-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addRestaurant()">➕ Ajouter un restaurant</button>
                     
                     <div class="form-section-title">🥐 Snacks & Boulangeries</div>
-                    <div class="form-group">
-                        <label>Snacks, boulangeries, glaciers (même format que restaurants)</label>
-                        <textarea id="snacks" name="snacks" rows="8" placeholder="Boulangerie Paul & Virginie&#10;Pain frais tous les matins, viennoiseries artisanales | 🚶 3 min (200m) | 💰 3-8€ | 🕐 6h30-19h30 | 📍 https://maps.google.com/...&#10;&#10;Glacier Marmaille&#10;Glaces artisanales, parfums locaux (coco, fruits de la passion) | 🚶 8 min (600m) | 💰 3-6€ | 🕐 Tlj 14h-22h | 📍 https://maps.google.com/..."></textarea>
-                    </div>
+                    <div id="snacks-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addSnack()">➕ Ajouter un snack/boulangerie</button>
                     
                     <div class="form-section-title">🌴 Activités & Loisirs</div>
-                    <div class="form-group">
-                        <label>Activités recommandées (Format: Nom | Type | Description | Lien)</label>
-                        <textarea id="activites" name="activites" rows="8" placeholder="Plage de l'Hermitage | Plage & Snorkeling | Plage de sable blanc protégée par le lagon, idéale pour le snorkeling. Masques et tubas dans le placard de l'entrée ! | https://maps.google.com/...&#10;&#10;Marché de Saint-Paul | Shopping & Culture | Marché forain coloré tous les vendredis et samedis matin. Fruits, épices, artisanat local. | https://maps.google.com/...&#10;&#10;Randonnée Piton Maïdo | Randonnée | Vue spectaculaire sur le cirque de Mafate. Prévoir 3-4h, départ tôt le matin. | https://maps.google.com/..."></textarea>
-                        <small>Une activité par ligne (séparées par ligne vide), format: Nom | Type | Description | Lien</small>
-                    </div>
+                    <div id="activites-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addActivite()">➕ Ajouter une activité</button>
                     
                     <div class="form-section-title">📍 Commerces & Services à proximité</div>
-                    <div class="form-group">
-                        <label>Commerces de proximité</label>
-                        <textarea id="commerces" name="commerces" rows="5" placeholder="🛒 Super U - 800m - Ouvert 7j/7 8h-20h - Livraison possible&#10;💊 Pharmacie du Port - 500m - Lun-Sam 9h-19h - Garde le dimanche&#10;🥖 Boulangerie Paul & Virginie - 200m - 6h30-19h30&#10;⛽ Station essence Total - 1,2km - 24h/24&#10;..."></textarea>
-                    </div>
+                    <div id="commerces-list"></div>
+                    <button type="button" class="btn-add-item" onclick="addCommerce()">➕ Ajouter un commerce</button>
                 </div>
                 
                 <!-- ÉTAPE 5: Infos pratiques -->
@@ -1049,6 +1103,17 @@
             
             initDefaultEquipements();
             
+            // Réinitialiser restaurants, activités, commerces
+            restaurantsData.length = 0;
+            snacksData.length = 0;
+            activitesData.length = 0;
+            commercesData.length = 0;
+            
+            document.getElementById('restaurants-list').innerHTML = '';
+            document.getElementById('snacks-list').innerHTML = '';
+            document.getElementById('activites-list').innerHTML = '';
+            document.getElementById('commerces-list').innerHTML = '';
+            
             showStep(1);
             document.getElementById('logement-modal').classList.add('active');
         }
@@ -1135,6 +1200,308 @@
             // Exemples pour salle de bain
             addEquipement('sdb', 'Douche', 'Eau chaude instantanée');
             addEquipement('sdb', 'Sèche-cheveux', 'Dans le tiroir sous le lavabo');
+        }
+        
+        // Gestion dynamique des restaurants
+        const restaurantsData = [];
+        
+        function addRestaurant(nom = '', description = '', distance = '', prix = '', horaires = '', lien = '', coupDeCoeur = false) {
+            const list = document.getElementById('restaurants-list');
+            const index = restaurantsData.length;
+            
+            restaurantsData.push({ nom, description, distance, prix, horaires, lien, coupDeCoeur });
+            
+            const item = document.createElement('div');
+            item.className = 'restaurant-item';
+            item.innerHTML = `
+                <div class="item-header">
+                    <h4>Restaurant ${index + 1}</h4>
+                    <button type="button" class="btn-remove-item" onclick="removeRestaurant(${index})">🗑️</button>
+                </div>
+                <input type="text" placeholder="Nom du restaurant" value="${nom}" 
+                       onchange="updateRestaurant(${index}, 'nom', this.value)">
+                <textarea placeholder="Description" 
+                          onchange="updateRestaurant(${index}, 'description', this.value)">${description}</textarea>
+                <div class="item-row">
+                    <input type="text" placeholder="Distance (ex: 5 min, 400m)" value="${distance}"
+                           onchange="updateRestaurant(${index}, 'distance', this.value)">
+                    <input type="text" placeholder="Prix (ex: 25-35€/pers)" value="${prix}"
+                           onchange="updateRestaurant(${index}, 'prix', this.value)">
+                </div>
+                <div class="item-row">
+                    <input type="text" placeholder="Horaires (ex: Mar-Dim 12h-14h, 19h-22h)" value="${horaires}"
+                           onchange="updateRestaurant(${index}, 'horaires', this.value)">
+                    <input type="url" placeholder="Lien Google Maps" value="${lien}"
+                           onchange="updateRestaurant(${index}, 'lien', this.value)">
+                </div>
+                <label class="checkbox-label">
+                    <input type="checkbox" ${coupDeCoeur ? 'checked' : ''} 
+                           onchange="updateRestaurant(${index}, 'coupDeCoeur', this.checked)">
+                    ⭐ Coup de coeur
+                </label>
+            `;
+            list.appendChild(item);
+        }
+        
+        function updateRestaurant(index, field, value) {
+            if (restaurantsData[index]) {
+                restaurantsData[index][field] = value;
+            }
+        }
+        
+        function removeRestaurant(index) {
+            restaurantsData.splice(index, 1);
+            refreshRestaurants();
+        }
+        
+        function refreshRestaurants() {
+            const list = document.getElementById('restaurants-list');
+            list.innerHTML = '';
+            restaurantsData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'restaurant-item';
+                div.innerHTML = `
+                    <div class="item-header">
+                        <h4>Restaurant ${idx + 1}</h4>
+                        <button type="button" class="btn-remove-item" onclick="removeRestaurant(${idx})">🗑️</button>
+                    </div>
+                    <input type="text" placeholder="Nom du restaurant" value="${item.nom || ''}" 
+                           onchange="updateRestaurant(${idx}, 'nom', this.value)">
+                    <textarea placeholder="Description" 
+                              onchange="updateRestaurant(${idx}, 'description', this.value)">${item.description || ''}</textarea>
+                    <div class="item-row">
+                        <input type="text" placeholder="Distance" value="${item.distance || ''}"
+                               onchange="updateRestaurant(${idx}, 'distance', this.value)">
+                        <input type="text" placeholder="Prix" value="${item.prix || ''}"
+                               onchange="updateRestaurant(${idx}, 'prix', this.value)">
+                    </div>
+                    <div class="item-row">
+                        <input type="text" placeholder="Horaires" value="${item.horaires || ''}"
+                               onchange="updateRestaurant(${idx}, 'horaires', this.value)">
+                        <input type="url" placeholder="Lien Google Maps" value="${item.lien || ''}"
+                               onchange="updateRestaurant(${idx}, 'lien', this.value)">
+                    </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" ${item.coupDeCoeur ? 'checked' : ''} 
+                               onchange="updateRestaurant(${idx}, 'coupDeCoeur', this.checked)">
+                        ⭐ Coup de coeur
+                    </label>
+                `;
+                list.appendChild(div);
+            });
+        }
+        
+        // Gestion dynamique des snacks
+        const snacksData = [];
+        
+        function addSnack(nom = '', description = '', distance = '', prix = '', horaires = '', lien = '') {
+            const list = document.getElementById('snacks-list');
+            const index = snacksData.length;
+            
+            snacksData.push({ nom, description, distance, prix, horaires, lien });
+            
+            const item = document.createElement('div');
+            item.className = 'restaurant-item';
+            item.innerHTML = `
+                <div class="item-header">
+                    <h4>Snack/Boulangerie ${index + 1}</h4>
+                    <button type="button" class="btn-remove-item" onclick="removeSnack(${index})">🗑️</button>
+                </div>
+                <input type="text" placeholder="Nom" value="${nom}" 
+                       onchange="updateSnack(${index}, 'nom', this.value)">
+                <textarea placeholder="Description" 
+                          onchange="updateSnack(${index}, 'description', this.value)">${description}</textarea>
+                <div class="item-row">
+                    <input type="text" placeholder="Distance" value="${distance}"
+                           onchange="updateSnack(${index}, 'distance', this.value)">
+                    <input type="text" placeholder="Prix" value="${prix}"
+                           onchange="updateSnack(${index}, 'prix', this.value)">
+                </div>
+                <div class="item-row">
+                    <input type="text" placeholder="Horaires" value="${horaires}"
+                           onchange="updateSnack(${index}, 'horaires', this.value)">
+                    <input type="url" placeholder="Lien Google Maps" value="${lien}"
+                           onchange="updateSnack(${index}, 'lien', this.value)">
+                </div>
+            `;
+            list.appendChild(item);
+        }
+        
+        function updateSnack(index, field, value) {
+            if (snacksData[index]) {
+                snacksData[index][field] = value;
+            }
+        }
+        
+        function removeSnack(index) {
+            snacksData.splice(index, 1);
+            refreshSnacks();
+        }
+        
+        function refreshSnacks() {
+            const list = document.getElementById('snacks-list');
+            list.innerHTML = '';
+            snacksData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'restaurant-item';
+                div.innerHTML = `
+                    <div class="item-header">
+                        <h4>Snack/Boulangerie ${idx + 1}</h4>
+                        <button type="button" class="btn-remove-item" onclick="removeSnack(${idx})">🗑️</button>
+                    </div>
+                    <input type="text" placeholder="Nom" value="${item.nom || ''}" 
+                           onchange="updateSnack(${idx}, 'nom', this.value)">
+                    <textarea placeholder="Description" 
+                              onchange="updateSnack(${idx}, 'description', this.value)">${item.description || ''}</textarea>
+                    <div class="item-row">
+                        <input type="text" placeholder="Distance" value="${item.distance || ''}"
+                               onchange="updateSnack(${idx}, 'distance', this.value)">
+                        <input type="text" placeholder="Prix" value="${item.prix || ''}"
+                               onchange="updateSnack(${idx}, 'prix', this.value)">
+                    </div>
+                    <div class="item-row">
+                        <input type="text" placeholder="Horaires" value="${item.horaires || ''}"
+                               onchange="updateSnack(${idx}, 'horaires', this.value)">
+                        <input type="url" placeholder="Lien Google Maps" value="${item.lien || ''}"
+                               onchange="updateSnack(${idx}, 'lien', this.value)">
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+        
+        // Gestion dynamique des activités
+        const activitesData = [];
+        
+        function addActivite(nom = '', type = '', description = '', lien = '') {
+            const list = document.getElementById('activites-list');
+            const index = activitesData.length;
+            
+            activitesData.push({ nom, type, description, lien });
+            
+            const item = document.createElement('div');
+            item.className = 'activite-item';
+            item.innerHTML = `
+                <div class="item-header">
+                    <h4>Activité ${index + 1}</h4>
+                    <button type="button" class="btn-remove-item" onclick="removeActivite(${index})">🗑️</button>
+                </div>
+                <div class="item-row">
+                    <input type="text" placeholder="Nom de l'activité" value="${nom}" 
+                           onchange="updateActivite(${index}, 'nom', this.value)">
+                    <input type="text" placeholder="Type (Plage, Randonnée, Shopping...)" value="${type}"
+                           onchange="updateActivite(${index}, 'type', this.value)">
+                </div>
+                <textarea placeholder="Description" 
+                          onchange="updateActivite(${index}, 'description', this.value)">${description}</textarea>
+                <input type="url" placeholder="Lien Google Maps ou site web" value="${lien}"
+                       onchange="updateActivite(${index}, 'lien', this.value)">
+            `;
+            list.appendChild(item);
+        }
+        
+        function updateActivite(index, field, value) {
+            if (activitesData[index]) {
+                activitesData[index][field] = value;
+            }
+        }
+        
+        function removeActivite(index) {
+            activitesData.splice(index, 1);
+            refreshActivites();
+        }
+        
+        function refreshActivites() {
+            const list = document.getElementById('activites-list');
+            list.innerHTML = '';
+            activitesData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'activite-item';
+                div.innerHTML = `
+                    <div class="item-header">
+                        <h4>Activité ${idx + 1}</h4>
+                        <button type="button" class="btn-remove-item" onclick="removeActivite(${idx})">🗑️</button>
+                    </div>
+                    <div class="item-row">
+                        <input type="text" placeholder="Nom" value="${item.nom || ''}" 
+                               onchange="updateActivite(${idx}, 'nom', this.value)">
+                        <input type="text" placeholder="Type" value="${item.type || ''}"
+                               onchange="updateActivite(${idx}, 'type', this.value)">
+                    </div>
+                    <textarea placeholder="Description" 
+                              onchange="updateActivite(${idx}, 'description', this.value)">${item.description || ''}</textarea>
+                    <input type="url" placeholder="Lien" value="${item.lien || ''}"
+                           onchange="updateActivite(${idx}, 'lien', this.value)">
+                `;
+                list.appendChild(div);
+            });
+        }
+        
+        // Gestion dynamique des commerces
+        const commercesData = [];
+        
+        function addCommerce(nom = '', distance = '', horaires = '', infos = '') {
+            const list = document.getElementById('commerces-list');
+            const index = commercesData.length;
+            
+            commercesData.push({ nom, distance, horaires, infos });
+            
+            const item = document.createElement('div');
+            item.className = 'commerce-item';
+            item.innerHTML = `
+                <div class="item-header">
+                    <h4>Commerce ${index + 1}</h4>
+                    <button type="button" class="btn-remove-item" onclick="removeCommerce(${index})">🗑️</button>
+                </div>
+                <input type="text" placeholder="Nom du commerce (ex: 🛒 Super U)" value="${nom}" 
+                       onchange="updateCommerce(${index}, 'nom', this.value)">
+                <div class="item-row">
+                    <input type="text" placeholder="Distance (ex: 800m)" value="${distance}"
+                           onchange="updateCommerce(${index}, 'distance', this.value)">
+                    <input type="text" placeholder="Horaires (ex: 7j/7 8h-20h)" value="${horaires}"
+                           onchange="updateCommerce(${index}, 'horaires', this.value)">
+                </div>
+                <input type="text" placeholder="Infos supplémentaires (ex: Livraison possible)" value="${infos}"
+                       onchange="updateCommerce(${index}, 'infos', this.value)">
+            `;
+            list.appendChild(item);
+        }
+        
+        function updateCommerce(index, field, value) {
+            if (commercesData[index]) {
+                commercesData[index][field] = value;
+            }
+        }
+        
+        function removeCommerce(index) {
+            commercesData.splice(index, 1);
+            refreshCommerces();
+        }
+        
+        function refreshCommerces() {
+            const list = document.getElementById('commerces-list');
+            list.innerHTML = '';
+            commercesData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'commerce-item';
+                div.innerHTML = `
+                    <div class="item-header">
+                        <h4>Commerce ${idx + 1}</h4>
+                        <button type="button" class="btn-remove-item" onclick="removeCommerce(${idx})">🗑️</button>
+                    </div>
+                    <input type="text" placeholder="Nom" value="${item.nom || ''}" 
+                           onchange="updateCommerce(${idx}, 'nom', this.value)">
+                    <div class="item-row">
+                        <input type="text" placeholder="Distance" value="${item.distance || ''}"
+                               onchange="updateCommerce(${idx}, 'distance', this.value)">
+                        <input type="text" placeholder="Horaires" value="${item.horaires || ''}"
+                               onchange="updateCommerce(${idx}, 'horaires', this.value)">
+                    </div>
+                    <input type="text" placeholder="Infos supplémentaires" value="${item.infos || ''}"
+                           onchange="updateCommerce(${idx}, 'infos', this.value)">
+                `;
+                list.appendChild(div);
+            });
         }
         
         // Upload de la photo de couverture
@@ -1291,11 +1658,37 @@
                     equipements_autres: equipementsData.autres.map(e => `${e.nom} | ${e.description}`).join('\n'),
                     instructions_depart: document.getElementById('instructions_depart').value,
                     
-                    // Étape 4: Restaurants & Activités
-                    restaurants: document.getElementById('restaurants').value,
-                    snacks: document.getElementById('snacks').value,
-                    activites: document.getElementById('activites').value,
-                    commerces: document.getElementById('commerces').value,
+                    // Étape 4: Restaurants & Activités (conversion des données dynamiques)
+                    restaurants: restaurantsData.map(r => {
+                        const ligne1 = r.nom;
+                        const ligne2 = [
+                            r.description,
+                            r.coupDeCoeur ? '⭐ Coup de coeur' : '',
+                            r.distance ? `🚶 ${r.distance}` : '',
+                            r.prix ? `💰 ${r.prix}` : '',
+                            r.horaires ? `🕐 ${r.horaires}` : '',
+                            r.lien ? `📍 ${r.lien}` : ''
+                        ].filter(x => x).join(' | ');
+                        return `${ligne1}\n${ligne2}`;
+                    }).join('\n\n'),
+                    
+                    snacks: snacksData.map(s => {
+                        const ligne1 = s.nom;
+                        const ligne2 = [
+                            s.description,
+                            s.distance ? `🚶 ${s.distance}` : '',
+                            s.prix ? `💰 ${s.prix}` : '',
+                            s.horaires ? `🕐 ${s.horaires}` : '',
+                            s.lien ? `📍 ${s.lien}` : ''
+                        ].filter(x => x).join(' | ');
+                        return `${ligne1}\n${ligne2}`;
+                    }).join('\n\n'),
+                    
+                    activites: activitesData.map(a => `${a.nom} | ${a.type} | ${a.description} | ${a.lien}`).join('\n\n'),
+                    
+                    commerces: commercesData.map(c => {
+                        return [c.nom, c.distance, c.horaires, c.infos].filter(x => x).join(' - ');
+                    }).join('\n'),
                     
                     // Étape 5: Infos pratiques
                     regles: document.getElementById('regles').value,
