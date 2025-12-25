@@ -181,7 +181,11 @@
                 // 2. Ajouter les informations utilisateur dans Firestore
                 await firebase.firestore().collection('users').doc(user.uid).set({
                     email: data.email,
-                    name: data.name,
+                    firstname: data.firstname,
+                    lastname: data.lastname,
+                    displayName: `${data.firstname} ${data.lastname}`,
+                    phone: data.phone,
+                    postalCode: data.postalCode,
                     role: 'client',
                     plan: data.planType,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -198,7 +202,7 @@
                     },
                     body: JSON.stringify({
                         email: data.email,
-                        name: data.name,
+                        name: `${data.firstname} ${data.lastname}`,
                         amount: data.amount / 100,
                         planType: data.planType,
                         plaqueQty: data.plaqueQty || 0,
@@ -232,7 +236,7 @@
                             },
                             body: JSON.stringify({
                                 email: data.email,
-                                name: data.name,
+                                name: `${data.firstname} ${data.lastname}`,
                                 amount: data.amount / 100,
                                 planType: data.planType,
                                 existingAccount: true

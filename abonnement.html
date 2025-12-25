@@ -844,7 +844,10 @@
                 // Sauvegarder les infos pour l'email de confirmation
                 localStorage.setItem('qrguide_order', JSON.stringify({
                     email: formData.email,
-                    name: `${formData.prenom} ${formData.nom}`,
+                    firstname: formData.prenom,
+                    lastname: formData.nom,
+                    phone: formData.telephone,
+                    postalCode: formData.ville,
                     amount: totalAmount,
                     planType: plan.value === 'monthly' ? 'mensuel' : 'annuel',
                     plaqueQty: plaqueQty,
