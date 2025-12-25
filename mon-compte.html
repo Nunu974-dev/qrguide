@@ -671,8 +671,12 @@
             <div class="form-section">
                 <h3>👤 Informations personnelles</h3>
                 <div class="form-group">
-                    <label>Nom complet</label>
-                    <input type="text" id="account-name" placeholder="Votre nom">
+                    <label>Prénom</label>
+                    <input type="text" id="account-firstname" placeholder="Votre prénom">
+                </div>
+                <div class="form-group">
+                    <label>Nom</label>
+                    <input type="text" id="account-lastname" placeholder="Votre nom">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
@@ -688,8 +692,16 @@
             <div class="form-section">
                 <h3>🔐 Changer mon mot de passe</h3>
                 <div class="form-group">
+                    <label>Mot de passe actuel</label>
+                    <input type="password" id="current-password" placeholder="Votre mot de passe actuel">
+                </div>
+                <div class="form-group">
                     <label>Nouveau mot de passe</label>
                     <input type="password" id="new-password" placeholder="Minimum 6 caractères">
+                </div>
+                <div class="form-group">
+                    <label>Confirmer le nouveau mot de passe</label>
+                    <input type="password" id="confirm-password" placeholder="Confirmez le mot de passe">
                 </div>
                 <button class="btn btn-secondary" onclick="changePassword()">Changer le mot de passe</button>
             </div>
@@ -1022,7 +1034,9 @@
             }
             
             // Mettre à jour le nom dans le header
-            const userName = userData.displayName || user.email;
+            const userName = (userData.firstname && userData.lastname) 
+                ? `${userData.firstname} ${userData.lastname}` 
+                : userData.displayName || user.email;
             if (document.getElementById('user-name')) {
                 document.getElementById('user-name').textContent = userName;
             }
@@ -1030,7 +1044,8 @@
                 document.getElementById('user-name-header').textContent = userName;
             }
             
-            document.getElementById('account-name').value = userData.displayName || '';
+            document.getElementById('account-firstname').value = userData.firstname || '';
+            document.getElementById('account-lastname').value = userData.lastname || '';
             document.getElementById('account-email').value = user.email;
             document.getElementById('account-phone').value = userData.phone || '';
             
@@ -1764,30 +1779,80 @@
         }
 
         async function saveAccountInfo() {
-            const name = document.getElementById('account-name').value;
-            const phone = document.getElementById('account-phone').value;
+            const firstname = document.getElementById('account-firstname').value.trim();
+            const lastname = document.getElementById('account-lastname').value.trim();
+            const phone = document.getElementById('account-phone').value.trim();
             
-            await db.collection('users').doc(currentUser.uid).update({
-                displayName: name,
-                phone: phone
-            });
-            
-            showAlert('Informations sauvegardées', 'success');
-        }
-
-        async function changePassword() {
-            const newPass = document.getElementById('new-password').value;
-            if (newPass.length < 6) {
-                alert('Mot de passe trop court (minimum 6 caractères)');
+            if (!firstname || !lastname) {
+                alert('Veuillez renseigner votre prénom et nom');
                 return;
             }
             
             try {
-                await currentUser.updatePassword(newPass);
-                showAlert('Mot de passe changé', 'success');
-                document.getElementById('new-password').value = '';
+                await db.collection('users').doc(currentUser.uid).update({
+                    firstname: firstname,
+                    lastname: lastname,
+                    displayName: `${firstname} ${lastname}`,
+                    phone: phone
+                });
+                
+                // Mettre à jour l'affichage
+                const userName = `${firstname} ${lastname}`;
+                if (document.getElementById('user-name-header')) {
+                    document.getElementById('user-name-header').textContent = userName;
+                }
+                
+                showAlert('Informations sauvegardées', 'success');
             } catch (error) {
-                alert('Erreur : ' + error.message);
+                alert('Erreur lors de la sauvegarde : ' + error.message);
+            }
+        }
+
+        async function changePassword() {
+            const currentPass = document.getElementById('current-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            
+            // Vérifications
+            if (!currentPass) {
+                alert('Veuillez entrer votre mot de passe actuel');
+                return;
+            }
+            
+            if (newPass.length < 6) {
+                alert('Le nouveau mot de passe doit contenir au moins 6 caractères');
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                alert('Les mots de passe ne correspondent pas');
+                return;
+            }
+            
+            try {
+                // Réauthentifier l'utilisateur avec le mot de passe actuel
+                const credential = firebase.auth.EmailAuthProvider.credential(
+                    currentUser.email,
+                    currentPass
+                );
+                
+                await currentUser.reauthenticateWithCredential(credential);
+                
+                // Changer le mot de passe
+                await currentUser.updatePassword(newPass);
+                
+                // Réinitialiser les champs
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+                
+                showAlert('Mot de passe changé avec succès', 'success');
+            } catch (error) {
+                if (error.code === 'auth/wrong-password') {
+                    alert('Le mot de passe actuel est incorrect');
+                } else {
+                    alert('Erreur : ' + error.message);
+                }
             }
         }
 
