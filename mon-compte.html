@@ -12,6 +12,21 @@
             background: #f8f9fa;
         }
         
+        /* Header noir pour mon-compte */
+        .header {
+            background: rgba(26, 32, 44, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links a:not(.btn-primary) {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        .nav-links a:not(.btn-primary):hover {
+            color: #d4af37 !important;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -460,7 +475,7 @@
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <a href="index.html"><img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="logo"></a>
                 <button class="mobile-menu-toggle" aria-label="Menu">
                     <span></span>
                     <span></span>
@@ -473,7 +488,7 @@
                     <a href="hotels.html">Hôtels</a>
                     <a href="contact.html">Contact</a>
                     <span class="user-name" id="user-name-header" style="color: #d4af37; font-weight: 600; margin-right: 12px;">Chargement...</span>
-                    <a href="javascript:void(0)" onclick="logout()" class="btn-primary">🚪 Déconnexion</a>
+                    <a href="javascript:void(0)" onclick="logout()" class="btn-primary">Déconnexion</a>
                 </div>
             </nav>
         </div>
