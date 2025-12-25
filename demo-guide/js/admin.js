@@ -1,22 +1,87 @@
 /* ===================================
    QRGUIDE - ADMIN JAVASCRIPT
-   Gestion complète des clients
+   Dashboard admin connecté à Firestore
    =================================== */
 
-// === STOCKAGE DES DONNÉES ===
-const STORAGE_KEY = 'qrguide_clients';
-let clients = [];
+// === VARIABLES GLOBALES ===
+let currentUser = null;
+let allUsers = [];
 let currentClientId = null;
 
 // === INITIALISATION ===
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎛️ Dashboard Admin chargé');
-    loadClients();
-    renderClients();
-    updateClientsCount();
+    
+    // Vérifier authentification admin
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            window.location.href = '../login.html';
+            return;
+        }
+        
+        currentUser = user;
+        
+        // Vérifier rôle admin
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        
+        if (!userData || userData.role !== 'admin') {
+            alert('Accès réservé aux administrateurs');
+            await auth.signOut();
+            window.location.href = '../login.html';
+            return;
+        }
+        
+        // Charger les données
+        await loadAllUsers();
+        renderClients();
+        updateClientsCount();
+    });
+    
     initNavigation();
     initFormListeners();
 });
+
+// === CHARGEMENT DES UTILISATEURS DEPUIS FIRESTORE ===
+async function loadAllUsers() {
+    try {
+        const usersSnapshot = await db.collection('users')
+            .where('role', '==', 'client')
+            .orderBy('createdAt', 'desc')
+            .get();
+        
+        allUsers = [];
+        
+        for (const userDoc of usersSnapshot.docs) {
+            const userData = userDoc.data();
+            
+            // Charger les logements de cet utilisateur
+            const logementsSnapshot = await db.collection('users')
+                .doc(userDoc.id)
+                .collection('logements')
+                .get();
+            
+            const logements = [];
+            logementsSnapshot.forEach(logementDoc => {
+                logements.push({
+                    id: logementDoc.id,
+                    ...logementDoc.data()
+                });
+            });
+            
+            allUsers.push({
+                uid: userDoc.id,
+                ...userData,
+                logements: logements
+            });
+        }
+        
+        console.log('✅ Utilisateurs chargés:', allUsers.length);
+    } catch (error) {
+        console.error('❌ Erreur chargement utilisateurs:', error);
+        alert('Erreur lors du chargement des utilisateurs');
+    }
+}
 
 // === NAVIGATION ===
 function initNavigation() {
@@ -40,34 +105,18 @@ function showSection(sectionName) {
     
     document.getElementById(`section-${sectionName}`).classList.add('active');
     document.querySelector(`[data-section="${sectionName}"]`)?.classList.add('active');
-    
-    if (sectionName === 'new-client' && !currentClientId) {
-        resetForm();
-    }
-}
-
-// === GESTION DES CLIENTS ===
-function loadClients() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    clients = stored ? JSON.parse(stored) : [];
-}
-
-function saveClients() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
-    renderClients();
-    updateClientsCount();
 }
 
 function updateClientsCount() {
-    document.getElementById('clients-count').textContent = clients.length;
+    document.getElementById('clients-count').textContent = allUsers.length;
 }
 
-// === RENDU DE LA LISTE ===
+// === RENDU DE LA LISTE DES CLIENTS ===
 function renderClients() {
     const container = document.getElementById('clients-list');
     const emptyState = document.getElementById('empty-state');
     
-    if (clients.length === 0) {
+    if (allUsers.length === 0) {
         container.innerHTML = '';
         emptyState.classList.add('show');
         return;
@@ -75,29 +124,141 @@ function renderClients() {
     
     emptyState.classList.remove('show');
     
-    container.innerHTML = clients.map(client => `
-        <div class="client-card" data-id="${client.id}">
+    container.innerHTML = allUsers.map(user => {
+        const createdDate = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString('fr-FR') : 'N/A';
+        const planText = user.plan === 'mensuel' ? '8€/mois' : '75€/an';
+        const logementsCount = user.logements ? user.logements.length : 0;
+        
+        return `
+        <div class="client-card" data-id="${user.uid}">
             <div class="client-card-header">
                 <div>
-                    <h3>${client.propertyName}</h3>
-                    <p>📍 ${client.city || 'Non renseigné'}</p>
-                    <p>📞 ${client.arrivalContactPhone || 'N/A'}</p>
+                    <h3>${user.firstname} ${user.lastname}</h3>
+                    <p>📧 ${user.email}</p>
+                    <p>📞 ${user.phone || 'N/A'}</p>
+                    <p>📍 ${user.postalCode || 'N/A'}</p>
                 </div>
-                <span class="client-status">✓ Actif</span>
+                <span class="client-status">✓ ${user.status || 'active'}</span>
             </div>
             <p style="margin-top: 12px;">
-                <strong>Wi-Fi:</strong> ${client.wifiName}<br>
-                <strong>Hôte:</strong> ${client.hostName || 'Non renseigné'}
+                <strong>Plan:</strong> ${planText}<br>
+                <strong>Logements:</strong> ${logementsCount}/${user.maxLogements || 3}<br>
+                <strong>Inscrit le:</strong> ${createdDate}
             </p>
             <div class="client-card-actions">
-                <button class="btn-icon" onclick="viewClient('${client.id}')">👁️ Voir</button>
-                <button class="btn-icon" onclick="editClient('${client.id}')">✏️ Éditer</button>
-                <button class="btn-icon" onclick="generateQR('${client.id}')">📱 QR</button>
-                <button class="btn-icon" onclick="exportClient('${client.id}')">📥 Export</button>
-                <button class="btn-icon danger" onclick="deleteClient('${client.id}')">🗑️</button>
+                <button class="btn-icon" onclick="viewUserDetails('${user.uid}')">👁️ Voir détails</button>
+                <button class="btn-icon" onclick="viewUserLogements('${user.uid}')">🏠 Logements (${logementsCount})</button>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
+}
+
+// === AFFICHER LES DÉTAILS D'UN UTILISATEUR ===
+function viewUserDetails(userId) {
+    const user = allUsers.find(u => u.uid === userId);
+    if (!user) return;
+    
+    const logementsHTML = user.logements && user.logements.length > 0
+        ? user.logements.map(l => `
+            <div style="padding: 12px; background: #f8f9fa; border-radius: 8px; margin-bottom: 8px;">
+                <strong>${l.nom_logement || 'Sans nom'}</strong><br>
+                <small>Type: ${l.type || 'N/A'} | Ville: ${l.ville || 'N/A'}</small>
+            </div>
+        `).join('')
+        : '<p>Aucun logement créé</p>';
+    
+    const html = `
+        <h2>Détails de ${user.firstname} ${user.lastname}</h2>
+        <div style="background: white; padding: 24px; border-radius: 12px; margin: 20px 0;">
+            <h3>📋 Informations personnelles</h3>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Téléphone:</strong> ${user.phone || 'N/A'}</p>
+            <p><strong>Code postal:</strong> ${user.postalCode || 'N/A'}</p>
+            <p><strong>Plan:</strong> ${user.plan === 'mensuel' ? 'Mensuel (8€/mois)' : 'Annuel (75€/an)'}</p>
+            <p><strong>Statut:</strong> ${user.status || 'active'}</p>
+            <p><strong>Inscrit le:</strong> ${user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString('fr-FR') : 'N/A'}</p>
+            
+            <h3 style="margin-top: 24px;">🏠 Logements (${user.logements ? user.logements.length : 0})</h3>
+            ${logementsHTML}
+        </div>
+        <button class="btn-secondary" onclick="showSection('clients')">← Retour</button>
+    `;
+    
+    document.getElementById('section-clients').innerHTML = html;
+}
+
+function viewUserLogements(userId) {
+    viewUserDetails(userId);
+}
+
+// === RECHERCHE/FILTRAGE ===
+function filterClients() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    
+    const filtered = allUsers.filter(user => {
+        const fullName = `${user.firstname} ${user.lastname}`.toLowerCase();
+        const email = user.email.toLowerCase();
+        const phone = (user.phone || '').toLowerCase();
+        
+        return fullName.includes(searchTerm) || 
+               email.includes(searchTerm) || 
+               phone.includes(searchTerm);
+    });
+    
+    // Réafficher avec les résultats filtrés
+    const container = document.getElementById('clients-list');
+    const emptyState = document.getElementById('empty-state');
+    
+    if (filtered.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding: 40px;">Aucun résultat</p>';
+        return;
+    }
+    
+    container.innerHTML = filtered.map(user => {
+        const createdDate = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString('fr-FR') : 'N/A';
+        const planText = user.plan === 'mensuel' ? '8€/mois' : '75€/an';
+        const logementsCount = user.logements ? user.logements.length : 0;
+        
+        return `
+        <div class="client-card" data-id="${user.uid}">
+            <div class="client-card-header">
+                <div>
+                    <h3>${user.firstname} ${user.lastname}</h3>
+                    <p>📧 ${user.email}</p>
+                    <p>📞 ${user.phone || 'N/A'}</p>
+                    <p>📍 ${user.postalCode || 'N/A'}</p>
+                </div>
+                <span class="client-status">✓ ${user.status || 'active'}</span>
+            </div>
+            <p style="margin-top: 12px;">
+                <strong>Plan:</strong> ${planText}<br>
+                <strong>Logements:</strong> ${logementsCount}/${user.maxLogements || 3}<br>
+                <strong>Inscrit le:</strong> ${createdDate}
+            </p>
+            <div class="client-card-actions">
+                <button class="btn-icon" onclick="viewUserDetails('${user.uid}')">👁️ Voir détails</button>
+                <button class="btn-icon" onclick="viewUserLogements('${user.uid}')">🏠 Logements (${logementsCount})</button>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+// === DÉCONNEXION ===
+async function logout() {
+    try {
+        await auth.signOut();
+        window.location.href = '../login.html';
+    } catch (error) {
+        console.error('Erreur déconnexion:', error);
+    }
+}
+
+// === AUTRES FONCTIONS (à désactiver pour l'instant) ===
+function initFormListeners() {
+    // Formulaire désactivé pour l'instant
+    console.log('Formulaire création client désactivé (utiliser mon-compte.html)');
 }
 
 // === FILTRAGE ===

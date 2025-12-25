@@ -6,13 +6,19 @@
     <title>Dashboard Admin - QRGUIDE</title>
     <link rel="stylesheet" href="css/admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
 </head>
 <body>
     <!-- HEADER -->
     <header class="admin-header">
         <div class="header-content">
-            <h1>🏡 QRGUIDE Dashboard</h1>
-            <p class="header-subtitle">Gestion de vos logements Airbnb</p>
+            <h1>🏡 QRGUIDE Dashboard Admin</h1>
+            <p class="header-subtitle">Gestion des clients et abonnements</p>
         </div>
         <button class="btn-logout" onclick="logout()">🚪 Déconnexion</button>
     </header>
