@@ -63,8 +63,7 @@ a {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     z-index: 1000;
     transition: var(--transition);
@@ -2382,7 +2381,7 @@ input:checked + .slider:before {
 @media (prefers-color-scheme: dark) {
     /* Header avec fond sombre */
     .header {
-        background: rgba(26, 26, 26, 0.95);
+        background: #1a1a1a;
         border-bottom: 1px solid #333;
     }
     
