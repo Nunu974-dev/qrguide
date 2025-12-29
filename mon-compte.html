@@ -1039,8 +1039,13 @@
             document.getElementById('sub-plan').textContent = `Formule : ${userData.plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)'}`;
             
             // Charger les informations de paiement
-            if (userData.stripeCustomerId) {
+            console.log('💳 Stripe IDs:', { customerId: userData.stripeCustomerId, subscriptionId: userData.stripeSubscriptionId });
+            if (userData.stripeCustomerId && userData.stripeSubscriptionId) {
                 loadPaymentInfo(userData.stripeCustomerId, userData.stripeSubscriptionId);
+            } else {
+                console.warn('⚠️ stripeCustomerId ou stripeSubscriptionId manquant dans Firestore');
+                document.getElementById('card-info').textContent = 'Carte : Non disponible (réabonnez-vous pour voir les infos)';
+                document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Non disponible';
             }
             
             // Charger logements
