@@ -622,6 +622,43 @@ app.post('/webhook', async (req, res) => {
 });
 
 // ===========================
+// Endpoint: Récupérer les informations de paiement
+// ===========================
+app.post('/get-payment-info', async (req, res) => {
+    try {
+        const { customerId, subscriptionId } = req.body;
+        
+        if (!customerId || !subscriptionId) {
+            return res.status(400).json({ error: 'Customer ID et Subscription ID requis' });
+        }
+        
+        // Récupérer la subscription Stripe
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        
+        // Récupérer le payment method
+        const paymentMethod = await stripe.paymentMethods.retrieve(
+            subscription.default_payment_method
+        );
+        
+        // Préparer les données à renvoyer
+        const paymentInfo = {
+            card: {
+                brand: paymentMethod.card.brand,
+                last4: paymentMethod.card.last4,
+                exp_month: paymentMethod.card.exp_month,
+                exp_year: paymentMethod.card.exp_year
+            },
+            nextBilling: subscription.current_period_end
+        };
+        
+        res.json(paymentInfo);
+    } catch (error) {
+        console.error('Erreur get-payment-info:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ===========================
 // Démarrer le serveur
 // ===========================
 app.listen(PORT, () => {

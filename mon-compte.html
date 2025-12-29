@@ -626,15 +626,24 @@
         <!-- Tab: Mon Abonnement -->
         <div id="tab-abonnement" class="tab-content">
             <div class="subscription-info">
-                <h2>📊 Votre Abonnement</h2>
+                <h2>Votre Abonnement</h2>
                 <p id="sub-plan">Formule : Chargement...</p>
                 <p id="sub-status">Statut : Actif</p>
                 <p id="sub-logements">Logements : 0/3</p>
+                <p id="sub-renewal">Prochain renouvellement : Chargement...</p>
+            </div>
+            
+            <div class="form-section">
+                <h3>💳 Moyen de paiement</h3>
+                <div id="payment-method-info" style="margin-bottom: 16px;">
+                    <p id="card-info">Carte : Chargement...</p>
+                </div>
+                <button class="btn btn-secondary" onclick="openStripePortal()" style="margin-right: 8px;">Changer de carte</button>
             </div>
             
             <div class="form-section">
                 <h3>Gérer mon abonnement</h3>
-                <p style="margin-bottom: 16px;">Modifiez votre formule, mettez à jour votre carte bancaire ou annulez votre abonnement.</p>
+                <p style="margin-bottom: 16px;">Modifiez votre formule ou annulez votre abonnement.</p>
                 <button class="btn btn-primary" onclick="openStripePortal()">Gérer sur Stripe</button>
             </div>
         </div>
@@ -1029,6 +1038,11 @@
             // Charger abonnement
             document.getElementById('sub-plan').textContent = `Formule : ${userData.plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)'}`;
             
+            // Charger les informations de paiement
+            if (userData.stripeCustomerId) {
+                loadPaymentInfo(userData.stripeCustomerId, userData.stripeSubscriptionId);
+            }
+            
             // Charger logements
             loadLogements();
         });
@@ -1065,6 +1079,41 @@
                 `;
                 logementsList.appendChild(card);
             });
+        }
+
+        // Charger les informations de paiement
+        async function loadPaymentInfo(customerId, subscriptionId) {
+            try {
+                const response = await fetch('https://qrguide-backend.onrender.com/get-payment-info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customerId, subscriptionId })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Afficher la carte
+                    if (data.card) {
+                        document.getElementById('card-info').textContent = `Carte : •••• ${data.card.last4} (${data.card.brand.toUpperCase()}) - Exp: ${data.card.exp_month}/${data.card.exp_year}`;
+                    }
+                    
+                    // Afficher la date de renouvellement
+                    if (data.nextBilling) {
+                        const date = new Date(data.nextBilling * 1000);
+                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                        document.getElementById('sub-renewal').textContent = `Prochain renouvellement : ${date.toLocaleDateString('fr-FR', options)}`;
+                    }
+                } else {
+                    console.error('Erreur lors du chargement des infos de paiement');
+                    document.getElementById('card-info').textContent = 'Carte : Non disponible';
+                    document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Non disponible';
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('card-info').textContent = 'Carte : Erreur de chargement';
+                document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Erreur de chargement';
+            }
         }
 
         // Tabs
