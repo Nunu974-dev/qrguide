@@ -12,52 +12,6 @@
             background: #f8f9fa !important;
         }
         
-        /* Header noir pour mon-compte - PRIORITÉ ABSOLUE */
-        body header#mon-compte-header.header,
-        body #mon-compte-header.header,
-        header#mon-compte-header.header,
-        #mon-compte-header.header,
-        header#mon-compte-header,
-        #mon-compte-header {
-            background: #1a202c !important;
-            background-color: #1a202c !important;
-            backdrop-filter: blur(10px) !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-            z-index: 1000 !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-        }
-        
-        body #mon-compte-header .container,
-        body #mon-compte-header .nav,
-        #mon-compte-header .container,
-        #mon-compte-header .nav {
-            background: transparent !important;
-            background-color: transparent !important;
-        }
-        
-        .nav-links a:not(.btn-primary) {
-            color: rgba(255, 255, 255, 0.9) !important;
-        }
-        
-        .nav-links a:not(.btn-primary):hover {
-            color: #d4af37 !important;
-        }
-        
-        .nav-links,
-        .nav-links * {
-            list-style: none !important;
-            list-style-type: none !important;
-        }
-        
-        .nav-links a,
-        .nav-links span {
-            display: inline-block !important;
-            text-decoration: none !important;
-        }
-        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -622,9 +576,9 @@
 </head>
 <body style="background: #f8f9fa;">
     <!-- Header -->
-    <header class="header" id="mon-compte-header" style="background-color: #1a202c !important; background: #1a202c !important;">
-        <div class="container" style="background-color: transparent !important; background: transparent !important;">
-            <nav class="nav" style="background-color: transparent !important; background: transparent !important;">
+    <header class="header" id="mon-compte-header">
+        <div class="container">
+            <nav class="nav">
                 <a href="index.html"><img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="logo"></a>
                 <button class="mobile-menu-toggle" aria-label="Menu">
                     <span></span>
@@ -1034,16 +988,6 @@
         // Vérifier Firebase Storage au chargement
         console.log('🔥 Firebase Storage initialisé:', !!storage);
         console.log('🔥 Storage:', storage);
-        
-        // FORCER le header noir après chargement
-        setTimeout(() => {
-            const header = document.getElementById('mon-compte-header');
-            if (header) {
-                header.style.backgroundColor = '#1a202c';
-                header.style.background = '#1a202c';
-                console.log('✅ Header forcé en noir');
-            }
-        }, 100);
 
         // Vérifier connexion
         auth.onAuthStateChanged(async (user) => {
