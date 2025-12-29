@@ -1026,6 +1026,16 @@
         // Vérifier Firebase Storage au chargement
         console.log('🔥 Firebase Storage initialisé:', !!storage);
         console.log('🔥 Storage:', storage);
+        
+        // FORCER le header noir après chargement
+        setTimeout(() => {
+            const header = document.getElementById('mon-compte-header');
+            if (header) {
+                header.style.backgroundColor = '#1a202c';
+                header.style.background = '#1a202c';
+                console.log('✅ Header forcé en noir');
+            }
+        }, 100);
 
         // Vérifier connexion
         auth.onAuthStateChanged(async (user) => {

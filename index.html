@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="style.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
     <!-- 🔥 Pré-warmup du backend dès le chargement de la page d'accueil -->
     <script>
         (function() {
@@ -48,8 +54,9 @@
                     <a href="tarifs.html">Tarifs</a>
                     <a href="hotels.html">Hôtels</a>
                     <a href="contact.html">Contact</a>
-                    <a href="login.html" style="margin-right: 12px;">Se connecter</a>
-                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
+                    <span id="user-display" style="display: none; color: #d4af37; font-weight: 600; margin-right: 12px;"></span>
+                    <a href="login.html" id="login-link" style="margin-right: 12px;">Se connecter</a>
+                    <a href="abonnement.html" id="subscribe-link" class="btn-primary">S'abonner</a>
                 </div>
             </nav>
         </div>
@@ -416,6 +423,35 @@
                     navLinks.classList.remove('active');
                     document.body.classList.remove('menu-open');
                 });
+            });
+        }
+        
+        // Vérifier si l'utilisateur est connecté
+        if (typeof auth !== 'undefined') {
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        const userData = userDoc.data();
+                        
+                        if (userData && userData.role === 'client') {
+                            // Utilisateur connecté - afficher son nom
+                            const userName = (userData.firstname && userData.lastname) 
+                                ? `${userData.firstname} ${userData.lastname}` 
+                                : userData.displayName || user.email;
+                            
+                            document.getElementById('user-display').textContent = `👋 ${userName}`;
+                            document.getElementById('user-display').style.display = 'inline';
+                            
+                            // Changer les boutons
+                            document.getElementById('login-link').href = 'mon-compte.html';
+                            document.getElementById('login-link').textContent = 'Mon compte';
+                            document.getElementById('subscribe-link').style.display = 'none';
+                        }
+                    } catch (error) {
+                        console.error('Erreur chargement session:', error);
+                    }
+                }
             });
         }
     </script>
