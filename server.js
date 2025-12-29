@@ -135,13 +135,23 @@ async function sendConfirmationEmail(customerEmail, customerName, plan, plaques,
                                 <tr>
                                     <td align="center" style="padding: 20px 0;">
                                         <a href="https://qrguide.fr/login.html" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
-                                            🚀 Accéder à mon compte
+                                            🚀 Se connecter maintenant
                                         </a>
                                     </td>
                                 </tr>
                             </table>
-                            <p style="font-size: 14px; color: #666; line-height: 1.6; margin: 30px 0 0 0;">
-                                Vous pouvez maintenant créer jusqu'à <strong>3 logements</strong> et générer vos guides QR personnalisés.
+                            <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #2196f3;">
+                                <h3 style="color: #1565c0; margin: 0 0 15px 0; font-size: 18px;">📝 Prochaines étapes :</h3>
+                                <ol style="color: #555; margin: 0; padding-left: 20px; line-height: 1.8;">
+                                    <li><strong>Connectez-vous</strong> sur <a href="https://qrguide.fr/login.html" style="color: #667eea;">qrguide.fr/login.html</a> avec vos identifiants</li>
+                                    <li><strong>Créez votre premier logement</strong> dans l'onglet "Mes Logements"</li>
+                                    <li>Remplissez les informations de votre logement (équipements, Wi-Fi, recommandations...)</li>
+                                    <li><strong>Notre équipe vérifie</strong> votre guide sous 24h</li>
+                                    <li><strong>Vous recevez votre lien QRGUIDE</strong> + QR code à imprimer par email</li>
+                                </ol>
+                            </div>
+                            <p style="font-size: 14px; color: #666; line-height: 1.6; margin: 20px 0 0 0;">
+                                Vous pouvez créer jusqu'à <strong>3 logements</strong> avec votre abonnement et modifier vos guides à tout moment depuis votre espace personnel.
                             </p>
                         </td>
                     </tr>
