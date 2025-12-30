@@ -1161,15 +1161,32 @@
                 const data = doc.data();
                 const card = document.createElement('div');
                 card.className = 'logement-card';
+                
+                // Déterminer le statut et le badge
+                let statusBadge = '';
+                let statusClass = '';
+                if (data.status === 'creating') {
+                    statusBadge = '<span style="display: inline-block; background: #fff3cd; color: #856404; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;">⏳ En cours...</span>';
+                    statusClass = 'creating';
+                } else if (data.status === 'error') {
+                    statusBadge = '<span style="display: inline-block; background: #f8d7da; color: #721c24; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;">❌ Erreur</span>';
+                    statusClass = 'error';
+                } else {
+                    statusBadge = '<span style="display: inline-block; background: #d4edda; color: #155724; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;">✅ Actif</span>';
+                    statusClass = 'active';
+                }
+                
                 card.innerHTML = `
-                    <h3>${data.nom || 'Sans nom'}</h3>
+                    <h3>${data.nom || 'Sans nom'}${statusBadge}</h3>
                     <p>${data.ville || ''}</p>
-                    ${data.guideUrl ? `<p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
+                    ${data.guideUrl && data.status !== 'creating' ? `<p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
                         🔗 <a href="${data.guideUrl}" target="_blank" style="color: #d4af37;">${data.guideUrl}</a>
                     </p>` : ''}
+                    ${data.status === 'creating' ? `<p style="font-size: 0.9rem; color: #856404; margin-top: 8px; font-style: italic;">⏳ Votre guide est en cours de création. Vous pouvez fermer cette page, il sera disponible dans quelques instants.</p>` : ''}
+                    ${data.status === 'error' ? `<p style="font-size: 0.9rem; color: #721c24; margin-top: 8px;">❌ Une erreur s'est produite lors de la création. Veuillez supprimer et recréer ce guide.</p>` : ''}
                     <div class="logement-actions">
-                        ${data.guideId ? `<button class="btn btn-primary" onclick="window.open('/guide/${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
-                        <button class="btn btn-secondary" onclick="viewQR('${data.guideId || doc.id}', '${data.guideUrl || ''}')">📱 QR Code</button>
+                        ${data.guideId && data.status === 'active' ? `<button class="btn btn-primary" onclick="window.open('/guide/${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
+                        ${data.guideId && data.status === 'active' ? `<button class="btn btn-secondary" onclick="viewQR('${data.guideId}', '${data.guideUrl}')">📱 QR Code</button>` : ''}
                         <button class="btn btn-danger" onclick="deleteLogement('${doc.id}', '${data.guideId || ''}')">🗑️ Supprimer</button>
                     </div>
                 `;
@@ -1983,20 +2000,58 @@
                 const guideId = generateGuideId();
                 console.log('✅ Guide ID généré:', guideId);
                 
-                // Récupérer toutes les données du formulaire
-                const formData = {
-                    // ID unique du guide
-                    guideId: guideId,
-                    guideUrl: `https://qrguide.fr/guide/${guideId}`,
-                    
-                    // Étape 1: Informations générales
-                    nom: document.getElementById('nom').value,
-                    adresse: document.getElementById('adresse').value,
-                    ville: document.getElementById('ville').value,
-                    description: document.getElementById('description').value,
-                    note: document.getElementById('note').value,
-                    type: document.getElementById('type').value,
-                    photo_url: document.getElementById('photo_url').value,
+                // Récupérer immédiatement les données essentielles
+                const nomLogement = document.getElementById('nom').value;
+                const villeLogement = document.getElementById('ville').value;
+                const photoInput = document.getElementById('photo_url').value;
+                
+                // Récupérer immédiatement les données essentielles
+                const nomLogement = document.getElementById('nom').value;
+                const villeLogement = document.getElementById('ville').value;
+                const photoInput = document.getElementById('photo_url').value;
+                
+                // 1. CRÉER IMMÉDIATEMENT UN BROUILLON (rapide)
+                console.log('📝 Création brouillon rapide...');
+                const logementRef = await db.collection('users').doc(currentUser.uid)
+                    .collection('logements').add({
+                        guideId: guideId,
+                        nom: nomLogement,
+                        ville: villeLogement,
+                        photo_url: '',
+                        guideUrl: `https://qrguide.fr/guide/${guideId}`,
+                        status: 'creating', // Statut "En cours de création"
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                console.log('✅ Brouillon créé, ID:', logementRef.id);
+                
+                // 2. FERMER LA MODAL ET INFORMER L'UTILISATEUR
+                closeLogementModal();
+                showAlert('✅ Guide en cours de création ! Vous pouvez continuer à naviguer, le guide sera disponible dans quelques instants.', 'success');
+                
+                // 3. RECHARGER LA LISTE (affiche le statut "En cours...")
+                await loadLogements();
+                
+                // 4. CONTINUER EN ARRIÈRE-PLAN (sans bloquer l'interface)
+                console.log('🔄 Continuation en arrière-plan...');
+                
+                // Fonction asynchrone pour continuer la création en arrière-plan
+                (async () => {
+                    try {
+                        // Récupérer TOUTES les données du formulaire (maintenant en arrière-plan)
+                        // Récupérer TOUTES les données du formulaire (maintenant en arrière-plan)
+                        const formData = {
+                            // ID unique du guide
+                            guideId: guideId,
+                            guideUrl: `https://qrguide.fr/guide/${guideId}`,
+                            
+                            // Étape 1: Informations générales
+                            nom: nomLogement,
+                            adresse: document.getElementById('adresse').value,
+                            ville: villeLogement,
+                            description: document.getElementById('description').value,
+                            note: document.getElementById('note').value,
+                            type: document.getElementById('type').value,
+                            photo_url: photoInput,
                     
                     // Étape 2: Arrivée & WiFi
                     checkin_time: document.getElementById('checkin_time').value,
@@ -2042,80 +2097,84 @@
                     
                     // Métadonnées
                     userId: currentUser.uid,
+                    status: 'active', // Statut final "Actif"
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
-                console.log('📝 Données du formulaire préparées:', {
-                    guideId: formData.guideId,
-                    nom: formData.nom,
-                    ville: formData.ville,
-                    userId: formData.userId
-                });
-                
-                // Sauvegarder dans Firestore avec l'ID du guide comme document ID
-                console.log('💾 Sauvegarde dans guides/' + guideId);
+                console.log('💾 Sauvegarde guide complet dans Firestore...');
                 await db.collection('guides').doc(guideId).set(formData);
-                console.log('✅ Guide sauvegardé dans collection globale');
+                console.log('✅ Guide complet sauvegardé');
                 
-                // Aussi sauvegarder une référence dans la collection de l'utilisateur
-                console.log('💾 Sauvegarde dans users/' + currentUser.uid + '/logements');
-                const logementRef = await db.collection('users').doc(currentUser.uid)
-                    .collection('logements').add({
-                        guideId: guideId,
-                        nom: formData.nom,
-                        ville: formData.ville,
-                        photo_url: formData.photo_url,
-                        guideUrl: formData.guideUrl,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                console.log('✅ Référence logement sauvegardée, ID:', logementRef.id);
+                // Mettre à jour le statut dans la collection utilisateur
+                await logementRef.update({
+                    status: 'active',
+                    photo_url: photoInput,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                console.log('✅ Statut mis à jour: active');
                 
-                // Envoyer un email au gestionnaire pour l'informer de la création
+                // Envoyer email notification (non bloquant)
                 try {
                     await fetch('https://qrguide-backend.onrender.com/notify-new-guide', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            guideName: formData.nom,
+                            guideName: nomLogement,
                             guideId: guideId,
-                            guideUrl: formData.guideUrl,
+                            guideUrl: `https://qrguide.fr/guide/${guideId}`,
                             clientEmail: currentUser.email,
                             clientName: currentUser.displayName || 'Client',
-                            ville: formData.ville,
-                            photoUrl: formData.photo_url
+                            ville: villeLogement,
+                            photoUrl: photoInput
                         })
                     });
-                    console.log('📧 Notification envoyée au gestionnaire');
+                    console.log('📧 Notification envoyée');
                 } catch (emailError) {
-                    console.warn('⚠️ Notification email échouée (non bloquant):', emailError);
+                    console.warn('⚠️ Email notification échoué (non bloquant)');
                 }
                 
-                console.log('🎉 Guide créé avec succès !');
+                console.log('🎉 Guide créé avec succès en arrière-plan !');
                 
-                // Afficher l'URL du guide créé
-                showGuideCreatedModal(guideId, formData.guideUrl);
-                
-                closeLogementModal();
-                
-                // Recharger les logements
-                console.log('🔄 Rechargement des logements...');
+                // Recharger la liste pour afficher le statut "active"
                 await loadLogements();
-                console.log('✅ Logements rechargés');
+                
+                // Afficher notification succès final
+                showAlert(`✅ Guide "${nomLogement}" terminé et disponible !`, 'success');
+                
+            } catch (bgError) {
+                console.error('❌ Erreur création arrière-plan:', bgError);
+                
+                // Mettre à jour le statut en "erreur"
+                await logementRef.update({
+                    status: 'error',
+                    errorMessage: bgError.message
+                });
+                
+                // Recharger pour afficher l'erreur
+                await loadLogements();
+                
+                showAlert('❌ Erreur lors de la création du guide. Veuillez réessayer.', 'error');
+            }
+        })(); // Fin de la fonction asynchrone arrière-plan
+                
+        // Réactiver le bouton immédiatement (modal déjà fermée)
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '✅ Créer le guide';
                 
             } catch (error) {
-                console.error('❌ ERREUR CRÉATION GUIDE:', error);
+                // Erreur lors de la création du brouillon initial (rare)
+                console.error('❌ ERREUR CRÉATION BROUILLON:', error);
                 console.error('Type:', error.name);
                 console.error('Message:', error.message);
-                console.error('Stack:', error.stack);
                 
-                let errorMessage = 'Une erreur est survenue. Veuillez réessayer dans quelques instants.';
+                let errorMessage = 'Une erreur est survenue lors de la création. Veuillez réessayer.';
                 
-                // Messages d'erreur conviviaux pour les utilisateurs
+                // Messages d'erreur conviviaux
                 if (error.message.includes('network') || error.message.includes('offline')) {
                     errorMessage = 'Problème de connexion internet. Vérifiez votre connexion.';
-                } else if (error.message.includes('storage')) {
-                    errorMessage = 'Erreur lors de l\'envoi de l\'image. Veuillez réessayer.';
+                } else if (error.message.includes('permission')) {
+                    errorMessage = 'Erreur de permissions. Veuillez contacter le support.';
                 }
                 
                 showAlert('❌ ' + errorMessage, 'error');
