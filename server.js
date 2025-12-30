@@ -71,7 +71,17 @@ const STRIPE_PRICE_IDS = {
 // Fonction pour envoyer email via Nodemailer
 async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, plaqueFormat, propertyCount, propertyType, message, tempPassword = null, isNewUser = true) {
     const planText = plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)';
-    const plaquesText = plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''} ${plaqueFormat.toUpperCase()}` : 'Aucune';
+    
+    // Détails complets des plaques avec dimensions et prix
+    let plaquesText = 'Aucune';
+    if (plaques > 0) {
+        const formatUpper = plaqueFormat.toUpperCase();
+        const dimensions = plaqueFormat === 'a5' ? '14.8 × 21 cm' : '21 × 29.7 cm';
+        const pricePerPlaque = plaqueFormat === 'a5' ? 35 : 45;
+        const totalPlaques = plaques * pricePerPlaque;
+        plaquesText = `${plaques} × Format ${formatUpper} (${dimensions}) à ${pricePerPlaque}€/unité = ${totalPlaques}€`;
+    }
+    
     const propertyText = propertyCount ? `${propertyCount} logement${propertyCount > 1 ? 's' : ''}${propertyType ? ' (' + propertyType + ')' : ''}` : 'Non spécifié';
     
     const titleText = isNewUser ? 'Bienvenue chez QRGUIDE !' : 'Abonnement renouvelé !';
@@ -201,8 +211,21 @@ async function sendConfirmationEmail(customerEmail, customerName, plan, plaques,
 }
 
 // Fonction pour notifier l'admin d'un nouvel achat
-async function sendAdminNotification(customerEmail, customerName, plan, plaques, total) {
+async function sendAdminNotification(customerEmail, customerName, plan, plaques, total, plaqueFormat, propertyCount, propertyType, message) {
     const planText = plan === 'mensuel' ? 'Mensuel (8€/mois)' : 'Annuel (75€/an)';
+    
+    // Détails plaques avec format et prix
+    let plaquesDetails = 'Aucune';
+    if (plaques > 0) {
+        const formatUpper = plaqueFormat.toUpperCase();
+        const dimensions = plaqueFormat === 'a5' ? '14.8 × 21 cm' : '21 × 29.7 cm';
+        const pricePerPlaque = plaqueFormat === 'a5' ? 35 : 45;
+        const totalPlaques = plaques * pricePerPlaque;
+        plaquesDetails = `${plaques} × ${formatUpper} (${dimensions}) = ${totalPlaques}€`;
+    }
+    
+    const propertyDetails = propertyCount ? `${propertyCount} logement${propertyCount > 1 ? 's' : ''}${propertyType ? ' - Type: ' + propertyType : ''}` : 'Non spécifié';
+    
     const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -214,11 +237,13 @@ async function sendAdminNotification(customerEmail, customerName, plan, plaques,
         <h2 style="color: #C7A961; margin-top: 0;">🎉 Nouvelle vente QRGUIDE !</h2>
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0 0 10px;"><strong>Client :</strong> ${customerName}</p>
-            <p style="margin: 0 0 10px;"><strong>Email :</strong> ${customerEmail}</p>
-            <p style="margin: 0 0 10px;"><strong>Formule :</strong> ${planText}</p>
-            <p style="margin: 0 0 10px;"><strong>Plaques :</strong> ${plaques}</p>
-            <p style="margin: 0 0 10px;"><strong style="font-size: 18px; color: #C7A961;">Total : ${total}€</strong></p>
+            <p style="margin: 0 0 10px;"><strong>👤 Client :</strong> ${customerName}</p>
+            <p style="margin: 0 0 10px;"><strong>📧 Email :</strong> ${customerEmail}</p>
+            <p style="margin: 0 0 10px;"><strong>📋 Formule :</strong> ${planText}</p>
+            <p style="margin: 0 0 10px;"><strong>🏠 Logements :</strong> ${propertyDetails}</p>
+            <p style="margin: 0 0 10px;"><strong>🏷️ Plaques QR :</strong> ${plaquesDetails}</p>
+            ${message ? `<p style="margin: 10px 0; padding: 10px; background: #fff; border-left: 3px solid #C7A961;"><strong>💬 Message client :</strong><br><em>"${message}"</em></p>` : ''}
+            <p style="margin: 15px 0 0 0;"><strong style="font-size: 20px; color: #C7A961;">💰 Total : ${total}€</strong></p>
         </div>
         
         <p style="color: #666; font-size: 14px;">
@@ -637,7 +662,11 @@ app.post('/webhook', async (req, res) => {
                 customerName,
                 plan,
                 plaques,
-                total
+                total,
+                plaqueFormat,
+                propertyCount,
+                propertyType,
+                message
             );
             
             console.log(`📧 Emails envoyés (client ${isNewUser ? 'nouveau' : 'existant'} + admin)`);
