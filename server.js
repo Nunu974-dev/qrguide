@@ -370,7 +370,8 @@ const PRICES = {
     packCreation: 150,  // Pack Création obligatoire
     mensuel: 8,         // Abonnement mensuel
     annuel: 75,         // Abonnement annuel
-    plaqueQR: 45        // Prix par plaque QR
+    plaqueA4: 45,       // Prix plaque QR format A4
+    plaqueA5: 35        // Prix plaque QR format A5
 };
 
 // ===========================
@@ -395,8 +396,13 @@ app.post('/create-checkout-session', async (req, res) => {
         // ===========================
         let setupFeeAmount = PRICES.packCreation; // 150€
         const plaques = parseInt(plaqueQty) || 0;
+        const plaqueFormat = req.body.plaqueFormat || 'a4'; // A4 ou A5
+        
         if (plaques > 0) {
-            setupFeeAmount += PRICES.plaqueQR * plaques;
+            // Utiliser le bon prix selon le format
+            const pricePerPlaque = plaqueFormat === 'a5' ? PRICES.plaqueA5 : PRICES.plaqueA4;
+            setupFeeAmount += pricePerPlaque * plaques;
+            console.log(`📦 ${plaques} plaque(s) ${plaqueFormat.toUpperCase()} × ${pricePerPlaque}€ = ${pricePerPlaque * plaques}€`);
         }
 
         // ===========================
