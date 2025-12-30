@@ -260,9 +260,14 @@
 
         // Récupérer le guideId depuis l'URL
         function getGuideIdFromUrl() {
+            // Méthode 1: /guide/xxx (avec .htaccess)
             const path = window.location.pathname;
             const match = path.match(/\/guide\/([a-zA-Z0-9]+)/);
-            return match ? match[1] : null;
+            if (match) return match[1];
+            
+            // Méthode 2: guide.html?id=xxx (fallback sans .htaccess)
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
         }
 
         // Charger les données du guide

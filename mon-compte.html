@@ -1185,7 +1185,7 @@
                     ${data.status === 'creating' ? `<p style="font-size: 0.9rem; color: #856404; margin-top: 8px; font-style: italic;">⏳ Votre guide est en cours de création. Vous pouvez fermer cette page, il sera disponible dans quelques instants.</p>` : ''}
                     ${data.status === 'error' ? `<p style="font-size: 0.9rem; color: #721c24; margin-top: 8px;">❌ Une erreur s'est produite lors de la création. Veuillez supprimer et recréer ce guide.</p>` : ''}
                     <div class="logement-actions">
-                        ${data.guideId && data.status === 'active' ? `<button class="btn btn-primary" onclick="window.open('/guide/${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
+                        ${data.guideId && data.status === 'active' ? `<button class="btn btn-primary" onclick="window.open('guide.html?id=${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
                         ${data.guideId && data.status === 'active' ? `<button class="btn btn-secondary" onclick="viewQR('${data.guideId}', '${data.guideUrl}')">📱 QR Code</button>` : ''}
                         <button class="btn btn-danger" onclick="deleteLogement('${doc.id}', '${data.guideId || ''}')">🗑️ Supprimer</button>
                     </div>
@@ -2005,11 +2005,6 @@
                 const villeLogement = document.getElementById('ville').value;
                 const photoInput = document.getElementById('photo_url').value;
                 
-                // Récupérer immédiatement les données essentielles
-                const nomLogement = document.getElementById('nom').value;
-                const villeLogement = document.getElementById('ville').value;
-                const photoInput = document.getElementById('photo_url').value;
-                
                 // 1. CRÉER IMMÉDIATEMENT UN BROUILLON (rapide)
                 console.log('📝 Création brouillon rapide...');
                 const logementRef = await db.collection('users').doc(currentUser.uid)
@@ -2018,7 +2013,7 @@
                         nom: nomLogement,
                         ville: villeLogement,
                         photo_url: '',
-                        guideUrl: `https://qrguide.fr/guide/${guideId}`,
+                        guideUrl: `https://qrguide.fr/guide.html?id=${guideId}`,
                         status: 'creating', // Statut "En cours de création"
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
@@ -2042,7 +2037,7 @@
                         const formData = {
                             // ID unique du guide
                             guideId: guideId,
-                            guideUrl: `https://qrguide.fr/guide/${guideId}`,
+                            guideUrl: `https://qrguide.fr/guide.html?id=${guideId}`,
                             
                             // Étape 1: Informations générales
                             nom: nomLogement,
@@ -2122,7 +2117,7 @@
                         body: JSON.stringify({
                             guideName: nomLogement,
                             guideId: guideId,
-                            guideUrl: `https://qrguide.fr/guide/${guideId}`,
+                            guideUrl: `https://qrguide.fr/guide.html?id=${guideId}`,
                             clientEmail: currentUser.email,
                             clientName: currentUser.displayName || 'Client',
                             ville: villeLogement,
@@ -2210,7 +2205,7 @@
                             <code style="font-size: 1.2rem; color: #d4af37; font-weight: 600; word-break: break-all;">${guideUrl}</code>
                         </div>
                         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                            <button class="btn btn-primary" onclick="window.open('/guide/${guideId}', '_blank')">
+                            <button class="btn btn-primary" onclick="window.open('guide.html?id=${guideId}', '_blank')">
                                 👁️ Voir le guide
                             </button>
                             <button class="btn btn-secondary" onclick="copyToClipboard('${guideUrl}')">
