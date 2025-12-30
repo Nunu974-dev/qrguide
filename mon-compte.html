@@ -2109,17 +2109,16 @@
                 console.error('Message:', error.message);
                 console.error('Stack:', error.stack);
                 
-                let errorMessage = error.message;
+                let errorMessage = 'Une erreur est survenue. Veuillez réessayer dans quelques instants.';
                 
-                // Messages d'erreur plus explicites
-                if (error.code === 'permission-denied') {
-                    errorMessage = 'Permissions Firebase insuffisantes. Contactez l\'administrateur.';
-                } else if (error.message.includes('network')) {
+                // Messages d'erreur conviviaux pour les utilisateurs
+                if (error.message.includes('network') || error.message.includes('offline')) {
                     errorMessage = 'Problème de connexion internet. Vérifiez votre connexion.';
+                } else if (error.message.includes('storage')) {
+                    errorMessage = 'Erreur lors de l\'envoi de l\'image. Veuillez réessayer.';
                 }
                 
-                alert('❌ Erreur lors de la création du guide:\n\n' + errorMessage + '\n\nConsultez la console (F12) pour plus de détails.');
-                showAlert('❌ Erreur: ' + errorMessage, 'error');
+                showAlert('❌ ' + errorMessage, 'error');
                 
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '✅ Créer le guide';
