@@ -624,8 +624,6 @@ app.post('/webhook', async (req, res) => {
                 tempPassword,
                 isNewUser
             );
-                isNewUser
-            );
             
             // Envoyer notification à l'admin
             await sendAdminNotification(
