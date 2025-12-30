@@ -1077,8 +1077,15 @@
         let currentLogementId = null;
 
         // Vérifier Firebase Storage au chargement
-        console.log('🔥 Firebase Storage initialisé:', !!storage);
-        console.log('🔥 Storage:', storage);
+        console.log('🔥 Firebase App initialisé:', !!firebase.apps.length);
+        console.log('🔥 Firebase Auth:', !!auth);
+        console.log('🔥 Firebase Firestore:', !!db);
+        console.log('🔥 Firebase Storage:', !!storage);
+        
+        if (!firebase.apps.length || !auth || !db) {
+            console.error('❌ Firebase non initialisé correctement !');
+            alert('Erreur: Firebase non initialisé. Rechargez la page.');
+        }
 
         // Vérifier connexion
         auth.onAuthStateChanged(async (user) => {
@@ -1964,8 +1971,17 @@
             submitBtn.innerHTML = '⏳ Création en cours...';
             
             try {
+                console.log('🚀 Début création du guide...');
+                
+                // Vérifier que l'utilisateur est connecté
+                if (!currentUser) {
+                    throw new Error('Utilisateur non connecté');
+                }
+                console.log('✅ Utilisateur:', currentUser.uid);
+                
                 // Générer un ID unique pour le guide (8 caractères)
                 const guideId = generateGuideId();
+                console.log('✅ Guide ID généré:', guideId);
                 
                 // Récupérer toutes les données du formulaire
                 const formData = {
@@ -2030,11 +2046,21 @@
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
+                console.log('📝 Données du formulaire préparées:', {
+                    guideId: formData.guideId,
+                    nom: formData.nom,
+                    ville: formData.ville,
+                    userId: formData.userId
+                });
+                
                 // Sauvegarder dans Firestore avec l'ID du guide comme document ID
+                console.log('💾 Sauvegarde dans guides/' + guideId);
                 await db.collection('guides').doc(guideId).set(formData);
+                console.log('✅ Guide sauvegardé dans collection globale');
                 
                 // Aussi sauvegarder une référence dans la collection de l'utilisateur
-                await db.collection('users').doc(currentUser.uid)
+                console.log('💾 Sauvegarde dans users/' + currentUser.uid + '/logements');
+                const logementRef = await db.collection('users').doc(currentUser.uid)
                     .collection('logements').add({
                         guideId: guideId,
                         nom: formData.nom,
@@ -2043,6 +2069,7 @@
                         guideUrl: formData.guideUrl,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
+                console.log('✅ Référence logement sauvegardée, ID:', logementRef.id);
                 
                 // Envoyer un email au gestionnaire pour l'informer de la création
                 try {
@@ -2054,15 +2081,35 @@
                             guideId: guideId,
                             guideUrl: formData.guideUrl,
                             clientEmail: currentUser.email,
-                            clientName: `${formData.hote_nom || 'Client'}`,
-                            ville: formData.ville,
-                            photoUrl: formData.photo_url
-                        })
-                    });
-                    console.log('✅ Email envoyé au gestionnaire');
-                } catch (emailError) {
-                    console.error('⚠️ Erreur envoi email gestionnaire:', emailError);
-                    // Ne pas bloquer la création du guide si l'email échoue
+                console.log('🎉 Guide créé avec succès !');
+                
+                // Afficher l'URL du guide créé
+                showGuideCreatedModal(guideId, formData.guideUrl);
+                
+                closeLogementModal();
+                
+                // Recharger les logements
+                console.log('🔄 Rechargement des logements...');
+                await loadLogements();
+                console.log('✅ Logements rechargés');
+                
+            } catch (error) {
+                console.error('❌ ERREUR CRÉATION GUIDE:', error);
+                console.error('Type:', error.name);
+                console.error('Message:', error.message);
+                console.error('Stack:', error.stack);
+                
+                let errorMessage = error.message;
+                
+                // Messages d'erreur plus explicites
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Permissions Firebase insuffisantes. Contactez l\'administrateur.';
+                } else if (error.message.includes('network')) {
+                    errorMessage = 'Problème de connexion internet. Vérifiez votre connexion.';
+                }
+                
+                alert('❌ Erreur lors de la création du guide:\n\n' + errorMessage + '\n\nConsultez la console (F12) pour plus de détails.');
+                showAlert('❌ Erreur: ' + errorMl échoue
                 }
                 
                 // Afficher l'URL du guide créé
