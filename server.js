@@ -647,6 +647,68 @@ app.post('/webhook', async (req, res) => {
 });
 
 // ===========================
+// Endpoint: Synchroniser les IDs Stripe dans Firestore
+// ===========================
+app.post('/sync-stripe-ids', async (req, res) => {
+    try {
+        const { email, userId } = req.body;
+        
+        if (!email || !userId) {
+            return res.status(400).json({ error: 'Email et userId requis' });
+        }
+        
+        console.log('🔍 Recherche abonnement Stripe pour:', email);
+        
+        // Chercher le client Stripe par email
+        const customers = await stripe.customers.list({
+            email: email,
+            limit: 1
+        });
+        
+        if (customers.data.length === 0) {
+            console.log('⚠️ Aucun client Stripe trouvé pour', email);
+            return res.json({ customerId: null, subscriptionId: null });
+        }
+        
+        const customer = customers.data[0];
+        console.log('✅ Client Stripe trouvé:', customer.id);
+        
+        // Récupérer les abonnements du client
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customer.id,
+            status: 'active',
+            limit: 1
+        });
+        
+        if (subscriptions.data.length === 0) {
+            console.log('⚠️ Aucun abonnement actif pour', customer.id);
+            return res.json({ customerId: customer.id, subscriptionId: null });
+        }
+        
+        const subscription = subscriptions.data[0];
+        console.log('✅ Abonnement actif trouvé:', subscription.id);
+        
+        // Mettre à jour Firestore
+        await firestore.collection('users').doc(userId).update({
+            stripeCustomerId: customer.id,
+            stripeSubscriptionId: subscription.id,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        
+        console.log('✅ Firestore mis à jour avec les IDs Stripe');
+        
+        res.json({
+            customerId: customer.id,
+            subscriptionId: subscription.id
+        });
+        
+    } catch (error) {
+        console.error('Erreur sync-stripe-ids:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ===========================
 // Endpoint: Récupérer les informations de paiement
 // ===========================
 app.post('/get-payment-info', async (req, res) => {

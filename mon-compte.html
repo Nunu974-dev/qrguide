@@ -1043,9 +1043,9 @@
             if (userData.stripeCustomerId && userData.stripeSubscriptionId) {
                 loadPaymentInfo(userData.stripeCustomerId, userData.stripeSubscriptionId);
             } else {
-                console.warn('⚠️ stripeCustomerId ou stripeSubscriptionId manquant dans Firestore');
-                document.getElementById('card-info').textContent = 'Carte : Non disponible (réabonnez-vous pour voir les infos)';
-                document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Non disponible';
+                console.warn('⚠️ stripeCustomerId ou stripeSubscriptionId manquant - tentative récupération automatique');
+                // Appeler l'endpoint pour récupérer et enregistrer les IDs
+                await syncStripeIds(user.email);
             }
             
             // Charger logements
@@ -1118,6 +1118,42 @@
                 console.error('Erreur:', error);
                 document.getElementById('card-info').textContent = 'Carte : Erreur de chargement';
                 document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Erreur de chargement';
+            }
+        }
+
+        // Synchroniser les IDs Stripe depuis Stripe vers Firestore
+        async function syncStripeIds(email) {
+            try {
+                document.getElementById('card-info').textContent = 'Carte : Récupération...';
+                document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Récupération...';
+                
+                const response = await fetch('https://qrguide-backend.onrender.com/sync-stripe-ids', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, userId: currentUser.uid })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.customerId && data.subscriptionId) {
+                        console.log('✅ IDs Stripe récupérés et enregistrés:', data);
+                        // Recharger les infos de paiement
+                        await loadPaymentInfo(data.customerId, data.subscriptionId);
+                    } else {
+                        console.warn('⚠️ Aucun abonnement actif trouvé dans Stripe');
+                        document.getElementById('card-info').textContent = 'Carte : Aucun abonnement actif';
+                        document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Non disponible';
+                    }
+                } else {
+                    console.error('Erreur lors de la synchronisation Stripe');
+                    document.getElementById('card-info').textContent = 'Carte : Non disponible';
+                    document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Non disponible';
+                }
+            } catch (error) {
+                console.error('Erreur syncStripeIds:', error);
+                document.getElementById('card-info').textContent = 'Carte : Erreur de synchronisation';
+                document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Erreur';
             }
         }
 
