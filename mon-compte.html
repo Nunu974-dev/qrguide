@@ -2081,6 +2081,16 @@
                             guideId: guideId,
                             guideUrl: formData.guideUrl,
                             clientEmail: currentUser.email,
+                            clientName: currentUser.displayName || 'Client',
+                            ville: formData.ville,
+                            photoUrl: formData.photo_url
+                        })
+                    });
+                    console.log('📧 Notification envoyée au gestionnaire');
+                } catch (emailError) {
+                    console.warn('⚠️ Notification email échouée (non bloquant):', emailError);
+                }
+                
                 console.log('🎉 Guide créé avec succès !');
                 
                 // Afficher l'URL du guide créé
@@ -2109,18 +2119,8 @@
                 }
                 
                 alert('❌ Erreur lors de la création du guide:\n\n' + errorMessage + '\n\nConsultez la console (F12) pour plus de détails.');
-                showAlert('❌ Erreur: ' + errorMl échoue
-                }
+                showAlert('❌ Erreur: ' + errorMessage, 'error');
                 
-                // Afficher l'URL du guide créé
-                showGuideCreatedModal(guideId, formData.guideUrl);
-                
-                closeLogementModal();
-                loadLogements();
-                
-            } catch (error) {
-                console.error('Erreur:', error);
-                showAlert('❌ Erreur lors de la création: ' + error.message, 'error');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '✅ Créer le guide';
             }
