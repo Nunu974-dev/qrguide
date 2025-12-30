@@ -69,9 +69,10 @@ const STRIPE_PRICE_IDS = {
 };
 
 // Fonction pour envoyer email via Nodemailer
-async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, tempPassword = null, isNewUser = true) {
+async function sendConfirmationEmail(customerEmail, customerName, plan, plaques, total, plaqueFormat, propertyCount, propertyType, message, tempPassword = null, isNewUser = true) {
     const planText = plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)';
-    const plaquesText = plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''}` : 'Aucune';
+    const plaquesText = plaques > 0 ? `${plaques} plaque${plaques > 1 ? 's' : ''} ${plaqueFormat.toUpperCase()}` : 'Aucune';
+    const propertyText = propertyCount ? `${propertyCount} logement${propertyCount > 1 ? 's' : ''}${propertyType ? ' (' + propertyType + ')' : ''}` : 'Non spécifié';
     
     const titleText = isNewUser ? 'Bienvenue chez QRGUIDE !' : 'Abonnement renouvelé !';
     const messageText = isNewUser 
@@ -91,7 +92,7 @@ async function sendConfirmationEmail(customerEmail, customerName, plan, plaques,
                 <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                     <tr>
                         <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
-                            <img src="https://qrguide.fr/img/logo.png" alt="QRGUIDE" style="height: 50px; margin-bottom: 20px;">
+                            <img src="https://qrguide.fr/img/logo.png" alt="QRGUIDE" style="height: 150px; margin-bottom: 20px;">
                             <h1 style="color: #ffffff; margin: 0; font-size: 28px;">${titleText}</h1>
                             <p style="color: #ffffff; margin: 10px 0 0 0; opacity: 0.9;">${messageText}</p>
                         </td>
@@ -108,9 +109,18 @@ async function sendConfirmationEmail(customerEmail, customerName, plan, plaques,
                                     <td style="color: #333; font-size: 14px; text-align: right;">${planText}</td>
                                 </tr>
                                 <tr>
+                                    <td style="color: #666; font-size: 14px;"><strong>🏠 Logements :</strong></td>
+                                    <td style="color: #333; font-size: 14px; text-align: right;">${propertyText}</td>
+                                </tr>
+                                <tr>
                                     <td style="color: #666; font-size: 14px;"><strong>🏷️ Plaques QR :</strong></td>
                                     <td style="color: #333; font-size: 14px; text-align: right;">${plaquesText}</td>
                                 </tr>
+                                ${message ? `
+                                <tr>
+                                    <td colspan="2" style="color: #666; font-size: 14px; padding-top: 12px; border-top: 1px solid #e9ecef;"><strong>💬 Commentaire :</strong><br><span style="color: #333; font-style: italic;">"${message}"</span></td>
+                                </tr>
+                                ` : ''}
                                 <tr>
                                     <td style="color: #666; font-size: 14px; padding-top: 8px; border-top: 2px solid #e9ecef;"><strong>💰 Total :</strong></td>
                                     <td style="color: #667eea; font-size: 18px; font-weight: bold; text-align: right; padding-top: 8px; border-top: 2px solid #e9ecef;">${total}€</td>
@@ -433,10 +443,14 @@ app.post('/create-checkout-session', async (req, res) => {
             metadata: {
                 plan: plan,
                 plaqueQty: plaques.toString(),
+                plaqueFormat: req.body.plaqueFormat || 'a4',
                 firstName: customerInfo.firstName,
                 lastName: customerInfo.lastName,
                 customerPhone: customerInfo.phone,
                 postalCode: customerInfo.postalCode || '',
+                propertyType: customerInfo.propertyType || '',
+                propertyCount: customerInfo.propertyCount || '1',
+                message: customerInfo.message || '',
                 totalAmount: totalAmount.toString()
             }
         });
@@ -592,13 +606,24 @@ app.post('/webhook', async (req, res) => {
             }
 
             // Envoyer email de confirmation au client
+            const plaqueFormat = session.metadata.plaqueFormat || 'a4';
+            const propertyCount = session.metadata.propertyCount || '1';
+            const propertyType = session.metadata.propertyType || '';
+            const message = session.metadata.message || '';
+            
             await sendConfirmationEmail(
                 customerEmail,
                 customerName,
                 plan,
                 plaques,
                 total,
+                plaqueFormat,
+                propertyCount,
+                propertyType,
+                message,
                 tempPassword,
+                isNewUser
+            );
                 isNewUser
             );
             

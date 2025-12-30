@@ -808,15 +808,20 @@
 
             try {
                 // 3. Appeler le backend pour créer la session Stripe
+                const plaqueFormat = document.querySelector('input[name="plaque-format"]:checked');
                 const requestData = {
                     plan: plan.value,
                     plaqueQty: plaqueQty,
+                    plaqueFormat: plaqueFormat ? plaqueFormat.value : 'a4',
                     customerInfo: {
                         firstName: formData.prenom,
                         lastName: formData.nom,
                         email: formData.email,
                         phone: formData.telephone,
-                        postalCode: formData.ville
+                        postalCode: formData.ville,
+                        propertyType: formData.type,
+                        propertyCount: formData.nombre,
+                        message: formData.message
                     },
                     successUrl: `${window.location.origin}/success.html`,
                     cancelUrl: `${window.location.origin}/abonnement.html`
