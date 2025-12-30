@@ -62,6 +62,156 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* Styles pour les modales */
+        .section-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-body {
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #f8f9fa;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: #666;
+        }
+        
+        .modal-close-btn:hover {
+            background: #e9ecef;
+            transform: rotate(90deg);
+        }
+        
+        .modal-content-wrapper h2 {
+            color: #d4af37;
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        
+        .modal-section {
+            margin-bottom: 24px;
+        }
+        
+        .modal-section h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+        
+        .modal-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .wifi-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .wifi-info p {
+            color: white;
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        
+        .wifi-password {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .equipement-item-modal,
+        .restaurant-item-modal,
+        .activite-item-modal,
+        .commerce-item-modal {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border-left: 4px solid #d4af37;
+        }
+        
+        .equipement-item-modal h4,
+        .restaurant-item-modal h4,
+        .activite-item-modal h4,
+        .commerce-item-modal h4 {
+            color: #d4af37;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .equipement-item-modal p,
+        .restaurant-item-modal p,
+        .activite-item-modal p,
+        .commerce-item-modal p {
+            margin: 4px 0;
+        }
+        
+        .modal-content-wrapper a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .modal-content-wrapper a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body class="luxury-body">
@@ -246,12 +396,13 @@
     <script>
         // Configuration Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyBHH-EaBsaoaB1a0CU8bZ2vL_LfGLW0zb0",
-            authDomain: "qrguide-17c49.firebaseapp.com",
-            projectId: "qrguide-17c49",
-            storageBucket: "qrguide-17c49.firebasestorage.app",
-            messagingSenderId: "630009672539",
-            appId: "1:630009672539:web:cd856c79d4b20e10fc28c1"
+            apiKey: "AIzaSyC4e3AVTuNPJSd3WySAiXkD19rRrHGRUqw",
+            authDomain: "qrguide-59f5f.firebaseapp.com",
+            projectId: "qrguide-59f5f",
+            storageBucket: "qrguide-59f5f.firebasestorage.app",
+            messagingSenderId: "712367149712",
+            appId: "1:712367149712:web:48c9f0fd95be1f940d3e15",
+            measurementId: "G-H6DL6HDWSN"
         };
 
         // Initialiser Firebase
@@ -331,8 +482,240 @@
 
         // Afficher une section (modal ou nouvelle page)
         function showSection(section) {
-            alert(`Section ${section} - Fonctionnalité en cours de développement`);
-            // TODO: Créer les modals ou pages pour chaque section
+            const data = window.guideData;
+            if (!data) {
+                alert('Données non chargées');
+                return;
+            }
+
+            let modalContent = '';
+            
+            switch(section) {
+                case 'arrivee':
+                    modalContent = `
+                        <h2>👋 Bienvenue !</h2>
+                        <div class="modal-section">
+                            <h3>✨ Vous êtes arrivés !</h3>
+                            <p>${data.message_bienvenue || 'Bienvenue dans votre logement !'}</p>
+                        </div>
+                        <div class="modal-section">
+                            <h3>🔑 Instructions d'arrivée</h3>
+                            <p>${(data.instructions_arrivee || 'Aucune instruction').replace(/\n/g, '<br>')}</p>
+                        </div>
+                        ${data.heure_arrivee ? `<div class="modal-section"><h3>⏰ Horaires</h3><p>Arrivée : ${data.heure_arrivee}<br>Départ : ${data.heure_depart || 'Non spécifié'}</p></div>` : ''}
+                    `;
+                    break;
+                    
+                case 'depart':
+                    modalContent = `
+                        <h2>🚪 Départ</h2>
+                        <div class="modal-section">
+                            <h3>⏰ Heure de départ</h3>
+                            <p>Merci de libérer le logement avant <strong>${data.heure_depart || '10h00'}</strong></p>
+                        </div>
+                        <div class="modal-section">
+                            <h3>✅ Instructions de départ</h3>
+                            <p>${(data.instructions_depart || 'Merci de laisser les clés et de bien fermer').replace(/\n/g, '<br>')}</p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'wifi':
+                    modalContent = `
+                        <h2>📶 Wi-Fi</h2>
+                        <div class="modal-section">
+                            <h3>🔑 Identifiants de connexion</h3>
+                            <div class="wifi-info">
+                                <p><strong>Réseau :</strong> ${data.wifi_nom || 'Non configuré'}</p>
+                                <p><strong>Mot de passe :</strong> <span class="wifi-password">${data.wifi_mdp || 'Non configuré'}</span></p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'equipements':
+                    let equipementsHTML = '';
+                    if (data.equipements && Array.isArray(data.equipements)) {
+                        data.equipements.forEach(eq => {
+                            equipementsHTML += `
+                                <div class="equipement-item-modal">
+                                    <h4>${eq.nom}</h4>
+                                    <p><strong>Emplacement :</strong> ${eq.emplacement || 'Non spécifié'}</p>
+                                    <p>${eq.instructions || ''}</p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        equipementsHTML = '<p>Aucun équipement configuré</p>';
+                    }
+                    modalContent = `
+                        <h2>🏠 Équipements</h2>
+                        <div class="modal-section">
+                            ${equipementsHTML}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'restaurants':
+                    let restaurantsHTML = '';
+                    if (data.restaurants && Array.isArray(data.restaurants)) {
+                        data.restaurants.forEach(rest => {
+                            restaurantsHTML += `
+                                <div class="restaurant-item-modal">
+                                    <h4>${rest.nom}</h4>
+                                    <p>${rest.type || ''}</p>
+                                    <p>${rest.description || ''}</p>
+                                    ${rest.adresse ? `<p>📍 ${rest.adresse}</p>` : ''}
+                                    ${rest.telephone ? `<p>📞 <a href="tel:${rest.telephone}">${rest.telephone}</a></p>` : ''}
+                                    ${rest.site_web ? `<p>🌐 <a href="${rest.site_web}" target="_blank">Site web</a></p>` : ''}
+                                </div>
+                            `;
+                        });
+                    }
+                    if (data.snacks && Array.isArray(data.snacks)) {
+                        restaurantsHTML += '<h3 style="margin-top: 24px;">🥐 Snacks & Boulangeries</h3>';
+                        data.snacks.forEach(snack => {
+                            restaurantsHTML += `
+                                <div class="restaurant-item-modal">
+                                    <h4>${snack.nom}</h4>
+                                    <p>${snack.type || ''}</p>
+                                    ${snack.adresse ? `<p>📍 ${snack.adresse}</p>` : ''}
+                                    ${snack.telephone ? `<p>📞 <a href="tel:${snack.telephone}">${snack.telephone}</a></p>` : ''}
+                                </div>
+                            `;
+                        });
+                    }
+                    modalContent = `
+                        <h2>🍽️ Restaurants</h2>
+                        <div class="modal-section">
+                            ${restaurantsHTML || '<p>Aucun restaurant configuré</p>'}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'activites':
+                    let activitesHTML = '';
+                    if (data.activites && Array.isArray(data.activites)) {
+                        data.activites.forEach(act => {
+                            activitesHTML += `
+                                <div class="activite-item-modal">
+                                    <h4>${act.nom}</h4>
+                                    <p>${act.description || ''}</p>
+                                    ${act.adresse ? `<p>📍 ${act.adresse}</p>` : ''}
+                                    ${act.telephone ? `<p>📞 <a href="tel:${act.telephone}">${act.telephone}</a></p>` : ''}
+                                    ${act.prix ? `<p>💰 ${act.prix}</p>` : ''}
+                                </div>
+                            `;
+                        });
+                    } else {
+                        activitesHTML = '<p>Aucune activité configurée</p>';
+                    }
+                    modalContent = `
+                        <h2>🌴 Activités</h2>
+                        <div class="modal-section">
+                            ${activitesHTML}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'commerces':
+                    let commercesHTML = '';
+                    if (data.commerces && Array.isArray(data.commerces)) {
+                        data.commerces.forEach(com => {
+                            commercesHTML += `
+                                <div class="commerce-item-modal">
+                                    <h4>${com.nom}</h4>
+                                    <p>${com.type || ''}</p>
+                                    ${com.adresse ? `<p>📍 ${com.adresse}</p>` : ''}
+                                    ${com.telephone ? `<p>📞 <a href="tel:${com.telephone}">${com.telephone}</a></p>` : ''}
+                                </div>
+                            `;
+                        });
+                    } else {
+                        commercesHTML = '<p>Aucun commerce configuré</p>';
+                    }
+                    modalContent = `
+                        <h2>📍 À Proximité</h2>
+                        <div class="modal-section">
+                            <h3>Commerces & Services</h3>
+                            ${commercesHTML}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'urgence':
+                    modalContent = `
+                        <h2>🚨 Urgence</h2>
+                        <div class="modal-section">
+                            <h3>Numéros d'urgence</h3>
+                            <p>${(data.urgences || 'SAMU: 15\nPolice: 17\nPompiers: 18').replace(/\n/g, '<br>')}</p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'hote':
+                    modalContent = `
+                        <h2>❤️ Votre Hôte</h2>
+                        <div class="modal-section">
+                            ${data.hote_nom ? `<h3>${data.hote_nom}</h3>` : ''}
+                            ${data.hote_telephone ? `<p>📞 <a href="tel:${data.hote_telephone}" style="font-size: 1.2rem; color: var(--primary-color);">${data.hote_telephone}</a></p>` : ''}
+                            ${data.hote_email ? `<p>📧 <a href="mailto:${data.hote_email}">${data.hote_email}</a></p>` : ''}
+                            ${data.hote_message ? `<p>${data.hote_message.replace(/\n/g, '<br>')}</p>` : ''}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'infos':
+                    modalContent = `
+                        <h2>📋 Informations Pratiques</h2>
+                        ${data.regles ? `<div class="modal-section"><h3>📜 Règlement</h3><p>${data.regles.replace(/\n/g, '<br>')}</p></div>` : ''}
+                        ${data.menage_tri ? `<div class="modal-section"><h3>🧹 Ménage & Tri</h3><p>${data.menage_tri.replace(/\n/g, '<br>')}</p></div>` : ''}
+                        ${data.instructions_cles ? `<div class="modal-section"><h3>🔑 Clés</h3><p>${data.instructions_cles.replace(/\n/g, '<br>')}</p></div>` : ''}
+                        ${data.conseils ? `<div class="modal-section"><h3>💡 Conseils</h3><p>${data.conseils.replace(/\n/g, '<br>')}</p></div>` : ''}
+                    `;
+                    break;
+                    
+                default:
+                    modalContent = '<h2>Section non disponible</h2>';
+            }
+            
+            // Créer et afficher la modale
+            showModal(modalContent);
+        }
+        
+        // Fonction pour afficher une modale
+        function showModal(content) {
+            // Créer la modale si elle n'existe pas
+            let modal = document.getElementById('section-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'section-modal';
+                modal.className = 'section-modal';
+                modal.innerHTML = `
+                    <div class="modal-overlay" onclick="closeModal()"></div>
+                    <div class="modal-body">
+                        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+                        <div class="modal-content-wrapper" id="modal-content-wrapper"></div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            
+            // Remplir le contenu
+            document.getElementById('modal-content-wrapper').innerHTML = content;
+            
+            // Afficher la modale
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Fonction pour fermer la modale
+        function closeModal() {
+            const modal = document.getElementById('section-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
 
         // Toggle plus d'infos
