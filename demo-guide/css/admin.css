@@ -809,3 +809,120 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* === GUIDES SECTION === */
+.guides-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.btn-filter {
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid var(--admin-border);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--admin-text);
+}
+
+.btn-filter:hover {
+    border-color: var(--admin-primary);
+    background: #fff5f7;
+}
+
+.btn-filter.active {
+    background: var(--admin-primary);
+    color: white;
+    border-color: var(--admin-primary);
+}
+
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: var(--admin-text-light);
+    font-weight: 500;
+}
+
+/* === MODAL STYLES === */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal .modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 0;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal .modal-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal .modal-header h3 {
+    margin: 0;
+    color: var(--admin-text);
+}
+
+.modal .modal-body {
+    padding: 24px;
+}
+
+.modal .modal-footer {
+    padding: 24px;
+    border-top: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.modal .btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--admin-text-light);
+    transition: color 0.2s;
+}
+
+.modal .btn-close:hover {
+    color: var(--admin-text);
+}

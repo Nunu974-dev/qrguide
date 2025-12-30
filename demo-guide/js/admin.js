@@ -946,7 +946,243 @@ function generateClientPage(client) {
 
 function logout() {
     if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-        alert('👋 À bientôt !');
-        // En production: redirection vers page de login
+        auth.signOut().then(() => {
+            window.location.href = '../login.html';
+        });
     }
 }
+
+// === GESTION DES GUIDES ===
+let allGuides = [];
+let filteredGuides = [];
+
+async function loadAllGuides() {
+    try {
+        console.log('📱 Chargement de tous les guides...');
+        
+        const guidesSnapshot = await db.collection('guides')
+            .orderBy('createdAt', 'desc')
+            .get();
+        
+        allGuides = [];
+        
+        guidesSnapshot.forEach(doc => {
+            allGuides.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        filteredGuides = [...allGuides];
+        
+        console.log('✅ Guides chargés:', allGuides.length);
+        
+        // Mettre à jour le badge
+        document.getElementById('guides-count').textContent = allGuides.length;
+        
+        // Calculer les statistiques
+        updateGuidesStats();
+        
+        // Afficher les guides
+        renderGuides();
+        
+    } catch (error) {
+        console.error('❌ Erreur chargement guides:', error);
+        alert('Erreur lors du chargement des guides');
+    }
+}
+
+function updateGuidesStats() {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    const guidesThisWeek = allGuides.filter(guide => {
+        const createdAt = guide.createdAt?.toDate();
+        return createdAt && createdAt >= weekAgo;
+    }).length;
+    
+    const guidesThisMonth = allGuides.filter(guide => {
+        const createdAt = guide.createdAt?.toDate();
+        return createdAt && createdAt >= monthStart;
+    }).length;
+    
+    document.getElementById('total-guides').textContent = allGuides.length;
+    document.getElementById('guides-this-week').textContent = guidesThisWeek;
+    document.getElementById('guides-this-month').textContent = guidesThisMonth;
+}
+
+function renderGuides() {
+    const guidesList = document.getElementById('guides-list');
+    const emptyState = document.getElementById('guides-empty-state');
+    
+    if (!guidesList) return;
+    
+    if (filteredGuides.length === 0) {
+        guidesList.style.display = 'none';
+        emptyState.style.display = 'flex';
+        return;
+    }
+    
+    guidesList.style.display = 'grid';
+    emptyState.style.display = 'none';
+    guidesList.innerHTML = '';
+    
+    filteredGuides.forEach(guide => {
+        const card = document.createElement('div');
+        card.className = 'client-card';
+        
+        const createdAt = guide.createdAt?.toDate();
+        const formattedDate = createdAt ? createdAt.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }) : 'Date inconnue';
+        
+        card.innerHTML = `
+            <div style="display: flex; gap: 16px;">
+                ${guide.photo_url ? `
+                    <img src="${guide.photo_url}" 
+                         style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" 
+                         alt="${guide.nom}">
+                ` : `
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        🏠
+                    </div>
+                `}
+                <div style="flex: 1;">
+                    <h3 style="margin: 0 0 8px 0; color: #333; font-size: 1.3rem;">${guide.nom || 'Sans nom'}</h3>
+                    <p style="margin: 0 0 4px 0; color: #666;">
+                        <strong>📍</strong> ${guide.ville || 'Ville non spécifiée'}
+                    </p>
+                    <p style="margin: 0 0 4px 0; color: #666; font-size: 0.9rem;">
+                        <strong>🆔</strong> <code style="background: #f8f9fa; padding: 2px 6px; border-radius: 4px;">${guide.guideId || guide.id}</code>
+                    </p>
+                    <p style="margin: 0 0 8px 0; color: #999; font-size: 0.85rem;">
+                        📅 Créé le ${formattedDate}
+                    </p>
+                    ${guide.guideUrl ? `
+                        <p style="margin: 0 0 12px 0; font-size: 0.85rem;">
+                            🔗 <a href="${guide.guideUrl}" target="_blank" style="color: #667eea;">${guide.guideUrl}</a>
+                        </p>
+                    ` : ''}
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn-primary" style="padding: 8px 16px; font-size: 0.9rem;" onclick="window.open('/guide/${guide.guideId || guide.id}', '_blank')">
+                            👁️ Voir
+                        </button>
+                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;" onclick="copyGuideUrl('${guide.guideUrl}')">
+                            📋 Copier lien
+                        </button>
+                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;" onclick="showGuideQR('${guide.guideId || guide.id}', '${guide.guideUrl}')">
+                            📱 QR Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        guidesList.appendChild(card);
+    });
+}
+
+function filterGuides() {
+    const search = document.getElementById('guides-search').value.toLowerCase();
+    
+    filteredGuides = allGuides.filter(guide => {
+        const nom = (guide.nom || '').toLowerCase();
+        const ville = (guide.ville || '').toLowerCase();
+        const id = (guide.guideId || guide.id || '').toLowerCase();
+        
+        return nom.includes(search) || ville.includes(search) || id.includes(search);
+    });
+    
+    renderGuides();
+}
+
+function filterGuidesByStatus(status) {
+    // Mettre à jour les boutons de filtre
+    document.querySelectorAll('.btn-filter').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    const now = new Date();
+    
+    if (status === 'all') {
+        filteredGuides = [...allGuides];
+    } else if (status === 'recent') {
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        filteredGuides = allGuides.filter(guide => {
+            const createdAt = guide.createdAt?.toDate();
+            return createdAt && createdAt >= weekAgo;
+        });
+    } else if (status === 'month') {
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        filteredGuides = allGuides.filter(guide => {
+            const createdAt = guide.createdAt?.toDate();
+            return createdAt && createdAt >= monthStart;
+        });
+    }
+    
+    renderGuides();
+}
+
+function copyGuideUrl(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        alert('📋 Lien copié dans le presse-papier !');
+    }).catch(err => {
+        console.error('Erreur copie:', err);
+    });
+}
+
+function showGuideQR(guideId, guideUrl) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <div class="modal-header">
+                <h3>📱 QR Code du Guide</h3>
+                <button class="btn-close" onclick="this.closest('.modal').remove()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="qr-container-${guideId}" style="display: flex; justify-content: center; margin: 24px 0;"></div>
+                <p style="word-break: break-all; color: #666; font-size: 0.9rem;">${guideUrl}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="downloadGuideQR('${guideId}')">💾 Télécharger</button>
+                <button class="btn-secondary" onclick="this.closest('.modal').remove()">Fermer</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Générer le QR code
+    const qrContainer = document.getElementById(`qr-container-${guideId}`);
+    const qrImg = document.createElement('img');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(guideUrl)}`;
+    qrImg.id = `qr-img-${guideId}`;
+    qrContainer.appendChild(qrImg);
+}
+
+function downloadGuideQR(guideId) {
+    const qrImg = document.getElementById(`qr-img-${guideId}`);
+    if (qrImg) {
+        const link = document.createElement('a');
+        link.href = qrImg.src;
+        link.download = `qrcode-guide-${guideId}.png`;
+        link.click();
+    }
+}
+
+// Charger les guides quand on affiche la section
+const originalShowSection = showSection;
+showSection = function(sectionName) {
+    originalShowSection(sectionName);
+    
+    if (sectionName === 'guides') {
+        loadAllGuides();
+    }
+};

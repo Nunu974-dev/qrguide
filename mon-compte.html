@@ -2044,6 +2044,27 @@
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 
+                // Envoyer un email au gestionnaire pour l'informer de la création
+                try {
+                    await fetch('https://qrguide-backend.onrender.com/notify-new-guide', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            guideName: formData.nom,
+                            guideId: guideId,
+                            guideUrl: formData.guideUrl,
+                            clientEmail: currentUser.email,
+                            clientName: `${formData.hote_nom || 'Client'}`,
+                            ville: formData.ville,
+                            photoUrl: formData.photo_url
+                        })
+                    });
+                    console.log('✅ Email envoyé au gestionnaire');
+                } catch (emailError) {
+                    console.error('⚠️ Erreur envoi email gestionnaire:', emailError);
+                    // Ne pas bloquer la création du guide si l'email échoue
+                }
+                
                 // Afficher l'URL du guide créé
                 showGuideCreatedModal(guideId, formData.guideUrl);
                 

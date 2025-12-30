@@ -34,6 +34,11 @@
                     <span>Mes Clients</span>
                     <span class="badge" id="clients-count">0</span>
                 </a>
+                <a href="#guides" class="nav-item" data-section="guides">
+                    <span class="nav-icon">📱</span>
+                    <span>Tous les Guides</span>
+                    <span class="badge" id="guides-count">0</span>
+                </a>
                 <a href="#new-client" class="nav-item" data-section="new-client">
                     <span class="nav-icon">➕</span>
                     <span>Nouveau Client</span>
@@ -684,7 +689,51 @@
                     </div>
                 </form>
             </section>
+            <!-- SECTION: TOUS LES GUIDES -->
+            <section id="section-guides" class="content-section">
+                <div class="section-header">
+                    <h2>📱 Tous les Guides Créés</h2>
+                    <div style="display: flex; gap: 12px;">
+                        <input type="text" id="guides-search" placeholder="🔍 Rechercher un guide..." style="padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; width: 300px;" onkeyup="filterGuides()">
+                        <button class="btn-secondary" onclick="loadAllGuides()">🔄 Actualiser</button>
+                    </div>
+                </div>
 
+                <!-- Filtres -->
+                <div style="margin-bottom: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="btn-filter active" data-filter="all" onclick="filterGuidesByStatus('all')">Tous</button>
+                    <button class="btn-filter" data-filter="recent" onclick="filterGuidesByStatus('recent')">Récents (7j)</button>
+                    <button class="btn-filter" data-filter="month" onclick="filterGuidesByStatus('month')">Ce mois</button>
+                </div>
+
+                <!-- Statistiques -->
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-guides">0</div>
+                        <div class="stat-label">Guides créés</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="guides-this-month">0</div>
+                        <div class="stat-label">Ce mois</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="guides-this-week">0</div>
+                        <div class="stat-label">Cette semaine</div>
+                    </div>
+                </div>
+
+                <!-- Liste des guides -->
+                <div class="guides-grid" id="guides-list">
+                    <!-- Les guides seront chargés ici -->
+                </div>
+
+                <!-- Message si aucun guide -->
+                <div class="empty-state" id="guides-empty-state" style="display: none;">
+                    <div class="empty-icon">📭</div>
+                    <h3>Aucun guide créé</h3>
+                    <p>Les guides créés par vos clients apparaîtront ici</p>
+                </div>
+            </section>
             <!-- SECTION: PARAMÈTRES -->
             <section id="section-settings" class="content-section">
                 <div class="section-header">

@@ -746,6 +746,114 @@ app.post('/get-payment-info', async (req, res) => {
 });
 
 // ===========================
+// Endpoint: Notifier le gestionnaire d'un nouveau guide créé
+// ===========================
+app.post('/notify-new-guide', async (req, res) => {
+    try {
+        const { guideName, guideId, guideUrl, clientEmail, clientName, ville, photoUrl } = req.body;
+        
+        const adminEmail = process.env.ADMIN_EMAIL || 'contact@qrguide.fr';
+        
+        const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; padding: 40px 0;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; text-align: center;">
+                            <img src="https://qrguide.fr/img/logo.png" alt="QRGUIDE" style="height: 100px; margin-bottom: 20px;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">🎉 Nouveau Guide Créé !</h1>
+                            <p style="color: #ffffff; margin: 10px 0 0 0; opacity: 0.9;">Un client vient de créer un guide</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 40px;">
+                            ${photoUrl ? `
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <img src="${photoUrl}" alt="Photo du logement" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            </div>
+                            ` : ''}
+                            
+                            <h2 style="color: #d4af37; margin: 0 0 20px 0;">📋 Détails du guide</h2>
+                            
+                            <table width="100%" cellpadding="10" cellspacing="0" style="border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 30px;">
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="font-weight: 600; color: #333;">🏠 Nom du logement:</td>
+                                    <td style="color: #666;">${guideName}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600; color: #333;">📍 Ville:</td>
+                                    <td style="color: #666;">${ville || 'Non spécifiée'}</td>
+                                </tr>
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="font-weight: 600; color: #333;">🔗 ID du guide:</td>
+                                    <td style="color: #666; font-family: monospace;">${guideId}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600; color: #333;">👤 Client:</td>
+                                    <td style="color: #666;">${clientName}</td>
+                                </tr>
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="font-weight: 600; color: #333;">📧 Email client:</td>
+                                    <td style="color: #666;">${clientEmail}</td>
+                                </tr>
+                            </table>
+                            
+                            <div style="text-align: center; margin: 30px 0;">
+                                <a href="${guideUrl}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                                    👁️ Voir le guide
+                                </a>
+                            </div>
+                            
+                            <div style="background-color: #fffbf0; border-left: 4px solid #d4af37; padding: 16px; border-radius: 8px; margin-top: 30px;">
+                                <p style="margin: 0; color: #666; font-size: 14px;">
+                                    <strong>URL du guide:</strong><br>
+                                    <a href="${guideUrl}" style="color: #d4af37; word-break: break-all;">${guideUrl}</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 24px; text-align: center; border-top: 1px solid #e9ecef;">
+                            <p style="margin: 0; color: #999; font-size: 14px;">
+                                <a href="https://qrguide.fr/demo-guide/admin.html" style="color: #667eea; text-decoration: none;">Accéder au Dashboard Admin</a>
+                            </p>
+                            <p style="margin: 8px 0 0 0; color: #999; font-size: 12px;">
+                                © ${new Date().getFullYear()} QRGUIDE.FR - Tous droits réservés
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+
+        const mailOptions = {
+            from: `"QRGUIDE Notifications" <${process.env.SMTP_USER}>`,
+            to: adminEmail,
+            subject: `🎉 Nouveau guide créé : ${guideName}`,
+            html: htmlContent
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log('✅ Email envoyé au gestionnaire:', adminEmail);
+
+        res.json({ success: true, message: 'Email envoyé' });
+    } catch (error) {
+        console.error('Erreur notify-new-guide:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ===========================
 // Démarrer le serveur
 // ===========================
 app.listen(PORT, () => {
