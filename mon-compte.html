@@ -418,23 +418,80 @@
             gap: 12px;
             align-items: start;
             margin-bottom: 12px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            padding: 16px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .equipement-item:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            border-color: #d4af37;
         }
         
         .equipement-item input,
-        .equipement-item textarea {
+        .equipement-item textarea,
+        .equipement-item select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
             font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .equipement-item input:focus,
+        .equipement-item textarea:focus,
+        .equipement-item select:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
         
         .equipement-item textarea {
             resize: vertical;
             min-height: 60px;
+        }
+        
+        .equipement-selector {
+            position: relative;
+        }
+        
+        .equipement-suggestions {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            margin-top: 4px;
+        }
+        
+        .equipement-suggestions.active {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .suggestion-item:hover {
+            background: #fffbf0;
+            color: #d4af37;
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
         }
         
         .btn-remove-item {
@@ -728,23 +785,23 @@
                     
                     <div class="form-group">
                         <label>Nom du logement *</label>
-                        <input type="text" id="nom" name="nom" required placeholder="Ex: Villa Vue Mer Saint-Paul">
+                        <input type="text" id="nom" name="nom" required value="Villa Vue Mer Saint-Paul">
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
                             <label>Adresse complète *</label>
-                            <input type="text" id="adresse" name="adresse" required placeholder="15 Rue des Cocotiers">
+                            <input type="text" id="adresse" name="adresse" required value="15 Rue des Cocotiers">
                         </div>
                         <div class="form-group">
                             <label>Ville *</label>
-                            <input type="text" id="ville" name="ville" required placeholder="Saint-Paul">
+                            <input type="text" id="ville" name="ville" required value="Saint-Paul">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Description du logement *</label>
-                        <textarea id="description" name="description" rows="4" required placeholder="Décrivez votre logement, ses atouts, son environnement..."></textarea>
+                        <textarea id="description" name="description" rows="4" required>Magnifique villa avec vue panoramique sur la mer, située dans un quartier calme. 3 chambres, piscine privée, terrasse avec barbecue. Proche des plages et commodités.</textarea>
                     </div>
                     
                     <div class="form-row">
@@ -787,7 +844,7 @@
                     <div class="form-section-title">Message de bienvenue</div>
                     <div class="form-group">
                         <label>Message personnalisé d'accueil</label>
-                        <textarea id="message_bienvenue" name="message_bienvenue" rows="3" placeholder="Bienvenue dans notre villa ! Nous espérons que vous passerez un séjour exceptionnel..."></textarea>
+                        <textarea id="message_bienvenue" name="message_bienvenue" rows="3">Bienvenue dans notre villa ! Nous espérons que vous passerez un séjour exceptionnel à La Réunion. Profitez de la piscine, de la vue mer et de toutes les commodités disponibles. N'hésitez pas à nous contacter si besoin !</textarea>
                     </div>
                     
                     <div class="form-section-title">Check-in / Check-out</div>
@@ -804,53 +861,53 @@
                     
                     <div class="form-group">
                         <label>Instructions d'arrivée *</label>
-                        <textarea id="instructions_arrivee" name="instructions_arrivee" rows="4" required placeholder="Comment accéder au logement, où trouver les clés, code portail, etc."></textarea>
+                        <textarea id="instructions_arrivee" name="instructions_arrivee" rows="4" required>Récupérez les clés dans la boîte à clés sécurisée située à gauche de la porte d'entrée. Le code vous sera envoyé par SMS le jour de votre arrivée. Code portail : 1234. Parking privé avec 2 places disponibles.</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>Code d'accès (portail, porte...)</label>
-                        <input type="text" id="code_acces" name="code_acces" placeholder="Ex: 1234 ou A56B">
+                        <input type="text" id="code_acces" name="code_acces" value="1234">
                     </div>
                     
                     <div class="form-section-title">🎯 Premiers pas (4 étapes affichées)</div>
                     <div class="form-group">
                         <label>Étape 1 - Premiers pas</label>
-                        <input type="text" id="premier_pas_1" name="premier_pas_1" placeholder="Connectez-vous au Wi-Fi">
+                        <input type="text" id="premier_pas_1" name="premier_pas_1" value="Connectez-vous au Wi-Fi (nom et mot de passe ci-dessous)">
                     </div>
                     <div class="form-group">
                         <label>Étape 2 - Premiers pas</label>
-                        <input type="text" id="premier_pas_2" name="premier_pas_2" placeholder="Climatisation & Chauffage : télécommandes dans le salon">
+                        <input type="text" id="premier_pas_2" name="premier_pas_2" value="Climatisation : télécommandes murales dans chaque chambre et salon">
                     </div>
                     <div class="form-group">
                         <label>Étape 3 - Premiers pas</label>
-                        <input type="text" id="premier_pas_3" name="premier_pas_3" placeholder="Poubelles : cuisine (tri sélectif obligatoire)">
+                        <input type="text" id="premier_pas_3" name="premier_pas_3" value="Poubelles : tri sélectif obligatoire (jaune recyclage, verte ordures)">
                     </div>
                     <div class="form-group">
                         <label>Étape 4 - Premiers pas</label>
-                        <input type="text" id="premier_pas_4" name="premier_pas_4" placeholder="Volets roulants : interrupteurs près des fenêtres">
+                        <input type="text" id="premier_pas_4" name="premier_pas_4" value="Volets roulants : interrupteurs à côté de chaque fenêtre">
                     </div>
                     
                     <div class="form-section-title">🅿️ Parking & Accès</div>
                     <div class="form-group">
                         <label>Informations parking</label>
-                        <input type="text" id="parking_info" name="parking_info" placeholder="Ex: 2 places privées à l'entrée">
+                        <input type="text" id="parking_info" name="parking_info" value="2 places privées couvertes à l'entrée de la propriété">
                     </div>
                     
                     <div class="form-section-title">📶 WiFi</div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nom du réseau WiFi *</label>
-                            <input type="text" id="wifi_nom" name="wifi_nom" required placeholder="Ex: Villa_WiFi_5G">
+                            <input type="text" id="wifi_nom" name="wifi_nom" required value="Villa_WiFi_5G">
                         </div>
                         <div class="form-group">
                             <label>Mot de passe WiFi *</label>
-                            <input type="text" id="wifi_password" name="wifi_password" required placeholder="Le mot de passe WiFi">
+                            <input type="text" id="wifi_password" name="wifi_password" required value="Bienvenue2025">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Instructions TV / Multimédia</label>
-                        <textarea id="multimedia_instructions" name="multimedia_instructions" rows="3" placeholder="Comment utiliser la TV, Netflix, etc."></textarea>
+                        <textarea id="multimedia_instructions" name="multimedia_instructions" rows="3">TV connectée avec Netflix, Amazon Prime, Disney+. Allumez la TV avec la télécommande noire. Pour Netflix : compte déjà connecté, sélectionnez le profil "Invités".</textarea>
                     </div>
                 </div>
                 
@@ -869,7 +926,7 @@
                     <div class="form-section-title">❄️ Climatisation & Chauffage</div>
                     <div class="form-group">
                         <label>Instructions climatisation/chauffage</label>
-                        <textarea id="instructions_clim" name="instructions_clim" rows="3" placeholder="Télécommande sur la table du salon. Fermez les fenêtres quand la climatisation fonctionne."></textarea>
+                        <textarea id="instructions_clim" name="instructions_clim" rows="3">Climatisation réversible dans toutes les pièces. Télécommandes murales blanches. IMPORTANT : fermez portes et fenêtres quand la climatisation fonctionne pour optimiser l'efficacité.</textarea>
                     </div>
                     
                     <div class="form-section-title">🏊 Piscine & Extérieur</div>
@@ -887,7 +944,13 @@
                     <div class="form-section-title">🚪 Instructions de départ</div>
                     <div class="form-group">
                         <label>Que faire avant de partir</label>
-                        <textarea id="instructions_depart" name="instructions_depart" rows="4" placeholder="Vider les poubelles, éteindre la clim, fermer les volets, où laisser les clés, etc."></textarea>
+                        <textarea id="instructions_depart" name="instructions_depart" rows="4">Avant votre départ :
+✓ Faire la vaisselle et la ranger
+✓ Sortir les poubelles dans les containers extérieurs
+✓ Éteindre toutes les climatisations
+✓ Fermer tous les volets
+✓ Fermer portes et fenêtres
+✓ Remettre les clés dans la boîte à clés sécurisée</textarea>
                     </div>
                 </div>
                 
@@ -919,58 +982,76 @@
                     <div class="form-section-title">📜 Règlement & Consignes</div>
                     <div class="form-group">
                         <label>Règles de la maison</label>
-                        <textarea id="regles" name="regles" rows="6" placeholder="🚭 Non fumeur à l'intérieur (espace fumeur: terrasse)&#10;🎉 Pas de fêtes/événements sans autorisation&#10;🔇 Respecter le calme après 22h (voisinage résidentiel)&#10;🐕 Animaux non acceptés&#10;👥 Nombre maximum de personnes: 6&#10;..."></textarea>
+                        <textarea id="regles" name="regles" rows="6">🚭 Non fumeur à l'intérieur (espace fumeur : terrasse extérieure)
+🎉 Pas de fêtes ou événements sans autorisation préalable
+🔇 Respecter le calme après 22h (voisinage résidentiel)
+🐕 Animaux non acceptés
+👥 Nombre maximum de personnes : 6
+🏊 Piscine non surveillée - responsabilité des parents pour les enfants</textarea>
                     </div>
                     
                     <div class="form-section-title">🧹 Ménage & Tri</div>
                     <div class="form-group">
                         <label>Instructions ménage et tri des déchets</label>
-                        <textarea id="menage_tri" name="menage_tri" rows="5" placeholder="🗑️ Poubelles: jaune (recyclage) sous l'évier, verte (ordures) dans le garage&#10;♻️ Collecte: mardi et vendredi matin&#10;🧽 Ménage de départ: vaisselle, ranger, vider poubelles, éteindre équipements&#10;🧺 Linge de lit: laisser sur le lit (pas besoin de laver)&#10;..."></textarea>
+                        <textarea id="menage_tri" name="menage_tri" rows="5">🗑️ Poubelle jaune (recyclage) : sous l'évier - Poubelle verte (ordures) : garage
+♻️ Collecte : mardi et vendredi matin (sortir les containers la veille au soir)
+🧽 Ménage de départ : faire la vaisselle, ranger, vider poubelles, éteindre équipements
+🧺 Linge de lit : laisser sur le lit (nettoyage professionnel inclus)
+🧹 Produits ménagers : sous l'évier de la cuisine</textarea>
                     </div>
                     
                     <div class="form-section-title">🔑 Accès & Clés</div>
                     <div class="form-group">
                         <label>Instructions pour les clés</label>
-                        <textarea id="instructions_cles" name="instructions_cles" rows="3" placeholder="📍 Récupération: boîte à clés sécurisée à gauche de la porte d'entrée (code communiqué par SMS)&#10;🔙 Restitution au départ: remettre les clés dans la boîte à clés et refermer"></textarea>
+                        <textarea id="instructions_cles" name="instructions_cles" rows="3">📍 Récupération : boîte à clés sécurisée à gauche de la porte d'entrée (code envoyé par SMS)
+🔙 Restitution au départ : remettre les clés dans la boîte à clés et refermer
+🔑 3 clés fournies : portail, porte d'entrée, portillon piscine</textarea>
                     </div>
                     
                     <div class="form-section-title">👤 Votre contact</div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Votre nom / Prénom</label>
-                            <input type="text" id="hote_nom" name="hote_nom" placeholder="Julien">
+                            <input type="text" id="hote_nom" name="hote_nom" value="Julien">
                         </div>
                         <div class="form-group">
                             <label>Téléphone de contact *</label>
-                            <input type="tel" id="hote_telephone" name="hote_telephone" required placeholder="+262 692 XX XX XX">
+                            <input type="tel" id="hote_telephone" name="hote_telephone" required value="+262 692 63 03 64">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Email de contact</label>
-                        <input type="email" id="hote_email" name="hote_email" placeholder="contact@exemple.fr">
+                        <input type="email" id="hote_email" name="hote_email" value="contact@qrguide.fr">
                     </div>
                     
                     <div class="form-group">
                         <label>Message personnalisé pour vos voyageurs</label>
-                        <textarea id="message_hote" name="message_hote" rows="3" placeholder="N'hésitez pas à me contacter pour toute question. Je suis disponible 7j/7 et parle français, anglais et créole."></textarea>
+                        <textarea id="message_hote" name="message_hote" rows="3">N'hésitez pas à me contacter pour toute question ou besoin durant votre séjour. Je suis disponible 7j/7 de 8h à 20h et parle français, anglais et créole. Je ferai mon maximum pour rendre votre séjour inoubliable !</textarea>
                     </div>
                     
                     <div class="form-section-title">🚨 Numéros d'urgence locaux</div>
                     <div class="form-group">
                         <label>Numéros d'urgence (laisser les numéros par défaut ou personnaliser)</label>
-                        <textarea id="urgences" name="urgences" rows="5" placeholder="🚑 SAMU - 15&#10;👮 Police - 17&#10;🚒 Pompiers - 18&#10;🏥 Hôpital CHU Félix Guyon - +262 262 90 50 50&#10;🔧 Plombier d'urgence - ..."></textarea>
+                        <textarea id="urgences" name="urgences" rows="5">🚑 SAMU - 15
+👮 Police - 17
+🚒 Pompiers - 18
+🏥 Hôpital CHU Félix Guyon - +262 262 90 50 50
+🔧 Plombier d'urgence - +262 692 XX XX XX</textarea>
                     </div>
                     
                     <div class="form-section-title">💡 Conseils & Astuces</div>
                     <div class="form-group">
                         <label>Conseils pour profiter au mieux du logement et de la région</label>
-                        <textarea id="conseils" name="conseils" rows="4" placeholder="🌅 Meilleur moment pour la plage: tôt le matin (moins de monde)&#10;🛒 Marché local le vendredi et samedi matin à Saint-Paul&#10;⛰️ Pour les randonnées, partir avant 8h (éviter la chaleur)&#10;..."></textarea>
+                        <textarea id="conseils" name="conseils" rows="4">🌅 Meilleur moment pour la plage : tôt le matin (moins de monde, eau calme)
+🛒 Marché forain tous les vendredis et samedis matin à Saint-Paul (produits locaux)
+⛰️ Randonnées : partir avant 8h pour éviter la chaleur de midi
+🍽️ Restaurants : réserver à l'avance le week-end</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>Informations supplémentaires</label>
-                        <textarea id="infos_supplementaires" name="infos_supplementaires" rows="3" placeholder="Toute autre information utile pour vos voyageurs..."></textarea>
+                        <textarea id="infos_supplementaires" name="infos_supplementaires" rows="3">La villa est équipée de panneaux solaires. Merci de faire attention à la consommation d'eau (ressource précieuse à La Réunion). Profitez bien de votre séjour dans notre petit paradis !</textarea>
                     </div>
                 </div>
                 
@@ -1076,10 +1157,13 @@
                 card.innerHTML = `
                     <h3>${data.nom || 'Sans nom'}</h3>
                     <p>${data.ville || ''}</p>
+                    ${data.guideUrl ? `<p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
+                        🔗 <a href="${data.guideUrl}" target="_blank" style="color: #d4af37;">${data.guideUrl}</a>
+                    </p>` : ''}
                     <div class="logement-actions">
-                        <button class="btn btn-primary" onclick="editLogement('${doc.id}')">Modifier</button>
-                        <button class="btn btn-secondary" onclick="viewQR('${doc.id}')">QR Code</button>
-                        <button class="btn btn-danger" onclick="deleteLogement('${doc.id}')">Supprimer</button>
+                        ${data.guideId ? `<button class="btn btn-primary" onclick="window.open('/guide/${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
+                        <button class="btn btn-secondary" onclick="viewQR('${data.guideId || doc.id}', '${data.guideUrl || ''}')">📱 QR Code</button>
+                        <button class="btn btn-danger" onclick="deleteLogement('${doc.id}', '${data.guideId || ''}')">🗑️ Supprimer</button>
                     </div>
                 `;
                 logementsList.appendChild(card);
@@ -1219,6 +1303,60 @@
             autres: []
         };
         
+        // Suggestions d'équipements par catégorie
+        const equipementsSuggestions = {
+            cuisine: [
+                { nom: '☕ Machine à café', description: 'Capsules Nespresso fournies - Détartrage automatique' },
+                { nom: '🍳 Plaques de cuisson', description: 'Induction 4 feux - Commandes tactiles' },
+                { nom: '🔥 Four', description: 'Électrique multifonction - Préchauffer 10 min avant utilisation' },
+                { nom: '❄️ Réfrigérateur', description: 'Grand frigo américain avec distributeur d\'eau fraîche' },
+                { nom: '🍞 Grille-pain', description: 'Grille-pain 4 tranches sur le plan de travail' },
+                { nom: '🥄 Ustensiles', description: 'Équipement complet : casseroles, poêles, couverts pour 8 personnes' },
+                { nom: '🍷 Cave à vin', description: 'Cave à vin 12 bouteilles - Température réglable' },
+                { nom: '🍽️ Lave-vaisselle', description: 'Tablettes fournies - Programme Eco recommandé' },
+                { nom: '🔪 Couteaux', description: 'Set de couteaux professionnels aiguisés' },
+                { nom: '⚡ Bouilloire', description: 'Bouilloire électrique sans fil 1,7L' }
+            ],
+            sdb: [
+                { nom: '🚿 Douche', description: 'Douche italienne - Eau chaude instantanée' },
+                { nom: '🛁 Baignoire', description: 'Baignoire balnéo avec jets massants' },
+                { nom: '💨 Sèche-cheveux', description: 'Sèche-cheveux professionnel dans le tiroir sous le lavabo' },
+                { nom: '🧴 Produits fournis', description: 'Shampooing, gel douche et savon inclus' },
+                { nom: '🧻 Serviettes', description: '2 serviettes de bain + 2 serviettes de toilette par personne' },
+                { nom: '🪮 Fer à lisser', description: 'Fer à lisser disponible dans le placard' },
+                { nom: '🪒 Miroir grossissant', description: 'Miroir lumineux grossissant x3' },
+                { nom: '⚖️ Pèse-personne', description: 'Balance électronique' }
+            ],
+            ext: [
+                { nom: '🏊 Piscine', description: 'Piscine chauffée 10x5m - Profondeur 1,80m - Surveillance parentale requise' },
+                { nom: '🔥 Barbecue', description: 'Barbecue au gaz Weber avec plancha - Ustensiles fournis' },
+                { nom: '🪑 Salon de jardin', description: 'Table et 8 chaises en teck + 4 transats' },
+                { nom: '☂️ Parasol', description: '2 grands parasols déportés avec pied lesté' },
+                { nom: '🌴 Transats', description: '6 bains de soleil avec matelas' },
+                { nom: '🚿 Douche extérieure', description: 'Douche solaire avec eau chaude/froide' },
+                { nom: '🎾 Équipements sport', description: 'Raquettes de tennis, ballon, jeux de plage' },
+                { nom: '🌺 Hamac', description: 'Hamac brésilien pour 2 personnes sous les palmiers' }
+            ],
+            multimedia: [
+                { nom: '📺 TV Smart', description: 'TV 55" 4K avec Netflix, Amazon Prime, Disney+ déjà connectés' },
+                { nom: '🎮 Console de jeux', description: 'PlayStation 5 avec manettes et 10 jeux inclus' },
+                { nom: '🔊 Enceinte Bluetooth', description: 'Enceinte JBL haute qualité - Connexion facile' },
+                { nom: '📡 WiFi Fibre', description: 'Fibre optique 1Gb/s - Couverture totale de la maison' },
+                { nom: '💿 Lecteur DVD', description: 'Lecteur Blu-ray avec sélection de films' },
+                { nom: '🎵 Chaîne Hi-Fi', description: 'Système audio Bose avec Bluetooth' }
+            ],
+            autres: [
+                { nom: '🧺 Lave-linge', description: 'Machine à laver 9kg - Lessive fournie' },
+                { nom: '👕 Sèche-linge', description: 'Sèche-linge pompe à chaleur' },
+                { nom: '👶 Équipement bébé', description: 'Lit bébé, chaise haute, baignoire disponibles sur demande' },
+                { nom: '🔒 Coffre-fort', description: 'Coffre-fort électronique dans le dressing principal' },
+                { nom: '🧹 Aspirateur', description: 'Aspirateur Dyson sans fil dans le placard' },
+                { nom: '🪜 Fer à repasser', description: 'Fer + table à repasser dans la buanderie' },
+                { nom: '🅿️ Garage', description: 'Garage fermé pour 2 véhicules' },
+                { nom: '🚲 Vélos', description: '4 vélos adultes + 2 vélos enfants avec casques' }
+            ]
+        };
+        
         function addEquipement(category, nom = '', description = '') {
             const listId = `equipements-${category}-list`;
             const list = document.getElementById(listId);
@@ -1231,15 +1369,84 @@
             item.setAttribute('data-category', category);
             item.setAttribute('data-index', index);
             item.innerHTML = `
-                <input type="text" 
-                       placeholder="Nom" 
-                       value="${nom}"
-                       onchange="updateEquipement('${category}', ${index}, 'nom', this.value)">
-                <textarea placeholder="Description / Instructions"
-                          onchange="updateEquipement('${category}', ${index}, 'description', this.value)">${description}</textarea>
+                <div class="equipement-selector">
+                    <input type="text" 
+                           placeholder="🔍 Tapez ou choisissez dans la liste..." 
+                           value="${nom}"
+                           onfocus="showEquipementSuggestions('${category}', ${index})"
+                           oninput="filterEquipementSuggestions('${category}', ${index}, this.value)"
+                           onblur="setTimeout(() => hideEquipementSuggestions(${index}), 200)"
+                           onchange="updateEquipement('${category}', ${index}, 'nom', this.value)"
+                           id="equipement-nom-${index}">
+                    <div class="equipement-suggestions" id="suggestions-${index}">
+                        ${equipementsSuggestions[category].map((sugg, i) => `
+                            <div class="suggestion-item" onclick="selectEquipementSuggestion('${category}', ${index}, ${i})">
+                                <strong>${sugg.nom}</strong>
+                                <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${sugg.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <textarea placeholder="Description / Instructions détaillées..."
+                          onchange="updateEquipement('${category}', ${index}, 'description', this.value)"
+                          id="equipement-desc-${index}">${description}</textarea>
                 <button type="button" class="btn-remove-item" onclick="removeEquipement('${category}', ${index})">🗑️</button>
             `;
             list.appendChild(item);
+        }
+        
+        function showEquipementSuggestions(category, index) {
+            const suggestionsEl = document.getElementById(`suggestions-${index}`);
+            if (suggestionsEl) {
+                suggestionsEl.classList.add('active');
+            }
+        }
+        
+        function hideEquipementSuggestions(index) {
+            const suggestionsEl = document.getElementById(`suggestions-${index}`);
+            if (suggestionsEl) {
+                suggestionsEl.classList.remove('active');
+            }
+        }
+        
+        function filterEquipementSuggestions(category, index, value) {
+            updateEquipement(category, index, 'nom', value);
+            
+            const suggestionsEl = document.getElementById(`suggestions-${index}`);
+            if (!suggestionsEl) return;
+            
+            const filter = value.toLowerCase();
+            const suggestions = equipementsSuggestions[category];
+            
+            let html = '';
+            suggestions.forEach((sugg, i) => {
+                if (sugg.nom.toLowerCase().includes(filter) || sugg.description.toLowerCase().includes(filter)) {
+                    html += `
+                        <div class="suggestion-item" onclick="selectEquipementSuggestion('${category}', ${index}, ${i})">
+                            <strong>${sugg.nom}</strong>
+                            <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${sugg.description}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            if (html === '') {
+                html = '<div class="suggestion-item" style="color: #999; cursor: default;">Aucune suggestion trouvée</div>';
+            }
+            
+            suggestionsEl.innerHTML = html;
+        }
+        
+        function selectEquipementSuggestion(category, index, suggestionIndex) {
+            const suggestion = equipementsSuggestions[category][suggestionIndex];
+            
+            document.getElementById(`equipement-nom-${index}`).value = suggestion.nom;
+            document.getElementById(`equipement-desc-${index}`).value = suggestion.description;
+            
+            updateEquipement(category, index, 'nom', suggestion.nom);
+            updateEquipement(category, index, 'description', suggestion.description);
+            
+            hideEquipementSuggestions(index);
         }
         
         function updateEquipement(category, index, field, value) {
@@ -1264,12 +1471,27 @@
                 div.setAttribute('data-category', category);
                 div.setAttribute('data-index', idx);
                 div.innerHTML = `
-                    <input type="text" 
-                           placeholder="Nom" 
-                           value="${item.nom || ''}"
-                           onchange="updateEquipement('${category}', ${idx}, 'nom', this.value)">
-                    <textarea placeholder="Description / Instructions"
-                              onchange="updateEquipement('${category}', ${idx}, 'description', this.value)">${item.description || ''}</textarea>
+                    <div class="equipement-selector">
+                        <input type="text" 
+                               placeholder="🔍 Tapez ou choisissez dans la liste..." 
+                               value="${item.nom || ''}"
+                               onfocus="showEquipementSuggestions('${category}', ${idx})"
+                               oninput="filterEquipementSuggestions('${category}', ${idx}, this.value)"
+                               onblur="setTimeout(() => hideEquipementSuggestions(${idx}), 200)"
+                               onchange="updateEquipement('${category}', ${idx}, 'nom', this.value)"
+                               id="equipement-nom-${idx}">
+                        <div class="equipement-suggestions" id="suggestions-${idx}">
+                            ${equipementsSuggestions[category].map((sugg, i) => `
+                                <div class="suggestion-item" onclick="selectEquipementSuggestion('${category}', ${idx}, ${i})">
+                                    <strong>${sugg.nom}</strong>
+                                    <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${sugg.description}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <textarea placeholder="Description / Instructions détaillées..."
+                              onchange="updateEquipement('${category}', ${idx}, 'description', this.value)"
+                              id="equipement-desc-${idx}">${item.description || ''}</textarea>
                     <button type="button" class="btn-remove-item" onclick="removeEquipement('${category}', ${idx})">🗑️</button>
                 `;
                 list.appendChild(div);
@@ -1277,14 +1499,7 @@
         }
         
         function initDefaultEquipements() {
-            // Exemples par défaut pour la cuisine
-            addEquipement('cuisine', 'Plaques de cuisson', 'Induction - Allumage tactile');
-            addEquipement('cuisine', 'Four', 'Préchauffer 10 min avant utilisation');
-            addEquipement('cuisine', 'Machine à café', 'Capsules fournies');
-            
-            // Exemples pour salle de bain
-            addEquipement('sdb', 'Douche', 'Eau chaude instantanée');
-            addEquipement('sdb', 'Sèche-cheveux', 'Dans le tiroir sous le lavabo');
+            // Pas d'exemples par défaut - l'utilisateur choisit dans les suggestions
         }
         
         // Gestion dynamique des restaurants
@@ -1749,8 +1964,15 @@
             submitBtn.innerHTML = '⏳ Création en cours...';
             
             try {
+                // Générer un ID unique pour le guide (8 caractères)
+                const guideId = generateGuideId();
+                
                 // Récupérer toutes les données du formulaire
                 const formData = {
+                    // ID unique du guide
+                    guideId: guideId,
+                    guideUrl: `https://qrguide.fr/guide/${guideId}`,
+                    
                     // Étape 1: Informations générales
                     nom: document.getElementById('nom').value,
                     adresse: document.getElementById('adresse').value,
@@ -1776,45 +1998,19 @@
                     multimedia_instructions: document.getElementById('multimedia_instructions').value,
                     
                     // Étape 3: Équipements (conversion des données dynamiques)
-                    equipements_cuisine: equipementsData.cuisine.map(e => `${e.nom} | ${e.description}`).join('\n'),
-                    equipements_sdb: equipementsData.sdb.map(e => `${e.nom} | ${e.description}`).join('\n'),
+                    equipements_cuisine: equipementsData.cuisine,
+                    equipements_sdb: equipementsData.sdb,
                     instructions_clim: document.getElementById('instructions_clim').value,
-                    equipements_ext: equipementsData.ext.map(e => `${e.nom} | ${e.description}`).join('\n'),
-                    equipements_multimedia: equipementsData.multimedia.map(e => `${e.nom} | ${e.description}`).join('\n'),
-                    equipements_autres: equipementsData.autres.map(e => `${e.nom} | ${e.description}`).join('\n'),
+                    equipements_ext: equipementsData.ext,
+                    equipements_multimedia: equipementsData.multimedia,
+                    equipements_autres: equipementsData.autres,
                     instructions_depart: document.getElementById('instructions_depart').value,
                     
-                    // Étape 4: Restaurants & Activités (conversion des données dynamiques)
-                    restaurants: restaurantsData.map(r => {
-                        const ligne1 = r.nom;
-                        const ligne2 = [
-                            r.description,
-                            r.coupDeCoeur ? '⭐ Coup de coeur' : '',
-                            r.distance ? `🚶 ${r.distance}` : '',
-                            r.prix ? `💰 ${r.prix}` : '',
-                            r.horaires ? `🕐 ${r.horaires}` : '',
-                            r.lien ? `📍 ${r.lien}` : ''
-                        ].filter(x => x).join(' | ');
-                        return `${ligne1}\n${ligne2}`;
-                    }).join('\n\n'),
-                    
-                    snacks: snacksData.map(s => {
-                        const ligne1 = s.nom;
-                        const ligne2 = [
-                            s.description,
-                            s.distance ? `🚶 ${s.distance}` : '',
-                            s.prix ? `💰 ${s.prix}` : '',
-                            s.horaires ? `🕐 ${s.horaires}` : '',
-                            s.lien ? `📍 ${s.lien}` : ''
-                        ].filter(x => x).join(' | ');
-                        return `${ligne1}\n${ligne2}`;
-                    }).join('\n\n'),
-                    
-                    activites: activitesData.map(a => `${a.nom} | ${a.type} | ${a.description} | ${a.lien}`).join('\n\n'),
-                    
-                    commerces: commercesData.map(c => {
-                        return [c.nom, c.distance, c.horaires, c.infos].filter(x => x).join(' - ');
-                    }).join('\n'),
+                    // Étape 4: Restaurants & Activités (données dynamiques)
+                    restaurants: restaurantsData,
+                    snacks: snacksData,
+                    activites: activitesData,
+                    commerces: commercesData,
                     
                     // Étape 5: Infos pratiques
                     regles: document.getElementById('regles').value,
@@ -1829,15 +2025,28 @@
                     infos_supplementaires: document.getElementById('infos_supplementaires').value,
                     
                     // Métadonnées
+                    userId: currentUser.uid,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
-                // Sauvegarder dans Firestore
-                await db.collection('users').doc(currentUser.uid)
-                    .collection('logements').add(formData);
+                // Sauvegarder dans Firestore avec l'ID du guide comme document ID
+                await db.collection('guides').doc(guideId).set(formData);
                 
-                showAlert('✅ Guide créé avec succès !', 'success');
+                // Aussi sauvegarder une référence dans la collection de l'utilisateur
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('logements').add({
+                        guideId: guideId,
+                        nom: formData.nom,
+                        ville: formData.ville,
+                        photo_url: formData.photo_url,
+                        guideUrl: formData.guideUrl,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                
+                // Afficher l'URL du guide créé
+                showGuideCreatedModal(guideId, formData.guideUrl);
+                
                 closeLogementModal();
                 loadLogements();
                 
@@ -1848,6 +2057,63 @@
                 submitBtn.innerHTML = '✅ Créer le guide';
             }
         });
+        
+        // Générer un ID unique pour le guide (8 caractères alphanumériques)
+        function generateGuideId() {
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let id = '';
+            for (let i = 0; i < 8; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return id;
+        }
+        
+        // Afficher une modal avec l'URL du guide créé
+        function showGuideCreatedModal(guideId, guideUrl) {
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.style.zIndex = '10000';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px; text-align: center;">
+                    <button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                    <div style="padding: 32px;">
+                        <div style="font-size: 4rem; margin-bottom: 16px;">🎉</div>
+                        <h2 style="color: #d4af37; margin-bottom: 16px;">Guide créé avec succès !</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 24px;">Votre guide numérique est maintenant accessible à l'adresse :</p>
+                        <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; margin-bottom: 24px; border: 2px solid #d4af37;">
+                            <code style="font-size: 1.2rem; color: #d4af37; font-weight: 600; word-break: break-all;">${guideUrl}</code>
+                        </div>
+                        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="window.open('/guide/${guideId}', '_blank')">
+                                👁️ Voir le guide
+                            </button>
+                            <button class="btn btn-secondary" onclick="copyToClipboard('${guideUrl}')">
+                                📋 Copier le lien
+                            </button>
+                            <button class="btn btn-secondary" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()">
+                                ✅ Fermer
+                            </button>
+                        </div>
+                        <p style="margin-top: 24px; font-size: 0.9rem; color: #666;">
+                            💡 Vous pouvez imprimer un QR code pour ce guide depuis votre tableau de bord
+                        </p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            showAlert('✅ Guide créé avec succès !', 'success');
+        }
+        
+        // Copier dans le presse-papier
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showAlert('📋 Lien copié dans le presse-papier !', 'success');
+            }).catch(err => {
+                console.error('Erreur copie:', err);
+                showAlert('❌ Erreur lors de la copie', 'error');
+            });
+        }
 
         async function editLogement(id) {
             currentLogementId = id;
@@ -1863,14 +2129,25 @@
             document.getElementById('logement-modal').classList.add('active');
         }
 
-        async function deleteLogement(id) {
-            if (!confirm('Supprimer ce logement ?')) return;
+        async function deleteLogement(id, guideId) {
+            if (!confirm('Supprimer ce logement et son guide associé ?')) return;
             
-            await db.collection('users').doc(currentUser.uid)
-                .collection('logements').doc(id).delete();
-            
-            showAlert('Logement supprimé', 'success');
-            loadLogements();
+            try {
+                // Supprimer la référence dans la collection de l'utilisateur
+                await db.collection('users').doc(currentUser.uid)
+                    .collection('logements').doc(id).delete();
+                
+                // Supprimer le guide de la collection globale
+                if (guideId) {
+                    await db.collection('guides').doc(guideId).delete();
+                }
+                
+                showAlert('Logement et guide supprimés', 'success');
+                loadLogements();
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                showAlert('Erreur lors de la suppression', 'error');
+            }
         }
 
         function showAlert(message, type) {
@@ -1968,8 +2245,102 @@
             alert('Fonctionnalité bientôt disponible');
         }
 
-        function viewQR(id) {
-            window.open(`demo-guide/index.html?id=${id}`, '_blank');
+        function viewQR(guideId, guideUrl) {
+            if (!guideId) {
+                alert('Guide non disponible');
+                return;
+            }
+            
+            const url = guideUrl || `https://qrguide.fr/guide/${guideId}`;
+            
+            // Créer une modal pour afficher le QR code
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.style.zIndex = '10000';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 500px; text-align: center;">
+                    <button class="modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                    <div style="padding: 32px;">
+                        <h2 style="color: #d4af37; margin-bottom: 24px;">📱 QR Code du Guide</h2>
+                        <div id="qrcode-container" style="display: flex; justify-content: center; margin-bottom: 24px;"></div>
+                        <p style="font-size: 0.95rem; color: #666; margin-bottom: 16px; word-break: break-all;">${url}</p>
+                        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="downloadQR()">📥 Télécharger</button>
+                            <button class="btn btn-secondary" onclick="printQR()">🖨️ Imprimer</button>
+                            <button class="btn btn-secondary" onclick="copyToClipboard('${url}')">📋 Copier le lien</button>
+                        </div>
+                        <p style="margin-top: 24px; font-size: 0.85rem; color: #999;">
+                            Scannez ce QR code avec un smartphone pour accéder au guide
+                        </p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Générer le QR code avec QRCode.js (à ajouter dans le HTML)
+            // Pour l'instant, utiliser une API externe
+            const qrContainer = modal.querySelector('#qrcode-container');
+            const qrSize = 300;
+            const qrImg = document.createElement('img');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(url)}`;
+            qrImg.style.maxWidth = '100%';
+            qrImg.id = 'qr-image';
+            qrContainer.appendChild(qrImg);
+        }
+        
+        function downloadQR() {
+            const qrImg = document.getElementById('qr-image');
+            if (qrImg) {
+                const link = document.createElement('a');
+                link.href = qrImg.src;
+                link.download = 'qrcode-guide.png';
+                link.click();
+            }
+        }
+        
+        function printQR() {
+            const qrImg = document.getElementById('qr-image');
+            if (qrImg) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>QR Code - QRGUIDE</title>
+                            <style>
+                                body { 
+                                    display: flex; 
+                                    justify-content: center; 
+                                    align-items: center; 
+                                    height: 100vh;
+                                    margin: 0;
+                                    font-family: Arial, sans-serif;
+                                }
+                                .qr-print {
+                                    text-align: center;
+                                }
+                                img {
+                                    max-width: 400px;
+                                }
+                                h2 {
+                                    color: #d4af37;
+                                    margin-bottom: 24px;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="qr-print">
+                                <h2>Scannez pour accéder au guide</h2>
+                                <img src="${qrImg.src}" />
+                            </div>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 250);
+            }
         }
     </script>
 
