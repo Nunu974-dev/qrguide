@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Charger les données
         await loadAllUsers();
+        await loadAllGuides(); // Charger aussi les guides au démarrage
         renderClients();
         updateClientsCount();
     });
@@ -1073,11 +1074,17 @@ function renderGuides() {
                         <button class="btn-primary" style="padding: 8px 16px; font-size: 0.9rem;" onclick="window.open('/guide/${guide.guideId || guide.id}', '_blank')">
                             👁️ Voir
                         </button>
+                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9rem; background: #d4af37; color: white;" onclick="editGuide('${guide.guideId || guide.id}')">
+                            ✏️ Modifier
+                        </button>
                         <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;" onclick="copyGuideUrl('${guide.guideUrl}')">
                             📋 Copier lien
                         </button>
                         <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;" onclick="showGuideQR('${guide.guideId || guide.id}', '${guide.guideUrl}')">
                             📱 QR Code
+                        </button>
+                        <button class="btn-danger" style="padding: 8px 16px; font-size: 0.9rem; background: #dc3545; color: white; border: none;" onclick="deleteGuide('${guide.guideId || guide.id}')">
+                            🗑️ Supprimer
                         </button>
                     </div>
                 </div>
@@ -1187,3 +1194,131 @@ showSection = function(sectionName) {
         loadAllGuides();
     }
 };
+
+// === MODIFIER UN GUIDE ===
+async function editGuide(guideId) {
+    try {
+        // Récupérer les données du guide
+        const guideDoc = await db.collection('guides').doc(guideId).get();
+        if (!guideDoc.exists) {
+            alert('Guide introuvable');
+            return;
+        }
+        
+        const guideData = guideDoc.data();
+        
+        // Créer un modal avec un formulaire d'édition
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999;';
+        
+        modal.innerHTML = `
+            <div style="background: white; border-radius: 16px; max-width: 800px; max-height: 90vh; overflow-y: auto; padding: 32px; width: 90%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2 style="margin: 0; color: #d4af37;">✏️ Modifier le Guide</h2>
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #f8f9fa; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">✕</button>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <p style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+                        <strong>🆔 ID du guide :</strong> <code>${guideId}</code><br>
+                        <strong>🔗 URL :</strong> <a href="/guide/${guideId}" target="_blank">/guide/${guideId}</a>
+                    </p>
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Nom du logement</label>
+                    <input type="text" id="edit-nom" value="${guideData.nom || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 16px;">
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Ville</label>
+                    <input type="text" id="edit-ville" value="${guideData.ville || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 16px;">
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">URL de la photo</label>
+                    <input type="text" id="edit-photo" value="${guideData.photo_url || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 16px;">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Heure d'arrivée</label>
+                            <input type="time" id="edit-checkin" value="${guideData.checkin_time || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Heure de départ</label>
+                            <input type="time" id="edit-checkout" value="${guideData.checkout_time || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Message de bienvenue</label>
+                    <textarea id="edit-message" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 100px; margin-bottom: 16px;">${guideData.message_bienvenue || ''}</textarea>
+                    
+                    <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                        <p style="margin: 0 0 12px 0; font-weight: 600; color: #666;">📶 Wi-Fi</p>
+                        <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Nom du réseau</label>
+                        <input type="text" id="edit-wifi-nom" value="${guideData.wifi_nom || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px; margin-bottom: 12px;">
+                        <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Mot de passe</label>
+                        <input type="text" id="edit-wifi-password" value="${guideData.wifi_password || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button onclick="saveGuideEdits('${guideId}')" style="flex: 1; padding: 14px; background: #d4af37; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                            💾 Sauvegarder
+                        </button>
+                        <button onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" style="padding: 14px 24px; background: #6c757d; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                            Annuler
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+    } catch (error) {
+        console.error('❌ Erreur chargement guide:', error);
+        alert('Erreur lors du chargement du guide');
+    }
+}
+
+// === SAUVEGARDER LES MODIFICATIONS ===
+async function saveGuideEdits(guideId) {
+    try {
+        const updatedData = {
+            nom: document.getElementById('edit-nom').value,
+            ville: document.getElementById('edit-ville').value,
+            photo_url: document.getElementById('edit-photo').value,
+            checkin_time: document.getElementById('edit-checkin').value,
+            checkout_time: document.getElementById('edit-checkout').value,
+            message_bienvenue: document.getElementById('edit-message').value,
+            wifi_nom: document.getElementById('edit-wifi-nom').value,
+            wifi_password: document.getElementById('edit-wifi-password').value,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        await db.collection('guides').doc(guideId).update(updatedData);
+        
+        alert('✅ Guide mis à jour avec succès !');
+        
+        // Fermer le modal
+        document.querySelector('.modal').remove();
+        
+        // Recharger les guides
+        await loadAllGuides();
+        
+    } catch (error) {
+        console.error('❌ Erreur sauvegarde:', error);
+        alert('Erreur lors de la sauvegarde : ' + error.message);
+    }
+}
+
+// === SUPPRIMER UN GUIDE ===
+async function deleteGuide(guideId) {
+    if (!confirm(`⚠️ Êtes-vous sûr de vouloir supprimer ce guide ?\n\nID: ${guideId}\n\nCette action est irréversible !`)) {
+        return;
+    }
+    
+    try {
+        await db.collection('guides').doc(guideId).delete();
+        alert('✅ Guide supprimé avec succès !');
+        await loadAllGuides();
+    } catch (error) {
+        console.error('❌ Erreur suppression:', error);
+        alert('Erreur lors de la suppression : ' + error.message);
+    }
+}
