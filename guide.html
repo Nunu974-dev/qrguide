@@ -498,185 +498,379 @@
             switch(section) {
                 case 'arrivee':
                     modalContent = `
-                        <h2>👋 Bienvenue !</h2>
-                        <div class="modal-section">
-                            <h3>✨ Vous êtes arrivés !</h3>
-                            <p>${data.message_bienvenue || 'Bienvenue dans votre logement !'}</p>
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">👋 Bienvenue !</h1>
+                            
+                            <section class="info-section">
+                                <h2 class="section-title">✨ Vous êtes arrivés !</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.message_bienvenue || 'Bienvenue dans votre logement ! Nous espérons que vous passerez un séjour exceptionnel.'}</p>
+                                </div>
+                            </section>
+                            
+                            ${data.premier_pas_1 || data.premier_pas_2 || data.premier_pas_3 || data.premier_pas_4 ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🎯 Premiers pas</h2>
+                                <div class="info-card">
+                                    <div class="step-list">
+                                        ${data.premier_pas_1 ? `<div class="step"><div class="step-number">1</div><p>${data.premier_pas_1}</p></div>` : ''}
+                                        ${data.premier_pas_2 ? `<div class="step"><div class="step-number">2</div><p>${data.premier_pas_2}</p></div>` : ''}
+                                        ${data.premier_pas_3 ? `<div class="step"><div class="step-number">3</div><p>${data.premier_pas_3}</p></div>` : ''}
+                                        ${data.premier_pas_4 ? `<div class="step"><div class="step-number">4</div><p>${data.premier_pas_4}</p></div>` : ''}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.instructions_arrivee ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🔑 Instructions d'arrivée</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.instructions_arrivee.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.checkin_time || data.checkout_time ? `
+                            <section class="info-section">
+                                <h2 class="section-title">⏰ Horaires</h2>
+                                <div class="info-card">
+                                    <div class="info-list">
+                                        ${data.checkin_time ? `<p>🟢 <strong>Arrivée :</strong> à partir de ${data.checkin_time}</p>` : ''}
+                                        ${data.checkout_time ? `<p>🔴 <strong>Départ :</strong> avant ${data.checkout_time}</p>` : ''}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.parking_info ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🅿️ Parking</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.parking_info.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.hote_telephone ? `
+                            <section class="info-section">
+                                <h2 class="section-title">📞 Besoin d'aide ?</h2>
+                                <div class="info-card">
+                                    <p class="info-text">N'hésitez pas à nous contacter pour toute question :</p>
+                                    <a href="tel:${data.hote_telephone}" class="contact-button">
+                                        📱 Appeler votre hôte
+                                    </a>
+                                    <p class="contact-number">${data.hote_telephone}</p>
+                                </div>
+                            </section>
+                            ` : ''}
                         </div>
-                        <div class="modal-section">
-                            <h3>🔑 Instructions d'arrivée</h3>
-                            <p>${(data.instructions_arrivee || 'Aucune instruction').replace(/\n/g, '<br>')}</p>
-                        </div>
-                        ${data.heure_arrivee ? `<div class="modal-section"><h3>⏰ Horaires</h3><p>Arrivée : ${data.heure_arrivee}<br>Départ : ${data.heure_depart || 'Non spécifié'}</p></div>` : ''}
                     `;
                     break;
                     
                 case 'depart':
                     modalContent = `
-                        <h2>🚪 Départ</h2>
-                        <div class="modal-section">
-                            <h3>⏰ Heure de départ</h3>
-                            <p>Merci de libérer le logement avant <strong>${data.heure_depart || '10h00'}</strong></p>
-                        </div>
-                        <div class="modal-section">
-                            <h3>✅ Instructions de départ</h3>
-                            <p>${(data.instructions_depart || 'Merci de laisser les clés et de bien fermer').replace(/\n/g, '<br>')}</p>
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">🚪 Départ</h1>
+                            
+                            <section class="info-section">
+                                <h2 class="section-title">⏰ Heure de départ</h2>
+                                <div class="info-card">
+                                    <p class="info-text">Merci de libérer le logement avant <strong>${data.checkout_time || '10h00'}</strong></p>
+                                </div>
+                            </section>
+                            
+                            ${data.instructions_depart ? `
+                            <section class="info-section">
+                                <h2 class="section-title">✅ Instructions de départ</h2>
+                                <div class="info-card">
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.instructions_depart.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.instructions_cles ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🔑 Restitution des clés</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.instructions_cles.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            <section class="info-section">
+                                <h2 class="section-title">⭐ Partagez votre expérience</h2>
+                                <div class="info-card">
+                                    <p class="info-text">Votre avis compte beaucoup pour nous !</p>
+                                    <a href="#" class="contact-button" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 100%);">
+                                        ⭐ Laissez-nous un avis
+                                    </a>
+                                </div>
+                            </section>
                         </div>
                     `;
                     break;
                     
                 case 'wifi':
                     modalContent = `
-                        <h2>📶 Wi-Fi</h2>
-                        <div class="modal-section">
-                            <h3>🔑 Identifiants de connexion</h3>
-                            <div class="wifi-info">
-                                <p><strong>Réseau :</strong> ${data.wifi_nom || 'Non configuré'}</p>
-                                <p><strong>Mot de passe :</strong> <span class="wifi-password">${data.wifi_mdp || 'Non configuré'}</span></p>
-                            </div>
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">📶 Wi-Fi</h1>
+                            
+                            <section class="info-section">
+                                <h2 class="section-title">🔐 Identifiants de connexion</h2>
+                                <div class="info-card">
+                                    <div class="wifi-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 12px; color: white;">
+                                        <p style="color: white; margin: 12px 0;"><strong>Réseau :</strong> ${data.wifi_nom || 'Non configuré'}</p>
+                                        <p style="color: white; margin: 12px 0;"><strong>Mot de passe :</strong> <span class="wifi-password" style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 700; letter-spacing: 2px;">${data.wifi_password || 'Non configuré'}</span></p>
+                                    </div>
+                                </div>
+                            </section>
+                            
+                            ${data.multimedia_instructions ? `
+                            <section class="info-section">
+                                <h2 class="section-title">📺 Multimédia</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.multimedia_instructions.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </section>
+                            ` : ''}
                         </div>
                     `;
                     break;
                     
                 case 'equipements':
+                    let allEquipements = [];
+                    if (data.equipements_cuisine) allEquipements = allEquipements.concat(data.equipements_cuisine.map(e => ({...e, categorie: '🍳 Cuisine'})));
+                    if (data.equipements_sdb) allEquipements = allEquipements.concat(data.equipements_sdb.map(e => ({...e, categorie: '🛁 Salle de bain'})));
+                    if (data.equipements_ext) allEquipements = allEquipements.concat(data.equipements_ext.map(e => ({...e, categorie: '🌳 Extérieur'})));
+                    if (data.equipements_multimedia) allEquipements = allEquipements.concat(data.equipements_multimedia.map(e => ({...e, categorie: '📺 Multimédia'})));
+                    if (data.equipements_autres) allEquipements = allEquipements.concat(data.equipements_autres.map(e => ({...e, categorie: '🔧 Autres'})));
+                    
                     let equipementsHTML = '';
-                    if (data.equipements && Array.isArray(data.equipements)) {
-                        data.equipements.forEach(eq => {
+                    if (allEquipements.length > 0) {
+                        let currentCategorie = '';
+                        allEquipements.forEach(eq => {
+                            if (eq.categorie !== currentCategorie) {
+                                currentCategorie = eq.categorie;
+                                equipementsHTML += `<h2 class="section-title">${currentCategorie}</h2>`;
+                            }
                             equipementsHTML += `
-                                <div class="equipement-item-modal">
-                                    <h4>${eq.nom}</h4>
-                                    <p><strong>Emplacement :</strong> ${eq.emplacement || 'Non spécifié'}</p>
-                                    <p>${eq.instructions || ''}</p>
+                                <div class="info-card" style="margin-bottom: 16px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 8px;">${eq.nom}</h3>
+                                    ${eq.emplacement ? `<p class="info-text"><strong>📍 Emplacement :</strong> ${eq.emplacement}</p>` : ''}
+                                    ${eq.instructions ? `<p class="info-text">${eq.instructions}</p>` : ''}
                                 </div>
                             `;
                         });
                     } else {
-                        equipementsHTML = '<p>Aucun équipement configuré</p>';
+                        equipementsHTML = '<p class="info-text">Aucun équipement configuré</p>';
                     }
+                    
                     modalContent = `
-                        <h2>🏠 Équipements</h2>
-                        <div class="modal-section">
-                            ${equipementsHTML}
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">🏠 Équipements</h1>
+                            <section class="info-section">
+                                ${equipementsHTML}
+                            </section>
+                            ${data.instructions_clim ? `
+                            <section class="info-section">
+                                <h2 class="section-title">❄️ Climatisation</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.instructions_clim.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </section>
+                            ` : ''}
                         </div>
                     `;
                     break;
                     
                 case 'restaurants':
                     let restaurantsHTML = '';
-                    if (data.restaurants && Array.isArray(data.restaurants)) {
+                    if (data.restaurants && Array.isArray(data.restaurants) && data.restaurants.length > 0) {
                         data.restaurants.forEach(rest => {
                             restaurantsHTML += `
-                                <div class="restaurant-item-modal">
-                                    <h4>${rest.nom}</h4>
-                                    <p>${rest.type || ''}</p>
-                                    <p>${rest.description || ''}</p>
-                                    ${rest.adresse ? `<p>📍 ${rest.adresse}</p>` : ''}
-                                    ${rest.telephone ? `<p>📞 <a href="tel:${rest.telephone}">${rest.telephone}</a></p>` : ''}
-                                    ${rest.site_web ? `<p>🌐 <a href="${rest.site_web}" target="_blank">Site web</a></p>` : ''}
+                                <div class="info-card" style="margin-bottom: 20px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">${rest.nom}</h3>
+                                    ${rest.type ? `<p class="info-text"><strong>Type :</strong> ${rest.type}</p>` : ''}
+                                    ${rest.description ? `<p class="info-text">${rest.description}</p>` : ''}
+                                    <div class="info-list">
+                                        ${rest.adresse ? `<p>📍 ${rest.adresse}</p>` : ''}
+                                        ${rest.telephone ? `<p>📞 <a href="tel:${rest.telephone}" style="color: var(--primary-color);">${rest.telephone}</a></p>` : ''}
+                                        ${rest.site_web ? `<p>🌐 <a href="${rest.site_web}" target="_blank" style="color: var(--primary-color);">Site web</a></p>` : ''}
+                                    </div>
                                 </div>
                             `;
                         });
                     }
-                    if (data.snacks && Array.isArray(data.snacks)) {
-                        restaurantsHTML += '<h3 style="margin-top: 24px;">🥐 Snacks & Boulangeries</h3>';
+                    
+                    let snacksHTML = '';
+                    if (data.snacks && Array.isArray(data.snacks) && data.snacks.length > 0) {
+                        snacksHTML = '<h2 class="section-title">🥐 Snacks & Boulangeries</h2>';
                         data.snacks.forEach(snack => {
-                            restaurantsHTML += `
-                                <div class="restaurant-item-modal">
-                                    <h4>${snack.nom}</h4>
-                                    <p>${snack.type || ''}</p>
-                                    ${snack.adresse ? `<p>📍 ${snack.adresse}</p>` : ''}
-                                    ${snack.telephone ? `<p>📞 <a href="tel:${snack.telephone}">${snack.telephone}</a></p>` : ''}
+                            snacksHTML += `
+                                <div class="info-card" style="margin-bottom: 20px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">${snack.nom}</h3>
+                                    ${snack.type ? `<p class="info-text"><strong>Type :</strong> ${snack.type}</p>` : ''}
+                                    <div class="info-list">
+                                        ${snack.adresse ? `<p>📍 ${snack.adresse}</p>` : ''}
+                                        ${snack.telephone ? `<p>📞 <a href="tel:${snack.telephone}" style="color: var(--primary-color);">${snack.telephone}</a></p>` : ''}
+                                    </div>
                                 </div>
                             `;
                         });
                     }
+                    
                     modalContent = `
-                        <h2>🍽️ Restaurants</h2>
-                        <div class="modal-section">
-                            ${restaurantsHTML || '<p>Aucun restaurant configuré</p>'}
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">🍽️ Restaurants</h1>
+                            <section class="info-section">
+                                ${restaurantsHTML || '<p class="info-text">Aucun restaurant configuré</p>'}
+                            </section>
+                            ${snacksHTML ? `<section class="info-section">${snacksHTML}</section>` : ''}
                         </div>
                     `;
                     break;
                     
                 case 'activites':
                     let activitesHTML = '';
-                    if (data.activites && Array.isArray(data.activites)) {
+                    if (data.activites && Array.isArray(data.activites) && data.activites.length > 0) {
                         data.activites.forEach(act => {
                             activitesHTML += `
-                                <div class="activite-item-modal">
-                                    <h4>${act.nom}</h4>
-                                    <p>${act.description || ''}</p>
-                                    ${act.adresse ? `<p>📍 ${act.adresse}</p>` : ''}
-                                    ${act.telephone ? `<p>📞 <a href="tel:${act.telephone}">${act.telephone}</a></p>` : ''}
-                                    ${act.prix ? `<p>💰 ${act.prix}</p>` : ''}
+                                <div class="info-card" style="margin-bottom: 20px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">${act.nom}</h3>
+                                    ${act.description ? `<p class="info-text">${act.description}</p>` : ''}
+                                    <div class="info-list">
+                                        ${act.adresse ? `<p>📍 ${act.adresse}</p>` : ''}
+                                        ${act.telephone ? `<p>📞 <a href="tel:${act.telephone}" style="color: var(--primary-color);">${act.telephone}</a></p>` : ''}
+                                        ${act.prix ? `<p>💰 ${act.prix}</p>` : ''}
+                                    </div>
                                 </div>
                             `;
                         });
                     } else {
-                        activitesHTML = '<p>Aucune activité configurée</p>';
+                        activitesHTML = '<p class="info-text">Aucune activité configurée</p>';
                     }
                     modalContent = `
-                        <h2>🌴 Activités</h2>
-                        <div class="modal-section">
-                            ${activitesHTML}
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">🌴 Activités</h1>
+                            <section class="info-section">
+                                ${activitesHTML}
+                            </section>
                         </div>
                     `;
                     break;
                     
                 case 'commerces':
                     let commercesHTML = '';
-                    if (data.commerces && Array.isArray(data.commerces)) {
+                    if (data.commerces && Array.isArray(data.commerces) && data.commerces.length > 0) {
                         data.commerces.forEach(com => {
                             commercesHTML += `
-                                <div class="commerce-item-modal">
-                                    <h4>${com.nom}</h4>
-                                    <p>${com.type || ''}</p>
-                                    ${com.adresse ? `<p>📍 ${com.adresse}</p>` : ''}
-                                    ${com.telephone ? `<p>📞 <a href="tel:${com.telephone}">${com.telephone}</a></p>` : ''}
+                                <div class="info-card" style="margin-bottom: 20px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">${com.nom}</h3>
+                                    ${com.type ? `<p class="info-text"><strong>Type :</strong> ${com.type}</p>` : ''}
+                                    <div class="info-list">
+                                        ${com.adresse ? `<p>📍 ${com.adresse}</p>` : ''}
+                                        ${com.telephone ? `<p>📞 <a href="tel:${com.telephone}" style="color: var(--primary-color);">${com.telephone}</a></p>` : ''}
+                                    </div>
                                 </div>
                             `;
                         });
                     } else {
-                        commercesHTML = '<p>Aucun commerce configuré</p>';
+                        commercesHTML = '<p class="info-text">Aucun commerce configuré</p>';
                     }
                     modalContent = `
-                        <h2>📍 À Proximité</h2>
-                        <div class="modal-section">
-                            <h3>Commerces & Services</h3>
-                            ${commercesHTML}
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">📍 À Proximité</h1>
+                            <section class="info-section">
+                                <h2 class="section-title">Commerces & Services</h2>
+                                ${commercesHTML}
+                            </section>
                         </div>
                     `;
                     break;
                     
                 case 'urgence':
                     modalContent = `
-                        <h2>🚨 Urgence</h2>
-                        <div class="modal-section">
-                            <h3>Numéros d'urgence</h3>
-                            <p>${(data.urgences || 'SAMU: 15\nPolice: 17\nPompiers: 18').replace(/\n/g, '<br>')}</p>
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">🚨 Urgence</h1>
+                            <section class="info-section">
+                                <h2 class="section-title">📞 Numéros d'urgence</h2>
+                                <div class="info-card" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${(data.urgences || 'SAMU: 15\nPolice: 17\nPompiers: 18').replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     `;
                     break;
                     
                 case 'hote':
                     modalContent = `
-                        <h2>❤️ Votre Hôte</h2>
-                        <div class="modal-section">
-                            ${data.hote_nom ? `<h3>${data.hote_nom}</h3>` : ''}
-                            ${data.hote_telephone ? `<p>📞 <a href="tel:${data.hote_telephone}" style="font-size: 1.2rem; color: var(--primary-color);">${data.hote_telephone}</a></p>` : ''}
-                            ${data.hote_email ? `<p>📧 <a href="mailto:${data.hote_email}">${data.hote_email}</a></p>` : ''}
-                            ${data.hote_message ? `<p>${data.hote_message.replace(/\n/g, '<br>')}</p>` : ''}
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">❤️ Votre Hôte</h1>
+                            <section class="info-section">
+                                ${data.hote_nom ? `<h2 class="section-title">${data.hote_nom}</h2>` : ''}
+                                <div class="info-card">
+                                    ${data.message_hote || data.hote_message ? `<p class="info-text">${(data.message_hote || data.hote_message).replace(/\n/g, '<br>')}</p>` : ''}
+                                    ${data.hote_telephone ? `
+                                    <a href="tel:${data.hote_telephone}" class="contact-button" style="margin-top: 16px;">
+                                        📱 Appeler ${data.hote_nom || 'votre hôte'}
+                                    </a>
+                                    <p class="contact-number">${data.hote_telephone}</p>
+                                    ` : ''}
+                                    ${data.hote_email ? `<p class="info-text" style="margin-top: 12px;">📧 <a href="mailto:${data.hote_email}" style="color: var(--primary-color);">${data.hote_email}</a></p>` : ''}
+                                </div>
+                            </section>
                         </div>
                     `;
                     break;
                     
                 case 'infos':
                     modalContent = `
-                        <h2>📋 Informations Pratiques</h2>
-                        ${data.regles ? `<div class="modal-section"><h3>📜 Règlement</h3><p>${data.regles.replace(/\n/g, '<br>')}</p></div>` : ''}
-                        ${data.menage_tri ? `<div class="modal-section"><h3>🧹 Ménage & Tri</h3><p>${data.menage_tri.replace(/\n/g, '<br>')}</p></div>` : ''}
-                        ${data.instructions_cles ? `<div class="modal-section"><h3>🔑 Clés</h3><p>${data.instructions_cles.replace(/\n/g, '<br>')}</p></div>` : ''}
-                        ${data.conseils ? `<div class="modal-section"><h3>💡 Conseils</h3><p>${data.conseils.replace(/\n/g, '<br>')}</p></div>` : ''}
+                        <div class="page-container">
+                            <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">📋 Informations Pratiques</h1>
+                            ${data.regles ? `
+                            <section class="info-section">
+                                <h2 class="section-title">📜 Règlement</h2>
+                                <div class="info-card">
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.regles.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
+                            ${data.menage_tri ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🧹 Ménage & Tri</h2>
+                                <div class="info-card">
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.menage_tri.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
+                            ${data.instructions_cles ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🔑 Clés</h2>
+                                <div class="info-card">
+                                    <p class="info-text">${data.instructions_cles.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </section>
+                            ` : ''}
+                            ${data.conseils ? `
+                            <section class="info-section">
+                                <h2 class="section-title">💡 Conseils</h2>
+                                <div class="info-card">
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.conseils.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
+                        </div>
                     `;
                     break;
                     
