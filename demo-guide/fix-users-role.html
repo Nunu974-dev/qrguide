@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction des rôles utilisateurs</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #d4af37;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #c09a2a;
+        }
+        .log {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px 0;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Correction des rôles utilisateurs</h1>
+        <p>Cet outil va vérifier tous les utilisateurs et leur attribuer le rôle 'client' s'il est manquant.</p>
+        
+        <button onclick="fixUsersRoles()">Démarrer la correction</button>
+        
+        <div id="log" class="log" style="display: none;"></div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+
+    <script>
+        function addLog(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            logDiv.style.display = 'block';
+            
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        async function fixUsersRoles() {
+            addLog('🚀 Démarrage de la correction...', 'info');
+            
+            try {
+                // Récupérer tous les utilisateurs
+                const usersSnapshot = await db.collection('users').get();
+                addLog(`📊 ${usersSnapshot.size} utilisateurs trouvés`, 'info');
+                
+                let fixedCount = 0;
+                let alreadyOkCount = 0;
+                
+                for (const userDoc of usersSnapshot.docs) {
+                    const userData = userDoc.data();
+                    const userId = userDoc.id;
+                    
+                    // Vérifier si le rôle existe
+                    if (!userData.role) {
+                        addLog(`⚠️ Utilisateur sans rôle: ${userData.email || userId}`, 'error');
+                        
+                        // Attribuer le rôle 'client' par défaut
+                        await db.collection('users').doc(userId).update({
+                            role: 'client',
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        
+                        addLog(`✅ Rôle 'client' attribué à ${userData.email || userId}`, 'success');
+                        fixedCount++;
+                    } else {
+                        addLog(`✓ ${userData.email || userId} - rôle: ${userData.role}`, 'info');
+                        alreadyOkCount++;
+                    }
+                }
+                
+                addLog('', 'info');
+                addLog('====================================', 'info');
+                addLog(`✅ Correction terminée !`, 'success');
+                addLog(`📊 Résumé:`, 'info');
+                addLog(`   - Utilisateurs corrigés: ${fixedCount}`, fixedCount > 0 ? 'success' : 'info');
+                addLog(`   - Utilisateurs déjà OK: ${alreadyOkCount}`, 'info');
+                addLog(`   - Total: ${usersSnapshot.size}`, 'info');
+                addLog('====================================', 'info');
+                
+            } catch (error) {
+                addLog(`❌ Erreur: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // === CHARGEMENT DES UTILISATEURS DEPUIS FIRESTORE ===
 async function loadAllUsers() {
     try {
+        // Requête optimisée avec index Firebase
         const usersSnapshot = await db.collection('users')
             .where('role', '==', 'client')
             .orderBy('createdAt', 'desc')
