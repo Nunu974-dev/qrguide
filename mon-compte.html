@@ -1185,9 +1185,9 @@
                     ${data.status === 'creating' ? `<p style="font-size: 0.9rem; color: #856404; margin-top: 8px; font-style: italic;">⏳ Votre guide est en cours de création. Vous pouvez fermer cette page, il sera disponible dans quelques instants.</p>` : ''}
                     ${data.status === 'error' ? `<p style="font-size: 0.9rem; color: #721c24; margin-top: 8px;">❌ Une erreur s'est produite lors de la création. Veuillez supprimer et recréer ce guide.</p>` : ''}
                     <div class="logement-actions">
-                        ${data.guideId && data.status === 'active' ? `<button class="btn btn-primary" onclick="window.open('guide.html?id=${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
-                        ${data.guideId && data.status === 'active' ? `<button class="btn btn-secondary" onclick="viewQR('${data.guideId}', '${data.guideUrl}')">📱 QR Code</button>` : ''}
-                        ${data.status === 'active' ? `<button class="btn" style="background: #d4af37; color: white;" onclick="editLogement('${doc.id}', '${data.guideId || ''}')">✏️ Modifier</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' ? `<button class="btn btn-primary" onclick="window.open('guide.html?id=${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' ? `<button class="btn btn-secondary" onclick="viewQR('${data.guideId}', '${data.guideUrl}')">📱 QR Code</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' ? `<button class="btn" style="background: #d4af37; color: white;" onclick="editLogement('${doc.id}', '${data.guideId || ''}')">✏️ Modifier</button>` : ''}
                         <button class="btn btn-danger" onclick="deleteLogement('${doc.id}', '${data.guideId || ''}')">🗑️ Supprimer</button>
                     </div>
                 `;
