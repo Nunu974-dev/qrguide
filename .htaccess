@@ -3,10 +3,11 @@
 
 # Active le module de réécriture
 RewriteEngine On
+RewriteBase /
 
 # Redirige les URLs /guide/XxXxXxXx vers guide.html
 # Le guideId sera extrait par JavaScript dans guide.html
-RewriteRule ^guide/([a-zA-Z0-9]+)$ /guide.html [L]
+RewriteRule ^guide/([a-zA-Z0-9]+)$ guide.html [L,QSA]
 
 # Force HTTPS (recommandé pour la sécurité)
 RewriteCond %{HTTPS} off
