@@ -374,13 +374,13 @@
                             <h2 class="section-title">🍳 Cuisine équipée</h2>
                             <div class="info-card">
                                 <div style="display: grid; gap: 12px;">
-                                    ${data.cuisine_plaques ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🔥</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Plaques de cuisson</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_plaques}</p></div></div>` : ''}
-                                    ${data.cuisine_four ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🌡️</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Four</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_four}</p></div></div>` : ''}
-                                    ${data.cuisine_cafe ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">☕</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Machine à café</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_cafe}</p></div></div>` : ''}
-                                    ${data.cuisine_frigo ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">❄️</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Réfrigérateur</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_frigo}</p></div></div>` : ''}
-                                    ${data.cuisine_lave_vaisselle ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🍽️</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Lave-vaisselle</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_lave_vaisselle}</p></div></div>` : ''}
-                                    ${data.cuisine_autres ? `<p style="margin-top: 8px;"><strong>Autres :</strong> ${data.cuisine_autres}</p>` : ''}
+                                    ${data.cuisine_plaques ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🔥</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Plaques de cuisson</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_plaques}</p></div></div>` : ''}
+                                    ${data.cuisine_four ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🌡️</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Four</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_four}</p></div></div>` : ''}
+                                    ${data.cuisine_cafe ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">☕</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Machine à café</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_cafe}</p></div></div>` : ''}
+                                    ${data.cuisine_frigo ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">❄️</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Réfrigérateur</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_frigo}</p></div></div>` : ''}
+                                    ${data.cuisine_lave_vaisselle ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🍽️</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Lave-vaisselle</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_lave_vaisselle}</p></div></div>` : ''}
                                 </div>
+                                ${data.cuisine_autres ? `<p style="margin-top: 12px; padding-top: 12px; border-top: 2px solid rgba(var(--primary-rgb), 0.1);"><strong>Autres équipements :</strong> ${data.cuisine_autres}</p>` : ''}
                             </div>
                         </section>
                         ` : ''}
@@ -390,12 +390,12 @@
                             <h2 class="section-title">🚿 Salle de bain</h2>
                             <div class="info-card">
                                 <div style="display: grid; gap: 12px;">
-                                    ${data.sdb_douche ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">💧</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Douche</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_douche}</p></div></div>` : ''}
-                                    ${data.sdb_produits ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧴</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Produits fournis</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_produits}</p></div></div>` : ''}
-                                    ${data.sdb_seche_cheveux ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">💨</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Sèche-cheveux</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_seche_cheveux}</p></div></div>` : ''}
-                                    ${data.sdb_serviettes ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧺</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Serviettes</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_serviettes}</p></div></div>` : ''}
-                                    ${data.sdb_autres ? `<p style="margin-top: 8px;"><strong>Autres :</strong> ${data.sdb_autres}</p>` : ''}
+                                    ${data.sdb_douche ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">💧</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Douche</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_douche}</p></div></div>` : ''}
+                                    ${data.sdb_produits ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🧴</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Produits de douche</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_produits}</p></div></div>` : ''}
+                                    ${data.sdb_seche_cheveux ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">💨</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Sèche-cheveux</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_seche_cheveux}</p></div></div>` : ''}
+                                    ${data.sdb_serviettes ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🧺</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Serviettes</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_serviettes}</p></div></div>` : ''}
                                 </div>
+                                ${data.sdb_autres ? `<p style="margin-top: 12px; padding-top: 12px; border-top: 2px solid rgba(var(--primary-rgb), 0.1);"><strong>Autres équipements :</strong> ${data.sdb_autres}</p>` : ''}
                             </div>
                         </section>
                         ` : ''}
@@ -404,8 +404,21 @@
                         <section class="info-section">
                             <h2 class="section-title">❄️ Climatisation & Chauffage</h2>
                             <div class="info-card">
-                                ${data.clim_telecommande_emplacement ? `<p style="font-weight: 600; margin-bottom: 12px;">🌡️ ${data.clim_telecommande_emplacement}</p>` : ''}
-                                ${data.instructions_clim ? `<div style="padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border-left: 4px solid var(--primary-color);"><p style="margin: 0;">${data.instructions_clim.replace(/\n/g, '<br>')}</p></div>` : ''}
+                                ${data.clim_telecommande_emplacement ? `
+                                <div style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(var(--primary-rgb), 0.08); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); margin-bottom: 16px;">
+                                    <div style="font-size: 3rem;">🌡️</div>
+                                    <div>
+                                        <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 1.1rem;">Télécommande ${data.clim_telecommande_emplacement}</p>
+                                        <p style="font-size: 0.95rem; color: #666; margin: 0;">Contrôle climatisation et chauffage</p>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${data.instructions_clim ? `
+                                <div style="padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border-left: 4px solid var(--primary-color);">
+                                    <p style="margin: 0;"><strong>💡 Conseil écologique :</strong></p>
+                                    <p style="margin: 8px 0 0 0; font-size: 0.95rem; color: #666;">${data.instructions_clim.replace(/\n/g, '<br>')}</p>
+                                </div>
+                                ` : ''}
                             </div>
                         </section>
                         ` : ''}
@@ -415,9 +428,9 @@
                             <h2 class="section-title">🧺 Linge & Nettoyage</h2>
                             <div class="info-card">
                                 <div style="display: grid; gap: 12px;">
-                                    ${data.linge_lave_linge ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🌀</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Lave-linge</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_lave_linge}</p></div></div>` : ''}
-                                    ${data.linge_aspirateur ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧹</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Aspirateur</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_aspirateur}</p></div></div>` : ''}
-                                    ${data.linge_produits_entretien ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧴</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Produits d'entretien</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_produits_entretien}</p></div></div>` : ''}
+                                    ${data.linge_lave_linge ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🌀</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Lave-linge</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_lave_linge}</p></div></div>` : ''}
+                                    ${data.linge_aspirateur ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🧹</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Aspirateur</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_aspirateur}</p></div></div>` : ''}
+                                    ${data.linge_produits_entretien ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);"><div style="font-size: 2rem; flex-shrink: 0;">🧴</div><div style="flex: 1;"><p style="font-weight: 600; margin: 0 0 4px 0;">Produits d'entretien</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_produits_entretien}</p></div></div>` : ''}
                                 </div>
                             </div>
                         </section>
@@ -427,7 +440,14 @@
                         <section class="info-section">
                             <h2 class="section-title">⚠️ Important</h2>
                             <div class="info-card">
-                                <div style="white-space: pre-line;">${data.equipements_regles_importantes.replace(/,/g, '<br>⚠️ ')}</div>
+                                <div class="checklist">
+                                    ${data.equipements_regles_importantes.split(',').map(regle => `
+                                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px solid rgba(255, 193, 7, 0.3);">
+                                            <span style="font-size: 1.5rem;">⚠️</span>
+                                            <p style="margin: 0; font-size: 0.95rem;">${regle.trim()}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
                         </section>
                         ` : ''}
@@ -631,11 +651,15 @@
 
                 case 'urgence':
                     return `
+                        <div style="padding: 16px; background: rgba(220, 38, 38, 0.1); border-radius: 12px; border-left: 4px solid #dc2626; margin-bottom: 24px;">
+                            <p style="margin: 0; font-weight: 600; color: #991b1b;">Restez calme, nous sommes là pour vous aider 24h/24</p>
+                        </div>
+                        
                         ${data.hote_telephone ? `
                         <section class="info-section">
                             <h2 class="section-title">📞 Contacter le propriétaire</h2>
                             <div class="info-card" style="text-align: center; background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); border: 3px solid var(--primary-color);">
-                                <p style="margin: 0 0 16px 0;">En cas de problème dans le logement :</p>
+                                <p style="margin: 0 0 16px 0; font-size: 1rem;">En cas de problème dans le logement :</p>
                                 <a href="tel:${data.hote_telephone}" style="display: inline-block; padding: 14px 32px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;">
                                     📱 Appeler maintenant
                                 </a>
@@ -646,7 +670,7 @@
                         ` : ''}
                         
                         <section class="info-section">
-                            <h2 class="section-title">🚨 Numéros d'urgence</h2>
+                            <h2 class="section-title">🚑 Numéros d'urgence</h2>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
                                 <div class="info-card" style="text-align: center;">
                                     <div style="font-size: 3rem; margin-bottom: 8px;">🚒</div>
@@ -659,7 +683,7 @@
                                     <a href="tel:17" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">17</a>
                                 </div>
                                 <div class="info-card" style="text-align: center;">
-                                    <div style="font-size: 3rem; margin-bottom: 8px;">🏭</div>
+                                    <div style="font-size: 3rem; margin-bottom: 8px;">🏥</div>
                                     <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">SAMU</h3>
                                     <a href="tel:15" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">15</a>
                                 </div>
@@ -671,14 +695,115 @@
                             </div>
                         </section>
                         
+                        <section class="info-section">
+                            <h2 class="section-title">⚠️ En cas d'incident</h2>
+                            
+                            <!-- Panne d'électricité -->
+                            <div class="info-card" style="margin-bottom: 16px;">
+                                <h3 style="font-size: 1.2rem; margin: 0 0 12px 0;">💡 Panne d'électricité</h3>
+                                <div class="step-list">
+                                    <div class="step">
+                                        <span class="step-number">1</span>
+                                        <p style="margin: 0;">Vérifiez si le disjoncteur a sauté (tableau électrique dans l'entrée)</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">2</span>
+                                        <p style="margin: 0;">Réenclenchez le disjoncteur en poussant le levier vers le haut</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">3</span>
+                                        <p style="margin: 0;">Si le problème persiste, contactez-nous</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fuite d'eau -->
+                            <div class="info-card" style="margin-bottom: 16px;">
+                                <h3 style="font-size: 1.2rem; margin: 0 0 12px 0;">💧 Fuite d'eau</h3>
+                                <div class="step-list">
+                                    <div class="step">
+                                        <span class="step-number">1</span>
+                                        <p style="margin: 0;">Fermez immédiatement le robinet d'arrivée d'eau (sous l'évier de la cuisine)</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">2</span>
+                                        <p style="margin: 0;">Coupez l'électricité si l'eau est proche d'une prise</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">3</span>
+                                        <p style="margin: 0;">Appelez-nous immédiatement</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Odeur de gaz -->
+                            <div class="info-card" style="margin-bottom: 16px; background: rgba(220, 38, 38, 0.1); border: 2px solid #dc2626;">
+                                <h3 style="font-size: 1.2rem; margin: 0 0 12px 0; color: #991b1b;">⛽ Odeur de gaz</h3>
+                                <div class="step-list">
+                                    <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                                        <span class="step-number" style="background: #dc2626;">1</span>
+                                        <p style="margin: 0;">N'allumez rien (lumière, téléphone)</p>
+                                    </div>
+                                    <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                                        <span class="step-number" style="background: #dc2626;">2</span>
+                                        <p style="margin: 0;">Ouvrez toutes les fenêtres</p>
+                                    </div>
+                                    <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                                        <span class="step-number" style="background: #dc2626;">3</span>
+                                        <p style="margin: 0;">Sortez du logement</p>
+                                    </div>
+                                    <div class="step" style="background: rgba(220, 38, 38, 0.05);">
+                                        <span class="step-number" style="background: #dc2626;">4</span>
+                                        <p style="margin: 0;">Appelez les pompiers : 18</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Enfermé dehors -->
+                            <div class="info-card">
+                                <h3 style="font-size: 1.2rem; margin: 0 0 12px 0;">🔒 Enfermé dehors</h3>
+                                <div class="step-list">
+                                    <div class="step">
+                                        <span class="step-number">1</span>
+                                        <p style="margin: 0;">Vérifiez si vous avez laissé une fenêtre ouverte</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">2</span>
+                                        <p style="margin: 0;">Contactez-nous, nous avons une clé de secours</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">3</span>
+                                        <p style="margin: 0;">Temps d'intervention : environ 30 minutes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
                         ${data.urgences ? `
                         <section class="info-section">
-                            <h2 class="section-title">🏥 Services médicaux</h2>
-                            <div class="info-card">
+                            <h2 class="section-title">🏥 Hôpital & Services médicaux</h2>
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%);">
                                 <div style="white-space: pre-line;">${data.urgences.replace(/\n/g, '<br>')}</div>
                             </div>
                         </section>
                         ` : ''}
+                        
+                        <section class="info-section">
+                            <h2 class="section-title">💊 Pharmacie de garde</h2>
+                            <div class="info-card" style="text-align: center;">
+                                <p style="margin: 0 0 16px 0;">Pour connaître la pharmacie de garde :</p>
+                                <a href="tel:3237" style="display: inline-block; padding: 12px 24px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1rem;">
+                                    📞 Appeler le 32 37
+                                </a>
+                            </div>
+                        </section>
+                        
+                        <section class="info-section">
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid #3b82f6; text-align: center;">
+                                <p style="font-size: 1.2rem; margin: 0 0 8px 0;">💙 <strong>Ne vous inquiétez pas</strong></p>
+                                <p style="margin: 0;">La plupart des problèmes peuvent être résolus rapidement. N'hésitez pas à nous contacter, même pour une question qui vous semble mineure.</p>
+                            </div>
+                        </section>
                     `;
 
                 case 'hote':
