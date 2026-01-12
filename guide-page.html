@@ -216,113 +216,655 @@
                         <section class="info-section">
                             <h2 class="section-title">⏰ Heure de départ</h2>
                             <div class="info-card">
-                                <p class="info-text">Merci de libérer le logement avant <strong>${data.checkout_time || '10h00'}</strong></p>
+                                <p class="info-text" style="font-size: 1.1rem; margin-bottom: 8px;">
+                                    Check-out avant <strong style="color: var(--primary-color); font-size: 1.3rem;">${data.checkout_time || '11h00'}</strong>
+                                </p>
+                                <p class="info-note">💬 Un départ tardif ? Contactez-nous, c'est parfois possible !</p>
                             </div>
                         </section>
                         
-                        ${data.instructions_depart ? `
                         <section class="info-section">
-                            <h2 class="section-title">✅ Instructions de départ</h2>
+                            <h2 class="section-title">✅ Checklist départ</h2>
                             <div class="info-card">
-                                <div class="info-list" style="white-space: pre-line;">
-                                    ${data.instructions_depart.replace(/\n/g, '<br>')}
+                                <p class="info-note" style="margin-bottom: 16px;">Quelques petits gestes avant de partir :</p>
+                                <div class="checklist">
+                                    <label class="checklist-item">
+                                        <input type="checkbox">
+                                        <span>💡 Éteindre toutes les lumières</span>
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox">
+                                        <span>❄️ Éteindre climatisation / chauffage</span>
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox">
+                                        <span>🪟 Fermer les fenêtres</span>
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox">
+                                        <span>🗑️ Sortir les poubelles (si possible)</span>
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox">
+                                        <span>🍽️ Ranger la vaisselle</span>
+                                    </label>
                                 </div>
                             </div>
                         </section>
+                        
+                        ${data.menage_tri ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🧹 Concernant le ménage</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.menage_tri.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
                         ` : ''}
+                        
+                        ${data.instructions_cles ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🔑 Les clés</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.instructions_cles.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.instructions_depart ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📜 Instructions supplémentaires</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.instructions_depart.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        <section class="info-section" style="margin-top: 32px;">
+                            <div style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%); 
+                                        border: 2px solid rgba(var(--primary-rgb), 0.3); 
+                                        border-radius: 16px; 
+                                        padding: 32px 24px; 
+                                        text-align: center;">
+                                <div style="font-size: 2.5rem; margin-bottom: 16px;">💙</div>
+                                <p style="font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-color);">
+                                    Merci pour votre séjour !
+                                </p>
+                                <p style="font-size: 1rem; line-height: 1.6; color: #333;">
+                                    Nous espérons que vous avez passé un moment exceptionnel.
+                                </p>
+                            </div>
+                        </section>
                     `;
 
                 case 'wifi':
                     return `
                         <section class="info-section">
-                            <h2 class="section-title">📶 Connexion Wi-Fi</h2>
+                            <h2 class="section-title">� Connexion WiFi</h2>
                             <div class="info-card">
-                                ${data.wifi_nom ? `<p><strong>Réseau :</strong> ${data.wifi_nom}</p>` : ''}
-                                ${data.wifi_password ? `<p><strong>Mot de passe :</strong> <code style="background: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 1.1rem;">${data.wifi_password}</code></p>` : ''}
+                                ${data.wifi_nom ? `<p style="font-size: 0.9rem; margin-bottom: 8px; color: #666;">Nom du réseau</p><p style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0 0 12px 0;">${data.wifi_nom}</p>` : ''}
+                                ${data.wifi_password ? `<p style="font-size: 0.9rem; margin-bottom: 8px; color: #666;">Mot de passe</p><p style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0 0 12px 0; letter-spacing: 1px;">${data.wifi_password}</p>` : ''}
+                                ${data.wifi_debit ? `<p style="margin-top: 16px;">⚡ <strong>Débit :</strong> ${data.wifi_debit}</p>` : ''}
                             </div>
                         </section>
+                        
+                        ${data.tv_marque ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📺 Télévision</h2>
+                            <div class="info-card">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--primary-color);">${data.tv_marque}</h3>
+                                
+                                ${data.tv_plateformes ? `
+                                <div style="margin-bottom: 24px;">
+                                    <p style="font-weight: 600; margin-bottom: 12px;">🎬 Plateformes disponibles</p>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                        ${data.tv_plateformes.split(',').map(p => `<div style="padding: 8px 16px; background: var(--primary-color); color: white; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">${p.trim()}</div>`).join('')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${data.tv_box ? `<p style="padding: 16px; background: rgba(var(--primary-rgb), 0.08); border-radius: 12px; margin-bottom: 20px;">📡 <strong>Box TV :</strong> ${data.tv_box}</p>` : ''}
+                                
+                                ${data.tv_instruction_1 || data.tv_instruction_2 || data.tv_instruction_3 ? `
+                                <p style="font-weight: 600; margin-bottom: 12px;">🎮 Mode d'emploi</p>
+                                <div class="step-list">
+                                    ${data.tv_instruction_1 ? `<div class="step"><div class="step-number">1</div><div><p style="font-weight: 600;">Allumer la TV</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_1}</p></div></div>` : ''}
+                                    ${data.tv_instruction_2 ? `<div class="step"><div class="step-number">2</div><div><p style="font-weight: 600;">Changer de source</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_2}</p></div></div>` : ''}
+                                    ${data.tv_instruction_3 ? `<div class="step"><div class="step-number">3</div><div><p style="font-weight: 600;">Régler le volume</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_3}</p></div></div>` : ''}
+                                </div>
+                                ` : ''}
+                                
+                                ${data.tv_telecommande_emplacement ? `<p style="margin-top: 16px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px;">📍 <strong>Télécommandes :</strong> ${data.tv_telecommande_emplacement}</p>` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.enceinte_marque ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🔊 Enceinte Bluetooth</h2>
+                            <div class="info-card">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--primary-color);">${data.enceinte_marque}</h3>
+                                ${data.enceinte_nom_bluetooth ? `<p style="margin-bottom: 12px;">📱 <strong>Nom Bluetooth :</strong> ${data.enceinte_nom_bluetooth}</p>` : ''}
+                                ${data.enceinte_caracteristiques ? `<p style="margin-bottom: 16px;">${data.enceinte_caracteristiques}</p>` : ''}
+                                ${data.enceinte_emplacement || data.enceinte_chargeur ? `
+                                <div style="margin-top: 20px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;">
+                                    ${data.enceinte_emplacement ? `<p style="margin: 0 0 8px 0;">📍 <strong>Emplacement :</strong> ${data.enceinte_emplacement}</p>` : ''}
+                                    ${data.enceinte_chargeur ? `<p style="margin: 0;">🔌 <strong>Chargeur :</strong> ${data.enceinte_chargeur}</p>` : ''}
+                                </div>
+                                ` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.multimedia_bureau || data.multimedia_prises_usb || data.multimedia_chargeurs ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🎮 Autres équipements</h2>
+                            <div class="info-card">
+                                ${data.multimedia_bureau ? `<p>💻 <strong>Bureau :</strong> ${data.multimedia_bureau}</p>` : ''}
+                                ${data.multimedia_prises_usb ? `<p>🔌 <strong>Prises USB :</strong> ${data.multimedia_prises_usb}</p>` : ''}
+                                ${data.multimedia_chargeurs ? `<p>📱 <strong>Chargeurs :</strong> ${data.multimedia_chargeurs}</p>` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
                     `;
 
                 case 'equipements':
                     return `
+                        ${data.cuisine_plaques || data.cuisine_four || data.cuisine_cafe || data.cuisine_frigo || data.cuisine_lave_vaisselle || data.cuisine_autres ? `
                         <section class="info-section">
-                            <h2 class="section-title">🏠 Équipements disponibles</h2>
+                            <h2 class="section-title">🍳 Cuisine équipée</h2>
                             <div class="info-card">
-                                <p class="info-text">${data.equipements || 'Cuisine équipée, Wi-Fi, TV, climatisation...'}</p>
+                                <div style="display: grid; gap: 12px;">
+                                    ${data.cuisine_plaques ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🔥</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Plaques de cuisson</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_plaques}</p></div></div>` : ''}
+                                    ${data.cuisine_four ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🌡️</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Four</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_four}</p></div></div>` : ''}
+                                    ${data.cuisine_cafe ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">☕</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Machine à café</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_cafe}</p></div></div>` : ''}
+                                    ${data.cuisine_frigo ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">❄️</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Réfrigérateur</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_frigo}</p></div></div>` : ''}
+                                    ${data.cuisine_lave_vaisselle ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🍽️</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Lave-vaisselle</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.cuisine_lave_vaisselle}</p></div></div>` : ''}
+                                    ${data.cuisine_autres ? `<p style="margin-top: 8px;"><strong>Autres :</strong> ${data.cuisine_autres}</p>` : ''}
+                                </div>
                             </div>
                         </section>
+                        ` : ''}
+                        
+                        ${data.sdb_douche || data.sdb_produits || data.sdb_seche_cheveux || data.sdb_serviettes || data.sdb_autres ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🚿 Salle de bain</h2>
+                            <div class="info-card">
+                                <div style="display: grid; gap: 12px;">
+                                    ${data.sdb_douche ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">💧</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Douche</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_douche}</p></div></div>` : ''}
+                                    ${data.sdb_produits ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧴</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Produits fournis</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_produits}</p></div></div>` : ''}
+                                    ${data.sdb_seche_cheveux ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">💨</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Sèche-cheveux</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_seche_cheveux}</p></div></div>` : ''}
+                                    ${data.sdb_serviettes ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧺</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Serviettes</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.sdb_serviettes}</p></div></div>` : ''}
+                                    ${data.sdb_autres ? `<p style="margin-top: 8px;"><strong>Autres :</strong> ${data.sdb_autres}</p>` : ''}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.instructions_clim || data.clim_telecommande_emplacement ? `
+                        <section class="info-section">
+                            <h2 class="section-title">❄️ Climatisation & Chauffage</h2>
+                            <div class="info-card">
+                                ${data.clim_telecommande_emplacement ? `<p style="font-weight: 600; margin-bottom: 12px;">🌡️ ${data.clim_telecommande_emplacement}</p>` : ''}
+                                ${data.instructions_clim ? `<div style="padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border-left: 4px solid var(--primary-color);"><p style="margin: 0;">${data.instructions_clim.replace(/\n/g, '<br>')}</p></div>` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.linge_lave_linge || data.linge_aspirateur || data.linge_produits_entretien ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🧺 Linge & Nettoyage</h2>
+                            <div class="info-card">
+                                <div style="display: grid; gap: 12px;">
+                                    ${data.linge_lave_linge ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🌀</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Lave-linge</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_lave_linge}</p></div></div>` : ''}
+                                    ${data.linge_aspirateur ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧹</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Aspirateur</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_aspirateur}</p></div></div>` : ''}
+                                    ${data.linge_produits_entretien ? `<div style="display: flex; gap: 14px; padding: 14px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;"><div style="font-size: 2rem;">🧴</div><div><p style="font-weight: 600; margin: 0 0 4px 0;">Produits d'entretien</p><p style="font-size: 0.9rem; color: #666; margin: 0;">${data.linge_produits_entretien}</p></div></div>` : ''}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.equipements_regles_importantes ? `
+                        <section class="info-section">
+                            <h2 class="section-title">⚠️ Important</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.equipements_regles_importantes.replace(/,/g, '<br>⚠️ ')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
                     `;
 
                 case 'restaurants':
+                    const restaurants = data.restaurants || [];
+                    if (!restaurants.length) {
+                        return '<section class="info-section"><div class="info-card"><p class="info-text">Aucune recommandation pour le moment.</p></div></section>';
+                    }
+                    
                     return `
                         <section class="info-section">
-                            <h2 class="section-title">🍽️ Nos recommandations</h2>
-                            <div class="info-card">
-                                <p class="info-text">${data.restaurants || 'Découvrez les restaurants à proximité.'}</p>
-                            </div>
+                            <h2 class="section-title">🍴 Nos bonnes adresses</h2>
+                            <p class="info-note" style="margin-bottom: 24px;">
+                                Découvrez nos restaurants préférés du quartier ! 🍽️
+                            </p>
                         </section>
+                        
+                        ${restaurants.map((resto, idx) => `
+                            <section class="info-section">
+                                <div class="info-card ${resto.coup_de_coeur ? 'highlight-card' : ''}" style="${
+                                    resto.coup_de_coeur 
+                                    ? 'background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); border-left: 5px solid var(--primary-color);' 
+                                    : ''
+                                }">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                        <h3 style="margin: 0; font-size: 1.4rem; color: #333;">
+                                            ${resto.nom || `Restaurant ${idx + 1}`}
+                                            ${resto.coup_de_coeur ? ' <span style="color: var(--primary-color);">⭐</span>' : ''}
+                                        </h3>
+                                        ${resto.prix ? `<span style="background: rgba(var(--primary-rgb), 0.15); color: var(--primary-color); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">${resto.prix}</span>` : ''}
+                                    </div>
+                                    
+                                    ${resto.type ? `<p style="color: #666; margin: 0 0 8px 0; font-style: italic;">🍽️ ${resto.type}</p>` : ''}
+                                    
+                                    ${resto.description ? `<p style="margin: 12px 0; line-height: 1.6;">${resto.description}</p>` : ''}
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px;">
+                                        ${resto.distance ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">📍</span>
+                                                <span style="color: #666;">${resto.distance}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${resto.horaires ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">🕒</span>
+                                                <span style="color: #666;">${resto.horaires}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    ${resto.adresse ? `
+                                        <a href="https://maps.google.com/?q=${encodeURIComponent(resto.adresse)}" 
+                                           target="_blank"
+                                           class="contact-button" 
+                                           style="margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                                            🗺️ Voir sur la carte
+                                        </a>
+                                    ` : ''}
+                                </div>
+                            </section>
+                        `).join('')}
                     `;
 
                 case 'activites':
+                    const activites = data.activites || [];
+                    if (!activites.length) {
+                        return '<section class="info-section"><div class="info-card"><p class="info-text">Aucune activité pour le moment.</p></div></section>';
+                    }
+                    
                     return `
                         <section class="info-section">
-                            <h2 class="section-title">🎯 À faire aux alentours</h2>
-                            <div class="info-card">
-                                <p class="info-text">${data.activites || 'Découvrez les activités locales.'}</p>
-                            </div>
+                            <h2 class="section-title">⛰️ Activités à faire</h2>
+                            <p class="info-note" style="margin-bottom: 24px;">
+                                Découvrez les activités incontournables de la région ! 🌟
+                            </p>
                         </section>
+                        
+                        ${activites.map((activite, idx) => `
+                            <section class="info-section">
+                                <div class="info-card" style="border-left: 4px solid var(--primary-color);">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                        <h3 style="margin: 0; font-size: 1.4rem; color: #333;">
+                                            ${activite.nom || `Activité ${idx + 1}`}
+                                        </h3>
+                                        ${activite.type ? `
+                                            <span style="background: var(--primary-color); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">
+                                                ${activite.type}
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    ${activite.description ? `<p style="margin: 12px 0; line-height: 1.6; color: #444;">${activite.description}</p>` : ''}
+                                    
+                                    ${activite.tags ? `
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0;">
+                                            ${activite.tags.split(',').map(tag => `
+                                                <span style="background: rgba(var(--primary-rgb), 0.1); 
+                                                             color: var(--primary-color); 
+                                                             padding: 4px 12px; 
+                                                             border-radius: 15px; 
+                                                             font-size: 0.85rem;
+                                                             font-weight: 500;">
+                                                    ${tag.trim()}
+                                                </span>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px;">
+                                        ${activite.distance ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">📍</span>
+                                                <span style="color: #666;">${activite.distance}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${activite.prix ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">💵</span>
+                                                <span style="color: #666;">${activite.prix}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${activite.duree ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">⏱️</span>
+                                                <span style="color: #666;">${activite.duree}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    ${activite.adresse ? `
+                                        <a href="https://maps.google.com/?q=${encodeURIComponent(activite.adresse)}" 
+                                           target="_blank"
+                                           class="contact-button" 
+                                           style="margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                                            🗺️ Voir sur la carte
+                                        </a>
+                                    ` : ''}
+                                </div>
+                            </section>
+                        `).join('')}
                     `;
 
                 case 'commerces':
+                    const commerces = data.commerces || [];
+                    if (!commerces.length) {
+                        return '<section class="info-section"><div class="info-card"><p class="info-text">Aucun commerce pour le moment.</p></div></section>';
+                    }
+                    
                     return `
                         <section class="info-section">
                             <h2 class="section-title">🛒 Commerces à proximité</h2>
-                            <div class="info-card">
-                                <p class="info-text">${data.commerces || 'Supermarchés, pharmacies et autres commerces proches.'}</p>
-                            </div>
+                            <p class="info-note" style="margin-bottom: 24px;">
+                                Tous les commerces pratiques près de chez vous ! 🏪
+                            </p>
                         </section>
+                        
+                        ${commerces.map((commerce, idx) => `
+                            <section class="info-section">
+                                <div class="info-card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                        <h3 style="margin: 0; font-size: 1.4rem; color: #333;">
+                                            ${commerce.nom || `Commerce ${idx + 1}`}
+                                        </h3>
+                                        ${commerce.type ? `
+                                            <span style="background: rgba(var(--primary-rgb), 0.15); color: var(--primary-color); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                                ${commerce.type}
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px;">
+                                        ${commerce.distance ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">📍</span>
+                                                <span style="color: #666;">${commerce.distance}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${commerce.horaires ? `
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="font-size: 1.2rem;">🕒</span>
+                                                <span style="color: #666;">${commerce.horaires}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    ${commerce.adresse ? `
+                                        <a href="https://maps.google.com/?q=${encodeURIComponent(commerce.adresse)}" 
+                                           target="_blank"
+                                           class="contact-button" 
+                                           style="margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                                            🗺️ Voir sur la carte
+                                        </a>
+                                    ` : ''}
+                                </div>
+                            </section>
+                        `).join('')}
                     `;
 
                 case 'urgence':
                     return `
+                        ${data.hote_telephone ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📞 Contacter le propriétaire</h2>
+                            <div class="info-card" style="text-align: center; background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); border: 3px solid var(--primary-color);">
+                                <p style="margin: 0 0 16px 0;">En cas de problème dans le logement :</p>
+                                <a href="tel:${data.hote_telephone}" style="display: inline-block; padding: 14px 32px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;">
+                                    📱 Appeler maintenant
+                                </a>
+                                <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin: 12px 0;">${data.hote_telephone}</p>
+                                <p style="margin: 0; font-size: 0.9rem; color: #666;">Disponible 24h/24 pour les urgences</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
                         <section class="info-section">
                             <h2 class="section-title">🚨 Numéros d'urgence</h2>
-                            <div class="info-card">
-                                <div class="info-list">
-                                    <p>🚨 <strong>Urgences :</strong> 112</p>
-                                    <p>🚑 <strong>SAMU :</strong> 15</p>
-                                    <p>🚒 <strong>Pompiers :</strong> 18</p>
-                                    <p>👮 <strong>Police :</strong> 17</p>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 8px;">🚒</div>
+                                    <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">Pompiers</h3>
+                                    <a href="tel:18" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">18</a>
+                                </div>
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 8px;">👮</div>
+                                    <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">Police</h3>
+                                    <a href="tel:17" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">17</a>
+                                </div>
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 8px;">🏭</div>
+                                    <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">SAMU</h3>
+                                    <a href="tel:15" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">15</a>
+                                </div>
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 8px;">🇪🇺</div>
+                                    <h3 style="font-size: 1.1rem; margin: 0 0 8px 0;">Urgences UE</h3>
+                                    <a href="tel:112" style="display: block; font-size: 2rem; font-weight: 700; color: var(--primary-color); text-decoration: none;">112</a>
                                 </div>
                             </div>
                         </section>
+                        
+                        ${data.urgences ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🏥 Services médicaux</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.urgences.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
                     `;
 
                 case 'hote':
                     return `
+                        ${data.message_hote ? `
                         <section class="info-section">
-                            <h2 class="section-title">👤 Votre hôte</h2>
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); text-align: center; border: 3px solid var(--primary-color);">
+                                <div style="width: 100px; height: 100px; background: rgba(var(--primary-rgb), 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 20px auto; border: 3px solid var(--primary-color);">
+                                    👤
+                                </div>
+                                <h2 style="font-size: 1.8rem; margin: 0 0 16px 0; color: var(--primary-color);">Bienvenue chez nous ! 🏡</h2>
+                                ${data.hote_nom ? `<p style="margin: 0 0 12px 0; font-size: 1.05rem;">Nous sommes <strong>${data.hote_nom}</strong></p>` : ''}
+                                <p style="margin: 0; white-space: pre-line;">${data.message_hote.replace(/\n/g, '<br>')}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        <section class="info-section">
+                            <h2 class="section-title">📞 Nous contacter</h2>
+                            
+                            ${data.hote_telephone ? `
+                            <div class="info-card" style="margin-bottom: 16px;">
+                                <div style="display: flex; gap: 16px; align-items: center;">
+                                    <div style="font-size: 3rem;">📱</div>
+                                    <div style="flex: 1;">
+                                        <h3 style="font-size: 1.2rem; margin: 0 0 6px 0;">Téléphone</h3>
+                                        <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color); margin: 0 0 12px 0;">${data.hote_telephone}</p>
+                                        <a href="tel:${data.hote_telephone}" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">📞 Appeler</a>
+                                    </div>
+                                </div>
+                            </div>
+                            ` : ''}
+                            
+                            ${data.hote_email ? `
                             <div class="info-card">
-                                ${data.hote_nom ? `<p><strong>Nom :</strong> ${data.hote_nom}</p>` : ''}
-                                ${data.hote_email ? `<p><strong>Email :</strong> ${data.hote_email}</p>` : ''}
-                                ${data.hote_telephone ? `
-                                    <p><strong>Téléphone :</strong> ${data.hote_telephone}</p>
-                                    <a href="tel:${data.hote_telephone}" class="contact-button" style="margin-top: 16px;">
-                                        📱 Appeler
-                                    </a>
+                                <div style="display: flex; gap: 16px; align-items: center;">
+                                    <div style="font-size: 3rem;">📧</div>
+                                    <div style="flex: 1;">
+                                        <h3 style="font-size: 1.2rem; margin: 0 0 6px 0;">Email</h3>
+                                        <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color); margin: 0 0 12px 0;">${data.hote_email}</p>
+                                        <a href="mailto:${data.hote_email}" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">📧 Envoyer un email</a>
+                                    </div>
+                                </div>
+                            </div>
+                            ` : ''}
+                        </section>
+                        
+                        ${data.hote_disponibilite_semaine || data.hote_disponibilite_weekend ? `
+                        <section class="info-section">
+                            <h2 class="section-title">⏰ Disponibilité</h2>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                                ${data.hote_disponibilite_semaine ? `
+                                <div style="display: flex; gap: 16px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                                    <span style="font-size: 2.5rem;">🌅</span>
+                                    <div>
+                                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0;">En semaine</h4>
+                                        <p style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color); margin: 0;">${data.hote_disponibilite_semaine}</p>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${data.hote_disponibilite_weekend ? `
+                                <div style="display: flex; gap: 16px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
+                                    <span style="font-size: 2.5rem;">☀️</span>
+                                    <div>
+                                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0;">Week-end</h4>
+                                        <p style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color); margin: 0;">${data.hote_disponibilite_weekend}</p>
+                                    </div>
+                                </div>
                                 ` : ''}
                             </div>
                         </section>
+                        ` : ''}
+                        
+                        ${data.hote_langues ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🌍 Langues parlées</h2>
+                            <div class="info-card">
+                                <p>${data.hote_langues}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_services ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🎁 Services proposés</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.hote_services.replace(/,/g, '<br>✔️ ')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
                     `;
 
                 case 'infos':
                     return `
+                        ${data.regles_calme || data.regles_personnes || data.regles_fumeur || data.regles_fetes ? `
                         <section class="info-section">
-                            <h2 class="section-title">ℹ️ Informations pratiques</h2>
-                            <div class="info-card">
-                                <p class="info-text">${data.infos_pratiques || 'Toutes les informations pour votre séjour.'}</p>
+                            <h2 class="section-title">📋 Règlement intérieur</h2>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                                ${data.regles_calme ? `<div class="info-card" style="display: flex; gap: 14px;"><span style="font-size: 2rem;">🔇</span><div><p style="font-weight: 600; margin: 0 0 4px 0;">Heures de calme</p><p style="margin: 0; color: #666;">${data.regles_calme}</p></div></div>` : ''}
+                                ${data.regles_personnes ? `<div class="info-card" style="display: flex; gap: 14px;"><span style="font-size: 2rem;">👥</span><div><p style="font-weight: 600; margin: 0 0 4px 0;">Nombre de personnes</p><p style="margin: 0; color: #666;">Maximum ${data.regles_personnes} personnes</p></div></div>` : ''}
+                                ${data.regles_fumeur ? `<div class="info-card" style="display: flex; gap: 14px;"><span style="font-size: 2rem;">🚬</span><div><p style="font-weight: 600; margin: 0 0 4px 0;">Fumeur</p><p style="margin: 0; color: #666;">${data.regles_fumeur === 'interdit' ? 'Interdit à l\'intérieur' : data.regles_fumeur === 'terrasse' ? 'Autorisé sur terrasse uniquement' : 'Autorisé'}</p></div></div>` : ''}
+                                ${data.regles_fetes ? `<div class="info-card" style="display: flex; gap: 14px;"><span style="font-size: 2rem;">🎉</span><div><p style="font-weight: 600; margin: 0 0 4px 0;">Fêtes</p><p style="margin: 0; color: #666;">${data.regles_fetes === 'interdit' ? 'Interdites' : data.regles_fetes === 'autorisation' ? 'Avec autorisation préalable' : 'Autorisées'}</p></div></div>` : ''}
                             </div>
                         </section>
+                        ` : ''}
+                        
+                        ${data.regles_animaux ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🐾 Animaux de compagnie</h2>
+                            <div class="info-card" style="background: rgba(251, 191, 36, 0.1); border-left: 4px solid #f59e0b;">
+                                <p style="margin: 0;">${data.regles_animaux}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.regles ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📜 Règles supplémentaires</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.regles.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.tri_dechets ? `
+                        <section class="info-section">
+                            <h2 class="section-title">♻️ Tri des déchets</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.tri_dechets.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.parking_info ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🅿️ Stationnement</h2>
+                            <div class="info-card">
+                                <p>${data.parking_info}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.transports_bus || data.transports_taxi ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🚌 Transports</h2>
+                            <div class="info-card">
+                                ${data.transports_bus ? `<p>🚍 <strong>Bus :</strong> ${data.transports_bus}</p>` : ''}
+                                ${data.transports_taxi ? `<p>🚕 <strong>Taxis :</strong> ${data.transports_taxi}</p>` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.marche_local ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🛒 Marché local</h2>
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%); border-left: 5px solid var(--primary-color);">
+                                <div style="white-space: pre-line;">${data.marche_local.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.astuces_locales ? `
+                        <section class="info-section">
+                            <h2 class="section-title">💡 Astuces locales</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.astuces_locales.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.conseils ? `
+                        <section class="info-section">
+                            <h2 class="section-title">💡 Conseils</h2>
+                            <div class="info-card">
+                                <div style="white-space: pre-line;">${data.conseils.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.infos_supplementaires ? `
+                        <section class="info-section">
+                            <div class="info-card" style="background: rgba(var(--primary-rgb), 0.08); border-left: 4px solid var(--primary-color);">
+                                <p style="margin: 0;">${data.infos_supplementaires}</p>
+                            </div>
+                        </section>
+                        ` : ''}
                     `;
 
                 default:
