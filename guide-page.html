@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guide de séjour</title>
+    <base href="/">
+    <link rel="icon" type="image/jpeg" href="/img/logo_icone.jpg">
+    <link rel="stylesheet" href="/demo-guide/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+</head>
+<body>
+    <div class="container page-container">
+        <!-- Bouton retour -->
+        <a href="#" onclick="history.back(); return false;" class="back-button">← Retour</a>
+
+        <!-- Image d'accueil avec titre overlay -->
+        <div id="page-header" style="width: 100%; height: 200px; border-radius: 16px; overflow: hidden; margin-bottom: 24px; position: relative;">
+            <img id="header-image" src="" alt="Guide" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%); display: flex; align-items: center; justify-content: center;">
+                <h1 id="page-title" style="color: white; font-size: 2.5rem; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.3); margin: 0;"></h1>
+            </div>
+        </div>
+
+        <!-- Contenu de la page -->
+        <main class="page-content" id="page-content">
+            <p style="text-align: center; padding: 40px;">Chargement...</p>
+        </main>
+    </div>
+
+    <script>
+        // Récupérer les paramètres de l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const guideId = urlParams.get('guide');
+        const pageType = urlParams.get('page');
+
+        // Configuration des pages
+        const pageConfig = {
+            'arrivee': {
+                title: '👋 Bienvenue !',
+                image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=400&fit=crop&q=90'
+            },
+            'depart': {
+                title: '🚪 Départ',
+                image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=400&fit=crop&q=90'
+            },
+            'wifi': {
+                title: '📶 Wi-Fi',
+                image: 'https://images.unsplash.com/photo-1551817958-20c1f0650b2e?w=800&h=400&fit=crop&q=90'
+            },
+            'equipements': {
+                title: '🏠 Équipements',
+                image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&h=400&fit=crop&q=90'
+            },
+            'restaurants': {
+                title: '🍽️ Restaurants',
+                image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=400&fit=crop&q=90'
+            },
+            'activites': {
+                title: '🎯 Activités',
+                image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&h=400&fit=crop&q=90'
+            },
+            'commerces': {
+                title: '🛒 Commerces',
+                image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=400&fit=crop&q=90'
+            },
+            'urgence': {
+                title: '🚨 Urgences',
+                image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=400&fit=crop&q=90'
+            },
+            'hote': {
+                title: '👤 Votre hôte',
+                image: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800&h=400&fit=crop&q=90'
+            },
+            'infos': {
+                title: 'ℹ️ Informations',
+                image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=400&fit=crop&q=90'
+            }
+        };
+
+        async function loadPage() {
+            if (!guideId || !pageType) {
+                document.getElementById('page-content').innerHTML = '<p style="text-align: center; color: red;">Erreur : paramètres manquants</p>';
+                return;
+            }
+
+            // Charger les données du guide
+            const guideDoc = await db.collection('guides').doc(guideId).get();
+            if (!guideDoc.exists) {
+                document.getElementById('page-content').innerHTML = '<p style="text-align: center; color: red;">Guide introuvable</p>';
+                return;
+            }
+
+            const data = guideDoc.data();
+            const config = pageConfig[pageType];
+
+            // Définir le titre et l'image
+            document.getElementById('page-title').textContent = config.title;
+            document.getElementById('header-image').src = data.photo_url || config.image;
+            document.title = config.title + ' - Guide de séjour';
+
+            // Générer le contenu selon la page
+            let content = generatePageContent(pageType, data);
+            document.getElementById('page-content').innerHTML = content;
+        }
+
+        function generatePageContent(pageType, data) {
+            switch(pageType) {
+                case 'arrivee':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">✨ Vous êtes arrivés !</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.message_bienvenue || 'Bienvenue dans votre logement ! Nous espérons que vous passerez un séjour exceptionnel.'}</p>
+                            </div>
+                        </section>
+                        
+                        ${data.premier_pas_1 || data.premier_pas_2 || data.premier_pas_3 || data.premier_pas_4 ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🎯 Premiers pas</h2>
+                            <div class="info-card">
+                                <div class="step-list">
+                                    ${data.premier_pas_1 ? `<div class="step"><div class="step-number">1</div><p>${data.premier_pas_1}</p></div>` : ''}
+                                    ${data.premier_pas_2 ? `<div class="step"><div class="step-number">2</div><p>${data.premier_pas_2}</p></div>` : ''}
+                                    ${data.premier_pas_3 ? `<div class="step"><div class="step-number">3</div><p>${data.premier_pas_3}</p></div>` : ''}
+                                    ${data.premier_pas_4 ? `<div class="step"><div class="step-number">4</div><p>${data.premier_pas_4}</p></div>` : ''}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.checkin_time || data.checkout_time ? `
+                        <section class="info-section">
+                            <h2 class="section-title">⏰ Horaires</h2>
+                            <div class="info-card">
+                                <div class="info-list">
+                                    ${data.checkin_time ? `<p>🟢 <strong>Arrivée :</strong> à partir de ${data.checkin_time}</p>` : ''}
+                                    ${data.checkout_time ? `<p>🔴 <strong>Départ :</strong> avant ${data.checkout_time}</p>` : ''}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_telephone ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📞 Besoin d'aide ?</h2>
+                            <div class="info-card">
+                                <p class="info-text">N'hésitez pas à nous contacter pour toute question :</p>
+                                <a href="tel:${data.hote_telephone}" class="contact-button">
+                                    📱 Appeler votre hôte
+                                </a>
+                                <p class="contact-number">${data.hote_telephone}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                    `;
+
+                case 'depart':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">⏰ Heure de départ</h2>
+                            <div class="info-card">
+                                <p class="info-text">Merci de libérer le logement avant <strong>${data.checkout_time || '10h00'}</strong></p>
+                            </div>
+                        </section>
+                        
+                        ${data.instructions_depart ? `
+                        <section class="info-section">
+                            <h2 class="section-title">✅ Instructions de départ</h2>
+                            <div class="info-card">
+                                <div class="info-list" style="white-space: pre-line;">
+                                    ${data.instructions_depart.replace(/\n/g, '<br>')}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                    `;
+
+                case 'wifi':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">📶 Connexion Wi-Fi</h2>
+                            <div class="info-card">
+                                ${data.wifi_nom ? `<p><strong>Réseau :</strong> ${data.wifi_nom}</p>` : ''}
+                                ${data.wifi_password ? `<p><strong>Mot de passe :</strong> <code style="background: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 1.1rem;">${data.wifi_password}</code></p>` : ''}
+                            </div>
+                        </section>
+                    `;
+
+                case 'equipements':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">🏠 Équipements disponibles</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.equipements || 'Cuisine équipée, Wi-Fi, TV, climatisation...'}</p>
+                            </div>
+                        </section>
+                    `;
+
+                case 'restaurants':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">🍽️ Nos recommandations</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.restaurants || 'Découvrez les restaurants à proximité.'}</p>
+                            </div>
+                        </section>
+                    `;
+
+                case 'activites':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">🎯 À faire aux alentours</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.activites || 'Découvrez les activités locales.'}</p>
+                            </div>
+                        </section>
+                    `;
+
+                case 'commerces':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">🛒 Commerces à proximité</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.commerces || 'Supermarchés, pharmacies et autres commerces proches.'}</p>
+                            </div>
+                        </section>
+                    `;
+
+                case 'urgence':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">🚨 Numéros d'urgence</h2>
+                            <div class="info-card">
+                                <div class="info-list">
+                                    <p>🚨 <strong>Urgences :</strong> 112</p>
+                                    <p>🚑 <strong>SAMU :</strong> 15</p>
+                                    <p>🚒 <strong>Pompiers :</strong> 18</p>
+                                    <p>👮 <strong>Police :</strong> 17</p>
+                                </div>
+                            </div>
+                        </section>
+                    `;
+
+                case 'hote':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">👤 Votre hôte</h2>
+                            <div class="info-card">
+                                ${data.hote_nom ? `<p><strong>Nom :</strong> ${data.hote_nom}</p>` : ''}
+                                ${data.hote_email ? `<p><strong>Email :</strong> ${data.hote_email}</p>` : ''}
+                                ${data.hote_telephone ? `
+                                    <p><strong>Téléphone :</strong> ${data.hote_telephone}</p>
+                                    <a href="tel:${data.hote_telephone}" class="contact-button" style="margin-top: 16px;">
+                                        📱 Appeler
+                                    </a>
+                                ` : ''}
+                            </div>
+                        </section>
+                    `;
+
+                case 'infos':
+                    return `
+                        <section class="info-section">
+                            <h2 class="section-title">ℹ️ Informations pratiques</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.infos_pratiques || 'Toutes les informations pour votre séjour.'}</p>
+                            </div>
+                        </section>
+                    `;
+
+                default:
+                    return '<p>Page non trouvée</p>';
+            }
+        }
+
+        // Charger la page au démarrage
+        loadPage();
+    </script>
+</body>
+</html>

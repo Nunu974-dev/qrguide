@@ -286,69 +286,69 @@
         <div class="luxury-container">
             <!-- Grille de Services -->
             <main class="luxury-grid" style="margin-top: 48px;">
-                <div class="luxury-card" onclick="showSection('arrivee')">
+                <a href="#" class="luxury-card" data-page="arrivee">
                     <div class="card-icon-luxury">✨</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="welcome">Bienvenue</h3>
                         <p class="card-desc-luxury" data-i18n="welcome_desc">Premiers pas</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('depart')">
+                <a href="#" class="luxury-card" data-page="depart">
                     <div class="card-icon-luxury">🚪</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="departure">Départ</h3>
                         <p class="card-desc-luxury" data-i18n="departure_desc">Check-out</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('wifi')">
+                <a href="#" class="luxury-card" data-page="wifi">
                     <div class="card-icon-luxury">📶</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="wifi">Wi-Fi</h3>
                         <p class="card-desc-luxury" data-i18n="wifi_desc">Connexion</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('equipements')">
+                <a href="#" class="luxury-card" data-page="equipements">
                     <div class="card-icon-luxury">🏠</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="equipment">Équipements</h3>
                         <p class="card-desc-luxury" data-i18n="equipment_desc">Mode d'emploi</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('restaurants')">
+                <a href="#" class="luxury-card" data-page="restaurants">
                     <div class="card-icon-luxury">🍽️</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="restaurants">Restaurants</h3>
                         <p class="card-desc-luxury" data-i18n="restaurants_desc">Bonnes adresses</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('activites')">
+                <a href="#" class="luxury-card" data-page="activites">
                     <div class="card-icon-luxury">🌴</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="activities">Activités</h3>
                         <p class="card-desc-luxury" data-i18n="activities_desc">Loisirs & Sorties</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('urgence')">
+                <a href="#" class="luxury-card" data-page="urgence">
                     <div class="card-icon-luxury">🚨</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="emergency">Urgence</h3>
                         <p class="card-desc-luxury" data-i18n="emergency_desc">Contacts SOS</p>
                     </div>
-                </div>
+                </a>
 
-                <div class="luxury-card" onclick="showSection('hote')">
+                <a href="#" class="luxury-card" data-page="hote">
                     <div class="card-icon-luxury">❤️</div>
                     <div>
                         <h3 class="card-title-luxury" data-i18n="host">Votre Hôte</h3>
                         <p class="card-desc-luxury" data-i18n="host_desc">À votre service</p>
                     </div>
-                </div>
+                </a>
             </main>
 
             <!-- Plus d'infos -->
@@ -359,20 +359,20 @@
                 </button>
                 
                 <div class="more-cards-luxury" id="more-cards">
-                    <div class="luxury-card" onclick="showSection('commerces')">
+                    <a href="#" class="luxury-card" data-page="commerces">
                         <div class="card-icon-luxury">📍</div>
                         <div>
                             <h3 class="card-title-luxury" data-i18n="nearby">À Proximité</h3>
                             <p class="card-desc-luxury" data-i18n="nearby_desc">Commerces & Services</p>
                         </div>
-                    </div>
-                    <div class="luxury-card" onclick="showSection('infos')">
+                    </a>
+                    <a href="#" class="luxury-card" data-page="infos">
                         <div class="card-icon-luxury">📋</div>
                         <div>
                             <h3 class="card-title-luxury" data-i18n="rules">Règlement</h3>
                             <p class="card-desc-luxury" data-i18n="rules_desc">Infos pratiques</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -993,6 +993,16 @@
             updateWeather();
             setInterval(updateDateTime, 1000);
             setInterval(updateWeather, 600000);
+            
+            // Gérer les clics sur les cartes pour naviguer vers les pages
+            document.querySelectorAll('.luxury-card[data-page]').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = card.dataset.page;
+                    const guideId = getGuideIdFromUrl();
+                    window.location.href = `/guide-page.html?guide=${guideId}&page=${page}`;
+                });
+            });
         });
     </script>
 </body>
