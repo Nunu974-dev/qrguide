@@ -2267,113 +2267,52 @@
                 
                 const logementData = logementDoc.data();
                 
-                // Créer un modal d'édition
-                const modal = document.createElement('div');
-                modal.className = 'modal';
-                modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;';
+                // Stocker l'ID pour la sauvegarde
+                currentLogementId = logementId;
                 
-                modal.innerHTML = `
-                    <div style="background: white; border-radius: 16px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                            <h2 style="margin: 0; color: #d4af37;">✏️ Modifier mon logement</h2>
-                            <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #f8f9fa; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">✕</button>
-                        </div>
-                        
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Nom du logement *</label>
-                            <input type="text" id="edit-nom" value="${logementData.nom || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
-                        </div>
-                        
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Ville *</label>
-                            <input type="text" id="edit-ville" value="${logementData.ville || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
-                        </div>
-                        
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Message de bienvenue</label>
-                            <textarea id="edit-message" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 100px;">${logementData.message_bienvenue || ''}</textarea>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
-                            <div>
-                                <label style="display: block; font-weight: 600; margin-bottom: 8px;">Heure d'arrivée</label>
-                                <input type="time" id="edit-checkin" value="${logementData.checkin_time || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
-                            </div>
-                            <div>
-                                <label style="display: block; font-weight: 600; margin-bottom: 8px;">Heure de départ</label>
-                                <input type="time" id="edit-checkout" value="${logementData.checkout_time || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
-                            </div>
-                        </div>
-                        
-                        <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <p style="margin: 0 0 12px 0; font-weight: 600; color: #666;">📶 Wi-Fi</p>
-                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Nom du réseau</label>
-                            <input type="text" id="edit-wifi-nom" value="${logementData.wifi_nom || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px; margin-bottom: 12px;">
-                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Mot de passe</label>
-                            <input type="text" id="edit-wifi-password" value="${logementData.wifi_password || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
-                        </div>
-                        
-                        <div style="display: flex; gap: 12px; margin-top: 24px;">
-                            <button onclick="saveLogementEdits('${logementId}', '${guideId}')" style="flex: 1; padding: 14px; background: #d4af37; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">
-                                💾 Sauvegarder
-                            </button>
-                            <button onclick="this.parentElement.parentElement.parentElement.remove()" style="padding: 14px 24px; background: #6c757d; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                                Annuler
-                            </button>
-                        </div>
-                    </div>
-                `;
+                // Changer le titre du modal
+                document.getElementById('modal-title').textContent = '✏️ Modifier votre guide';
                 
-                document.body.appendChild(modal);
+                // Pré-remplir le formulaire avec les données existantes
+                Object.keys(logementData).forEach(key => {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        if (input.tagName === 'TEXTAREA') {
+                            input.value = logementData[key] || '';
+                        } else if (input.type === 'file') {
+                            // Skip files
+                        } else if (input.type === 'checkbox') {
+                            input.checked = logementData[key] || false;
+                        } else {
+                            input.value = logementData[key] || '';
+                        }
+                    }
+                });
+                
+                // Afficher la photo existante
+                if (logementData.photo_url) {
+                    document.getElementById('photo_url').value = logementData.photo_url;
+                    document.getElementById('photo_preview').style.display = 'block';
+                    document.getElementById('photo_preview_img').src = logementData.photo_url;
+                    document.getElementById('photo_upload_status').textContent = '✅ Photo actuelle';
+                }
+                
+                // Charger les listes dynamiques (restaurants, équipements, etc.)
+                if (logementData.restaurants) {
+                    logementData.restaurants.forEach(resto => {
+                        addRestaurant();
+                        // TODO: remplir les champs
+                    });
+                }
+                
+                // Ouvrir le modal
+                document.getElementById('logement-modal').classList.add('active');
+                currentStep = 1;
+                showStep(currentStep);
                 
             } catch (error) {
                 console.error('❌ Erreur chargement logement:', error);
                 alert('Erreur lors du chargement du logement');
-            }
-        }
-
-        // === SAUVEGARDER LES MODIFICATIONS ===
-        async function saveLogementEdits(logementId, guideId) {
-            const nom = document.getElementById('edit-nom').value.trim();
-            const ville = document.getElementById('edit-ville').value.trim();
-            
-            if (!nom || !ville) {
-                alert('Le nom et la ville sont obligatoires');
-                return;
-            }
-            
-            try {
-                const updatedData = {
-                    nom: nom,
-                    ville: ville,
-                    message_bienvenue: document.getElementById('edit-message').value,
-                    checkin_time: document.getElementById('edit-checkin').value,
-                    checkout_time: document.getElementById('edit-checkout').value,
-                    wifi_nom: document.getElementById('edit-wifi-nom').value,
-                    wifi_password: document.getElementById('edit-wifi-password').value,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                // Mettre à jour dans users/{uid}/logements
-                await db.collection('users').doc(currentUser.uid)
-                    .collection('logements').doc(logementId).update(updatedData);
-                
-                // Mettre à jour dans guides/ (si le guide existe)
-                if (guideId) {
-                    await db.collection('guides').doc(guideId).update(updatedData);
-                }
-                
-                showAlert('✅ Logement modifié avec succès !', 'success');
-                
-                // Fermer le modal
-                document.querySelector('.modal').remove();
-                
-                // Recharger la liste
-                loadLogements();
-                
-            } catch (error) {
-                console.error('❌ Erreur sauvegarde:', error);
-                alert('Erreur lors de la sauvegarde : ' + error.message);
             }
         }
 
