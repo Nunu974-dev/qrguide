@@ -895,7 +895,7 @@
                         <input type="text" id="parking_info" name="parking_info" value="2 places privées couvertes à l'entrée de la propriété">
                     </div>
                     
-                    <div class="form-section-title">📶 WiFi</div>
+                    <div class="form-section-title">📶 WiFi & Multimédia</div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nom du réseau WiFi *</label>
@@ -907,9 +907,97 @@
                         </div>
                     </div>
                     
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Débit internet</label>
+                            <input type="text" id="wifi_debit" name="wifi_debit" placeholder="Ex: Fibre 500 Mbps" value="Fibre optique 500 Mbps">
+                        </div>
+                        <div class="form-group">
+                            <label>Emplacement box internet</label>
+                            <input type="text" id="wifi_box_emplacement" name="wifi_box_emplacement" placeholder="Ex: Placard entrée" value="Placard de l'entrée, étagère du bas">
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-title">📺 Télévision</div>
                     <div class="form-group">
-                        <label>Instructions TV / Multimédia</label>
-                        <textarea id="multimedia_instructions" name="multimedia_instructions" rows="3">TV connectée avec Netflix, Amazon Prime, Disney+. Allumez la TV avec la télécommande noire. Pour Netflix : compte déjà connecté, sélectionnez le profil "Invités".</textarea>
+                        <label>Marque et modèle TV</label>
+                        <input type="text" id="tv_marque" name="tv_marque" placeholder="Ex: Smart TV Samsung 55 pouces" value="Smart TV Samsung 55 pouces">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Plateformes streaming disponibles (séparées par des virgules)</label>
+                        <input type="text" id="tv_plateformes" name="tv_plateformes" placeholder="Ex: Netflix, Prime Video, YouTube, Disney+" value="Netflix, Prime Video, YouTube, Disney+">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Box TV et chaînes</label>
+                        <input type="text" id="tv_box" name="tv_box" placeholder="Ex: Box SFR - 200+ chaînes" value="Box SFR - 200+ chaînes (TNT, sport, cinéma)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Emplacement télécommandes</label>
+                        <input type="text" id="tv_telecommande_emplacement" name="tv_telecommande_emplacement" value="Sur le meuble TV dans le salon">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Instruction 1 - Allumer la TV</label>
+                            <input type="text" id="tv_instruction_1" name="tv_instruction_1" value="Bouton rouge sur la télécommande noire">
+                        </div>
+                        <div class="form-group">
+                            <label>Instruction 2 - Changer de source</label>
+                            <input type="text" id="tv_instruction_2" name="tv_instruction_2" value="Bouton Source → HDMI 1 (Box) ou Smart TV (apps)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Instruction 3 - Régler le volume</label>
+                        <input type="text" id="tv_instruction_3" name="tv_instruction_3" value="Boutons + / - sur le côté de la télécommande">
+                    </div>
+                    
+                    <div class="form-section-title">🔊 Enceinte Bluetooth</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Marque et modèle enceinte</label>
+                            <input type="text" id="enceinte_marque" name="enceinte_marque" placeholder="Ex: JBL Charge 5" value="JBL Charge 5">
+                        </div>
+                        <div class="form-group">
+                            <label>Nom Bluetooth pour connexion</label>
+                            <input type="text" id="enceinte_nom_bluetooth" name="enceinte_nom_bluetooth" placeholder="Ex: JBL Charge 5" value="JBL Charge 5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Emplacement enceinte</label>
+                            <input type="text" id="enceinte_emplacement" name="enceinte_emplacement" value="Sur l'étagère du salon">
+                        </div>
+                        <div class="form-group">
+                            <label>Emplacement chargeur</label>
+                            <input type="text" id="enceinte_chargeur" name="enceinte_chargeur" value="Dans le tiroir sous la TV">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Caractéristiques enceinte</label>
+                        <input type="text" id="enceinte_caracteristiques" name="enceinte_caracteristiques" placeholder="Ex: 20h autonomie, étanche, son 360°" value="20h autonomie, étanche (piscine OK), son 360° puissant">
+                    </div>
+                    
+                    <div class="form-section-title">🎮 Autres équipements multimédia</div>
+                    <div class="form-group">
+                        <label>Espace bureau / télétravail</label>
+                        <input type="text" id="multimedia_bureau" name="multimedia_bureau" value="Bureau dans la chambre avec prises USB et écran supplémentaire">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prises USB</label>
+                            <input type="text" id="multimedia_prises_usb" name="multimedia_prises_usb" value="Chaque pièce équipée de prises USB">
+                        </div>
+                        <div class="form-group">
+                            <label>Chargeurs disponibles</label>
+                            <input type="text" id="multimedia_chargeurs" name="multimedia_chargeurs" value="Station de charge multi-USB dans le salon">
+                        </div>
                     </div>
                 </div>
                 
@@ -917,31 +1005,83 @@
                 <div class="form-step" data-step="3">
                     <h3>🏠 Équipements & Instructions</h3>
                     
-                    <div class="form-section-title">🍳 Cuisine</div>
-                    <div id="equipements-cuisine-list"></div>
-                    <button type="button" class="btn-add-item" onclick="addEquipement('cuisine')">➕ Ajouter un équipement</button>
+                    <div class="form-section-title">🍳 Cuisine équipée</div>
+                    <div class="form-group">
+                        <label>Plaques de cuisson</label>
+                        <input type="text" id="cuisine_plaques" name="cuisine_plaques" placeholder="Ex: Induction - Allumage tactile" value="Plaques induction - Allumage tactile, puissance réglable">
+                    </div>
+                    <div class="form-group">
+                        <label>Four</label>
+                        <input type="text" id="cuisine_four" name="cuisine_four" placeholder="Ex: Four électrique - Préchauffer 10 min" value="Four électrique encastré - Préchauffer 10 min avant utilisation">
+                    </div>
+                    <div class="form-group">
+                        <label>Machine à café</label>
+                        <input type="text" id="cuisine_cafe" name="cuisine_cafe" placeholder="Ex: Nespresso - Capsules fournies" value="Machine Nespresso - Capsules fournies (tiroir sous la machine)">
+                    </div>
+                    <div class="form-group">
+                        <label>Réfrigérateur</label>
+                        <input type="text" id="cuisine_frigo" name="cuisine_frigo" value="Réfrigérateur combiné avec congélateur - Température réglable">
+                    </div>
+                    <div class="form-group">
+                        <label>Lave-vaisselle</label>
+                        <input type="text" id="cuisine_lave_vaisselle" name="cuisine_lave_vaisselle" value="Lave-vaisselle - Tablettes sous l'évier, programme éco recommandé">
+                    </div>
+                    <div class="form-group">
+                        <label>Autres équipements cuisine (séparés par des virgules)</label>
+                        <textarea id="cuisine_autres" name="cuisine_autres" rows="2" placeholder="Ex: Micro-ondes, Bouilloire, Grille-pain...">Micro-ondes, Bouilloire électrique, Grille-pain, Mixeur, Robot cuiseur</textarea>
+                    </div>
                     
                     <div class="form-section-title">🚿 Salle de bain</div>
-                    <div id="equipements-sdb-list"></div>
-                    <button type="button" class="btn-add-item" onclick="addEquipement('sdb')">➕ Ajouter un équipement</button>
+                    <div class="form-group">
+                        <label>Douche / Baignoire</label>
+                        <input type="text" id="sdb_douche" name="sdb_douche" placeholder="Ex: Douche à l'italienne - Eau chaude instantanée" value="Douche à l'italienne - Eau chaude instantanée, pression réglable">
+                    </div>
+                    <div class="form-group">
+                        <label>Produits fournis</label>
+                        <input type="text" id="sdb_produits" name="sdb_produits" value="Gel douche, Shampoing, Savon liquide">
+                    </div>
+                    <div class="form-group">
+                        <label>Sèche-cheveux</label>
+                        <input type="text" id="sdb_seche_cheveux" name="sdb_seche_cheveux" value="Sèche-cheveux dans le tiroir sous le lavabo">
+                    </div>
+                    <div class="form-group">
+                        <label>Serviettes</label>
+                        <input type="text" id="sdb_serviettes" name="sdb_serviettes" value="Serviettes de bain, visage et piscine fournies">
+                    </div>
+                    <div class="form-group">
+                        <label>Autres équipements salle de bain (séparés par des virgules)</label>
+                        <textarea id="sdb_autres" name="sdb_autres" rows="2" placeholder="Ex: Sèche-linge, Balai serpillière...">Miroir grossissant, Pèse-personne, Peignoirs</textarea>
+                    </div>
                     
                     <div class="form-section-title">❄️ Climatisation & Chauffage</div>
+                    <div class="form-group">
+                        <label>Emplacement télécommande climatisation</label>
+                        <input type="text" id="clim_telecommande_emplacement" name="clim_telecommande_emplacement" value="Télécommande sur la table du salon">
+                    </div>
                     <div class="form-group">
                         <label>Instructions climatisation/chauffage</label>
                         <textarea id="instructions_clim" name="instructions_clim" rows="3">Climatisation réversible dans toutes les pièces. Télécommandes murales blanches. IMPORTANT : fermez portes et fenêtres quand la climatisation fonctionne pour optimiser l'efficacité.</textarea>
                     </div>
                     
-                    <div class="form-section-title">🏊 Piscine & Extérieur</div>
-                    <div id="equipements-ext-list"></div>
-                    <button type="button" class="btn-add-item" onclick="addEquipement('ext')">➕ Ajouter un équipement</button>
+                    <div class="form-section-title">🧺 Linge & Nettoyage</div>
+                    <div class="form-group">
+                        <label>Lave-linge</label>
+                        <input type="text" id="linge_lave_linge" name="linge_lave_linge" value="Lave-linge dans la buanderie - Lessive fournie">
+                    </div>
+                    <div class="form-group">
+                        <label>Aspirateur</label>
+                        <input type="text" id="linge_aspirateur" name="linge_aspirateur" value="Aspirateur dans le placard de l'entrée">
+                    </div>
+                    <div class="form-group">
+                        <label>Produits d'entretien</label>
+                        <input type="text" id="linge_produits_entretien" name="linge_produits_entretien" value="Sous l'évier de la cuisine (éponges, produit vaisselle, nettoyant multi-surfaces)">
+                    </div>
                     
-                    <div class="form-section-title">📺 Multimédia</div>
-                    <div id="equipements-multimedia-list"></div>
-                    <button type="button" class="btn-add-item" onclick="addEquipement('multimedia')">➕ Ajouter un équipement</button>
-                    
-                    <div class="form-section-title">🧺 Autres équipements</div>
-                    <div id="equipements-autres-list"></div>
-                    <button type="button" class="btn-add-item" onclick="addEquipement('autres')">➕ Ajouter un équipement</button>
+                    <div class="form-section-title">⚠️ Règles importantes équipements</div>
+                    <div class="form-group">
+                        <label>Règles de sécurité (séparées par des virgules)</label>
+                        <textarea id="equipements_regles_importantes" name="equipements_regles_importantes" rows="3" placeholder="Ex: Ne pas utiliser d'appareils défectueux, Débrancher les appareils non utilisés...">Ne pas utiliser d'appareils défectueux, Débrancher les appareils non utilisés, Ne rien jeter dans les toilettes (sauf papier WC)</textarea>
+                    </div>
                     
                     <div class="form-section-title">🚪 Instructions de départ</div>
                     <div class="form-group">
