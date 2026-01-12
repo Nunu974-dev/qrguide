@@ -808,70 +808,226 @@
 
                 case 'hote':
                     return `
-                        ${data.message_hote ? `
+                        ${data.hote_avatar_url || data.hote_noms || data.message_hote ? `
                         <section class="info-section">
-                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); text-align: center; border: 3px solid var(--primary-color);">
-                                <div style="width: 100px; height: 100px; background: rgba(var(--primary-rgb), 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 20px auto; border: 3px solid var(--primary-color);">
-                                    👤
+                            <div class="info-card" style="text-align: center;">
+                                ${data.hote_avatar_url ? `
+                                <div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto 16px; border: 3px solid var(--primary-color);">
+                                    <img src="${data.hote_avatar_url}" alt="Votre hôte" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
-                                <h2 style="font-size: 1.8rem; margin: 0 0 16px 0; color: var(--primary-color);">Bienvenue chez nous ! 🏡</h2>
-                                ${data.hote_nom ? `<p style="margin: 0 0 12px 0; font-size: 1.05rem;">Nous sommes <strong>${data.hote_nom}</strong></p>` : ''}
-                                <p style="margin: 0; white-space: pre-line;">${data.message_hote.replace(/\n/g, '<br>')}</p>
+                                ` : ''}
+                                <h2 style="font-size: 1.6rem; margin: 0 0 8px 0; color: var(--primary-color);">Bienvenue chez nous !</h2>
+                                ${data.hote_noms || data.hote_nom ? `<p style="font-size: 1.1rem; font-weight: 600; margin: 0 0 16px 0;"><strong>${data.hote_noms || data.hote_nom}</strong></p>` : ''}
+                                ${data.message_hote ? `<p class="info-text" style="white-space: pre-wrap;">${data.message_hote.replace(/\n/g, '<br>')}</p>` : ''}
                             </div>
                         </section>
                         ` : ''}
                         
+                        ${data.hote_telephone || data.hote_whatsapp || data.hote_email ? `
                         <section class="info-section">
                             <h2 class="section-title">📞 Nous contacter</h2>
-                            
-                            ${data.hote_telephone ? `
-                            <div class="info-card" style="margin-bottom: 16px;">
-                                <div style="display: flex; gap: 16px; align-items: center;">
-                                    <div style="font-size: 3rem;">📱</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-size: 1.2rem; margin: 0 0 6px 0;">Téléphone</h3>
-                                        <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color); margin: 0 0 12px 0;">${data.hote_telephone}</p>
-                                        <a href="tel:${data.hote_telephone}" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">📞 Appeler</a>
-                                    </div>
-                                </div>
-                            </div>
-                            ` : ''}
-                            
-                            ${data.hote_email ? `
-                            <div class="info-card">
-                                <div style="display: flex; gap: 16px; align-items: center;">
-                                    <div style="font-size: 3rem;">📧</div>
-                                    <div style="flex: 1;">
-                                        <h3 style="font-size: 1.2rem; margin: 0 0 6px 0;">Email</h3>
-                                        <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color); margin: 0 0 12px 0;">${data.hote_email}</p>
-                                        <a href="mailto:${data.hote_email}" style="display: inline-block; padding: 8px 16px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">📧 Envoyer un email</a>
-                                    </div>
-                                </div>
-                            </div>
-                            ` : ''}
-                        </section>
-                        
-                        ${data.hote_disponibilite_semaine || data.hote_disponibilite_weekend ? `
-                        <section class="info-section">
-                            <h2 class="section-title">⏰ Disponibilité</h2>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-                                ${data.hote_disponibilite_semaine ? `
-                                <div style="display: flex; gap: 16px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
-                                    <span style="font-size: 2.5rem;">🌅</span>
-                                    <div>
-                                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0;">En semaine</h4>
-                                        <p style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color); margin: 0;">${data.hote_disponibilite_semaine}</p>
+                            <div style="display: grid; gap: 12px;">
+                                ${data.hote_telephone ? `
+                                <div class="info-card">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 3rem; margin-bottom: 12px;">📱</div>
+                                        <a href="tel:${data.hote_telephone}" style="font-size: 1.3rem; font-weight: 700; color: var(--primary-color); text-decoration: none; display: block; margin-bottom: 8px;">
+                                            ${data.hote_telephone}
+                                        </a>
+                                        ${data.hote_telephone_preference ? `<p style="margin: 0 0 12px 0; font-size: 0.9rem; color: #666;">${data.hote_telephone_preference}</p>` : ''}
+                                        <a href="tel:${data.hote_telephone}" class="contact-button" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                                            📞 Appeler
+                                        </a>
                                     </div>
                                 </div>
                                 ` : ''}
-                                ${data.hote_disponibilite_weekend ? `
-                                <div style="display: flex; gap: 16px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.15);">
-                                    <span style="font-size: 2.5rem;">☀️</span>
-                                    <div>
-                                        <h4 style="font-size: 1.1rem; margin: 0 0 6px 0;">Week-end</h4>
-                                        <p style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color); margin: 0;">${data.hote_disponibilite_weekend}</p>
+                                ${data.hote_whatsapp ? `
+                                <div class="info-card" style="background: linear-gradient(135deg, rgba(37, 211, 102, 0.15) 0%, rgba(37, 211, 102, 0.05) 100%); border: 2px solid #25D366;">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 3rem; margin-bottom: 12px;">💬</div>
+                                        <a href="https://wa.me/${data.hote_whatsapp.replace(/[^0-9]/g, '')}" style="font-size: 1.3rem; font-weight: 700; color: #25D366; text-decoration: none; display: block; margin-bottom: 8px;">
+                                            ${data.hote_whatsapp}
+                                        </a>
+                                        <p style="margin: 0 0 12px 0; font-size: 0.9rem; color: #666;">Message instantané</p>
+                                        <a href="https://wa.me/${data.hote_whatsapp.replace(/[^0-9]/g, '')}" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #25D366; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 12px;">
+                                            💬 Envoyer un WhatsApp
+                                        </a>
                                     </div>
                                 </div>
+                                ` : ''}
+                                ${data.hote_email ? `
+                                <div class="info-card">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 3rem; margin-bottom: 12px;">📧</div>
+                                        <a href="mailto:${data.hote_email}" style="font-size: 1.1rem; color: var(--primary-color); text-decoration: none; display: block; margin-bottom: 8px; word-break: break-word;">
+                                            ${data.hote_email}
+                                        </a>
+                                        ${data.hote_email_delai ? `<p style="margin: 0 0 12px 0; font-size: 0.9rem; color: #666;">${data.hote_email_delai}</p>` : ''}
+                                        <a href="mailto:${data.hote_email}" class="contact-button" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                                            ✉️ Envoyer un email
+                                        </a>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_disponibilite_semaine || data.hote_disponibilite_weekend || data.hote_disponibilite_urgence ? `
+                        <section class="info-section">
+                            <h2 class="section-title">⏰ Disponibilités</h2>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                                ${data.hote_disponibilite_semaine ? `
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 2.5rem; margin-bottom: 8px;">🌅</div>
+                                    <h3 style="font-size: 1rem; margin: 0 0 8px 0; color: #666; text-transform: uppercase; letter-spacing: 1px;">En semaine</h3>
+                                    <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary-color); margin: 0 0 8px 0;">${data.hote_disponibilite_semaine}</p>
+                                    ${data.hote_reponse_semaine ? `<p style="margin: 0; font-size: 0.85rem; color: #666;">${data.hote_reponse_semaine}</p>` : ''}
+                                </div>
+                                ` : ''}
+                                ${data.hote_disponibilite_weekend ? `
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 2.5rem; margin-bottom: 8px;">☀️</div>
+                                    <h3 style="font-size: 1rem; margin: 0 0 8px 0; color: #666; text-transform: uppercase; letter-spacing: 1px;">Week-end</h3>
+                                    <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary-color); margin: 0 0 8px 0;">${data.hote_disponibilite_weekend}</p>
+                                    ${data.hote_reponse_weekend ? `<p style="margin: 0; font-size: 0.85rem; color: #666;">${data.hote_reponse_weekend}</p>` : ''}
+                                </div>
+                                ` : ''}
+                                ${data.hote_disponibilite_urgence !== false ? `
+                                <div class="info-card" style="text-align: center; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); border: 2px solid #dc2626;">
+                                    <div style="font-size: 2.5rem; margin-bottom: 8px;">🚨</div>
+                                    <h3 style="font-size: 1rem; margin: 0 0 8px 0; color: #991b1b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Urgences</h3>
+                                    <p style="font-size: 1.3rem; font-weight: 700; color: #dc2626; margin: 0 0 8px 0;">${data.hote_disponibilite_urgence || '24h/24'}</p>
+                                    <p style="margin: 0; font-size: 0.85rem; color: #991b1b; font-weight: 600;">Toujours disponible</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_services_conseils || data.hote_services_reservations || data.hote_services_location || data.hote_services_bagages || data.hote_services || data.hote_services_autres ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🎁 Services proposés</h2>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                                ${data.hote_services_conseils ? `
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: 8px;">🗺️</div>
+                                    <p style="margin: 0; font-weight: 600;">Conseils</p>
+                                </div>
+                                ` : ''}
+                                ${data.hote_services_reservations ? `
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: 8px;">📱</div>
+                                    <p style="margin: 0; font-weight: 600;">Réservations</p>
+                                </div>
+                                ` : ''}
+                                ${data.hote_services_location ? `
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: 8px;">🚗</div>
+                                    <p style="margin: 0; font-weight: 600;">Location voiture</p>
+                                </div>
+                                ` : ''}
+                                ${data.hote_services_bagages ? `
+                                <div class="info-card" style="text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: 8px;">🧳</div>
+                                    <p style="margin: 0; font-weight: 600;">Dépôt bagages</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                            ${data.hote_services_autres || data.hote_services ? `
+                            <div class="info-card" style="margin-top: 12px;">
+                                <p style="margin: 0;"><strong>Autres services :</strong> ${data.hote_services_autres || data.hote_services}</p>
+                            </div>
+                            ` : ''}
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_coups_de_coeur ? `
+                        <section class="info-section">
+                            <h2 class="section-title">❤️ Nos coups de cœur</h2>
+                            <div class="info-card">
+                                <div style="display: grid; gap: 12px;">
+                                    ${data.hote_coups_de_coeur.split('\n').filter(item => item.trim()).map(item => {
+                                        const parts = item.split(':');
+                                        const emoji = parts[0]?.trim() || '✨';
+                                        const rest = parts.slice(1).join(':').split('-');
+                                        const title = rest[0]?.trim() || item;
+                                        const description = rest[1]?.trim() || '';
+                                        return `
+                                        <div style="display: flex; gap: 14px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px;">
+                                            <span style="font-size: 2rem;">${emoji}</span>
+                                            <div>
+                                                <h4 style="margin: 0 0 4px 0; font-size: 1.05rem;">${title}</h4>
+                                                ${description ? `<p style="margin: 0; font-size: 0.9rem; color: #666;">${description}</p>` : ''}
+                                            </div>
+                                        </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_engagement_qualite ? `
+                        <section class="info-section">
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%); border-left: 4px solid var(--primary-color);">
+                                <h3 style="font-size: 1.3rem; margin: 0 0 16px 0; color: var(--primary-color);">✨ Notre engagement qualité</h3>
+                                <div style="display: grid; gap: 10px;">
+                                    ${data.hote_engagement_qualite.split(',').map(engagement => `
+                                        <div style="display: flex; gap: 12px; align-items: center;">
+                                            <span style="font-size: 1.5rem; color: var(--primary-color);">✓</span>
+                                            <p style="margin: 0;">${engagement.trim()}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_apropos || data.hote_instagram || data.hote_facebook ? `
+                        <section class="info-section">
+                            <div class="info-card">
+                                <h3 style="font-size: 1.3rem; margin: 0 0 12px 0; color: var(--primary-color);">🌴 Un peu plus sur nous...</h3>
+                                ${data.hote_apropos ? `<p style="margin: 0 0 16px 0; white-space: pre-wrap;">${data.hote_apropos.replace(/\n/g, '<br>')}</p>` : ''}
+                                ${data.hote_instagram || data.hote_facebook ? `
+                                <div style="padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px;">
+                                    <p style="margin: 0 0 8px 0; font-weight: 600;">Suivez-nous :</p>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        ${data.hote_instagram ? `
+                                        <a href="${data.hote_instagram}" target="_blank" style="display: inline-block; padding: 8px 16px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📷 Instagram</a>
+                                        ` : ''}
+                                        ${data.hote_facebook ? `
+                                        <a href="${data.hote_facebook}" target="_blank" style="display: inline-block; padding: 8px 16px; background: #1877f2; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">👍 Facebook</a>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.hote_message_final || data.hote_telephone || data.hote_noms || data.hote_nom ? `
+                        <section class="info-section">
+                            <div class="info-card" style="text-align: center; background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); border: 3px solid var(--primary-color);">
+                                <h3 style="font-size: 1.5rem; margin: 0 0 16px 0; color: var(--primary-color);">🙏 Merci de votre confiance !</h3>
+                                ${data.hote_message_final ? `<p style="margin: 0 0 12px 0;">${data.hote_message_final}</p>` : `
+                                <p style="margin: 0 0 12px 0;">
+                                    Nous mettons tout en œuvre pour que votre séjour soit parfait. Si vous avez la moindre question, suggestion ou besoin, <strong>n'hésitez surtout pas</strong> à nous contacter.
+                                </p>
+                                `}
+                                <p style="margin: 0 0 16px 0;">
+                                    Nous vous souhaitons un <strong>excellent séjour</strong> ! ☀️
+                                </p>
+                                ${data.hote_noms || data.hote_nom ? `
+                                <p style="font-style: italic; margin: 0 0 20px 0; color: #666;">
+                                    Avec toute notre bienveillance,<br>
+                                    <strong style="color: var(--primary-color);">${data.hote_noms || data.hote_nom}</strong> ❤️
+                                </p>
+                                ` : ''}
+                                ${data.hote_telephone ? `
+                                <a href="tel:${data.hote_telephone}" style="display: inline-block; padding: 14px 32px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem;">
+                                    📞 Nous contacter
+                                </a>
                                 ` : ''}
                             </div>
                         </section>
@@ -881,16 +1037,7 @@
                         <section class="info-section">
                             <h2 class="section-title">🌍 Langues parlées</h2>
                             <div class="info-card">
-                                <p>${data.hote_langues}</p>
-                            </div>
-                        </section>
-                        ` : ''}
-                        
-                        ${data.hote_services ? `
-                        <section class="info-section">
-                            <h2 class="section-title">🎁 Services proposés</h2>
-                            <div class="info-card">
-                                <div style="white-space: pre-line;">${data.hote_services.replace(/,/g, '<br>✔️ ')}</div>
+                                <p class="info-text">${data.hote_langues}</p>
                             </div>
                         </section>
                         ` : ''}
@@ -992,6 +1139,76 @@
                         ` : ''}
                     `;
 
+                case 'livre-or':
+                    return `
+                        <!-- Section: Laissez votre avis -->
+                        <section class="info-section">
+                            <div style="text-align: center; margin-bottom: 24px;">
+                                <h2 class="section-title">✨ Partagez votre expérience</h2>
+                                <p style="margin: 0; color: #666; font-size: 1rem;">Votre avis compte ! Partagez vos meilleurs moments avec les futurs voyageurs.</p>
+                            </div>
+
+                            <!-- Formulaire d'avis -->
+                            <div class="info-card">
+                                <form id="guestbook-form">
+                                    <div style="margin-bottom: 16px;">
+                                        <label for="guest-name" style="display: block; margin-bottom: 6px; font-weight: 600;">📝 Votre prénom</label>
+                                        <input type="text" id="guest-name" placeholder="Ex: Marie" required style="width: 100%; padding: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; font-size: 1rem;">
+                                    </div>
+
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">⭐ Note globale</label>
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                            <label style="display: flex; align-items: center; gap: 6px; padding: 10px 14px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                                <input type="radio" name="rating" value="5" required style="margin: 0;">
+                                                <span>⭐⭐⭐⭐⭐</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 6px; padding: 10px 14px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                                <input type="radio" name="rating" value="4" style="margin: 0;">
+                                                <span>⭐⭐⭐⭐</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 6px; padding: 10px 14px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                                <input type="radio" name="rating" value="3" style="margin: 0;">
+                                                <span>⭐⭐⭐</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 6px; padding: 10px 14px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                                <input type="radio" name="rating" value="2" style="margin: 0;">
+                                                <span>⭐⭐</span>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 6px; padding: 10px 14px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                                <input type="radio" name="rating" value="1" style="margin: 0;">
+                                                <span>⭐</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 20px;">
+                                        <label for="guest-comment" style="display: block; margin-bottom: 6px; font-weight: 600;">💬 Votre avis</label>
+                                        <textarea id="guest-comment" rows="5" placeholder="Décrivez votre séjour, ce que vous avez aimé..." required style="width: 100%; padding: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                                    </div>
+
+                                    <button type="submit" style="width: 100%; padding: 14px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer;">
+                                        📮 Publier mon avis
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+
+                        <!-- Section: Avis des voyageurs -->
+                        <section class="info-section">
+                            <h2 class="section-title">💬 Avis des voyageurs</h2>
+                            
+                            <div id="reviews-list">
+                                <!-- Les avis seront ajoutés ici dynamiquement via Firebase -->
+                            </div>
+
+                            <div id="empty-reviews" style="text-align: center; padding: 40px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;">
+                                <div style="font-size: 4rem; margin-bottom: 16px;">📭</div>
+                                <p style="margin: 0; color: #666;">Aucun avis pour le moment.<br>Soyez le premier à partager votre expérience !</p>
+                            </div>
+                        </section>
+                    `;
+
                 default:
                     return '<p>Page non trouvée</p>';
             }
@@ -999,6 +1216,121 @@
 
             // Charger la page au démarrage
             loadPage();
+
+            // Gestion du livre d'or
+            async function loadGuestbook() {
+                const guideId = urlParams.get('guide');
+                if (!guideId) return;
+
+                const reviewsList = document.getElementById('reviews-list');
+                const emptyReviews = document.getElementById('empty-reviews');
+                
+                if (!reviewsList || !emptyReviews) return;
+
+                try {
+                    const reviewsRef = firebase.firestore()
+                        .collection('guides')
+                        .doc(guideId)
+                        .collection('reviews')
+                        .orderBy('timestamp', 'desc');
+
+                    reviewsRef.onSnapshot((snapshot) => {
+                        if (snapshot.empty) {
+                            reviewsList.innerHTML = '';
+                            emptyReviews.style.display = 'block';
+                        } else {
+                            emptyReviews.style.display = 'none';
+                            reviewsList.innerHTML = snapshot.docs.map(doc => {
+                                const review = doc.data();
+                                const stars = '⭐'.repeat(review.rating);
+                                const date = review.timestamp ? new Date(review.timestamp.toDate()).toLocaleDateString('fr-FR', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) : '';
+
+                                return `
+                                    <div class="info-card" style="margin-bottom: 16px; border-left: 4px solid var(--primary-color);">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                            <div>
+                                                <h3 style="font-size: 1.2rem; margin: 0 0 4px 0; color: var(--primary-color);">${review.name}</h3>
+                                                <div style="font-size: 1.1rem; margin-bottom: 4px;">${stars}</div>
+                                            </div>
+                                            <span style="font-size: 0.85rem; color: #666;">${date}</span>
+                                        </div>
+                                        <p style="margin: 0; white-space: pre-wrap; color: #333;">${review.comment}</p>
+                                    </div>
+                                `;
+                            }).join('');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Erreur chargement avis:', error);
+                }
+            }
+
+            // Soumission du formulaire livre d'or
+            document.addEventListener('submit', async function(e) {
+                if (e.target.id === 'guestbook-form') {
+                    e.preventDefault();
+
+                    const guideId = urlParams.get('guide');
+                    if (!guideId) return;
+
+                    const name = document.getElementById('guest-name').value.trim();
+                    const rating = parseInt(document.querySelector('input[name="rating"]:checked')?.value || '0');
+                    const comment = document.getElementById('guest-comment').value.trim();
+
+                    if (!name || !rating || !comment) {
+                        alert('Veuillez remplir tous les champs');
+                        return;
+                    }
+
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = '📤 Publication en cours...';
+                    submitBtn.disabled = true;
+
+                    try {
+                        await firebase.firestore()
+                            .collection('guides')
+                            .doc(guideId)
+                            .collection('reviews')
+                            .add({
+                                name: name,
+                                rating: rating,
+                                comment: comment,
+                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+
+                        // Réinitialiser le formulaire
+                        e.target.reset();
+                        submitBtn.textContent = '✅ Avis publié !';
+                        
+                        setTimeout(() => {
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }, 2000);
+
+                        // Scroll vers la liste des avis
+                        setTimeout(() => {
+                            document.getElementById('reviews-list')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 500);
+
+                    } catch (error) {
+                        console.error('Erreur publication avis:', error);
+                        alert('Erreur lors de la publication. Veuillez réessayer.');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
+                }
+            });
+
+            // Charger le livre d'or si on est sur cette page
+            const currentPage = urlParams.get('page');
+            if (currentPage === 'livre-or') {
+                setTimeout(loadGuestbook, 500);
+            }
         });
     </script>
 </body>
