@@ -758,23 +758,23 @@
             
             <!-- Indicateur de progression -->
             <div class="form-progress">
-                <div class="progress-step active" data-step="1">
+                <div class="progress-step active" data-step="1" onclick="goToStep(1)" style="cursor: pointer;">
                     <div class="step-number">1</div>
                     <div class="step-label">Informations générales</div>
                 </div>
-                <div class="progress-step" data-step="2">
+                <div class="progress-step" data-step="2" onclick="goToStep(2)" style="cursor: pointer;">
                     <div class="step-number">2</div>
                     <div class="step-label">Arrivée & WiFi</div>
                 </div>
-                <div class="progress-step" data-step="3">
+                <div class="progress-step" data-step="3" onclick="goToStep(3)" style="cursor: pointer;">
                     <div class="step-number">3</div>
                     <div class="step-label">Équipements</div>
                 </div>
-                <div class="progress-step" data-step="4">
+                <div class="progress-step" data-step="4" onclick="goToStep(4)" style="cursor: pointer;">
                     <div class="step-number">4</div>
                     <div class="step-label">Restaurants & Activités</div>
                 </div>
-                <div class="progress-step" data-step="5">
+                <div class="progress-step" data-step="5" onclick="goToStep(5)" style="cursor: pointer;">
                     <div class="step-number">5</div>
                     <div class="step-label">Infos pratiques</div>
                 </div>
@@ -1965,6 +1965,12 @@
                 currentFormStep = newStep;
                 showStep(currentFormStep);
             }
+        }
+        
+        // Aller directement à une étape (clic sur les boules)
+        function goToStep(step) {
+            currentFormStep = step;
+            showStep(currentFormStep);
         }
         
         function showStep(step) {

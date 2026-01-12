@@ -146,6 +146,24 @@
                         </section>
                         ` : ''}
                         
+                        ${data.instructions_arrivee ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🔑 Instructions d'arrivée</h2>
+                            <div class="info-card">
+                                <p class="info-text" style="white-space: pre-line;">${data.instructions_arrivee.replace(/\n/g, '<br>')}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.code_acces ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🔐 Code d'accès</h2>
+                            <div class="info-card">
+                                <p class="info-text"><strong>Code :</strong> <span style="font-size: 1.5rem; color: var(--primary-color); font-weight: 700;">${data.code_acces}</span></p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
                         ${data.checkin_time || data.checkout_time ? `
                         <section class="info-section">
                             <h2 class="section-title">⏰ Horaires</h2>
@@ -153,6 +171,27 @@
                                 <div class="info-list">
                                     ${data.checkin_time ? `<p>🟢 <strong>Arrivée :</strong> à partir de ${data.checkin_time}</p>` : ''}
                                     ${data.checkout_time ? `<p>🔴 <strong>Départ :</strong> avant ${data.checkout_time}</p>` : ''}
+                                </div>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.parking_info ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🅿️ Parking</h2>
+                            <div class="info-card">
+                                <p class="info-text">${data.parking_info.replace(/\n/g, '<br>')}</p>
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${data.wifi_nom || data.wifi_password ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📶 Wi-Fi</h2>
+                            <div class="info-card">
+                                <div class="info-list">
+                                    ${data.wifi_nom ? `<p>📡 <strong>Réseau :</strong> ${data.wifi_nom}</p>` : ''}
+                                    ${data.wifi_password ? `<p>🔒 <strong>Mot de passe :</strong> ${data.wifi_password}</p>` : ''}
                                 </div>
                             </div>
                         </section>
