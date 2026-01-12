@@ -34,13 +34,25 @@
     </div>
 
     <script>
-        // Récupérer les paramètres de l'URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const guideId = urlParams.get('guide');
-        const pageType = urlParams.get('page');
+        // Attendre que Firebase soit chargé
+        window.addEventListener('load', function() {
+            // Vérifier que Firebase est bien chargé
+            if (!firebase || !firebase.firestore) {
+                console.error('Firebase non chargé');
+                document.getElementById('page-content').innerHTML = '<p style="text-align: center; color: red;">Erreur de chargement Firebase</p>';
+                return;
+            }
 
-        // Configuration des pages
-        const pageConfig = {
+            // Initialiser Firestore si ce n'est pas déjà fait
+            const db = firebase.firestore();
+            
+            // Récupérer les paramètres de l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const guideId = urlParams.get('guide');
+            const pageType = urlParams.get('page');
+
+            // Configuration des pages
+            const pageConfig = {
             'arrivee': {
                 title: '👋 Bienvenue !',
                 image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=400&fit=crop&q=90'
@@ -279,8 +291,9 @@
             }
         }
 
-        // Charger la page au démarrage
-        loadPage();
+            // Charger la page au démarrage
+            loadPage();
+        });
     </script>
 </body>
 </html>
