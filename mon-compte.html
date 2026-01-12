@@ -1117,44 +1117,15 @@
                     <button type="button" class="btn-add-item" onclick="addCommerce()">➕ Ajouter un commerce</button>
                 </div>
                 
-                <!-- ÉTAPE 5: Infos pratiques -->
+                <!-- ÉTAPE 5: Infos pratiques & Hôte -->
                 <div class="form-step" data-step="5">
-                    <h3>📋 Informations Pratiques</h3>
+                    <h3>📋 Informations Pratiques & Votre Contact</h3>
                     
-                    <div class="form-section-title">📜 Règlement & Consignes</div>
-                    <div class="form-group">
-                        <label>Règles de la maison</label>
-                        <textarea id="regles" name="regles" rows="6">🚭 Non fumeur à l'intérieur (espace fumeur : terrasse extérieure)
-🎉 Pas de fêtes ou événements sans autorisation préalable
-🔇 Respecter le calme après 22h (voisinage résidentiel)
-🐕 Animaux non acceptés
-👥 Nombre maximum de personnes : 6
-🏊 Piscine non surveillée - responsabilité des parents pour les enfants</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">🧹 Ménage & Tri</div>
-                    <div class="form-group">
-                        <label>Instructions ménage et tri des déchets</label>
-                        <textarea id="menage_tri" name="menage_tri" rows="5">🗑️ Poubelle jaune (recyclage) : sous l'évier - Poubelle verte (ordures) : garage
-♻️ Collecte : mardi et vendredi matin (sortir les containers la veille au soir)
-🧽 Ménage de départ : faire la vaisselle, ranger, vider poubelles, éteindre équipements
-🧺 Linge de lit : laisser sur le lit (nettoyage professionnel inclus)
-🧹 Produits ménagers : sous l'évier de la cuisine</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">🔑 Accès & Clés</div>
-                    <div class="form-group">
-                        <label>Instructions pour les clés</label>
-                        <textarea id="instructions_cles" name="instructions_cles" rows="3">📍 Récupération : boîte à clés sécurisée à gauche de la porte d'entrée (code envoyé par SMS)
-🔙 Restitution au départ : remettre les clés dans la boîte à clés et refermer
-🔑 3 clés fournies : portail, porte d'entrée, portillon piscine</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">👤 Votre contact</div>
+                    <div class="form-section-title">👤 Votre contact (affiché dans le guide)</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Votre nom / Prénom</label>
-                            <input type="text" id="hote_nom" name="hote_nom" value="Julien">
+                            <label>Votre nom / Prénom *</label>
+                            <input type="text" id="hote_nom" name="hote_nom" value="Julien" required>
                         </div>
                         <div class="form-group">
                             <label>Téléphone de contact *</label>
@@ -1168,32 +1139,158 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Message personnalisé pour vos voyageurs</label>
-                        <textarea id="message_hote" name="message_hote" rows="3">N'hésitez pas à me contacter pour toute question ou besoin durant votre séjour. Je suis disponible 7j/7 de 8h à 20h et parle français, anglais et créole. Je ferai mon maximum pour rendre votre séjour inoubliable !</textarea>
+                        <label>Message personnalisé de bienvenue pour vos voyageurs</label>
+                        <textarea id="message_hote" name="message_hote" rows="4" placeholder="Présentez-vous et partagez votre passion pour votre région...">Bienvenue chez nous ! Nous sommes ravis de vous accueillir dans notre logement. Nous vivons à La Réunion depuis 10 ans et adorons partager nos coups de cœur avec nos voyageurs. N'hésitez surtout pas à nous demander des conseils, nous connaissons l'île comme notre poche ! Notre objectif : que vous passiez le meilleur séjour possible ✨</textarea>
                     </div>
                     
-                    <div class="form-section-title">🚨 Numéros d'urgence locaux</div>
+                    <div class="form-section-title">⏰ Disponibilité hôte</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Disponibilité en semaine</label>
+                            <input type="text" id="hote_disponibilite_semaine" name="hote_disponibilite_semaine" placeholder="Ex: 8h-21h" value="8h00 - 21h00">
+                        </div>
+                        <div class="form-group">
+                            <label>Disponibilité week-end</label>
+                            <input type="text" id="hote_disponibilite_weekend" name="hote_disponibilite_weekend" placeholder="Ex: 9h-20h" value="9h00 - 20h00">
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
-                        <label>Numéros d'urgence (laisser les numéros par défaut ou personnaliser)</label>
-                        <textarea id="urgences" name="urgences" rows="5">🚑 SAMU - 15
-👮 Police - 17
-🚒 Pompiers - 18
-🏥 Hôpital CHU Félix Guyon - +262 262 90 50 50
-🔧 Plombier d'urgence - +262 692 XX XX XX</textarea>
+                        <label>Langues parlées (séparées par des virgules)</label>
+                        <input type="text" id="hote_langues" name="hote_langues" placeholder="Ex: Français, Anglais, Espagnol" value="Français, Anglais, Créole">
                     </div>
                     
-                    <div class="form-section-title">💡 Conseils & Astuces</div>
+                    <div class="form-group">
+                        <label>Services proposés (séparés par des virgules)</label>
+                        <textarea id="hote_services" name="hote_services" rows="3" placeholder="Ex: Conseils personnalisés, Réservations restaurants, Location voiture...">Conseils personnalisés et itinéraires sur-mesure, Réservations restaurants et activités, Bon plan location voiture avec notre partenaire, Dépôt bagages gratuit si départ tardif</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">📜 Règlement intérieur</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Heures de calme</label>
+                            <input type="text" id="regles_calme" name="regles_calme" value="22h00 - 8h00">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre maximum de personnes</label>
+                            <input type="number" id="regles_personnes" name="regles_personnes" value="6">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fumeur</label>
+                            <select id="regles_fumeur" name="regles_fumeur">
+                                <option value="interdit">Interdit à l'intérieur</option>
+                                <option value="terrasse">Autorisé sur terrasse uniquement</option>
+                                <option value="autorise">Autorisé partout</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Fêtes / Événements</label>
+                            <select id="regles_fetes" name="regles_fetes">
+                                <option value="interdit">Interdites</option>
+                                <option value="autorisation">Avec autorisation préalable</option>
+                                <option value="autorise">Autorisées</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Politique animaux de compagnie</label>
+                        <textarea id="regles_animaux" name="regles_animaux" rows="2" placeholder="Ex: Non autorisés / Autorisés sur demande...">Non autorisés sauf accord préalable du propriétaire. Si vous avez besoin d'amener un animal, contactez-nous avant votre arrivée.</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Règles supplémentaires de la maison</label>
+                        <textarea id="regles" name="regles" rows="4" placeholder="Autres règles importantes...">🏊 Piscine non surveillée - Surveillance obligatoire des enfants par les parents
+👞 Merci de retirer vos chaussures à l'intérieur
+🚪 Bien fermer portes et fenêtres en partant</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">♻️ Tri des déchets</div>
+                    <div class="form-group">
+                        <label>Instructions tri des déchets</label>
+                        <textarea id="tri_dechets" name="tri_dechets" rows="4" placeholder="Indiquez où se trouvent les poubelles et comment trier...">🗑️ Poubelle jaune (recyclage) : Plastique, carton, métal - Sous l'évier
+🗑️ Poubelle verte (verre) : Conteneur dans le garage
+🗑️ Poubelle noire (ordures ménagères) : Local à l'entrée
+♻️ Collecte : Mardi et vendredi matin (sortir containers la veille au soir)</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🧹 Ménage & Départ</div>
+                    <div class="form-group">
+                        <label>Instructions ménage et départ</label>
+                        <textarea id="menage_tri" name="menage_tri" rows="4">Le ménage professionnel est inclus dans votre réservation. Merci simplement de :
+✓ Faire la vaisselle et la ranger
+✓ Vider les poubelles
+✓ Laisser les lieux dans un état correct
+🧺 Linge de lit : Laisser sur le lit, nettoyage professionnel inclus</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🔑 Instructions clés</div>
+                    <div class="form-group">
+                        <label>Restitution des clés au départ</label>
+                        <textarea id="instructions_cles" name="instructions_cles" rows="3">Au choix :
+1️⃣ Laisser sur la table d'entrée puis fermer la porte en tirant bien
+2️⃣ Remettre dans la boîte à clés (même code qu'à l'arrivée)</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🚨 Urgences</div>
+                    <div class="form-group">
+                        <label>Numéros d'urgence et services médicaux</label>
+                        <textarea id="urgences" name="urgences" rows="6">🚨 URGENCES
+🚒 Pompiers : 18
+👮 Police : 17
+🚑 SAMU : 15
+🇪🇺 Urgences UE : 112
+
+🏥 Services médicaux proches
+Hôpital : CHU Félix Guyon - 10 min en voiture
+Pharmacie de garde : Centre-ville - 5 min
+Médecin : Dr. Martin - +262 262 XX XX XX</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🚌 Transports & Parkings</div>
+                    <div class="form-group">
+                        <label>Transports en commun</label>
+                        <input type="text" id="transports_bus" name="transports_bus" placeholder="Ex: Arrêt bus ligne 5 à 3 min à pied" value="Arrêt de bus Centre-Ville à 3 min à pied - Lignes 5, 12, 18">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Taxis / VTC</label>
+                        <input type="text" id="transports_taxi" name="transports_taxi" placeholder="Ex: Station taxi devant la mairie" value="Station de taxis à 5 min à pied - Devant la mairie">
+                    </div>
+                    
+                    <div class="form-section-title">🛒 Marché local</div>
+                    <div class="form-group">
+                        <label>Marché local (nom, jours, horaires)</label>
+                        <textarea id="marche_local" name="marche_local" rows="3" placeholder="Ex: Marché du samedi matin, Place du Village, 6h-13h">Marché du samedi matin - Place du Village - 6h à 13h
+Le meilleur endroit pour découvrir les produits locaux !
+🥭 Fruits exotiques frais | 🐟 Poissons du jour | 🌺 Artisanat | 🍛 Plats créoles à emporter</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">💡 Astuces locales</div>
+                    <div class="form-group">
+                        <label>Astuces et bons plans de la région (séparées par des virgules ou des sauts de ligne)</label>
+                        <textarea id="astuces_locales" name="astuces_locales" rows="4" placeholder="Vos meilleurs conseils locaux...">🥐 Boulangerie Au Pain Doré ouvre à 7h (5 min à pied) - Meilleurs croissants !
+🌅 Lever de soleil magnifique depuis la jetée (15 min à pied)
+🍷 Cave à vin Le Sommelier pour excellents vins locaux (8 min à pied)
+🚲 Piste cyclable le long de la côte (départ à 500m)</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">💡 Conseils séjour</div>
                     <div class="form-group">
                         <label>Conseils pour profiter au mieux du logement et de la région</label>
-                        <textarea id="conseils" name="conseils" rows="4">🌅 Meilleur moment pour la plage : tôt le matin (moins de monde, eau calme)
-🛒 Marché forain tous les vendredis et samedis matin à Saint-Paul (produits locaux)
-⛰️ Randonnées : partir avant 8h pour éviter la chaleur de midi
+                        <textarea id="conseils" name="conseils" rows="4">☀️ Partez tôt pour les randonnées (brouillard l'après-midi)
+🧴 Crème solaire indispensable (indice 50+)
+💧 Toujours avoir de l'eau avec vous
+📱 Téléchargez les cartes hors-ligne (réseau limité en montagne)
 🍽️ Restaurants : réserver à l'avance le week-end</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>Informations supplémentaires</label>
-                        <textarea id="infos_supplementaires" name="infos_supplementaires" rows="3">La villa est équipée de panneaux solaires. Merci de faire attention à la consommation d'eau (ressource précieuse à La Réunion). Profitez bien de votre séjour dans notre petit paradis !</textarea>
+                        <textarea id="infos_supplementaires" name="infos_supplementaires" rows="3" placeholder="Autres informations utiles pour vos voyageurs...">La villa est équipée de panneaux solaires. Merci de faire attention à la consommation d'eau (ressource précieuse à La Réunion). Profitez bien de votre séjour dans notre petit paradis !</textarea>
                     </div>
                 </div>
                 
