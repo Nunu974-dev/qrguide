@@ -61,9 +61,6 @@
             background: linear-gradient(to bottom, rgba(199, 169, 97, 0.08), white);
             box-shadow: 0 4px 20px rgba(199, 169, 97, 0.3);
         }
-        .format-option input[type="radio"]:checked ~ * {
-            /* Ajouter un effet visuel supplémentaire si nécessaire */
-        }
         
         /* Cacher les flèches natives du input number */
         #plaque-quantity::-webkit-outer-spin-button,
@@ -73,6 +70,7 @@
         }
         #plaque-quantity {
             -moz-appearance: textfield;
+            appearance: textfield;
         }
         
         /* Responsive pour les 4 étapes et FAQ */
@@ -191,12 +189,12 @@
                                 </div>
                                 <div class="card-economy" style="opacity: 0; visibility: hidden; height: 40px;"></div>
                                 <div class="card-features">
-                                    <div class="feature">✓ Pack création inclus (150€)</div>
+                                    <div class="feature">✓ Pack découverte inclus (35€)</div>
                                     <div class="feature">✓ Modifications illimitées</div>
                                     <div class="feature">✓ Support prioritaire</div>
                                 </div>
                                 <div class="card-total">
-                                    Premier paiement : <strong>158€</strong>
+                                    Premier paiement : <strong>43€</strong>
                                 </div>
                             </label>
 
@@ -212,19 +210,19 @@
                                 </div>
                                 <div class="card-economy">Économisez 21€/an</div>
                                 <div class="card-features">
-                                    <div class="feature">✓ Pack création inclus (150€)</div>
+                                    <div class="feature">✓ Pack découverte inclus (35€)</div>
                                     <div class="feature">✓ Modifications illimitées</div>
                                     <div class="feature">✓ Support prioritaire</div>
                                 </div>
                                 <div class="card-total">
-                                    Premier paiement : <strong>225€</strong>
+                                    Premier paiement : <strong>110€</strong>
                                 </div>
                             </label>
                         </div>
 
-                        <!-- Pack Création Détails -->
+                        <!-- Pack Découverte Détails -->
                         <div style="max-width: 900px; margin: 40px auto; padding: 32px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
-                            <h3 style="text-align: center; margin-bottom: 24px; color: var(--text-dark);">📦 Ce qui est inclus dans le Pack Création (150€)</h3>
+                            <h3 style="text-align: center; margin-bottom: 24px; color: var(--text-dark);">📦 Ce qui est inclus dans le Pack Découverte (35€)</h3>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
                                 <div style="display: flex; align-items: start; gap: 12px;">
                                     <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
@@ -245,13 +243,6 @@
                                     <div>
                                         <strong>16 sections configurables</strong>
                                         <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Wi-Fi, équipements, recommandations...</p>
-                                    </div>
-                                </div>
-                                <div style="display: flex; align-items: start; gap: 12px;">
-                                    <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
-                                    <div>
-                                        <strong>Intégration complète</strong>
-                                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Photos, cartes, vidéos</p>
                                     </div>
                                 </div>
                                 <div style="display: flex; align-items: start; gap: 12px;">
@@ -299,7 +290,7 @@
                                                     <strong>A4</strong><br>
                                                     <small style="color: #666;">21 x 29.7 cm</small>
                                                 </span>
-                                                <strong style="color: var(--primary-color);">45€</strong>
+                                                <strong style="color: var(--primary-color);">58,90€</strong>
                                             </label>
                                             <label style="flex: 1; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s ease;" class="format-option">
                                                 <input type="radio" name="plaque-format" value="a5" onchange="calculateTotal()" style="margin-right: 8px;">
@@ -307,12 +298,12 @@
                                                     <strong>A5</strong><br>
                                                     <small style="color: #666;">14.8 x 21 cm</small>
                                                 </span>
-                                                <strong style="color: var(--primary-color);">35€</strong>
+                                                <strong style="color: var(--primary-color);">52,90€</strong>
                                             </label>
                                         </div>
                                     </div>
                                     
-                                    <p id="plaque-unit-price" style="color: var(--primary-color); font-weight: 700; font-size: 1.5rem; margin: 16px 0;">45€ <span style="font-weight: 400; font-size: 1rem; color: #666;">/ unité</span></p>
+                                    <p id="plaque-unit-price" style="color: var(--primary-color); font-weight: 700; font-size: 1.5rem; margin: 16px 0;">58,90€ <span style="font-weight: 400; font-size: 1rem; color: #666;">/ unité</span></p>
                                 </div>
                                 <div style="margin-top: 20px;">
                                     <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
@@ -500,7 +491,7 @@
                 </div>
                 <div class="faq-item">
                     <h4>Combien de temps pour la création ?</h4>
-                    <p>48h après réception de toutes vos informations. Livraison par email avec lien vers votre guide.</p>
+                    <p>Quelques minutes suffisent une fois que vous aurez validé toutes vos informations. Livraison dans votre compte, avec lien vers votre guide.</p>
                 </div>
                 <div class="faq-item">
                     <h4>Puis-je modifier après création ?</h4>
@@ -621,7 +612,7 @@
             const plan = document.querySelector('input[name="plan"]:checked');
             const plaqueQty = parseInt(document.getElementById('plaque-quantity').value) || 0;
             const plaqueFormat = document.querySelector('input[name="plaque-format"]:checked');
-            const plaquePrice = plaqueFormat && plaqueFormat.value === 'a5' ? 35 : 45;
+            const plaquePrice = plaqueFormat && plaqueFormat.value === 'a5' ? 52.90 : 58.90;
             
             let total = 0;
             let description = [];
@@ -636,9 +627,9 @@
                     description.push('75€/an');
                 }
 
-                // Création toujours incluse
-                total += 150;
-                description.push('Création : 150€');
+                // Pack Découverte toujours inclus
+                total += 35;
+                description.push('Pack Découverte : 35€');
             }
 
             // Plaques (quantité variable avec prix selon format)
@@ -646,17 +637,17 @@
                 const plaqueCost = plaqueQty * plaquePrice;
                 total += plaqueCost;
                 const formatLabel = plaqueFormat.value === 'a5' ? 'A5' : 'A4';
-                description.push(plaqueQty + ' plaque' + (plaqueQty > 1 ? 's' : '') + ' ' + formatLabel + ' : ' + plaqueCost + '€');
+                description.push(plaqueQty + ' plaque' + (plaqueQty > 1 ? 's' : '') + ' ' + formatLabel + ' : ' + plaqueCost.toFixed(2) + '€');
             }
 
             // Mettre à jour l'affichage du prix unitaire
-            document.getElementById('plaque-unit-price').innerHTML = plaquePrice + '€ <span style="font-weight: 400; font-size: 1rem; color: #666;">/ unité</span>';
+            document.getElementById('plaque-unit-price').innerHTML = plaquePrice.toFixed(2).replace('.', ',') + '€ <span style="font-weight: 400; font-size: 1rem; color: #666;">/ unité</span>';
             
             // Mettre à jour l'affichage du total des plaques
-            document.getElementById('plaqueTotal').textContent = (plaqueQty * plaquePrice) + '€';
+            document.getElementById('plaqueTotal').textContent = (plaqueQty * plaquePrice).toFixed(2).replace('.', ',') + '€';
 
             // Mettre à jour seulement le montant total (le reste est dans le HTML)
-            document.getElementById('totalAmount').textContent = total + '€';
+            document.getElementById('totalAmount').textContent = total.toFixed(2).replace('.', ',') + '€';
         }
 
         // ============================================
@@ -667,7 +658,7 @@
             const plaqueQty = parseInt(document.getElementById('plaque-quantity').value) || 0;
             const total = document.getElementById('totalAmount').textContent.split('€')[0];
 
-            let options = 'Création incluse';
+            let options = 'Pack Découverte inclus (35€)';
             if (plaqueQty > 0) {
                 options += ' + ' + plaqueQty + ' plaque' + (plaqueQty > 1 ? 's' : '');
             }
