@@ -177,11 +177,11 @@ function updateDashboardStats() {
     const planMensuel = allUsers.filter(u => u.plan === 'mensuel').length;
     const planAnnuel = allUsers.filter(u => u.plan === 'annuel').length;
     
-    // Calcul des revenus (avec Pack Création 150€ inclus)
-    // Mensuel : 150€ (pack) + 8€/mois
-    // Annuel : 150€ (pack) + 75€/an
+    // Calcul des revenus (avec Pack Création 35€ inclus)
+    // Mensuel : 35€ (pack) + 8€/mois
+    // Annuel : 35€ (pack) + 75€/an
     const revenueMensuelRecurrent = (planMensuel * 8) + (planAnnuel * 75 / 12);
-    const revenuePackCreation = (planMensuel + planAnnuel) * 150; // Pack Création pour chaque client
+    const revenuePackCreation = (planMensuel + planAnnuel) * 35; // Pack Création pour chaque client
     const revenueTotal = revenuePackCreation + (revenueMensuelRecurrent * 12); // Total annuel
     
     // Compter les plaques A4 (1 par client avec Pack Création) et A5 (option, non tracké pour l'instant)
@@ -1490,16 +1490,11 @@ showSection = function(sectionName) {
 };
 
 // === MODIFIER UN GUIDE ===
+// === MODIFIER UN GUIDE (redirection vers l'interface client) ===
 async function editGuide(guideId) {
-    try {
-        // Récupérer les données du guide
-        const guideDoc = await db.collection('guides').doc(guideId).get();
-        if (!guideDoc.exists) {
-            alert('Guide introuvable');
-            return;
-        }
-        
-        const guideData = guideDoc.data();
+    // Rediriger vers la page mon-compte avec l'ID du guide à modifier
+    window.location.href = `/mon-compte.html?editGuide=${guideId}`;
+}
         
         // Créer un modal avec un formulaire d'édition COMPLET
         const modal = document.createElement('div');
@@ -1568,6 +1563,19 @@ async function editGuide(guideId) {
                     <label style="display: block; font-weight: 600; margin-bottom: 8px;">Parking</label>
                     <input type="text" id="edit-parking" value="${guideData.parking_info || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 16px;">
                     
+                    <h4 style="color: #666; margin: 20px 0 12px 0;">🎯 Premiers pas (checklist pour les voyageurs)</h4>
+                    <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Étape 1</label>
+                    <input type="text" id="edit-premier-pas-1" value="${guideData.premier_pas_1 || ''}" style="width: 100%; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; margin-bottom: 12px;" placeholder="Ex: Connectez-vous au Wi-Fi">
+                    
+                    <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Étape 2</label>
+                    <input type="text" id="edit-premier-pas-2" value="${guideData.premier_pas_2 || ''}" style="width: 100%; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; margin-bottom: 12px;" placeholder="Ex: Allumer la climatisation">
+                    
+                    <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Étape 3</label>
+                    <input type="text" id="edit-premier-pas-3" value="${guideData.premier_pas_3 || ''}" style="width: 100%; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; margin-bottom: 12px;" placeholder="Ex: Localiser les poubelles">
+                    
+                    <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Étape 4</label>
+                    <input type="text" id="edit-premier-pas-4" value="${guideData.premier_pas_4 || ''}" style="width: 100%; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; margin-bottom: 16px;" placeholder="Ex: Utiliser les volets">
+                    
                     <!-- SECTION 3: DÉPART -->
                     <h3 style="color: #d4af37; margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0;">🚪 Page Départ</h3>
                     
@@ -1579,6 +1587,9 @@ async function editGuide(guideId) {
                     
                     <label style="display: block; font-weight: 600; margin-bottom: 8px;">Ménage et tri</label>
                     <textarea id="edit-menage-tri" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 80px; margin-bottom: 16px;">${guideData.menage_tri || ''}</textarea>
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Message de remerciement</label>
+                    <textarea id="edit-depart-message" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 60px; margin-bottom: 16px;">${guideData.depart_message_remerciement || ''}</textarea>
                     
                     <!-- SECTION 4: WIFI & MULTIMÉDIA -->
                     <h3 style="color: #d4af37; margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0;">📶 WiFi & Multimédia</h3>
@@ -1607,9 +1618,100 @@ async function editGuide(guideId) {
                         </div>
                     </div>
                     
+                    <h4 style="color: #666; margin: 20px 0 12px 0;">📺 Télévision</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Marque/modèle TV</label>
+                            <input type="text" id="edit-tv-marque" value="${guideData.tv_marque || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Plateformes streaming</label>
+                            <input type="text" id="edit-tv-plateformes" value="${guideData.tv_plateformes || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;" placeholder="Netflix, Disney+, Prime...">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Box TV</label>
+                            <input type="text" id="edit-tv-box" value="${guideData.tv_box || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Emplacement télécommande</label>
+                            <input type="text" id="edit-tv-telecommande" value="${guideData.tv_telecommande_emplacement || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #666; margin: 20px 0 12px 0;">🔊 Enceinte Bluetooth</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Marque/modèle</label>
+                            <input type="text" id="edit-enceinte-marque" value="${guideData.enceinte_marque || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Nom Bluetooth</label>
+                            <input type="text" id="edit-enceinte-bluetooth" value="${guideData.enceinte_nom_bluetooth || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Emplacement</label>
+                            <input type="text" id="edit-enceinte-emplacement" value="${guideData.enceinte_emplacement || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Chargeur</label>
+                            <input type="text" id="edit-enceinte-chargeur" value="${guideData.enceinte_chargeur || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    
                     <!-- SECTION 5: ÉQUIPEMENTS -->
                     <h3 style="color: #d4af37; margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0;">🏠 Équipements</h3>
                     
+                    <h4 style="color: #666; margin: 20px 0 12px 0;">🍳 Cuisine</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Plaques cuisson</label>
+                            <input type="text" id="edit-cuisine-plaques" value="${guideData.cuisine_plaques || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Four</label>
+                            <input type="text" id="edit-cuisine-four" value="${guideData.cuisine_four || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Machine à café</label>
+                            <input type="text" id="edit-cuisine-cafe" value="${guideData.cuisine_cafe || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Lave-vaisselle</label>
+                            <input type="text" id="edit-cuisine-lave-vaisselle" value="${guideData.cuisine_lave_vaisselle || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Autres équipements cuisine</label>
+                    <textarea id="edit-cuisine-autres" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px; min-height: 60px; margin-bottom: 16px;">${guideData.cuisine_autres || ''}</textarea>
+                    
+                    <h4 style="color: #666; margin: 20px 0 12px 0;">🚿 Salle de bain</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Douche/Baignoire</label>
+                            <input type="text" id="edit-sdb-douche" value="${guideData.sdb_douche || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Produits fournis</label>
+                            <input type="text" id="edit-sdb-produits" value="${guideData.sdb_produits || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Sèche-cheveux</label>
+                            <input type="text" id="edit-sdb-seche-cheveux" value="${guideData.sdb_seche_cheveux || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; font-size: 0.9rem;">Serviettes</label>
+                            <input type="text" id="edit-sdb-serviettes" value="${guideData.sdb_serviettes || ''}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 6px;">
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #666; margin: 20px 0 12px 0;">❄️ Climatisation</h4>
                     <label style="display: block; font-weight: 600; margin-bottom: 8px;">Instructions climatisation</label>
                     <textarea id="edit-instructions-clim" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 60px; margin-bottom: 16px;">${guideData.instructions_clim || ''}</textarea>
                     
@@ -1638,6 +1740,15 @@ async function editGuide(guideId) {
                         </div>
                     </div>
                     
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">WhatsApp</label>
+                    <input type="text" id="edit-hote-whatsapp" value="${guideData.hote_whatsapp || ''}" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 16px;">
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">À propos de l'hôte</label>
+                    <textarea id="edit-hote-apropos" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 80px; margin-bottom: 16px;">${guideData.hote_apropos || ''}</textarea>
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Coups de cœur de l'hôte</label>
+                    <textarea id="edit-hote-coups-coeur" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 60px; margin-bottom: 16px;">${guideData.hote_coups_de_coeur || ''}</textarea>
+                    
                     <!-- SECTION 7: RÈGLES & INFOS -->
                     <h3 style="color: #d4af37; margin: 24px 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0;">📖 Règles & Infos Pratiques</h3>
                     
@@ -1650,6 +1761,10 @@ async function editGuide(guideId) {
                     <label style="display: block; font-weight: 600; margin-bottom: 8px;">Conseils et astuces locales</label>
                     <textarea id="edit-conseils" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 80px; margin-bottom: 16px;">${guideData.conseils || ''}</textarea>
                     
+                    
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px;">Astuces locales</label>
+                    <textarea id="edit-astuces" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; min-height: 60px; margin-bottom: 16px;">${guideData.astuces_locales || ""}</textarea>
+
                     <!-- BOUTONS D'ACTION -->
                     <div style="display: flex; gap: 12px; margin-top: 32px; position: sticky; bottom: 0; background: white; padding: 16px 0; border-top: 2px solid #e9ecef;">
                         <button onclick="saveGuideEdits('${guideId}')" style="flex: 1; padding: 14px; background: #d4af37; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">

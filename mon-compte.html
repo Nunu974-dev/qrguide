@@ -614,6 +614,89 @@
             border-top: 2px solid #e9ecef;
         }
         
+        /* Toggle Switch pour activer/désactiver les sections */
+        .section-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .section-toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05rem;
+        }
+        
+        .section-toggle-label .emoji {
+            font-size: 1.5rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 32px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #28a745;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(28px);
+        }
+        
+        .section-content-toggleable {
+            transition: opacity 0.3s, max-height 0.3s;
+            overflow: hidden;
+        }
+        
+        .section-content-toggleable.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+        }
+        
         @media (max-width: 768px) {
             .form-progress {
                 flex-wrap: wrap;
@@ -764,23 +847,47 @@
                 </div>
                 <div class="progress-step" data-step="2" onclick="goToStep(2)" style="cursor: pointer;">
                     <div class="step-number">2</div>
-                    <div class="step-label">Arrivée & WiFi</div>
+                    <div class="step-label">✨ Arrivée</div>
                 </div>
                 <div class="progress-step" data-step="3" onclick="goToStep(3)" style="cursor: pointer;">
                     <div class="step-number">3</div>
-                    <div class="step-label">Équipements</div>
+                    <div class="step-label">🚪 Départ</div>
                 </div>
                 <div class="progress-step" data-step="4" onclick="goToStep(4)" style="cursor: pointer;">
                     <div class="step-number">4</div>
-                    <div class="step-label">Restaurants & Activités</div>
+                    <div class="step-label">📶 WiFi & Multimédia</div>
                 </div>
                 <div class="progress-step" data-step="5" onclick="goToStep(5)" style="cursor: pointer;">
                     <div class="step-number">5</div>
-                    <div class="step-label">Infos pratiques</div>
+                    <div class="step-label">🏠 Équipements</div>
+                </div>
+                <div class="progress-step" data-step="6" onclick="goToStep(6)" style="cursor: pointer;">
+                    <div class="step-number">6</div>
+                    <div class="step-label">🍽️ Restaurants</div>
+                </div>
+                <div class="progress-step" data-step="7" onclick="goToStep(7)" style="cursor: pointer;">
+                    <div class="step-number">7</div>
+                    <div class="step-label">🌴 Activités</div>
+                </div>
+                <div class="progress-step" data-step="8" onclick="goToStep(8)" style="cursor: pointer;">
+                    <div class="step-number">8</div>
+                    <div class="step-label">📍 Commerces</div>
+                </div>
+                <div class="progress-step" data-step="9" onclick="goToStep(9)" style="cursor: pointer;">
+                    <div class="step-number">9</div>
+                    <div class="step-label">🚨 Urgence</div>
+                </div>
+                <div class="progress-step" data-step="10" onclick="goToStep(10)" style="cursor: pointer;">
+                    <div class="step-number">10</div>
+                    <div class="step-label">❤️ Votre Hôte</div>
+                </div>
+                <div class="progress-step" data-step="11" onclick="goToStep(11)" style="cursor: pointer;">
+                    <div class="step-number">11</div>
+                    <div class="step-label">📋 Infos & Règlement</div>
                 </div>
             </div>
             
-            <form id="logement-form">
+            <form id="logement-form" novalidate>
                 <!-- ÉTAPE 1: Informations générales -->
                 <div class="form-step active" data-step="1">
                     <h3>📍 Informations générales</h3>
@@ -802,8 +909,8 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Description du logement *</label>
-                        <textarea id="description" name="description" rows="4" required>Magnifique villa avec vue panoramique sur la mer, située dans un quartier calme. 3 chambres, piscine privée, terrasse avec barbecue. Proche des plages et commodités.</textarea>
+                        <label>Phrase de présentation * <small>(max. 75 caractères)</small></label>
+                        <input type="text" id="description" name="description" maxlength="45" placeholder="Ex: Villa vue mer, piscine privée, 3 chambres" value="Villa vue mer avec piscine et jardin tropical" required>
                     </div>
                     
                     <div class="form-row">
@@ -830,80 +937,142 @@
                     <div class="form-group">
                         <label>Photo de couverture *</label>
                         <input type="file" id="photo_file" name="photo_file" accept="image/*" style="display: block; padding: 12px; border: 2px dashed #d4af37; border-radius: 8px; background: #fffbf0; cursor: pointer;">
-                        <small style="color: #666; display: block; margin-top: 8px;">Sélectionnez une image depuis votre ordinateur (JPG, PNG, WebP)</small>
+                        <small style="color: #666; display: block; margin-top: 8px;">Sélectionnez une image depuis votre ordinateur (JPG, PNG, WebP - max 5 Mo)</small>
                         <div id="photo_preview" style="margin-top: 12px; display: none;">
                             <img id="photo_preview_img" style="max-width: 300px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                            <p id="photo_upload_status" style="margin-top: 8px; font-size: 0.9rem; color: #666;"></p>
                         </div>
+                        <p id="photo_upload_status" style="margin-top: 8px; font-size: 0.9rem; color: #666;"></p>
                         <input type="hidden" id="photo_url" name="photo_url">
                     </div>
                 </div>
                 
-                <!-- ÉTAPE 2: Arrivée & WiFi -->
+                <!-- ÉTAPE 2: Page ARRIVÉE -->
                 <div class="form-step" data-step="2">
-                    <h3>✨ Arrivée & Connectivité</h3>
+                    <h3>✨ Page Arrivée - Ce que vos voyageurs verront en premier</h3>
                     
-                    <div class="form-section-title">Message de bienvenue</div>
+                    <div class="form-section-title">💬 Message de bienvenue</div>
                     <div class="form-group">
-                        <label>Message personnalisé d'accueil</label>
+                        <label>Message personnalisé d'accueil *</label>
                         <textarea id="message_bienvenue" name="message_bienvenue" rows="3">Bienvenue dans notre villa ! Nous espérons que vous passerez un séjour exceptionnel à La Réunion. Profitez de la piscine, de la vue mer et de toutes les commodités disponibles. N'hésitez pas à nous contacter si besoin !</textarea>
                     </div>
                     
-                    <div class="form-section-title">Check-in / Check-out</div>
+                    <div class="form-section-title">⏰ Horaires Check-in / Check-out</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Heure d'arrivée</label>
+                            <label>Heure d'arrivée *</label>
                             <input type="time" id="checkin_time" name="checkin_time" value="15:00">
                         </div>
                         <div class="form-group">
-                            <label>Heure de départ</label>
+                            <label>Heure de départ *</label>
                             <input type="time" id="checkout_time" name="checkout_time" value="11:00">
                         </div>
                     </div>
                     
+                    <div class="form-section-title">🔑 Instructions d'arrivée</div>
                     <div class="form-group">
-                        <label>Instructions d'arrivée *</label>
-                        <textarea id="instructions_arrivee" name="instructions_arrivee" rows="4" required>Récupérez les clés dans la boîte à clés sécurisée située à gauche de la porte d'entrée. Le code vous sera envoyé par SMS le jour de votre arrivée. Code portail : 1234. Parking privé avec 2 places disponibles.</textarea>
+                        <label>Comment récupérer les clés et accéder au logement *</label>
+                        <textarea id="instructions_arrivee" name="instructions_arrivee" rows="4">Récupérez les clés dans la boîte à clés sécurisée située à gauche de la porte d'entrée. Le code vous sera envoyé par SMS le jour de votre arrivée. Code portail : 1234. Parking privé avec 2 places disponibles.</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>Code d'accès (portail, porte...)</label>
-                        <input type="text" id="code_acces" name="code_acces" value="1234">
+                        <input type="text" id="code_acces" name="code_acces" value="1234" placeholder="Ex: 1234">
                     </div>
                     
-                    <div class="form-section-title">🎯 Premiers pas (4 étapes affichées)</div>
+                    <!-- Toggle pour la section Premiers pas -->
+                    <div class="section-toggle">
+                        <div class="section-toggle-label">
+                            <span class="emoji">🎯</span>
+                            <span>Afficher la section "Premiers pas"</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle_premiers_pas" checked onchange="toggleSection('premiers_pas_section', this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div id="premiers_pas_section" class="section-content-toggleable">
+                        <div class="form-section-title">🎯 Premiers pas (4 étapes affichées dans le guide)</div>
+                        <p style="color: #666; margin-bottom: 16px; font-size: 0.95rem;">Ces 4 étapes seront affichées comme une checklist pour guider vos voyageurs dès leur arrivée</p>
                     <div class="form-group">
-                        <label>Étape 1 - Premiers pas</label>
-                        <input type="text" id="premier_pas_1" name="premier_pas_1" value="Connectez-vous au Wi-Fi (nom et mot de passe ci-dessous)">
+                        <label>Étape 1 - Premier geste à faire</label>
+                        <input type="text" id="premier_pas_1" name="premier_pas_1" value="Connectez-vous au Wi-Fi (nom et mot de passe ci-dessous)" placeholder="Ex: Connectez-vous au Wi-Fi">
                     </div>
                     <div class="form-group">
-                        <label>Étape 2 - Premiers pas</label>
-                        <input type="text" id="premier_pas_2" name="premier_pas_2" value="Climatisation : télécommandes murales dans chaque chambre et salon">
+                        <label>Étape 2 - Deuxième action importante</label>
+                        <input type="text" id="premier_pas_2" name="premier_pas_2" value="Climatisation : télécommandes murales dans chaque chambre et salon" placeholder="Ex: Allumer la climatisation">
                     </div>
                     <div class="form-group">
-                        <label>Étape 3 - Premiers pas</label>
-                        <input type="text" id="premier_pas_3" name="premier_pas_3" value="Poubelles : tri sélectif obligatoire (jaune recyclage, verte ordures)">
+                        <label>Étape 3 - Troisième conseil</label>
+                        <input type="text" id="premier_pas_3" name="premier_pas_3" value="Poubelles : tri sélectif obligatoire (jaune recyclage, verte ordures)" placeholder="Ex: Localiser les poubelles">
                     </div>
                     <div class="form-group">
-                        <label>Étape 4 - Premiers pas</label>
-                        <input type="text" id="premier_pas_4" name="premier_pas_4" value="Volets roulants : interrupteurs à côté de chaque fenêtre">
+                        <label>Étape 4 - Dernier conseil utile</label>
+                        <input type="text" id="premier_pas_4" name="premier_pas_4" value="Volets roulants : interrupteurs à côté de chaque fenêtre" placeholder="Ex: Utiliser les volets">
+                    </div>
                     </div>
                     
                     <div class="form-section-title">🅿️ Parking & Accès</div>
                     <div class="form-group">
                         <label>Informations parking</label>
-                        <input type="text" id="parking_info" name="parking_info" value="2 places privées couvertes à l'entrée de la propriété">
+                        <input type="text" id="parking_info" name="parking_info" value="2 places privées couvertes à l'entrée de la propriété" placeholder="Ex: Parking gratuit devant la maison">
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 3: Page DÉPART -->
+                <div class="form-step" data-step="3">
+                    <h3>🚪 Page Départ - Checklist avant de quitter le logement</h3>
+                    
+                    <div class="form-section-title">📝 Instructions de départ</div>
+                    <div class="form-group">
+                        <label>Que faire avant de partir (checklist)</label>
+                        <textarea id="instructions_depart" name="instructions_depart" rows="6">Avant votre départ :
+✓ Faire la vaisselle et la ranger
+✓ Sortir les poubelles dans les containers extérieurs
+✓ Éteindre toutes les climatisations
+✓ Fermer tous les volets
+✓ Fermer portes et fenêtres
+✓ Remettre les clés dans la boîte à clés sécurisée</textarea>
                     </div>
                     
-                    <div class="form-section-title">📶 WiFi & Multimédia</div>
+                    <div class="form-section-title">🔑 Restitution des clés</div>
+                    <div class="form-group">
+                        <label>Comment rendre les clés au départ</label>
+                        <textarea id="instructions_cles" name="instructions_cles" rows="3">Au choix :
+1️⃣ Laisser sur la table d'entrée puis fermer la porte en tirant bien
+2️⃣ Remettre dans la boîte à clés (même code qu'à l'arrivée)</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🧹 Ménage</div>
+                    <div class="form-group">
+                        <label>Instructions ménage</label>
+                        <textarea id="menage_tri" name="menage_tri" rows="4">Le ménage professionnel est inclus dans votre réservation. Merci simplement de :
+✓ Faire la vaisselle et la ranger
+✓ Vider les poubelles
+✓ Laisser les lieux dans un état correct
+🧺 Linge de lit : Laisser sur le lit, nettoyage professionnel inclus</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">💬 Message de remerciement</div>
+                    <div class="form-group">
+                        <label>Message de fin de séjour (optionnel)</label>
+                        <textarea id="depart_message_remerciement" name="depart_message_remerciement" rows="3" placeholder="Ex: Merci d'avoir choisi notre logement ! Nous espérons vous revoir bientôt...">Merci pour votre séjour ! Nous espérons que vous avez passé un excellent moment. N'hésitez pas à laisser un avis et à revenir nous voir ! ☀️</textarea>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 4: Page WIFI & MULTIMÉDIA -->
+                <div class="form-step" data-step="4">
+                    <h3>📶 Page WiFi & Multimédia - Connexion et divertissement</h3>
+                    
+                    <div class="form-section-title">📶 WiFi</div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nom du réseau WiFi *</label>
-                            <input type="text" id="wifi_nom" name="wifi_nom" required value="Villa_WiFi_5G">
+                            <input type="text" id="wifi_nom" name="wifi_nom" value="Villa_WiFi_5G" placeholder="Ex: Villa_5G">
                         </div>
                         <div class="form-group">
                             <label>Mot de passe WiFi *</label>
-                            <input type="text" id="wifi_password" name="wifi_password" required value="Bienvenue2025">
+                            <input type="text" id="wifi_password" name="wifi_password" value="Bienvenue2025" placeholder="Ex: Bienvenue2025">
                         </div>
                     </div>
                     
@@ -920,90 +1089,125 @@
                     
                     <div class="form-section-title">📺 Télévision</div>
                     <div class="form-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="tv_active" name="tv_active" class="toggle-checkbox">
+                            <span class="toggle-text">Activer la section Télévision</span>
+                        </label>
+                    </div>
+                    <div id="tv-fields" style="display: none;">
+                    <div class="form-group">
                         <label>Marque et modèle TV</label>
-                        <input type="text" id="tv_marque" name="tv_marque" placeholder="Ex: Smart TV Samsung 55 pouces" value="Smart TV Samsung 55 pouces">
+                        <input type="text" id="tv_marque" name="tv_marque" placeholder="Ex: Smart TV Samsung 55 pouces">
                     </div>
                     
                     <div class="form-group">
                         <label>Plateformes streaming disponibles (séparées par des virgules)</label>
-                        <input type="text" id="tv_plateformes" name="tv_plateformes" placeholder="Ex: Netflix, Prime Video, YouTube, Disney+" value="Netflix, Prime Video, YouTube, Disney+">
+                        <input type="text" id="tv_plateformes" name="tv_plateformes" placeholder="Ex: Netflix, Prime Video, YouTube, Disney+">
                     </div>
                     
                     <div class="form-group">
                         <label>Box TV et chaînes</label>
-                        <input type="text" id="tv_box" name="tv_box" placeholder="Ex: Box SFR - 200+ chaînes" value="Box SFR - 200+ chaînes (TNT, sport, cinéma)">
+                        <input type="text" id="tv_box" name="tv_box" placeholder="Ex: Box SFR - 200+ chaînes">
                     </div>
                     
                     <div class="form-group">
                         <label>Emplacement télécommandes</label>
-                        <input type="text" id="tv_telecommande_emplacement" name="tv_telecommande_emplacement" value="Sur le meuble TV dans le salon">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Instruction 1 - Allumer la TV</label>
-                            <input type="text" id="tv_instruction_1" name="tv_instruction_1" value="Bouton rouge sur la télécommande noire">
-                        </div>
-                        <div class="form-group">
-                            <label>Instruction 2 - Changer de source</label>
-                            <input type="text" id="tv_instruction_2" name="tv_instruction_2" value="Bouton Source → HDMI 1 (Box) ou Smart TV (apps)">
-                        </div>
+                        <input type="text" id="tv_telecommande_emplacement" name="tv_telecommande_emplacement" placeholder="Ex: Sur le meuble TV dans le salon">
                     </div>
                     
                     <div class="form-group">
-                        <label>Instruction 3 - Régler le volume</label>
-                        <input type="text" id="tv_instruction_3" name="tv_instruction_3" value="Boutons + / - sur le côté de la télécommande">
+                        <label>Titre instruction 1</label>
+                        <input type="text" id="tv_instruction_1_titre" name="tv_instruction_1_titre" placeholder="Ex: Allumer la TV">
+                    </div>
+                    <div class="form-group">
+                        <label>Description instruction 1</label>
+                        <input type="text" id="tv_instruction_1" name="tv_instruction_1" placeholder="Ex: Bouton rouge sur la télécommande noire">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Titre instruction 2</label>
+                        <input type="text" id="tv_instruction_2_titre" name="tv_instruction_2_titre" placeholder="Ex: Changer de source">
+                    </div>
+                    <div class="form-group">
+                        <label>Description instruction 2</label>
+                        <input type="text" id="tv_instruction_2" name="tv_instruction_2" placeholder="Ex: Bouton Source → HDMI 1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Titre instruction 3</label>
+                        <input type="text" id="tv_instruction_3_titre" name="tv_instruction_3_titre" placeholder="Ex: Régler le volume">
+                    </div>
+                    <div class="form-group">
+                        <label>Description instruction 3</label>
+                        <input type="text" id="tv_instruction_3" name="tv_instruction_3" placeholder="Ex: Boutons + / - sur le côté">
+                    </div>
                     </div>
                     
                     <div class="form-section-title">🔊 Enceinte Bluetooth</div>
+                    <div class="form-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="enceinte_active" name="enceinte_active" class="toggle-checkbox">
+                            <span class="toggle-text">Activer la section Enceinte Bluetooth</span>
+                        </label>
+                    </div>
+                    <div id="enceinte-fields" style="display: none;">
                     <div class="form-row">
                         <div class="form-group">
                             <label>Marque et modèle enceinte</label>
-                            <input type="text" id="enceinte_marque" name="enceinte_marque" placeholder="Ex: JBL Charge 5" value="JBL Charge 5">
+                            <input type="text" id="enceinte_marque" name="enceinte_marque" placeholder="Ex: JBL Charge 5">
                         </div>
                         <div class="form-group">
                             <label>Nom Bluetooth pour connexion</label>
-                            <input type="text" id="enceinte_nom_bluetooth" name="enceinte_nom_bluetooth" placeholder="Ex: JBL Charge 5" value="JBL Charge 5">
+                            <input type="text" id="enceinte_nom_bluetooth" name="enceinte_nom_bluetooth" placeholder="Ex: JBL Charge 5">
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
                             <label>Emplacement enceinte</label>
-                            <input type="text" id="enceinte_emplacement" name="enceinte_emplacement" value="Sur l'étagère du salon">
+                            <input type="text" id="enceinte_emplacement" name="enceinte_emplacement" placeholder="Ex: Sur l'étagère du salon">
                         </div>
                         <div class="form-group">
                             <label>Emplacement chargeur</label>
-                            <input type="text" id="enceinte_chargeur" name="enceinte_chargeur" value="Dans le tiroir sous la TV">
+                            <input type="text" id="enceinte_chargeur" name="enceinte_chargeur" placeholder="Ex: Dans le tiroir sous l'enceinte">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Caractéristiques enceinte</label>
-                        <input type="text" id="enceinte_caracteristiques" name="enceinte_caracteristiques" placeholder="Ex: 20h autonomie, étanche, son 360°" value="20h autonomie, étanche (piscine OK), son 360° puissant">
+                        <input type="text" id="enceinte_caracteristiques" name="enceinte_caracteristiques" placeholder="Ex: 20h autonomie, étanche, son 360°">
+                    </div>
                     </div>
                     
                     <div class="form-section-title">🎮 Autres équipements multimédia</div>
                     <div class="form-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="multimedia_active" name="multimedia_active" class="toggle-checkbox">
+                            <span class="toggle-text">Activer la section Autres équipements</span>
+                        </label>
+                    </div>
+                    <div id="multimedia-fields" style="display: none;">
+                    <div class="form-group">
                         <label>Espace bureau / télétravail</label>
-                        <input type="text" id="multimedia_bureau" name="multimedia_bureau" value="Bureau dans la chambre avec prises USB et écran supplémentaire">
+                        <input type="text" id="multimedia_bureau" name="multimedia_bureau" placeholder="Ex: Bureau dans la chambre avec prises USB">
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
                             <label>Prises USB</label>
-                            <input type="text" id="multimedia_prises_usb" name="multimedia_prises_usb" value="Chaque pièce équipée de prises USB">
+                            <input type="text" id="multimedia_prises_usb" name="multimedia_prises_usb" placeholder="Ex: Chaque pièce équipée de prises USB">
                         </div>
                         <div class="form-group">
                             <label>Chargeurs disponibles</label>
-                            <input type="text" id="multimedia_chargeurs" name="multimedia_chargeurs" value="Station de charge multi-USB dans le salon">
+                            <input type="text" id="multimedia_chargeurs" name="multimedia_chargeurs" placeholder="Ex: Station de charge multi-USB">
                         </div>
+                    </div>
                     </div>
                 </div>
                 
-                <!-- ÉTAPE 3: Équipements -->
-                <div class="form-step" data-step="3">
-                    <h3>🏠 Équipements & Instructions</h3>
+                <!-- ÉTAPE 5: Page ÉQUIPEMENTS -->
+                <div class="form-step" data-step="5">
+                    <h3>🏠 Page Équipements - Cuisine, Salle de bain, Climatisation...</h3>
                     
                     <div class="form-section-title">🍳 Cuisine équipée</div>
                     <div class="form-group">
@@ -1053,14 +1257,48 @@
                         <textarea id="sdb_autres" name="sdb_autres" rows="2" placeholder="Ex: Sèche-linge, Balai serpillière...">Miroir grossissant, Pèse-personne, Peignoirs</textarea>
                     </div>
                     
-                    <div class="form-section-title">❄️ Climatisation & Chauffage</div>
+                    <div class="form-section-title">❄️ Climatisation</div>
                     <div class="form-group">
-                        <label>Emplacement télécommande climatisation</label>
-                        <input type="text" id="clim_telecommande_emplacement" name="clim_telecommande_emplacement" value="Télécommande sur la table du salon">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="clim_active" name="clim_active" class="toggle-checkbox">
+                            <span class="toggle-text">Activer la section Climatisation</span>
+                        </label>
                     </div>
+                    <div id="clim-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Titre de la section</label>
+                            <input type="text" id="clim_titre" name="clim_titre" placeholder="Ex: Climatisation, Air conditionné, Refroidissement..." value="Climatisation">
+                        </div>
+                        <div class="form-group">
+                            <label>Emplacement télécommande/contrôle</label>
+                            <input type="text" id="clim_telecommande_emplacement" name="clim_telecommande_emplacement" placeholder="Ex: Télécommande murale dans le salon">
+                        </div>
+                        <div class="form-group">
+                            <label>Instructions d'utilisation</label>
+                            <textarea id="instructions_clim" name="instructions_clim" rows="3" placeholder="Ex: Télécommandes murales blanches. Fermez portes et fenêtres pour optimiser l'efficacité."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-title">🔥 Chauffage</div>
                     <div class="form-group">
-                        <label>Instructions climatisation/chauffage</label>
-                        <textarea id="instructions_clim" name="instructions_clim" rows="3">Climatisation réversible dans toutes les pièces. Télécommandes murales blanches. IMPORTANT : fermez portes et fenêtres quand la climatisation fonctionne pour optimiser l'efficacité.</textarea>
+                        <label class="toggle-label">
+                            <input type="checkbox" id="chauffage_active" name="chauffage_active" class="toggle-checkbox">
+                            <span class="toggle-text">Activer la section Chauffage</span>
+                        </label>
+                    </div>
+                    <div id="chauffage-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Titre de la section</label>
+                            <input type="text" id="chauffage_titre" name="chauffage_titre" placeholder="Ex: Chauffage, Chauffage électrique, Radiateurs..." value="Chauffage">
+                        </div>
+                        <div class="form-group">
+                            <label>Emplacement télécommande/contrôle</label>
+                            <input type="text" id="chauffage_telecommande_emplacement" name="chauffage_telecommande_emplacement" placeholder="Ex: Thermostats dans chaque pièce">
+                        </div>
+                        <div class="form-group">
+                            <label>Instructions d'utilisation</label>
+                            <textarea id="instructions_chauffage" name="instructions_chauffage" rows="3" placeholder="Ex: Radiateurs électriques avec thermostats individuels. Température conseillée: 20-21°C."></textarea>
+                        </div>
                     </div>
                     
                     <div class="form-section-title">🧺 Linge & Nettoyage</div>
@@ -1079,101 +1317,272 @@
                     
                     <div class="form-section-title">⚠️ Règles importantes équipements</div>
                     <div class="form-group">
-                        <label>Règles de sécurité (séparées par des virgules)</label>
+                        <label>Règles de sécurité</label>
                         <textarea id="equipements_regles_importantes" name="equipements_regles_importantes" rows="3" placeholder="Ex: Ne pas utiliser d'appareils défectueux, Débrancher les appareils non utilisés...">Ne pas utiliser d'appareils défectueux, Débrancher les appareils non utilisés, Ne rien jeter dans les toilettes (sauf papier WC)</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">🚪 Instructions de départ</div>
-                    <div class="form-group">
-                        <label>Que faire avant de partir</label>
-                        <textarea id="instructions_depart" name="instructions_depart" rows="4">Avant votre départ :
-✓ Faire la vaisselle et la ranger
-✓ Sortir les poubelles dans les containers extérieurs
-✓ Éteindre toutes les climatisations
-✓ Fermer tous les volets
-✓ Fermer portes et fenêtres
-✓ Remettre les clés dans la boîte à clés sécurisée</textarea>
                     </div>
                 </div>
                 
-                <!-- ÉTAPE 4: Restaurants & Activités -->
-                <div class="form-step" data-step="4">
-                    <h3>🍽️ Bonnes Adresses & Activités</h3>
+                <!-- ÉTAPE 6: Page RESTAURANTS -->
+                <div class="form-step" data-step="6">
+                    <h3>🍽️ Page Restaurants - Bonnes adresses à proximité</h3>
                     
-                    <div class="form-section-title">Restaurants recommandés</div>
+                    <p style="color: #666; margin-bottom: 24px;">Recommandez les meilleurs restaurants et snacks autour du logement</p>
+                    
+                    <div class="form-section-title">🍽️ Restaurants recommandés</div>
                     <div id="restaurants-list"></div>
                     <button type="button" class="btn-add-item" onclick="addRestaurant()">➕ Ajouter un restaurant</button>
                     
-                    <div class="form-section-title">🥐 Snacks & Boulangeries</div>
+                    <div class="form-section-title" style="margin-top: 32px;">🥐 Snacks & Boulangeries</div>
                     <div id="snacks-list"></div>
                     <button type="button" class="btn-add-item" onclick="addSnack()">➕ Ajouter un snack/boulangerie</button>
+                </div>
+                
+                <!-- ÉTAPE 7: Page ACTIVITÉS -->
+                <div class="form-step" data-step="7">
+                    <h3>🌴 Page Activités - Loisirs et découvertes</h3>
                     
-                    <div class="form-section-title">🌴 Activités & Loisirs</div>
+                    <p style="color: #666; margin-bottom: 24px;">Partagez les meilleures activités et lieux à visiter dans la région</p>
+                    
                     <div id="activites-list"></div>
                     <button type="button" class="btn-add-item" onclick="addActivite()">➕ Ajouter une activité</button>
+                </div>
+                
+                <!-- ÉTAPE 8: Page COMMERCES -->
+                <div class="form-step" data-step="8">
+                    <h3>📍 Page Commerces - Services de proximité</h3>
                     
-                    <div class="form-section-title">📍 Commerces & Services à proximité</div>
+                    <p style="color: #666; margin-bottom: 24px;">Indiquez les commerces et services pratiques à proximité</p>
+                    
                     <div id="commerces-list"></div>
                     <button type="button" class="btn-add-item" onclick="addCommerce()">➕ Ajouter un commerce</button>
                 </div>
                 
-                <!-- ÉTAPE 5: Infos pratiques & Hôte -->
-                <div class="form-step" data-step="5">
-                    <h3>📋 Informations Pratiques & Votre Contact</h3>
+                <!-- ÉTAPE 9: Page URGENCE -->
+                <div class="form-step" data-step="9">
+                    <h3>🚨 Page Urgence - Numéros et procédures</h3>
                     
-                    <div class="form-section-title">👤 Votre contact (affiché dans le guide)</div>
+                    <div class="form-section-title">🚨 Numéros d'urgence</div>
+                    <div class="form-group">
+                        <label>Numéros d'urgence et services médicaux</label>
+                        <textarea id="urgences" name="urgences" rows="6" placeholder="Ex: Hôpital : CHU Félix Guyon - 10 min&#10;Pharmacie de garde : Centre-ville - 5 min"></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">🏥 Hôpital le plus proche</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Votre nom / Prénom *</label>
-                            <input type="text" id="hote_nom" name="hote_nom" value="Julien" required>
+                            <label>Nom de l'hôpital</label>
+                            <input type="text" id="urgence_hopital_nom" name="urgence_hopital_nom" placeholder="Ex: CHU Félix Guyon">
                         </div>
                         <div class="form-group">
-                            <label>Téléphone de contact *</label>
+                            <label>Distance / Temps trajet</label>
+                            <input type="text" id="urgence_hopital_distance" name="urgence_hopital_distance" placeholder="Ex: 5km - 10 min">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Adresse hôpital</label>
+                        <input type="text" id="urgence_hopital_adresse" name="urgence_hopital_adresse" placeholder="Ex: Allée des Topazes, 97400 Saint-Denis">
+                    </div>
+                    
+                    <div class="form-section-title">💊 Pharmacie la plus proche</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom de la pharmacie</label>
+                            <input type="text" id="urgence_pharmacie_nom" name="urgence_pharmacie_nom" placeholder="Ex: Pharmacie du Centre">
+                        </div>
+                        <div class="form-group">
+                            <label>Distance / Temps</label>
+                            <input type="text" id="urgence_pharmacie_distance" name="urgence_pharmacie_distance" placeholder="Ex: 500m - 5 min">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Horaires pharmacie</label>
+                            <input type="text" id="urgence_pharmacie_horaires" name="urgence_pharmacie_horaires" placeholder="Ex: Lun-Sam 8h-20h, Dim 9h-13h">
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone pharmacie</label>
+                            <input type="tel" id="urgence_pharmacie_telephone" name="urgence_pharmacie_telephone" placeholder="Ex: 0262 12 34 56">
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-title">⚠️ En cas d'incident au logement</div>
+                    <p style="color: #666; margin-bottom: 16px; font-size: 0.95rem;">Instructions étape par étape pour les incidents courants</p>
+                    
+                    <div class="form-group">
+                        <label>💡 Panne d'électricité - Instructions</label>
+                        <textarea id="incident_electricite" name="incident_electricite" rows="3" placeholder="Ex: 1. Vérifiez le disjoncteur dans l'entrée&#10;2. Réenclenchez le levier vers le haut&#10;3. Si problème persiste, contactez-nous">1. Vérifiez si le disjoncteur a sauté (tableau électrique dans l'entrée)
+2. Réenclenchez le disjoncteur en poussant le levier vers le haut
+3. Si le problème persiste, contactez-nous</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>💧 Fuite d'eau - Instructions</label>
+                        <textarea id="incident_fuite" name="incident_fuite" rows="3" placeholder="Ex: 1. Fermez le robinet d'arrivée d'eau sous l'évier&#10;2. Coupez l'électricité si eau proche d'une prise&#10;3. Appelez-nous immédiatement">1. Fermez immédiatement le robinet d'arrivée d'eau (sous l'évier de la cuisine)
+2. Coupez l'électricité si l'eau est proche d'une prise
+3. Appelez-nous immédiatement</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⛽ Odeur de gaz - Instructions</label>
+                        <textarea id="incident_gaz" name="incident_gaz" rows="4" placeholder="Ex: 1. N'allumez rien&#10;2. Ouvrez les fenêtres&#10;3. Sortez du logement&#10;4. Appelez les pompiers : 18">1. N'allumez rien (lumière, téléphone)
+2. Ouvrez toutes les fenêtres
+3. Sortez du logement
+4. Appelez les pompiers : 18</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🔒 Enfermé dehors - Instructions</label>
+                        <textarea id="incident_enferme" name="incident_enferme" rows="3" placeholder="Ex: 1. Vérifiez si une fenêtre est ouverte&#10;2. Contactez-nous (clé de secours)&#10;3. Délai : 30 minutes">1. Vérifiez si vous avez laissé une fenêtre ouverte
+2. Contactez-nous, nous avons une clé de secours
+3. Temps d'intervention : environ 30 minutes</textarea>
+                    </div>
+                    
+                    <div class="form-section-title">📋 Procédures urgence logement</div>
+                    <div class="form-group">
+                        <label>Procédures générales (disjoncteur, vanne eau, détecteurs, etc.)</label>
+                        <textarea id="urgence_procedures" name="urgence_procedures" rows="4" placeholder="Ex: Disjoncteur : garage, armoire grise&#10;Vanne eau : derrière la maison&#10;Détecteur fumée : bouton test"></textarea>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 10: Page VOTRE HÔTE -->
+                <div class="form-step" data-step="10">
+                    <h3>❤️ Page Votre Hôte - Présentez-vous à vos voyageurs</h3>
+                    
+                    <div class="form-section-title">👤 Informations de contact</div>
+                    <div class="form-group">
+                        <label>Nom(s) de l'hôte / des hôtes *</label>
+                        <input type="text" id="hote_noms" name="hote_noms" required value="Julien & Marie" placeholder="Ex: Julien & Marie, ou Famille Dupont">
+                        <small style="color: #666; display: block; margin-top: 4px;">Si plusieurs hôtes, séparez par &</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Téléphone principal *</label>
                             <input type="tel" id="hote_telephone" name="hote_telephone" required value="+262 692 63 03 64">
                         </div>
+                        <div class="form-group">
+                            <label>WhatsApp (si différent du téléphone)</label>
+                            <input type="tel" id="hote_whatsapp" name="hote_whatsapp" value="+262 692 63 03 64" placeholder="+262 692 XX XX XX">
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label>Email de contact</label>
-                        <input type="email" id="hote_email" name="hote_email" value="contact@qrguide.fr">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Message personnalisé de bienvenue pour vos voyageurs</label>
-                        <textarea id="message_hote" name="message_hote" rows="4" placeholder="Présentez-vous et partagez votre passion pour votre région...">Bienvenue chez nous ! Nous sommes ravis de vous accueillir dans notre logement. Nous vivons à La Réunion depuis 10 ans et adorons partager nos coups de cœur avec nos voyageurs. N'hésitez surtout pas à nous demander des conseils, nous connaissons l'île comme notre poche ! Notre objectif : que vous passiez le meilleur séjour possible ✨</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">⏰ Disponibilité hôte</div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Disponibilité en semaine</label>
-                            <input type="text" id="hote_disponibilite_semaine" name="hote_disponibilite_semaine" placeholder="Ex: 8h-21h" value="8h00 - 21h00">
+                            <label>Email de contact *</label>
+                            <input type="email" id="hote_email" name="hote_email" required value="contact@qrguide.fr">
                         </div>
                         <div class="form-group">
-                            <label>Disponibilité week-end</label>
-                            <input type="text" id="hote_disponibilite_weekend" name="hote_disponibilite_weekend" placeholder="Ex: 9h-20h" value="9h00 - 20h00">
+                            <label>Photo de profil hôte</label>
+                            <input type="file" id="hote_avatar_upload" accept="image/*" style="display: block; padding: 12px; border: 2px dashed #d4af37; border-radius: 8px; background: #fffbf0; cursor: pointer;">
+                            <small style="color: #666; display: block; margin-top: 8px;">Recommandé pour personnaliser votre profil (JPG, PNG, WebP - max 5 Mo)</small>
+                            <div id="hote_avatar_preview" style="margin-top: 12px; display: none;">
+                                <img id="hote_avatar_preview_img" src="" alt="Aperçu" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            </div>
+                            <p id="hote_avatar_upload_status" style="margin-top: 8px; font-size: 0.9rem; color: #666;"></p>
+                            <input type="hidden" id="hote_avatar_url" name="hote_avatar_url">
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-title">📞 Préférences de contact</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Moyen de contact préféré</label>
+                            <select id="hote_telephone_preference" name="hote_telephone_preference">
+                                <option value="whatsapp">WhatsApp (recommandé)</option>
+                                <option value="telephone">Téléphone</option>
+                                <option value="sms">SMS</option>
+                                <option value="email">Email</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Délai de réponse email</label>
+                            <input type="text" id="hote_email_delai" name="hote_email_delai" placeholder="Ex: Sous 2h en semaine">
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-title">⏰ Disponibilité</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Horaires semaine (Lun-Ven)</label>
+                            <input type="text" id="hote_reponse_semaine" name="hote_reponse_semaine" placeholder="Ex: 8h-21h">
+                        </div>
+                        <div class="form-group">
+                            <label>Horaires week-end (Sam-Dim)</label>
+                            <input type="text" id="hote_reponse_weekend" name="hote_reponse_weekend" placeholder="Ex: 9h-20h">
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label>Langues parlées (séparées par des virgules)</label>
-                        <input type="text" id="hote_langues" name="hote_langues" placeholder="Ex: Français, Anglais, Espagnol" value="Français, Anglais, Créole">
+                        <label>Disponibilité en cas d'urgence</label>
+                        <input type="text" id="hote_disponibilite_urgence" name="hote_disponibilite_urgence" placeholder="Ex: 24h/24 et 7j/7">
                     </div>
                     
-                    <div class="form-group">
-                        <label>Services proposés (séparés par des virgules)</label>
-                        <textarea id="hote_services" name="hote_services" rows="3" placeholder="Ex: Conseils personnalisés, Réservations restaurants, Location voiture...">Conseils personnalisés et itinéraires sur-mesure, Réservations restaurants et activités, Bon plan location voiture avec notre partenaire, Dépôt bagages gratuit si départ tardif</textarea>
+                    <div class="form-section-title">🎯 Services proposés</div>
+                    <p style="color: #666; margin-bottom: 16px; font-size: 0.95rem;">Cochez les services que vous proposez à vos voyageurs</p>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="hote_services_conseils" name="hote_services_conseils">
+                            💡 Conseils personnalisés et itinéraires
+                        </label>
+                        <label>
+                            <input type="checkbox" id="hote_services_reservations" name="hote_services_reservations">
+                            🍽️ Aide aux réservations (restaurants, activités)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="hote_services_location" name="hote_services_location">
+                            🚗 Partenaire location voiture
+                        </label>
+                        <label>
+                            <input type="checkbox" id="hote_services_bagages" name="hote_services_bagages">
+                            🧳 Dépôt bagages (avant check-in / après check-out)
+                        </label>
                     </div>
+                    
+                    <div class="form-section-title">⭐ Coups de cœur de l'hôte</div>
+                    <div class="form-group">
+                        <label>Vos recommandations favorites (une par ligne ou séparées par des virgules)</label>
+                        <textarea id="hote_coups_de_coeur" name="hote_coups_de_coeur" rows="5" placeholder="Ex:&#10;Le marché de Saint-Paul le vendredi matin&#10;Plage de l'Hermitage pour le snorkeling&#10;Restaurant Le Jardin Créole"></textarea>
+                        <small style="color: #666; display: block; margin-top: 4px;">Ces recommandations seront mises en avant dans le guide</small>
+                    </div>
+                    
+                    <div class="form-section-title">✨ Engagement qualité</div>
+                    <div class="form-group">
+                        <label>Vos engagements envers vos voyageurs (séparés par des virgules)</label>
+                        <textarea id="hote_engagement_qualite" name="hote_engagement_qualite" rows="3" placeholder="Ex: Propreté irréprochable, Réponse rapide, Respect de l'environnement..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">👨‍👩‍👧 À propos de nous</div>
+                    <div class="form-group">
+                        <label>Présentez-vous (parcours, passion pour la région, pourquoi vous aimez accueillir...)</label>
+                        <textarea id="hote_apropos" name="hote_apropos" rows="6" placeholder="Parlez de vous, votre histoire, votre amour pour la région..."></textarea>
+                    </div>
+                    
+                    <div class="form-section-title">📱 Réseaux sociaux</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Instagram (optionnel)</label>
+                            <input type="text" id="hote_instagram" name="hote_instagram" placeholder="@votre_compte">
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook (optionnel)</label>
+                            <input type="text" id="hote_facebook" name="hote_facebook" placeholder="facebook.com/votre-page">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 11: Page INFOS & RÈGLEMENT -->
+                <div class="form-step" data-step="11">
+                    <h3>📋 Page Infos & Règlement - Règles et conseils pratiques</h3>
                     
                     <div class="form-section-title">📜 Règlement intérieur</div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Heures de calme</label>
-                            <input type="text" id="regles_calme" name="regles_calme" value="22h00 - 8h00">
+                            <input type="text" id="regles_calme" name="regles_calme" placeholder="Ex: 22h-8h">
                         </div>
                         <div class="form-group">
                             <label>Nombre maximum de personnes</label>
-                            <input type="number" id="regles_personnes" name="regles_personnes" value="6">
+                            <input type="number" id="regles_personnes" name="regles_personnes" placeholder="Ex: 6">
                         </div>
                     </div>
                     
@@ -1198,56 +1607,18 @@
                     
                     <div class="form-group">
                         <label>Politique animaux de compagnie</label>
-                        <textarea id="regles_animaux" name="regles_animaux" rows="2" placeholder="Ex: Non autorisés / Autorisés sur demande...">Non autorisés sauf accord préalable du propriétaire. Si vous avez besoin d'amener un animal, contactez-nous avant votre arrivée.</textarea>
+                        <textarea id="regles_animaux" name="regles_animaux" rows="2" placeholder="Ex: Non autorisés / Autorisés sur demande..."></textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>Règles supplémentaires de la maison</label>
-                        <textarea id="regles" name="regles" rows="4" placeholder="Autres règles importantes...">🏊 Piscine non surveillée - Surveillance obligatoire des enfants par les parents
-👞 Merci de retirer vos chaussures à l'intérieur
-🚪 Bien fermer portes et fenêtres en partant</textarea>
+                        <textarea id="regles" name="regles" rows="4" placeholder="Autres règles importantes..."></textarea>
                     </div>
                     
                     <div class="form-section-title">♻️ Tri des déchets</div>
                     <div class="form-group">
                         <label>Instructions tri des déchets</label>
-                        <textarea id="tri_dechets" name="tri_dechets" rows="4" placeholder="Indiquez où se trouvent les poubelles et comment trier...">🗑️ Poubelle jaune (recyclage) : Plastique, carton, métal - Sous l'évier
-🗑️ Poubelle verte (verre) : Conteneur dans le garage
-🗑️ Poubelle noire (ordures ménagères) : Local à l'entrée
-♻️ Collecte : Mardi et vendredi matin (sortir containers la veille au soir)</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">🧹 Ménage & Départ</div>
-                    <div class="form-group">
-                        <label>Instructions ménage et départ</label>
-                        <textarea id="menage_tri" name="menage_tri" rows="4">Le ménage professionnel est inclus dans votre réservation. Merci simplement de :
-✓ Faire la vaisselle et la ranger
-✓ Vider les poubelles
-✓ Laisser les lieux dans un état correct
-🧺 Linge de lit : Laisser sur le lit, nettoyage professionnel inclus</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">🔑 Instructions clés</div>
-                    <div class="form-group">
-                        <label>Restitution des clés au départ</label>
-                        <textarea id="instructions_cles" name="instructions_cles" rows="3">Au choix :
-1️⃣ Laisser sur la table d'entrée puis fermer la porte en tirant bien
-2️⃣ Remettre dans la boîte à clés (même code qu'à l'arrivée)</textarea>
-                    </div>
-                    
-                    <div class="form-section-title">🚨 Urgences</div>
-                    <div class="form-group">
-                        <label>Numéros d'urgence et services médicaux</label>
-                        <textarea id="urgences" name="urgences" rows="6">🚨 URGENCES
-🚒 Pompiers : 18
-👮 Police : 17
-🚑 SAMU : 15
-🇪🇺 Urgences UE : 112
-
-🏥 Services médicaux proches
-Hôpital : CHU Félix Guyon - 10 min en voiture
-Pharmacie de garde : Centre-ville - 5 min
-Médecin : Dr. Martin - +262 262 XX XX XX</textarea>
+                        <textarea id="tri_dechets" name="tri_dechets" rows="4" placeholder="Indiquez où se trouvent les poubelles et comment trier..."></textarea>
                     </div>
                     
                     <div class="form-section-title">🚌 Transports & Parkings</div>
@@ -1264,12 +1635,12 @@ Médecin : Dr. Martin - +262 262 XX XX XX</textarea>
                     <div class="form-section-title">🛒 Marché local</div>
                     <div class="form-group">
                         <label>Marché local (nom, jours, horaires)</label>
-                        <textarea id="marche_local" name="marche_local" rows="3" placeholder="Ex: Marché du samedi matin, Place du Village, 6h-13h">Marché du samedi matin - Place du Village - 6h à 13h
-Le meilleur endroit pour découvrir les produits locaux !
-🥭 Fruits exotiques frais | 🐟 Poissons du jour | 🌺 Artisanat | 🍛 Plats créoles à emporter</textarea>
+                        <textarea id="marche_local" name="marche_local" rows="3" placeholder="Ex: Marché du samedi matin, Place du Vill>
                     </div>
                     
-                    <div class="form-section-title">💡 Astuces locales</div>
+                    <div class="form-group">
+                        <label>Taxis / VTC</label>
+                        <input type="text" id="transports_taxi" name="transports_taxi" placeholder="Ex: Station taxi d
                     <div class="form-group">
                         <label>Astuces et bons plans de la région (séparées par des virgules ou des sauts de ligne)</label>
                         <textarea id="astuces_locales" name="astuces_locales" rows="4" placeholder="Vos meilleurs conseils locaux...">🥐 Boulangerie Au Pain Doré ouvre à 7h (5 min à pied) - Meilleurs croissants !
@@ -1296,9 +1667,12 @@ Le meilleur endroit pour découvrir les produits locaux !
                 
                 <!-- Boutons de navigation -->
                 <div class="form-navigation">
-                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">← Précédent</button>
-                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Suivant →</button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">✅ Créer le guide</button>
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)">← Précédent</button>
+                    <div style="display: flex; gap: 12px;">
+                        <button type="button" class="btn btn-secondary" id="draftBtn" onclick="saveDraft()">💾 Enregistrer brouillon</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Suivant →</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">✅ Créer le guide</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -1314,6 +1688,7 @@ Le meilleur endroit pour découvrir les produits locaux !
     <script>
         let currentUser = null;
         let currentLogementId = null;
+        let isEditingActiveGuide = false; // Variable globale pour détecter le mode édition
 
         // Vérifier Firebase Storage au chargement
         console.log('🔥 Firebase App initialisé:', !!firebase.apps.length);
@@ -1339,10 +1714,20 @@ Le meilleur endroit pour découvrir les produits locaux !
             const userDoc = await db.collection('users').doc(user.uid).get();
             const userData = userDoc.data();
             
-            if (!userData || userData.role !== 'client') {
-                alert('Accès réservé aux clients');
+            // Permettre accès clients ET admins
+            if (!userData || (userData.role !== 'client' && userData.role !== 'admin')) {
+                alert('Accès réservé aux utilisateurs connectés');
                 await auth.signOut();
                 window.location.href = 'login.html';
+                return;
+            }
+            
+            // Si admin qui veut éditer un guide client
+            const urlParams = new URLSearchParams(window.location.search);
+            const editGuideId = urlParams.get('editGuide');
+            if (editGuideId && userData.role === 'admin') {
+                console.log('🔧 Admin édite guide:', editGuideId);
+                await loadAndEditGuideAdmin(editGuideId);
                 return;
             }
             
@@ -1379,6 +1764,54 @@ Le meilleur endroit pour découvrir les produits locaux !
             loadLogements();
         });
 
+        // Fonction pour charger et éditer un guide (mode admin)
+        async function loadAndEditGuideAdmin(guideId) {
+            try {
+                // Charger le guide depuis Firestore
+                const guideDoc = await db.collection('guides').doc(guideId).get();
+                if (!guideDoc.exists) {
+                    alert('Guide introuvable');
+                    window.location.href = 'demo-guide/admin.html';
+                    return;
+                }
+                
+                const guideData = guideDoc.data();
+                console.log('📝 Guide chargé:', guideData);
+                
+                // Masquer la section mes logements
+                document.getElementById('mes-logements-section').style.display = 'none';
+                document.getElementById('mon-compte-section').style.display = 'none';
+                
+                // Afficher le formulaire
+                document.getElementById('guide-form-section').style.display = 'block';
+                
+                // Remplir le formulaire avec les données du guide
+                isEditingActiveGuide = true;
+                currentLogementId = guideId; // Utiliser l'ID du guide directement
+                
+                // Pré-remplir tous les champs
+                Object.keys(guideData).forEach(key => {
+                    const field = document.getElementById(key);
+                    if (field) {
+                        if (field.type === 'checkbox') {
+                            field.checked = guideData[key];
+                        } else {
+                            field.value = guideData[key] || '';
+                        }
+                    }
+                });
+                
+                // Changer le titre et le bouton
+                document.getElementById('modal-title').textContent = '✏️ Modifier le guide (Admin)';
+                document.getElementById('submitBtn').innerHTML = '✅ Enregistrer les modifications';
+                
+                showStep(1);
+            } catch (error) {
+                console.error('Erreur chargement guide:', error);
+                alert('Erreur lors du chargement du guide');
+            }
+        }
+        
         // Charger les logements
         async function loadLogements() {
             const logementsSnap = await db.collection('users').doc(currentUser.uid)
@@ -1404,7 +1837,10 @@ Le meilleur endroit pour découvrir les produits locaux !
                 // Déterminer le statut et le badge
                 let statusBadge = '';
                 let statusClass = '';
-                if (data.status === 'creating') {
+                if (data.status === 'draft') {
+                    statusBadge = '<span style="display: inline-block; background: #e7f3ff; color: #0066cc; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;">📝 Brouillon</span>';
+                    statusClass = 'draft';
+                } else if (data.status === 'creating') {
                     statusBadge = '<span style="display: inline-block; background: #fff3cd; color: #856404; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;">⏳ En cours...</span>';
                     statusClass = 'creating';
                 } else if (data.status === 'error') {
@@ -1418,15 +1854,18 @@ Le meilleur endroit pour découvrir les produits locaux !
                 card.innerHTML = `
                     <h3>${data.nom || 'Sans nom'}${statusBadge}</h3>
                     <p>${data.ville || ''}</p>
-                    ${data.guideUrl && data.status !== 'creating' ? `<p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
+                    ${data.guideUrl && data.status !== 'creating' && data.status !== 'draft' ? `<p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
                         🔗 <a href="${data.guideUrl}" target="_blank" style="color: #d4af37;">${data.guideUrl}</a>
                     </p>` : ''}
+                    ${data.status === 'draft' ? `<p style="font-size: 0.9rem; color: #0066cc; margin-top: 8px; font-style: italic;">📝 Ce guide est en brouillon. Complétez-le pour le publier.</p>` : ''}
                     ${data.status === 'creating' ? `<p style="font-size: 0.9rem; color: #856404; margin-top: 8px; font-style: italic;">⏳ Votre guide est en cours de création. Vous pouvez fermer cette page, il sera disponible dans quelques instants.</p>` : ''}
                     ${data.status === 'error' ? `<p style="font-size: 0.9rem; color: #721c24; margin-top: 8px;">❌ Une erreur s'est produite lors de la création. Veuillez supprimer et recréer ce guide.</p>` : ''}
                     <div class="logement-actions">
-                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' ? `<button class="btn btn-primary" onclick="window.open('guide.html?id=${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
-                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' ? `<button class="btn btn-secondary" onclick="viewQR('${data.guideId}', '${data.guideUrl}')">📱 QR Code</button>` : ''}
-                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' ? `<button class="btn" style="background: #d4af37; color: white;" onclick="editLogement('${doc.id}', '${data.guideId || ''}')">✏️ Modifier</button>` : ''}
+                        ${data.status === 'draft' ? `<button class="btn btn-primary" onclick="editLogement('${doc.id}', '${data.guideId || ''}')">✏️ Continuer le brouillon</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' && data.status !== 'draft' ? `<button class="btn btn-primary" onclick="window.open('guide.html?id=${data.guideId}', '_blank')">👁️ Voir le guide</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' && data.status !== 'draft' ? `<button class="btn btn-secondary" onclick="viewQR('${data.guideId}', '${data.guideUrl}')">📱 QR Code</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' && data.status !== 'draft' ? `<button class="btn" style="background: #6c757d; color: white;" onclick="viewLogementReviews('${data.guideId}', '${data.nom || 'Sans nom'}')">💬 Avis</button>` : ''}
+                        ${data.guideId && data.status !== 'creating' && data.status !== 'error' && data.status !== 'draft' ? `<button class="btn" style="background: #d4af37; color: white;" onclick="editLogement('${doc.id}', '${data.guideId || ''}')">✏️ Modifier</button>` : ''}
                         <button class="btn btn-danger" onclick="deleteLogement('${doc.id}', '${data.guideId || ''}')">🗑️ Supprimer</button>
                     </div>
                 `;
@@ -1513,28 +1952,147 @@ Le meilleur endroit pour découvrir les produits locaux !
             event.target.classList.add('active');
             document.getElementById(`tab-${tab}`).classList.add('active');
         }
+        
+        // Afficher les avis d'un logement spécifique dans une modal
+        async function viewLogementReviews(guideId, logementNom) {
+            // Créer la modal
+            const modal = document.createElement('div');
+            modal.id = 'reviews-modal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 20px;';
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+                    <div style="position: sticky; top: 0; background: white; padding: 24px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; border-radius: 16px 16px 0 0;">
+                        <h2 style="margin: 0; color: #d4af37;">💬 Avis - ${logementNom}</h2>
+                        <button onclick="document.getElementById('reviews-modal').remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; padding: 0; width: 32px; height: 32px;">✕</button>
+                    </div>
+                    <div id="modal-reviews-content" style="padding: 24px;">
+                        <p style="text-align: center; padding: 40px; color: #999;">⏳ Chargement des avis...</p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Charger les avis
+            try {
+                const reviewsSnapshot = await db.collection('guides').doc(guideId)
+                    .collection('reviews')
+                    .orderBy('timestamp', 'desc')
+                    .get();
+                
+                const content = document.getElementById('modal-reviews-content');
+                
+                if (reviewsSnapshot.empty) {
+                    content.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">Aucun avis reçu pour ce logement</p>';
+                    return;
+                }
+                
+                let html = `<p style="color: #666; margin-bottom: 20px;">${reviewsSnapshot.size} avis reçu${reviewsSnapshot.size > 1 ? 's' : ''}</p>`;
+                
+                reviewsSnapshot.forEach(reviewDoc => {
+                    const review = reviewDoc.data();
+                    const reviewId = reviewDoc.id;
+                    const stars = '⭐'.repeat(review.rating || 5);
+                    const date = review.timestamp ? new Date(review.timestamp.toDate()).toLocaleDateString('fr-FR') : 'Date inconnue';
+                    const approved = review.approved !== false;
+                    
+                    html += `
+                        <div style="border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; background: ${approved ? '#fff' : '#f5f5f5'}; margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 12px;">
+                                <div>
+                                    <div style="font-weight: 600; color: #333; margin-bottom: 4px; font-size: 1.1rem;">${review.name || 'Anonyme'}</div>
+                                    <div style="font-size: 0.85rem; color: #999;">${date}</div>
+                                    <div style="margin-top: 8px; font-size: 1.2rem;">${stars}</div>
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <button onclick="toggleReviewApproval('${guideId}', '${reviewId}', ${approved})" 
+                                            style="background: ${approved ? '#28a745' : '#6c757d'}; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; white-space: nowrap;">
+                                        ${approved ? '👁️ Visible' : '🚫 Masqué'}
+                                    </button>
+                                    <button onclick="deleteReview('${guideId}', '${reviewId}')" 
+                                            style="background: #dc3545; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+                                        🗑️
+                                    </button>
+                                </div>
+                            </div>
+                            <p style="color: #555; line-height: 1.8; margin: 0; font-size: 1rem;">${review.comment || ''}</p>
+                        </div>
+                    `;
+                });
+                
+                content.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Erreur chargement avis:', error);
+                document.getElementById('modal-reviews-content').innerHTML = '<p style="text-align: center; padding: 40px; color: #dc3545;">❌ Erreur lors du chargement des avis</p>';
+            }
+        }
+        
+        // Approuver ou masquer un avis
+        async function toggleReviewApproval(guideId, reviewId, currentStatus) {
+            try {
+                await db.collection('guides').doc(guideId)
+                    .collection('reviews').doc(reviewId)
+                    .update({ approved: !currentStatus });
+                
+                showAlert(currentStatus ? '✅ Avis masqué' : '✅ Avis affiché', 'success');
+                
+                // Recharger la modal
+                document.getElementById('reviews-modal').remove();
+                const logementNom = document.querySelector('#reviews-modal h2')?.textContent.replace('💬 Avis - ', '') || 'Logement';
+                setTimeout(() => viewLogementReviews(guideId, logementNom), 300);
+                
+            } catch (error) {
+                console.error('Erreur mise à jour avis:', error);
+                showAlert('❌ Erreur lors de la mise à jour', 'error');
+            }
+        }
+        
+        // Supprimer un avis
+        async function deleteReview(guideId, reviewId) {
+            if (!confirm('Supprimer définitivement cet avis ?')) return;
+            
+            try {
+                await db.collection('guides').doc(guideId)
+                    .collection('reviews').doc(reviewId)
+                    .delete();
+                
+                showAlert('✅ Avis supprimé', 'success');
+                
+                // Recharger la modal
+                document.getElementById('reviews-modal').remove();
+                const logementNom = 'Logement';
+                setTimeout(() => viewLogementReviews(guideId, logementNom), 300);
+                
+            } catch (error) {
+                console.error('Erreur suppression avis:', error);
+                showAlert('❌ Erreur lors de la suppression', 'error');
+            }
+        }
 
         // Modal
         function openNewLogementModal() {
             currentLogementId = null;
             currentFormStep = 1;
+            isEditingActiveGuide = false;
             document.getElementById('modal-title').textContent = 'Créer votre Guide Numérique';
+            document.getElementById('submitBtn').innerHTML = '✅ Créer le guide';
             document.getElementById('logement-form').reset();
             document.getElementById('photo_preview').style.display = 'none';
             document.getElementById('photo_url').value = '';
+            document.getElementById('photo_upload_status').textContent = '';
             
-            // Réinitialiser les équipements et ajouter des exemples
-            equipementsData.cuisine = [];
-            equipementsData.sdb = [];
-            equipementsData.ext = [];
-            equipementsData.multimedia = [];
-            equipementsData.autres = [];
+            // Réactiver le champ photo pour la création
+            document.getElementById('photo_file').disabled = false;
+            document.getElementById('photo_file').style.display = 'block';
             
-            ['cuisine', 'sdb', 'ext', 'multimedia', 'autres'].forEach(cat => {
-                document.getElementById(`equipements-${cat}-list`).innerHTML = '';
-            });
-            
-            initDefaultEquipements();
+            // Réinitialiser la photo du hôte
+            document.getElementById('hote_avatar_preview').style.display = 'none';
+            document.getElementById('hote_avatar_url').value = '';
+            document.getElementById('hote_avatar_upload_status').textContent = '';
+            document.getElementById('hote_avatar_upload').disabled = false;
+            document.getElementById('hote_avatar_upload').style.display = 'block';
             
             // Réinitialiser restaurants, activités, commerces
             restaurantsData.length = 0;
@@ -1558,222 +2116,17 @@ Le meilleur endroit pour découvrir les produits locaux !
             showStep(1);
         }
         
-        // Gestion dynamique des équipements
-        const equipementsData = {
-            cuisine: [],
-            sdb: [],
-            ext: [],
-            multimedia: [],
-            autres: []
-        };
-        
-        // Suggestions d'équipements par catégorie
-        const equipementsSuggestions = {
-            cuisine: [
-                { nom: '☕ Machine à café', description: 'Capsules Nespresso fournies - Détartrage automatique' },
-                { nom: '🍳 Plaques de cuisson', description: 'Induction 4 feux - Commandes tactiles' },
-                { nom: '🔥 Four', description: 'Électrique multifonction - Préchauffer 10 min avant utilisation' },
-                { nom: '❄️ Réfrigérateur', description: 'Grand frigo américain avec distributeur d\'eau fraîche' },
-                { nom: '🍞 Grille-pain', description: 'Grille-pain 4 tranches sur le plan de travail' },
-                { nom: '🥄 Ustensiles', description: 'Équipement complet : casseroles, poêles, couverts pour 8 personnes' },
-                { nom: '🍷 Cave à vin', description: 'Cave à vin 12 bouteilles - Température réglable' },
-                { nom: '🍽️ Lave-vaisselle', description: 'Tablettes fournies - Programme Eco recommandé' },
-                { nom: '🔪 Couteaux', description: 'Set de couteaux professionnels aiguisés' },
-                { nom: '⚡ Bouilloire', description: 'Bouilloire électrique sans fil 1,7L' }
-            ],
-            sdb: [
-                { nom: '🚿 Douche', description: 'Douche italienne - Eau chaude instantanée' },
-                { nom: '🛁 Baignoire', description: 'Baignoire balnéo avec jets massants' },
-                { nom: '💨 Sèche-cheveux', description: 'Sèche-cheveux professionnel dans le tiroir sous le lavabo' },
-                { nom: '🧴 Produits fournis', description: 'Shampooing, gel douche et savon inclus' },
-                { nom: '🧻 Serviettes', description: '2 serviettes de bain + 2 serviettes de toilette par personne' },
-                { nom: '🪮 Fer à lisser', description: 'Fer à lisser disponible dans le placard' },
-                { nom: '🪒 Miroir grossissant', description: 'Miroir lumineux grossissant x3' },
-                { nom: '⚖️ Pèse-personne', description: 'Balance électronique' }
-            ],
-            ext: [
-                { nom: '🏊 Piscine', description: 'Piscine chauffée 10x5m - Profondeur 1,80m - Surveillance parentale requise' },
-                { nom: '🔥 Barbecue', description: 'Barbecue au gaz Weber avec plancha - Ustensiles fournis' },
-                { nom: '🪑 Salon de jardin', description: 'Table et 8 chaises en teck + 4 transats' },
-                { nom: '☂️ Parasol', description: '2 grands parasols déportés avec pied lesté' },
-                { nom: '🌴 Transats', description: '6 bains de soleil avec matelas' },
-                { nom: '🚿 Douche extérieure', description: 'Douche solaire avec eau chaude/froide' },
-                { nom: '🎾 Équipements sport', description: 'Raquettes de tennis, ballon, jeux de plage' },
-                { nom: '🌺 Hamac', description: 'Hamac brésilien pour 2 personnes sous les palmiers' }
-            ],
-            multimedia: [
-                { nom: '📺 TV Smart', description: 'TV 55" 4K avec Netflix, Amazon Prime, Disney+ déjà connectés' },
-                { nom: '🎮 Console de jeux', description: 'PlayStation 5 avec manettes et 10 jeux inclus' },
-                { nom: '🔊 Enceinte Bluetooth', description: 'Enceinte JBL haute qualité - Connexion facile' },
-                { nom: '📡 WiFi Fibre', description: 'Fibre optique 1Gb/s - Couverture totale de la maison' },
-                { nom: '💿 Lecteur DVD', description: 'Lecteur Blu-ray avec sélection de films' },
-                { nom: '🎵 Chaîne Hi-Fi', description: 'Système audio Bose avec Bluetooth' }
-            ],
-            autres: [
-                { nom: '🧺 Lave-linge', description: 'Machine à laver 9kg - Lessive fournie' },
-                { nom: '👕 Sèche-linge', description: 'Sèche-linge pompe à chaleur' },
-                { nom: '👶 Équipement bébé', description: 'Lit bébé, chaise haute, baignoire disponibles sur demande' },
-                { nom: '🔒 Coffre-fort', description: 'Coffre-fort électronique dans le dressing principal' },
-                { nom: '🧹 Aspirateur', description: 'Aspirateur Dyson sans fil dans le placard' },
-                { nom: '🪜 Fer à repasser', description: 'Fer + table à repasser dans la buanderie' },
-                { nom: '🅿️ Garage', description: 'Garage fermé pour 2 véhicules' },
-                { nom: '🚲 Vélos', description: '4 vélos adultes + 2 vélos enfants avec casques' }
-            ]
-        };
-        
-        function addEquipement(category, nom = '', description = '') {
-            const listId = `equipements-${category}-list`;
-            const list = document.getElementById(listId);
-            const index = equipementsData[category].length;
-            
-            equipementsData[category].push({ nom, description });
-            
-            const item = document.createElement('div');
-            item.className = 'equipement-item';
-            item.setAttribute('data-category', category);
-            item.setAttribute('data-index', index);
-            item.innerHTML = `
-                <div class="equipement-selector">
-                    <input type="text" 
-                           placeholder="🔍 Tapez ou choisissez dans la liste..." 
-                           value="${nom}"
-                           onfocus="showEquipementSuggestions('${category}', ${index})"
-                           oninput="filterEquipementSuggestions('${category}', ${index}, this.value)"
-                           onblur="setTimeout(() => hideEquipementSuggestions(${index}), 200)"
-                           onchange="updateEquipement('${category}', ${index}, 'nom', this.value)"
-                           id="equipement-nom-${index}">
-                    <div class="equipement-suggestions" id="suggestions-${index}">
-                        ${equipementsSuggestions[category].map((sugg, i) => `
-                            <div class="suggestion-item" onclick="selectEquipementSuggestion('${category}', ${index}, ${i})">
-                                <strong>${sugg.nom}</strong>
-                                <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${sugg.description}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                <textarea placeholder="Description / Instructions détaillées..."
-                          onchange="updateEquipement('${category}', ${index}, 'description', this.value)"
-                          id="equipement-desc-${index}">${description}</textarea>
-                <button type="button" class="btn-remove-item" onclick="removeEquipement('${category}', ${index})">🗑️</button>
-            `;
-            list.appendChild(item);
-        }
-        
-        function showEquipementSuggestions(category, index) {
-            const suggestionsEl = document.getElementById(`suggestions-${index}`);
-            if (suggestionsEl) {
-                suggestionsEl.classList.add('active');
-            }
-        }
-        
-        function hideEquipementSuggestions(index) {
-            const suggestionsEl = document.getElementById(`suggestions-${index}`);
-            if (suggestionsEl) {
-                suggestionsEl.classList.remove('active');
-            }
-        }
-        
-        function filterEquipementSuggestions(category, index, value) {
-            updateEquipement(category, index, 'nom', value);
-            
-            const suggestionsEl = document.getElementById(`suggestions-${index}`);
-            if (!suggestionsEl) return;
-            
-            const filter = value.toLowerCase();
-            const suggestions = equipementsSuggestions[category];
-            
-            let html = '';
-            suggestions.forEach((sugg, i) => {
-                if (sugg.nom.toLowerCase().includes(filter) || sugg.description.toLowerCase().includes(filter)) {
-                    html += `
-                        <div class="suggestion-item" onclick="selectEquipementSuggestion('${category}', ${index}, ${i})">
-                            <strong>${sugg.nom}</strong>
-                            <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${sugg.description}</div>
-                        </div>
-                    `;
-                }
-            });
-            
-            if (html === '') {
-                html = '<div class="suggestion-item" style="color: #999; cursor: default;">Aucune suggestion trouvée</div>';
-            }
-            
-            suggestionsEl.innerHTML = html;
-        }
-        
-        function selectEquipementSuggestion(category, index, suggestionIndex) {
-            const suggestion = equipementsSuggestions[category][suggestionIndex];
-            
-            document.getElementById(`equipement-nom-${index}`).value = suggestion.nom;
-            document.getElementById(`equipement-desc-${index}`).value = suggestion.description;
-            
-            updateEquipement(category, index, 'nom', suggestion.nom);
-            updateEquipement(category, index, 'description', suggestion.description);
-            
-            hideEquipementSuggestions(index);
-        }
-        
-        function updateEquipement(category, index, field, value) {
-            if (equipementsData[category][index]) {
-                equipementsData[category][index][field] = value;
-            }
-        }
-        
-        function removeEquipement(category, index) {
-            equipementsData[category].splice(index, 1);
-            refreshEquipementsList(category);
-        }
-        
-        function refreshEquipementsList(category) {
-            const listId = `equipements-${category}-list`;
-            const list = document.getElementById(listId);
-            list.innerHTML = '';
-            
-            equipementsData[category].forEach((item, idx) => {
-                const div = document.createElement('div');
-                div.className = 'equipement-item';
-                div.setAttribute('data-category', category);
-                div.setAttribute('data-index', idx);
-                div.innerHTML = `
-                    <div class="equipement-selector">
-                        <input type="text" 
-                               placeholder="🔍 Tapez ou choisissez dans la liste..." 
-                               value="${item.nom || ''}"
-                               onfocus="showEquipementSuggestions('${category}', ${idx})"
-                               oninput="filterEquipementSuggestions('${category}', ${idx}, this.value)"
-                               onblur="setTimeout(() => hideEquipementSuggestions(${idx}), 200)"
-                               onchange="updateEquipement('${category}', ${idx}, 'nom', this.value)"
-                               id="equipement-nom-${idx}">
-                        <div class="equipement-suggestions" id="suggestions-${idx}">
-                            ${equipementsSuggestions[category].map((sugg, i) => `
-                                <div class="suggestion-item" onclick="selectEquipementSuggestion('${category}', ${idx}, ${i})">
-                                    <strong>${sugg.nom}</strong>
-                                    <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${sugg.description}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    <textarea placeholder="Description / Instructions détaillées..."
-                              onchange="updateEquipement('${category}', ${idx}, 'description', this.value)"
-                              id="equipement-desc-${idx}">${item.description || ''}</textarea>
-                    <button type="button" class="btn-remove-item" onclick="removeEquipement('${category}', ${idx})">🗑️</button>
-                `;
-                list.appendChild(div);
-            });
-        }
-        
-        function initDefaultEquipements() {
-            // Pas d'exemples par défaut - l'utilisateur choisit dans les suggestions
-        }
-        
         // Gestion dynamique des restaurants
-        const restaurantsData = [];
+        let restaurantsData = [];
         
-        function addRestaurant(nom = '', description = '', distance = '', prix = '', horaires = '', lien = '', coupDeCoeur = false) {
+        function addRestaurant(nom = '', type = '', description = '', distance = '', prix = '', horaires = '', lien = '', coupDeCoeur = false) {
             const list = document.getElementById('restaurants-list');
             const index = restaurantsData.length;
             
-            restaurantsData.push({ nom, description, distance, prix, horaires, lien, coupDeCoeur });
+            console.log('[addRestaurant] Appele:', nom, 'index:', index);
+            const newResto = { nom, type, description, distance, prix, horaires, adresse: lien, coup_de_coeur: coupDeCoeur };
+            restaurantsData.push(newResto);
+            console.log('[addRestaurant] Apres push, length =', restaurantsData.length, 'dernier =', restaurantsData[restaurantsData.length - 1]);
             
             const item = document.createElement('div');
             item.className = 'restaurant-item';
@@ -1784,6 +2137,8 @@ Le meilleur endroit pour découvrir les produits locaux !
                 </div>
                 <input type="text" placeholder="Nom du restaurant" value="${nom}" 
                        onchange="updateRestaurant(${index}, 'nom', this.value)">
+                <input type="text" placeholder="Type de cuisine (ex: Française, Italienne, Crêperie...)" value="${type}"
+                       onchange="updateRestaurant(${index}, 'type', this.value)">
                 <textarea placeholder="Description" 
                           onchange="updateRestaurant(${index}, 'description', this.value)">${description}</textarea>
                 <div class="item-row">
@@ -1795,12 +2150,12 @@ Le meilleur endroit pour découvrir les produits locaux !
                 <div class="item-row">
                     <input type="text" placeholder="Horaires (ex: Mar-Dim 12h-14h, 19h-22h)" value="${horaires}"
                            onchange="updateRestaurant(${index}, 'horaires', this.value)">
-                    <input type="url" placeholder="Lien Google Maps" value="${lien}"
-                           onchange="updateRestaurant(${index}, 'lien', this.value)">
+                    <input type="url" placeholder="Adresse complète" value="${lien}"
+                           onchange="updateRestaurant(${index}, 'adresse', this.value)">
                 </div>
                 <label class="checkbox-label">
                     <input type="checkbox" ${coupDeCoeur ? 'checked' : ''} 
-                           onchange="updateRestaurant(${index}, 'coupDeCoeur', this.checked)">
+                           onchange="updateRestaurant(${index}, 'coup_de_coeur', this.checked)">
                     ⭐ Coup de coeur
                 </label>
             `;
@@ -1856,13 +2211,13 @@ Le meilleur endroit pour découvrir les produits locaux !
         }
         
         // Gestion dynamique des snacks
-        const snacksData = [];
+        let snacksData = [];
         
-        function addSnack(nom = '', description = '', distance = '', prix = '', horaires = '', lien = '') {
+        function addSnack(nom = '', type = '', description = '', distance = '', prix = '', horaires = '', lien = '') {
             const list = document.getElementById('snacks-list');
             const index = snacksData.length;
             
-            snacksData.push({ nom, description, distance, prix, horaires, lien });
+            snacksData.push({ nom, type, description, distance, prix, horaires, lien });
             
             const item = document.createElement('div');
             item.className = 'restaurant-item';
@@ -1871,8 +2226,10 @@ Le meilleur endroit pour découvrir les produits locaux !
                     <h4>Snack/Boulangerie ${index + 1}</h4>
                     <button type="button" class="btn-remove-item" onclick="removeSnack(${index})">🗑️</button>
                 </div>
-                <input type="text" placeholder="Nom" value="${nom}" 
+                <input type="text" placeholder="Nom du snack/boulangerie" value="${nom}" 
                        onchange="updateSnack(${index}, 'nom', this.value)">
+                <input type="text" placeholder="Type (ex: Snack, Boulangerie, Sandwicherie)" value="${type}" 
+                       onchange="updateSnack(${index}, 'type', this.value)">
                 <textarea placeholder="Description" 
                           onchange="updateSnack(${index}, 'description', this.value)">${description}</textarea>
                 <div class="item-row">
@@ -1935,13 +2292,13 @@ Le meilleur endroit pour découvrir les produits locaux !
         }
         
         // Gestion dynamique des activités
-        const activitesData = [];
+        let activitesData = [];
         
-        function addActivite(nom = '', type = '', description = '', lien = '') {
+        function addActivite(nom = '', type = '', description = '', adresse = '') {
             const list = document.getElementById('activites-list');
             const index = activitesData.length;
             
-            activitesData.push({ nom, type, description, lien });
+            activitesData.push({ nom, type, description, adresse });
             
             const item = document.createElement('div');
             item.className = 'activite-item';
@@ -1958,8 +2315,8 @@ Le meilleur endroit pour découvrir les produits locaux !
                 </div>
                 <textarea placeholder="Description" 
                           onchange="updateActivite(${index}, 'description', this.value)">${description}</textarea>
-                <input type="url" placeholder="Lien Google Maps ou site web" value="${lien}"
-                       onchange="updateActivite(${index}, 'lien', this.value)">
+                <input type="url" placeholder="Adresse ou lien Google Maps" value="${adresse}"
+                       onchange="updateActivite(${index}, 'adresse', this.value)">
             `;
             list.appendChild(item);
         }
@@ -1994,21 +2351,21 @@ Le meilleur endroit pour découvrir les produits locaux !
                     </div>
                     <textarea placeholder="Description" 
                               onchange="updateActivite(${idx}, 'description', this.value)">${item.description || ''}</textarea>
-                    <input type="url" placeholder="Lien" value="${item.lien || ''}"
-                           onchange="updateActivite(${idx}, 'lien', this.value)">
+                    <input type="url" placeholder="Adresse ou lien" value="${item.adresse || item.lien || ''}"
+                           onchange="updateActivite(${idx}, 'adresse', this.value)">
                 `;
                 list.appendChild(div);
             });
         }
         
         // Gestion dynamique des commerces
-        const commercesData = [];
+        let commercesData = [];
         
-        function addCommerce(nom = '', distance = '', horaires = '', infos = '') {
+        function addCommerce(nom = '', type = '', description = '', distance = '', horaires = '', adresse = '') {
             const list = document.getElementById('commerces-list');
             const index = commercesData.length;
             
-            commercesData.push({ nom, distance, horaires, infos });
+            commercesData.push({ nom, type, description, distance, horaires, adresse });
             
             const item = document.createElement('div');
             item.className = 'commerce-item';
@@ -2017,16 +2374,20 @@ Le meilleur endroit pour découvrir les produits locaux !
                     <h4>Commerce ${index + 1}</h4>
                     <button type="button" class="btn-remove-item" onclick="removeCommerce(${index})">🗑️</button>
                 </div>
-                <input type="text" placeholder="Nom du commerce (ex: 🛒 Super U)" value="${nom}" 
+                <input type="text" placeholder="Nom du commerce (ex: Super U)" value="${nom}" 
                        onchange="updateCommerce(${index}, 'nom', this.value)">
+                <input type="text" placeholder="Type (ex: Supermarché, Boulangerie...)" value="${type}"
+                       onchange="updateCommerce(${index}, 'type', this.value)">
+                <textarea placeholder="Description" 
+                          onchange="updateCommerce(${index}, 'description', this.value)">${description}</textarea>
                 <div class="item-row">
-                    <input type="text" placeholder="Distance (ex: 800m)" value="${distance}"
+                    <input type="text" placeholder="Distance (ex: 800m, 5 min)" value="${distance}"
                            onchange="updateCommerce(${index}, 'distance', this.value)">
                     <input type="text" placeholder="Horaires (ex: 7j/7 8h-20h)" value="${horaires}"
                            onchange="updateCommerce(${index}, 'horaires', this.value)">
                 </div>
-                <input type="text" placeholder="Infos supplémentaires (ex: Livraison possible)" value="${infos}"
-                       onchange="updateCommerce(${index}, 'infos', this.value)">
+                <input type="text" placeholder="Adresse complète" value="${adresse}"
+                       onchange="updateCommerce(${index}, 'adresse', this.value)">
             `;
             list.appendChild(item);
         }
@@ -2055,15 +2416,19 @@ Le meilleur endroit pour découvrir les produits locaux !
                     </div>
                     <input type="text" placeholder="Nom" value="${item.nom || ''}" 
                            onchange="updateCommerce(${idx}, 'nom', this.value)">
+                    <input type="text" placeholder="Type" value="${item.type || ''}" 
+                           onchange="updateCommerce(${idx}, 'type', this.value)">
+                    <textarea placeholder="Description" 
+                              onchange="updateCommerce(${idx}, 'description', this.value)">${item.description || ''}</textarea>
                     <div class="item-row">
                         <input type="text" placeholder="Distance" value="${item.distance || ''}"
                                onchange="updateCommerce(${idx}, 'distance', this.value)">
                         <input type="text" placeholder="Horaires" value="${item.horaires || ''}"
                                onchange="updateCommerce(${idx}, 'horaires', this.value)">
                     </div>
-                    <input type="text" placeholder="Infos supplémentaires" value="${item.infos || ''}"
-                           onchange="updateCommerce(${idx}, 'infos', this.value)">
-                `;
+                    <input type="text" placeholder="Adresse complète" value="${item.adresse || ''}"
+                    onchange="updateCommerce(${idx}, 'adresse', this.value)">
+            `;
                 list.appendChild(div);
             });
         }
@@ -2098,48 +2463,48 @@ Le meilleur endroit pour découvrir les produits locaux !
             
             // Vérifier que Firebase Storage est disponible
             if (!storage) {
-                alert('❌ Erreur: Firebase Storage non disponible');
+                alert('[ERREUR] Firebase Storage non disponible');
                 console.error('Firebase Storage non initialisé');
                 return;
             }
             
             // Vérifier que l'utilisateur est connecté
             if (!currentUser) {
-                alert('❌ Erreur: Utilisateur non connecté');
+                alert('[ERREUR] Utilisateur non connecté');
                 console.error('currentUser non défini');
                 return;
             }
             
-            console.log('✅ currentUser:', currentUser.uid);
-            console.log('✅ Storage:', storage);
+            console.log('[OK] currentUser:', currentUser.uid);
+            console.log('[OK] Storage:', storage);
             
             // Upload vers Firebase Storage
             const statusEl = document.getElementById('photo_upload_status');
-            statusEl.textContent = '📤 Upload en cours...';
+            statusEl.textContent = '[UPLOAD] En cours...';
             statusEl.style.color = '#d4af37';
             isUploading = true;
             
             try {
                 const fileName = `logements/${currentUser.uid}/${Date.now()}_${file.name}`;
-                console.log('📁 Upload vers:', fileName);
+                console.log('[PHOTO] Upload vers:', fileName);
                 
                 const storageRef = storage.ref(fileName);
-                console.log('📦 StorageRef créé:', storageRef);
+                console.log('[PHOTO] StorageRef cree:', storageRef);
                 
                 const uploadTask = storageRef.put(file);
-                console.log('🚀 UploadTask démarré');
+                console.log('[PHOTO] UploadTask demarre');
                 
                 uploadTask.on('state_changed',
                     (snapshot) => {
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('📊 Progression:', Math.round(progress) + '%', 
+                        console.log('[PHOTO] Progression:', Math.round(progress) + '%', 
                                     'Bytes:', snapshot.bytesTransferred, '/', snapshot.totalBytes,
                                     'State:', snapshot.state);
                         statusEl.textContent = `📤 Upload : ${Math.round(progress)}%`;
                     },
                     (error) => {
                         console.error('Erreur upload:', error);
-                        statusEl.textContent = '❌ Erreur: ' + error.message;
+                        statusEl.textContent = '[ERREUR] ' + error.message;
                         statusEl.style.color = '#dc3545';
                         isUploading = false;
                     },
@@ -2149,12 +2514,12 @@ Le meilleur endroit pour découvrir les produits locaux !
                             uploadedPhotoURL = await uploadTask.snapshot.ref.getDownloadURL();
                             document.getElementById('photo_url').value = uploadedPhotoURL;
                             console.log('URL obtenue:', uploadedPhotoURL);
-                            statusEl.textContent = '✅ Photo uploadée avec succès !';
+                            statusEl.textContent = '[OK] Photo uploadee avec succes !';
                             statusEl.style.color = '#28a745';
                             isUploading = false;
                         } catch (error) {
                             console.error('Erreur getDownloadURL:', error);
-                            statusEl.textContent = '❌ Erreur URL: ' + error.message;
+                            statusEl.textContent = '[ERREUR] URL: ' + error.message;
                             statusEl.style.color = '#dc3545';
                             isUploading = false;
                         }
@@ -2162,11 +2527,108 @@ Le meilleur endroit pour découvrir les produits locaux !
                 );
             } catch (error) {
                 console.error('Erreur:', error);
-                statusEl.textContent = '❌ Erreur: ' + error.message;
+                statusEl.textContent = '[ERREUR] ' + error.message;
                 statusEl.style.color = '#dc3545';
                 isUploading = false;
             }
         });
+        
+        // Upload de la photo du hôte (avatar)
+        let uploadedAvatarURL = '';
+        let isUploadingAvatar = false;
+        
+        document.getElementById('hote_avatar_upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Vérifier le type de fichier
+            if (!file.type.startsWith('image/')) {
+                alert('Veuillez sélectionner une image (JPG, PNG, WebP)');
+                return;
+            }
+            
+            // Vérifier la taille (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('L\'image est trop volumineuse. Taille maximum : 5 MB');
+                return;
+            }
+            
+            // Prévisualisation
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('hote_avatar_preview_img').src = e.target.result;
+                document.getElementById('hote_avatar_preview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            
+            // Vérifier que Firebase Storage est disponible
+            if (!storage) {
+                alert('❌ Erreur: Firebase Storage non disponible');
+                return;
+            }
+            
+            // Vérifier que l'utilisateur est connecté
+            if (!currentUser) {
+                alert('❌ Erreur: Utilisateur non connecté');
+                return;
+            }
+            
+            // Upload vers Firebase Storage
+            const statusEl = document.getElementById('hote_avatar_upload_status');
+            statusEl.textContent = '📤 Upload en cours...';
+            statusEl.style.color = '#d4af37';
+            isUploadingAvatar = true;
+            
+            try {
+                const fileName = `avatars/${currentUser.uid}/${Date.now()}_${file.name}`;
+                const storageRef = storage.ref(fileName);
+                const uploadTask = storageRef.put(file);
+                
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        statusEl.textContent = `📤 Upload : ${Math.round(progress)}%`;
+                    },
+                    (error) => {
+                        console.error('Erreur upload avatar:', error);
+                        statusEl.textContent = '❌ Erreur: ' + error.message;
+                        statusEl.style.color = '#dc3545';
+                        isUploadingAvatar = false;
+                    },
+                    async () => {
+                        try {
+                            uploadedAvatarURL = await uploadTask.snapshot.ref.getDownloadURL();
+                            document.getElementById('hote_avatar_url').value = uploadedAvatarURL;
+                            statusEl.textContent = '✅ Photo uploadée avec succès !';
+                            statusEl.style.color = '#28a745';
+                            isUploadingAvatar = false;
+                        } catch (error) {
+                            console.error('Erreur getDownloadURL avatar:', error);
+                            statusEl.textContent = '❌ Erreur URL: ' + error.message;
+                            statusEl.style.color = '#dc3545';
+                            isUploadingAvatar = false;
+                        }
+                    }
+                );
+            } catch (error) {
+                console.error('Erreur:', error);
+                statusEl.textContent = '❌ Erreur: ' + error.message;
+                statusEl.style.color = '#dc3545';
+                isUploadingAvatar = false;
+            }
+        });
+        
+        // Fonction pour toggle les sections optionnelles
+        function toggleSection(sectionId, isEnabled) {
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+            
+            if (isEnabled) {
+                section.classList.remove('disabled');
+            } else {
+                section.classList.add('disabled');
+            }
+        }
         
         // Navigation formulaire multi-étapes
         let currentFormStep = 1;
@@ -2198,7 +2660,7 @@ Le meilleur endroit pour découvrir les produits locaux !
             }
             
             const newStep = currentFormStep + direction;
-            if (newStep >= 1 && newStep <= 5) {
+            if (newStep >= 1 && newStep <= 11) {
                 currentFormStep = newStep;
                 showStep(currentFormStep);
             }
@@ -2206,11 +2668,248 @@ Le meilleur endroit pour découvrir les produits locaux !
         
         // Aller directement à une étape (clic sur les boules)
         function goToStep(step) {
+            // Permettre navigation libre sans validation
             currentFormStep = step;
             showStep(currentFormStep);
         }
         
+        // Validation complète du formulaire
+        function validateForm() {
+            const errors = [];
+            
+            // ÉTAPE 1: Informations générales (obligatoires)
+            if (!document.getElementById('nom').value.trim()) errors.push('- Étape 1 : Nom du logement');
+            if (!document.getElementById('adresse').value.trim()) errors.push('- Étape 1 : Adresse complète');
+            if (!document.getElementById('ville').value.trim()) errors.push('- Étape 1 : Ville');
+            if (!document.getElementById('description').value.trim()) errors.push('- Étape 1 : Phrase de présentation');
+            if (!document.getElementById('photo_url').value.trim()) errors.push('- Étape 1 : Photo de couverture');
+            
+            // ÉTAPE 10: Votre Hôte - Informations de contact (obligatoires)
+            if (!document.getElementById('hote_noms').value.trim()) errors.push('- Étape 10 : Nom de l\'hôte');
+            if (!document.getElementById('hote_telephone').value.trim()) errors.push('- Étape 10 : Téléphone de contact');
+            if (!document.getElementById('hote_email').value.trim()) errors.push('- Étape 10 : Email de contact');
+            
+            // TOUT LE RESTE EST OPTIONNEL
+            // Si un champ n'est pas rempli, il ne s'affichera simplement pas dans le guide
+            
+            return errors;
+        }
+        
+        // Enregistrer un brouillon (sans validation)
+        async function saveDraft() {
+            if (!currentUser) {
+                alert('Vous devez être connecté pour enregistrer un brouillon');
+                return;
+            }
+            
+            const draftBtn = document.getElementById('draftBtn');
+            draftBtn.disabled = true;
+            draftBtn.innerHTML = '⏳ Enregistrement...';
+            
+            try {
+                // Collecter les données sans validation
+                const draftData = collectFormData();
+                draftData.status = 'draft';
+                draftData.isDraft = true;
+                
+                // Enregistrer dans Firestore
+                if (currentLogementId) {
+                    // Mise à jour d'un brouillon existant
+                    await db.collection('users').doc(currentUser.uid)
+                        .collection('logements').doc(currentLogementId).update({
+                            ...draftData,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                } else {
+                    // Nouveau brouillon
+                    const guideId = generateGuideId();
+                    draftData.guideId = guideId;
+                    draftData.guideUrl = `https://qrguide.fr/guide.html?id=${guideId}`;
+                    draftData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    
+                    await db.collection('users').doc(currentUser.uid)
+                        .collection('logements').add(draftData);
+                }
+                
+                showAlert('✅ Brouillon enregistré ! Vous pouvez le terminer plus tard.', 'success');
+                closeLogementModal();
+                await loadLogements();
+                
+            } catch (error) {
+                console.error('Erreur sauvegarde brouillon:', error);
+                showAlert('❌ Erreur lors de l\'enregistrement du brouillon', 'error');
+            } finally {
+                draftBtn.disabled = false;
+                draftBtn.innerHTML = '💾 Enregistrer brouillon';
+            }
+        }
+        
+        // Collecter toutes les données du formulaire
+        function collectFormData() {
+            // Helper pour récupérer une valeur en toute sécurité
+            const getValue = (id) => {
+                const el = document.getElementById(id);
+                if (!el) {
+                    console.warn(`[collectFormData] Élément manquant: ${id}`);
+                    return '';
+                }
+                return el.value || '';
+            };
+            
+            const getChecked = (id) => {
+                const el = document.getElementById(id);
+                if (!el) {
+                    console.warn(`[collectFormData] Élément checkbox manquant: ${id}`);
+                    return false;
+                }
+                return el.checked;
+            };
+            
+            return {
+                // Étape 1
+                nom: getValue('nom'),
+                adresse: getValue('adresse'),
+                ville: getValue('ville'),
+                description: getValue('description'),
+                note: getValue('note'),
+                type: getValue('type'),
+                photo_url: getValue('photo_url'),
+                
+                // Toggles pour activer/désactiver les sections
+                show_premiers_pas: getChecked('toggle_premiers_pas'),
+                
+                // Étape 2
+                message_bienvenue: getValue('message_bienvenue'),
+                checkin_time: getValue('checkin_time'),
+                checkout_time: getValue('checkout_time'),
+                instructions_arrivee: getValue('instructions_arrivee'),
+                code_acces: getValue('code_acces'),
+                premier_pas_1: getValue('premier_pas_1'),
+                premier_pas_2: getValue('premier_pas_2'),
+                premier_pas_3: getValue('premier_pas_3'),
+                premier_pas_4: getValue('premier_pas_4'),
+                parking_info: getValue('parking_info'),
+                
+                // Étape 3
+                instructions_depart: getValue('instructions_depart'),
+                instructions_cles: getValue('instructions_cles'),
+                menage_tri: getValue('menage_tri'),
+                depart_message_remerciement: getValue('depart_message_remerciement'),
+                
+                // Étape 4
+                wifi_nom: getValue('wifi_nom'),
+                wifi_password: getValue('wifi_password'),
+                wifi_debit: getValue('wifi_debit'),
+                wifi_box_emplacement: getValue('wifi_box_emplacement'),
+                tv_active: getChecked('tv_active'),
+                tv_marque: getValue('tv_marque'),
+                tv_plateformes: getValue('tv_plateformes'),
+                tv_box: getValue('tv_box'),
+                tv_telecommande_emplacement: getValue('tv_telecommande_emplacement'),
+                tv_instruction_1: getValue('tv_instruction_1'),
+                tv_instruction_2: getValue('tv_instruction_2'),
+                tv_instruction_3: getValue('tv_instruction_3'),
+                enceinte_active: getChecked('enceinte_active'),
+                enceinte_marque: getValue('enceinte_marque'),
+                enceinte_nom_bluetooth: getValue('enceinte_nom_bluetooth'),
+                enceinte_emplacement: getValue('enceinte_emplacement'),
+                enceinte_chargeur: getValue('enceinte_chargeur'),
+                enceinte_caracteristiques: getValue('enceinte_caracteristiques'),
+                multimedia_active: getChecked('multimedia_active'),
+                multimedia_bureau: getValue('multimedia_bureau'),
+                multimedia_prises_usb: getValue('multimedia_prises_usb'),
+                multimedia_chargeurs: getValue('multimedia_chargeurs'),
+                
+                // Étape 5
+                cuisine_plaques: getValue('cuisine_plaques'),
+                cuisine_four: getValue('cuisine_four'),
+                cuisine_cafe: getValue('cuisine_cafe'),
+                cuisine_frigo: getValue('cuisine_frigo'),
+                cuisine_lave_vaisselle: getValue('cuisine_lave_vaisselle'),
+                cuisine_autres: getValue('cuisine_autres'),
+                sdb_douche: getValue('sdb_douche'),
+                sdb_produits: getValue('sdb_produits'),
+                sdb_seche_cheveux: getValue('sdb_seche_cheveux'),
+                sdb_serviettes: getValue('sdb_serviettes'),
+                sdb_autres: getValue('sdb_autres'),
+                clim_active: getChecked('clim_active'),
+                clim_telecommande_emplacement: getValue('clim_telecommande_emplacement'),
+                instructions_clim: getValue('instructions_clim'),
+                chauffage_active: getChecked('chauffage_active'),
+                chauffage_telecommande_emplacement: getValue('chauffage_telecommande_emplacement'),
+                instructions_chauffage: getValue('instructions_chauffage'),
+                linge_lave_linge: getValue('linge_lave_linge'),
+                linge_aspirateur: getValue('linge_aspirateur'),
+                linge_produits_entretien: getValue('linge_produits_entretien'),
+                equipements_regles_importantes: getValue('equipements_regles_importantes'),
+                
+                // Étapes 6-8
+                restaurants: restaurantsData,
+                snacks: snacksData,
+                activites: activitesData,
+                commerces: commercesData,
+                
+                // Étape 9
+                urgences: getValue('urgences'),
+                incident_electricite: getValue('incident_electricite'),
+                incident_fuite: getValue('incident_fuite'),
+                incident_gaz: getValue('incident_gaz'),
+                incident_enferme: getValue('incident_enferme'),
+                urgence_hopital_nom: getValue('urgence_hopital_nom'),
+                urgence_hopital_distance: getValue('urgence_hopital_distance'),
+                urgence_hopital_adresse: getValue('urgence_hopital_adresse'),
+                urgence_pharmacie_nom: getValue('urgence_pharmacie_nom'),
+                urgence_pharmacie_distance: getValue('urgence_pharmacie_distance'),
+                urgence_pharmacie_horaires: getValue('urgence_pharmacie_horaires'),
+                urgence_pharmacie_telephone: getValue('urgence_pharmacie_telephone'),
+                urgence_procedures: getValue('urgence_procedures'),
+                
+                // Étape 10
+                hote_noms: getValue('hote_noms'),
+                hote_telephone: getValue('hote_telephone'),
+                hote_whatsapp: getValue('hote_whatsapp'),
+                hote_email: getValue('hote_email'),
+                hote_avatar_url: getValue('hote_avatar_url'),
+                hote_telephone_preference: getValue('hote_telephone_preference'),
+                hote_email_delai: getValue('hote_email_delai'),
+                hote_reponse_semaine: getValue('hote_reponse_semaine'),
+                hote_reponse_weekend: getValue('hote_reponse_weekend'),
+                hote_disponibilite_urgence: getValue('hote_disponibilite_urgence'),
+                hote_services_conseils: getChecked('hote_services_conseils'),
+                hote_services_reservations: getChecked('hote_services_reservations'),
+                hote_services_location: getChecked('hote_services_location'),
+                hote_services_bagages: getChecked('hote_services_bagages'),
+                hote_coups_de_coeur: getValue('hote_coups_de_coeur'),
+                hote_engagement_qualite: getValue('hote_engagement_qualite'),
+                hote_apropos: getValue('hote_apropos'),
+                hote_instagram: getValue('hote_instagram'),
+                hote_facebook: getValue('hote_facebook'),
+                hote_message_final: getValue('hote_message_final'),
+                
+                // Étape 11
+                regles_calme: getValue('regles_calme'),
+                regles_personnes: getValue('regles_personnes'),
+                regles_fumeur: getValue('regles_fumeur'),
+                regles_fetes: getValue('regles_fetes'),
+                regles_animaux: getValue('regles_animaux'),
+                regles: getValue('regles'),
+                tri_dechets: getValue('tri_dechets'),
+                transports_bus: getValue('transports_bus'),
+                transports_taxi: getValue('transports_taxi'),
+                marche_local: getValue('marche_local'),
+                astuces_locales: getValue('astuces_locales'),
+                conseils: getValue('conseils'),
+                infos_supplementaires: getValue('infos_supplementaires'),
+                
+                userId: currentUser.uid
+            };
+        }
+        
         function showStep(step) {
+            console.log('🔄 showStep appelé - Étape:', step, '| isEditingActiveGuide:', isEditingActiveGuide, '| currentLogementId:', currentLogementId);
+            console.log('[showStep] DEBUT - Arrays:', restaurantsData.length, activitesData.length, commercesData.length);
+            console.log('[showStep] Arrays:', restaurantsData.length, activitesData.length, commercesData.length);
+            
             // Masquer toutes les étapes
             document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active'));
@@ -2221,17 +2920,43 @@ Le meilleur endroit pour découvrir les produits locaux !
             
             // Gérer les boutons
             document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'inline-block';
-            document.getElementById('nextBtn').style.display = step === 5 ? 'none' : 'inline-block';
-            document.getElementById('submitBtn').style.display = step === 5 ? 'inline-block' : 'none';
+            
+            // En mode édition : afficher Modifier et Brouillon sur TOUTES les étapes
+            if (isEditingActiveGuide) {
+                console.log('✅ MODE ÉDITION ACTIF - Affichage des boutons sur toutes les étapes');
+                document.getElementById('nextBtn').style.display = step === 11 ? 'none' : 'inline-block';
+                document.getElementById('submitBtn').style.display = 'inline-block';
+                document.getElementById('draftBtn').style.display = 'inline-block';
+                console.log('📊 submitBtn display:', document.getElementById('submitBtn').style.display);
+                console.log('📊 draftBtn display:', document.getElementById('draftBtn').style.display);
+            } else {
+                console.log('📝 MODE CRÉATION - Boutons uniquement à l\'étape 11');
+                // En mode création : boutons normaux (uniquement à l'étape 11)
+                document.getElementById('nextBtn').style.display = step === 11 ? 'none' : 'inline-block';
+                document.getElementById('submitBtn').style.display = step === 11 ? 'inline-block' : 'none';
+                document.getElementById('draftBtn').style.display = step === 11 ? 'inline-block' : 'none';
+            }
+            console.log('[showStep] FIN - Arrays:', restaurantsData.length, activitesData.length, commercesData.length);
         }
         
         // Soumettre le formulaire
         document.getElementById('logement-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // VALIDATION COMPLÈTE avant création
+            const errors = validateForm();
+            if (errors.length > 0) {
+                const errorMessage = `⚠️ Veuillez compléter les champs obligatoires suivants :\n\n${errors.join('\n')}\n\n💡 Vous pouvez aussi enregistrer un brouillon pour continuer plus tard.`;
+                alert(errorMessage);
+                return;
+            }
+            
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '⏳ Création en cours...';
+            
+            // Détecter le mode AVANT de changer le texte du bouton
+            let isEditMode = false;
+            let wasActiveGuide = false;
             
             try {
                 console.log('🚀 Début création du guide...');
@@ -2242,109 +2967,180 @@ Le meilleur endroit pour découvrir les produits locaux !
                 }
                 console.log('✅ Utilisateur:', currentUser.uid);
                 
-                // Générer un ID unique pour le guide (8 caractères)
-                const guideId = generateGuideId();
-                console.log('✅ Guide ID généré:', guideId);
-                
                 // Récupérer immédiatement les données essentielles
                 const nomLogement = document.getElementById('nom').value;
                 const villeLogement = document.getElementById('ville').value;
                 const photoInput = document.getElementById('photo_url').value;
                 
-                // 1. CRÉER IMMÉDIATEMENT UN BROUILLON (rapide)
-                console.log('📝 Création brouillon rapide...');
-                const logementRef = await db.collection('users').doc(currentUser.uid)
-                    .collection('logements').add({
-                        guideId: guideId,
-                        nom: nomLogement,
-                        ville: villeLogement,
-                        photo_url: '',
-                        guideUrl: `https://qrguide.fr/guide.html?id=${guideId}`,
-                        status: 'creating', // Statut "En cours de création"
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                console.log('✅ Brouillon créé, ID:', logementRef.id);
+                let guideId;
+                let logementRef;
                 
-                // 2. FERMER LA MODAL ET INFORMER L'UTILISATEUR
+                
+                // Vérifier si on est en mode admin
+                const urlParams = new URLSearchParams(window.location.search);
+                const adminEditGuideId = urlParams.get('editGuide');
+                
+                if (adminEditGuideId && currentLogementId) {
+                    console.log('Admin modifie guide:', adminEditGuideId);
+                    submitBtn.innerHTML = 'Enregistrement...';
+                    
+                    const formData = collectFormData();
+                    formData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+                    
+                    await db.collection('guides').doc(adminEditGuideId).update(formData);
+                    
+                    alert('Guide modifié avec succès !');
+                    window.location.href = 'demo-guide/admin.html';
+                    return;
+                }
+                // DÉTECTER SI C'EST UNE MISE À JOUR D'UN BROUILLON OU UNE NOUVELLE CRÉATION
+                if (currentLogementId) {
+                    isEditMode = true;
+                    // MODE MODIFICATION - Récupérer l'ID du guide existant
+                    console.log('📝 Mode modification - Logement:', currentLogementId);
+                    const logementDoc = await db.collection('users').doc(currentUser.uid)
+                        .collection('logements').doc(currentLogementId).get();
+                    
+                    if (!logementDoc.exists) {
+                        throw new Error('Logement introuvable');
+                    }
+                    
+                    const currentStatus = logementDoc.data().status;
+                    wasActiveGuide = (currentStatus === 'active');
+                    
+                    guideId = logementDoc.data().guideId;
+                    logementRef = db.collection('users').doc(currentUser.uid)
+                        .collection('logements').doc(currentLogementId);
+                    
+                    console.log('✅ Guide ID existant:', guideId, '| Status:', currentStatus);
+                    
+                    // Mettre le bon texte de bouton
+                    submitBtn.innerHTML = wasActiveGuide ? '⏳ Modification en cours...' : '⏳ Création en cours...';
+                    
+                    // Si c'est un guide actif, ne pas changer le statut à 'creating'
+                    if (wasActiveGuide) {
+                        await logementRef.update({
+                            nom: nomLogement,
+                            ville: villeLogement,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    } else {
+                        // Pour les brouillons, mettre en 'creating'
+                        await logementRef.update({
+                            status: 'creating',
+                            nom: nomLogement,
+                            ville: villeLogement,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                    
+                } else {
+                    // MODE CRÉATION - Générer un nouvel ID
+                    guideId = generateGuideId();
+                    console.log('✅ Guide ID généré:', guideId);
+                    
+                    submitBtn.innerHTML = '⏳ Création en cours...';
+                    
+                    // 1. CRÉER IMMÉDIATEMENT UN BROUILLON (rapide)
+                    console.log('📝 Création brouillon rapide...');
+                    logementRef = await db.collection('users').doc(currentUser.uid)
+                        .collection('logements').add({
+                            guideId: guideId,
+                            nom: nomLogement,
+                            ville: villeLogement,
+                            photo_url: '',
+                            guideUrl: `https://qrguide.fr/guide.html?id=${guideId}`,
+                            status: 'creating', // Statut "En cours de création"
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    console.log('✅ Brouillon créé, ID:', logementRef.id);
+                }
+                
+                // 2. COLLECTER LES DONNÉES DU FORMULAIRE
+                console.log('[SAVE] JUSTE AVANT collectFormData - restaurantsData =', JSON.stringify(restaurantsData));
+                console.log('[SAVE] Avant collectFormData - Arrays globaux:', {
+                    restaurantsData_length: restaurantsData.length,
+                    activitesData_length: activitesData.length,
+                    commercesData_length: commercesData.length,
+                    premier_restaurant: restaurantsData[0]
+                });
+                
+                const formData = collectFormData();
+                formData.guideId = guideId;
+                formData.guideUrl = `https://qrguide.fr/guide.html?id=${guideId}`;
+                formData.userId = currentUser.uid;
+                formData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+                
+                console.log('[SAVE] DEBOGAGE COMPLET - Donnees collectees:', {
+                    restaurants: formData.restaurants,
+                    restaurants_length: formData.restaurants?.length,
+                    activites: formData.activites,
+                    commerces: formData.commerces,
+                    hote_noms: formData.hote_noms,
+                    hote_telephone: formData.hote_telephone,
+                    urgence_hopital_nom: formData.urgence_hopital_nom,
+                    regles_calme: formData.regles_calme,
+                    toutes_les_cles: Object.keys(formData).length
+                });
+                
+                if (wasActiveGuide) {
+                    // MODE MODIFICATION - Enregistrer immédiatement et synchroniquement
+                    console.log('💾 Enregistrement immédiat des modifications...');
+                    console.log('📊 Données à sauvegarder:', formData);
+                    console.log('🍽️ RESTAURANTS dans formData:', formData.restaurants);
+                    console.log('🍽️ RESTAURANTS length:', formData.restaurants?.length);
+                    console.log('🍽️ RESTAURANTS JSON:', JSON.stringify(formData.restaurants));
+                    
+                    // Mettre à jour le guide dans Firestore
+                    await db.collection('guides').doc(guideId).set(formData, { merge: true });
+                    console.log('✅ Guide mis à jour dans Firestore');
+                    
+                    // VÉRIFIER CE QUI EST VRAIMENT DANS FIRESTORE
+                    const verifyDoc = await db.collection('guides').doc(guideId).get();
+                    const verifyData = verifyDoc.data();
+                    console.log('🔍 VÉRIFICATION - Restaurants dans Firestore:', verifyData.restaurants);
+                    console.log('🔍 VÉRIFICATION - Length:', verifyData.restaurants?.length);
+                    
+                    // Mettre à jour les métadonnées du logement
+                    await logementRef.update({
+                        nom: formData.nom,
+                        ville: formData.ville,
+                        photo_url: formData.photo_url,
+                        status: 'active',
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('✅ Métadonnées logement mises à jour');
+                    
+                    // Fermer modal et informer
+                    closeLogementModal();
+                    showAlert('✅ Guide modifié avec succès ! Les modifications sont en ligne.', 'success');
+                    await loadLogements();
+                    
+                    // Réactiver le bouton et réinitialiser le mode
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '✏️ Modifier mon guide';
+                    isEditingActiveGuide = false;
+                    return; // Sortir ici pour les modifications
+                }
+                
+                // 3. POUR LES CRÉATIONS : FERMER LA MODAL ET INFORMER L'UTILISATEUR
                 closeLogementModal();
                 showAlert('✅ Guide en cours de création ! Vous pouvez continuer à naviguer, le guide sera disponible dans quelques instants.', 'success');
                 
-                // 3. RECHARGER LA LISTE (affiche le statut "En cours...")
+                // 4. RECHARGER LA LISTE (affiche le statut "En cours...")
                 await loadLogements();
                 
-                // 4. CONTINUER EN ARRIÈRE-PLAN (sans bloquer l'interface)
+                // 5. CONTINUER EN ARRIÈRE-PLAN (sans bloquer l'interface)
                 console.log('🔄 Continuation en arrière-plan...');
                 
-                // Fonction asynchrone pour continuer la création en arrière-plan
+                // Fonction asynchrone pour continuer la création en arrière-plan (UNIQUEMENT pour les nouvelles créations)
                 (async () => {
                     try {
-                        // Récupérer TOUTES les données du formulaire (maintenant en arrière-plan)
-                        // Récupérer TOUTES les données du formulaire (maintenant en arrière-plan)
-                        const formData = {
-                            // ID unique du guide
-                            guideId: guideId,
-                            guideUrl: `https://qrguide.fr/guide.html?id=${guideId}`,
-                            
-                            // Étape 1: Informations générales
-                            nom: nomLogement,
-                            adresse: document.getElementById('adresse').value,
-                            ville: villeLogement,
-                            description: document.getElementById('description').value,
-                            note: document.getElementById('note').value,
-                            type: document.getElementById('type').value,
-                            photo_url: photoInput,
-                    
-                    // Étape 2: Arrivée & WiFi
-                    checkin_time: document.getElementById('checkin_time').value,
-                    checkout_time: document.getElementById('checkout_time').value,
-                    message_bienvenue: document.getElementById('message_bienvenue').value,
-                    premier_pas_1: document.getElementById('premier_pas_1').value,
-                    premier_pas_2: document.getElementById('premier_pas_2').value,
-                    premier_pas_3: document.getElementById('premier_pas_3').value,
-                    premier_pas_4: document.getElementById('premier_pas_4').value,
-                    parking_info: document.getElementById('parking_info').value,
-                    instructions_arrivee: document.getElementById('instructions_arrivee').value,
-                    code_acces: document.getElementById('code_acces').value,
-                    wifi_nom: document.getElementById('wifi_nom').value,
-                    wifi_password: document.getElementById('wifi_password').value,
-                    multimedia_instructions: document.getElementById('multimedia_instructions').value,
-                    
-                    // Étape 3: Équipements (conversion des données dynamiques)
-                    equipements_cuisine: equipementsData.cuisine,
-                    equipements_sdb: equipementsData.sdb,
-                    instructions_clim: document.getElementById('instructions_clim').value,
-                    equipements_ext: equipementsData.ext,
-                    equipements_multimedia: equipementsData.multimedia,
-                    equipements_autres: equipementsData.autres,
-                    instructions_depart: document.getElementById('instructions_depart').value,
-                    
-                    // Étape 4: Restaurants & Activités (données dynamiques)
-                    restaurants: restaurantsData,
-                    snacks: snacksData,
-                    activites: activitesData,
-                    commerces: commercesData,
-                    
-                    // Étape 5: Infos pratiques
-                    regles: document.getElementById('regles').value,
-                    menage_tri: document.getElementById('menage_tri').value,
-                    instructions_cles: document.getElementById('instructions_cles').value,
-                    hote_nom: document.getElementById('hote_nom').value,
-                    hote_telephone: document.getElementById('hote_telephone').value,
-                    hote_email: document.getElementById('hote_email').value,
-                    message_hote: document.getElementById('message_hote').value,
-                    urgences: document.getElementById('urgences').value,
-                    conseils: document.getElementById('conseils').value,
-                    infos_supplementaires: document.getElementById('infos_supplementaires').value,
-                    
-                    // Métadonnées
-                    userId: currentUser.uid,
-                    status: 'active', // Statut final "Actif"
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
+                        // Les données sont déjà dans formData (collectées plus haut)
+                        formData.status = 'active';
+                        
                 console.log('💾 Sauvegarde guide complet dans Firestore...');
-                await db.collection('guides').doc(guideId).set(formData);
+                await db.collection('guides').doc(guideId).set(formData, { merge: true });
                 console.log('✅ Guide complet sauvegardé');
                 
                 // Mettre à jour le statut dans la collection utilisateur
@@ -2380,8 +3176,10 @@ Le meilleur endroit pour découvrir les produits locaux !
                 // Recharger la liste pour afficher le statut "active"
                 await loadLogements();
                 
-                // Afficher notification succès final
-                showAlert(`✅ Guide "${nomLogement}" terminé et disponible !`, 'success');
+                // Afficher notification succès final (uniquement pour les nouvelles créations)
+                if (!wasActiveGuide) {
+                    showAlert(`✅ Guide "${nomLogement}" terminé et disponible !`, 'success');
+                }
                 
             } catch (bgError) {
                 console.error('❌ Erreur création arrière-plan:', bgError);
@@ -2482,41 +3280,61 @@ Le meilleur endroit pour découvrir les produits locaux !
             });
         }
 
-        async function editLogement(id) {
-            currentLogementId = id;
-            const doc = await db.collection('users').doc(currentUser.uid)
-                .collection('logements').doc(id).get();
-            
-            const data = doc.data();
-            document.getElementById('modal-title').textContent = 'Modifier le Logement';
-            
-            // Remplir le formulaire avec les données
-            // TODO: Implémenter le remplissage
-            
-            document.getElementById('logement-modal').classList.add('active');
-        }
-
         // === MODIFIER UN LOGEMENT ===
         async function editLogement(logementId, guideId) {
             try {
-                // Charger les données du logement
-                const logementDoc = await db.collection('users').doc(currentUser.uid)
-                    .collection('logements').doc(logementId).get();
+                console.log('[editLogement] DEBUT - guideId:', guideId, 'logementId:', logementId);
                 
-                if (!logementDoc.exists) {
-                    alert('Logement introuvable');
+                // CHARGER LES DONNÉES DEPUIS LA COLLECTION GUIDES (pas users/logements)
+                const guideDoc = await db.collection('guides').doc(guideId).get();
+                
+                if (!guideDoc.exists) {
+                    alert('Guide introuvable');
                     return;
                 }
                 
-                const logementData = logementDoc.data();
+                const logementData = guideDoc.data();
+                
+                console.log('📦 DONNÉES CHARGÉES DEPUIS FIRESTORE (guides/' + guideId + '):', {
+                    restaurants: logementData.restaurants,
+                    activites: logementData.activites,
+                    commerces: logementData.commerces,
+                    hote_noms: logementData.hote_noms,
+                    urgence_hopital_nom: logementData.urgence_hopital_nom,
+                    toutes_cles: Object.keys(logementData)
+                });
                 
                 // Stocker l'ID pour la sauvegarde
                 currentLogementId = logementId;
                 
-                // Changer le titre du modal
-                document.getElementById('modal-title').textContent = '✏️ Modifier votre guide';
+                // Changer le titre du modal selon le statut
+                if (logementData.status === 'draft') {
+                    document.getElementById('modal-title').textContent = '✏️ Continuer le brouillon';
+                    document.getElementById('submitBtn').innerHTML = '✅ Créer le guide';
+                    isEditingActiveGuide = false;
+                    console.log('📝 Mode BROUILLON - isEditingActiveGuide =', isEditingActiveGuide);
+                } else {
+                    document.getElementById('modal-title').textContent = '✏️ Modifier votre guide';
+                    document.getElementById('submitBtn').innerHTML = '✏️ Modifier mon guide';
+                    isEditingActiveGuide = true;
+                    console.log('✏️ Mode MODIFICATION GUIDE ACTIF - isEditingActiveGuide =', isEditingActiveGuide);
+                }
                 
-                // Pré-remplir le formulaire avec les données existantes
+                // Réinitialiser les listes dynamiques
+                restaurantsData = [];
+                snacksData = [];
+                activitesData = [];
+                commercesData = [];
+                
+                // Nettoyer les champs obsolètes (supprimés du formulaire)
+                const obsoleteFields = ['menage_tri', 'instructions_cles', 'urgences', 'hote_message_final'];
+                obsoleteFields.forEach(field => {
+                    if (logementData[field]) {
+                        delete logementData[field];
+                    }
+                });
+                
+                // Pré-remplir tous les champs simples
                 Object.keys(logementData).forEach(key => {
                     const input = document.getElementById(key);
                     if (input) {
@@ -2538,20 +3356,167 @@ Le meilleur endroit pour découvrir les produits locaux !
                     document.getElementById('photo_preview').style.display = 'block';
                     document.getElementById('photo_preview_img').src = logementData.photo_url;
                     document.getElementById('photo_upload_status').textContent = '✅ Photo actuelle';
+                    
+                    // Désactiver le champ photo_file pour éviter les problèmes de validation
+                    document.getElementById('photo_file').disabled = true;
+                    document.getElementById('photo_file').style.display = 'none';
                 }
                 
-                // Charger les listes dynamiques (restaurants, équipements, etc.)
-                if (logementData.restaurants) {
-                    logementData.restaurants.forEach(resto => {
-                        addRestaurant();
-                        // TODO: remplir les champs
+                // Afficher la photo du hôte si elle existe
+                if (logementData.hote_avatar_url) {
+                    document.getElementById('hote_avatar_url').value = logementData.hote_avatar_url;
+                    document.getElementById('hote_avatar_preview').style.display = 'block';
+                    document.getElementById('hote_avatar_preview_img').src = logementData.hote_avatar_url;
+                    document.getElementById('hote_avatar_upload_status').textContent = '✅ Photo actuelle';
+                    
+                    // Désactiver le champ avatar pour éviter les problèmes de validation
+                    document.getElementById('hote_avatar_upload').disabled = true;
+                    document.getElementById('hote_avatar_upload').style.display = 'none';
+                }
+                
+                // Charger l'état des toggles
+                if (logementData.show_premiers_pas !== undefined) {
+                    const toggle = document.getElementById('toggle_premiers_pas');
+                    if (toggle) {
+                        toggle.checked = logementData.show_premiers_pas;
+                        toggleSection('premiers_pas_section', logementData.show_premiers_pas);
+                    }
+                }
+                
+                // Charger les toggles TV et Enceinte
+                if (logementData.tv_active !== undefined || logementData.tv_marque) {
+                    const tvToggle = document.getElementById('tv_active');
+                    if (tvToggle) {
+                        const isActive = logementData.tv_active !== undefined ? logementData.tv_active : !!logementData.tv_marque;
+                        tvToggle.checked = isActive;
+                        document.getElementById('tv-fields').style.display = isActive ? 'block' : 'none';
+                    }
+                }
+                
+                if (logementData.enceinte_active !== undefined || logementData.enceinte_marque) {
+                    const enceinteToggle = document.getElementById('enceinte_active');
+                    if (enceinteToggle) {
+                        const isActive = logementData.enceinte_active !== undefined ? logementData.enceinte_active : !!logementData.enceinte_marque;
+                        enceinteToggle.checked = isActive;
+                        document.getElementById('enceinte-fields').style.display = isActive ? 'block' : 'none';
+                    }
+                }
+                
+                // Charger les toggles Climatisation et Chauffage
+                if (logementData.clim_active !== undefined || logementData.instructions_clim) {
+                    const climToggle = document.getElementById('clim_active');
+                    if (climToggle) {
+                        const isActive = logementData.clim_active !== undefined ? logementData.clim_active : !!logementData.instructions_clim;
+                        climToggle.checked = isActive;
+                        document.getElementById('clim-fields').style.display = isActive ? 'block' : 'none';
+                    }
+                }
+                
+                if (logementData.chauffage_active !== undefined || logementData.instructions_chauffage) {
+                    const chauffageToggle = document.getElementById('chauffage_active');
+                    if (chauffageToggle) {
+                        const isActive = logementData.chauffage_active !== undefined ? logementData.chauffage_active : !!logementData.instructions_chauffage;
+                        chauffageToggle.checked = isActive;
+                        document.getElementById('chauffage-fields').style.display = isActive ? 'block' : 'none';
+                    }
+                }
+                
+                // Charger le toggle Multimedia
+                if (logementData.multimedia_active !== undefined || logementData.multimedia_bureau) {
+                    const multimediaToggle = document.getElementById('multimedia_active');
+                    if (multimediaToggle) {
+                        const isActive = logementData.multimedia_active !== undefined ? logementData.multimedia_active : !!logementData.multimedia_bureau;
+                        multimediaToggle.checked = isActive;
+                        document.getElementById('multimedia-fields').style.display = isActive ? 'block' : 'none';
+                    }
+                }
+                
+                // Charger les restaurants
+                console.log('[LOAD] Chargement restaurants:', logementData.restaurants);
+                if (logementData.restaurants && logementData.restaurants.length > 0) {
+                    restaurantsData = [];
+                    const restaurantsList = document.getElementById('restaurants-list');
+                    restaurantsList.innerHTML = '';
+                    console.log('[LOAD] Nombre de restaurants:', logementData.restaurants.length);
+                    logementData.restaurants.forEach((resto, idx) => {
+                        console.log(`[LOAD] Restaurant ${idx}:`, resto.nom);
+                        addRestaurant(
+                            resto.nom || '',
+                            resto.type || '',
+                            resto.description || '',
+                            resto.distance || '',
+                            resto.prix || '',
+                            resto.horaires || '',
+                            resto.adresse || resto.lien || '',
+                            resto.coup_de_coeur || false
+                        );
+                    });
+                    console.log('[LOAD] Apres chargement forEach, restaurantsData =', restaurantsData);
+                    console.log('[LOAD] Apres chargement, length =', restaurantsData.length);
+                } else {
+                    console.log('[LOAD] Aucun restaurant dans Firestore');
+                }
+                
+                // Charger les snacks
+                if (logementData.snacks && logementData.snacks.length > 0) {
+                    snacksData = [];
+                    const snacksList = document.getElementById('snacks-list');
+                    snacksList.innerHTML = '';
+                    console.log('[LOAD] Nombre de snacks:', logementData.snacks.length);
+                    logementData.snacks.forEach((snack) => {
+                        addSnack(
+                            snack.nom || '',
+                            snack.type || '',
+                            snack.description || '',
+                            snack.distance || '',
+                            snack.prix || '',
+                            snack.horaires || '',
+                            snack.lien || snack.adresse || ''
+                        );
+                    });
+                    console.log('[LOAD] Snacks charges, length =', snacksData.length);
+                }
+                
+                // Charger les activités
+                if (logementData.activites && logementData.activites.length > 0) {
+                    activitesData = [];
+                    const activitesList = document.getElementById('activites-list');
+                    activitesList.innerHTML = '';
+                    logementData.activites.forEach((activite) => {
+                        addActivite(
+                            activite.nom || '',
+                            activite.type || '',
+                            activite.description || '',
+                            activite.adresse || activite.lien || ''
+                        );
+                    });
+                }
+                
+                // Charger les commerces
+                console.log('[LOAD] Avant commerces - restaurantsData.length =', restaurantsData.length);
+                if (logementData.commerces && logementData.commerces.length > 0) {
+                    commercesData = [];
+                    const commercesList = document.getElementById('commerces-list');
+                    commercesList.innerHTML = '';
+                    logementData.commerces.forEach((commerce) => {
+                        addCommerce(
+                            commerce.nom || '',
+                            commerce.type || '',
+                            commerce.description || '',
+                            commerce.distance || '',
+                            commerce.horaires || '',
+                            commerce.adresse || ''
+                        );
                     });
                 }
                 
                 // Ouvrir le modal
+                console.log('[editLogement] AVANT ouverture modal - restaurantsData.length =', restaurantsData.length, 'activitesData.length =', activitesData.length);
                 document.getElementById('logement-modal').classList.add('active');
-                currentStep = 1;
-                showStep(currentStep);
+                currentFormStep = 1;
+                console.log('🚀 Ouverture modal - Appel showStep(1)');
+                showStep(currentFormStep);
+                console.log('[editLogement] APRES showStep - restaurantsData.length =', restaurantsData.length, 'activitesData.length =', activitesData.length);
                 
             } catch (error) {
                 console.error('❌ Erreur chargement logement:', error);
@@ -2828,6 +3793,48 @@ Le meilleur endroit pour découvrir les produits locaux !
                     navLinks.classList.remove('active');
                     document.body.classList.remove('menu-open');
                 });
+            });
+        }
+        
+        // Toggle sections TV, Enceinte, Climatisation, Chauffage et Multimedia
+        const tvToggle = document.getElementById('tv_active');
+        const tvFields = document.getElementById('tv-fields');
+        const enceinteToggle = document.getElementById('enceinte_active');
+        const enceinteFields = document.getElementById('enceinte-fields');
+        const climToggle = document.getElementById('clim_active');
+        const climFields = document.getElementById('clim-fields');
+        const chauffageToggle = document.getElementById('chauffage_active');
+        const chauffageFields = document.getElementById('chauffage-fields');
+        const multimediaToggle = document.getElementById('multimedia_active');
+        const multimediaFields = document.getElementById('multimedia-fields');
+        
+        if (tvToggle && tvFields) {
+            tvToggle.addEventListener('change', function() {
+                tvFields.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+        
+        if (enceinteToggle && enceinteFields) {
+            enceinteToggle.addEventListener('change', function() {
+                enceinteFields.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+        
+        if (climToggle && climFields) {
+            climToggle.addEventListener('change', function() {
+                climFields.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+        
+        if (chauffageToggle && chauffageFields) {
+            chauffageToggle.addEventListener('change', function() {
+                chauffageFields.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+        
+        if (multimediaToggle && multimediaFields) {
+            multimediaToggle.addEventListener('change', function() {
+                multimediaFields.style.display = this.checked ? 'block' : 'none';
             });
         }
     </script>
