@@ -1959,7 +1959,17 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
             
-            event.target.classList.add('active');
+            // Si appelé depuis un événement, utiliser event.target, sinon trouver le bouton par le texte
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Trouver le bouton correspondant et l'activer
+                const tabButton = Array.from(document.querySelectorAll('.tab')).find(t => 
+                    t.getAttribute('onclick')?.includes(`'${tab}'`)
+                );
+                if (tabButton) tabButton.classList.add('active');
+            }
+            
             document.getElementById(`tab-${tab}`).classList.add('active');
         }
         
