@@ -1783,9 +1783,10 @@
                 
                 // Attendre que le DOM soit prêt, puis ouvrir le modal
                 setTimeout(() => {
-                    // Ouvrir le modal de logement
+                    // Ouvrir le modal de logement avec la classe active
                     const modal = document.getElementById('logement-modal');
                     if (modal) {
+                        modal.classList.add('active');
                         modal.style.display = 'flex';
                     }
                     

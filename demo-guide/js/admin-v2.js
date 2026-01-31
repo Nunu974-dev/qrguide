@@ -1,11 +1,11 @@
 /* ===================================
    QRGUIDE - ADMIN JAVASCRIPT
    Dashboard admin connecté à Firestore
-   Version: 2.0.2
+   Version: 2.0.3
    =================================== */
 
 // === VARIABLES GLOBALES ===
-const ADMIN_VERSION = '2.0.2';
+const ADMIN_VERSION = '2.0.3';
 let currentUser = null;
 let allUsers = [];
 let currentClientId = null;
