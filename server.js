@@ -308,7 +308,7 @@ const getConfirmationEmailTemplate = () => `
                 <strong>📋 Récapitulatif de votre commande :</strong><br><br>
                 <strong>Formule :</strong> ${plan === 'mensuel' ? 'Mensuelle (8€/mois)' : 'Annuelle (75€/an)'}<br>
                 ${plaques > 0 ? `<strong>Plaques QR :</strong> ${plaques} plaque${plaques > 1 ? 's' : ''}<br>` : ''}
-                <strong>Pack Création :</strong> 150€ (inclus)<br><br>
+                <strong>Pack Création :</strong> 35€ (inclus)<br><br>
                 <strong style="font-size: 20px; color: #C7A961;">Total payé : ${total}€</strong>
             </div>
             
@@ -317,20 +317,20 @@ const getConfirmationEmailTemplate = () => `
                 
                 <div class="step">
                     <span class="step-number">1</span>
-                    <strong>Contact sous 2h</strong><br>
-                    Nous vous appelons pour confirmer les détails
+                    <strong>Connexion immédiate</strong><br>
+                    Connectez-vous avec vos identifiants pour créer votre guide
                 </div>
                 
                 <div class="step">
                     <span class="step-number">2</span>
                     <strong>Création de votre guide</strong><br>
-                    Nous créons votre guide personnalisé sous 48h
+                    Remplissez les informations et publiez instantanément
                 </div>
                 
                 <div class="step">
                     <span class="step-number">3</span>
-                    <strong>Livraison</strong><br>
-                    Vous recevez votre guide + QR code + plaques si commandées
+                    <strong>Livraison plaques (si commandées)</strong><br>
+                    Réception de vos plaques QR sous 2 à 3 semaines
                 </div>
             </div>
             
@@ -392,11 +392,11 @@ app.get('/', (req, res) => {
 // PRIX QRGUIDE
 // ===========================
 const PRICES = {
-    packCreation: 150,  // Pack Création obligatoire
+    packCreation: 35,  // Pack Création obligatoire
     mensuel: 8,         // Abonnement mensuel
     annuel: 75,         // Abonnement annuel
-    plaqueA4: 45,       // Prix plaque QR format A4
-    plaqueA5: 35        // Prix plaque QR format A5
+    plaqueA4: 58.90,       // Prix plaque QR format A4
+    plaqueA5: 52.90        // Prix plaque QR format A5
 };
 
 // ===========================
@@ -419,7 +419,7 @@ app.post('/create-checkout-session', async (req, res) => {
         // ===========================
         // Pack Création + Plaques (paiement unique)
         // ===========================
-        let setupFeeAmount = PRICES.packCreation; // 150€
+        let setupFeeAmount = PRICES.packCreation; // 35€
         const plaques = parseInt(plaqueQty) || 0;
         const plaqueFormat = req.body.plaqueFormat || 'a4'; // A4 ou A5
         

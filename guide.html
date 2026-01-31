@@ -6,9 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guide - QRGUIDE</title>
     <link rel="icon" type="image/jpeg" href="/img/logo_icone.jpg">
-    <link rel="stylesheet" href="/demo-guide/css/style.css?v=2">
+    <link rel="stylesheet" href="/demo-guide/css/style.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* Sélecteur de langue */
+        .language-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .lang-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #FF6B6B;
+            transform: scale(1.1);
+        }
+
+        .lang-btn.active {
+            background: #FF6B6B;
+            border-color: #FF6B6B;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+        
         .error-container {
             min-height: 100vh;
             display: flex;
@@ -213,6 +247,20 @@
         .modal-content-wrapper a:hover {
             text-decoration: underline;
         }
+        
+        /* Cacher le bandeau Google Translate */
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        body {
+            top: 0 !important;
+        }
+        .skiptranslate {
+            display: none !important;
+        }
+        iframe.goog-te-banner-frame {
+            display: none !important;
+        }
     </style>
 </head>
 <body class="luxury-body">
@@ -243,12 +291,15 @@
             </div>
             
             <div class="hero-content">
-                <!-- Sélecteur de langue -->
+                <!-- Google Translate caché (utilisé en arrière-plan) -->
+                <div id="google_translate_element" style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;"></div>
+                
+                <!-- Sélecteur de langue avec drapeaux -->
                 <div class="language-selector">
                     <button class="lang-btn active" data-lang="fr" title="Français">🇫🇷</button>
                     <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
                     <button class="lang-btn" data-lang="es" title="Español">🇪🇸</button>
-                    <button class="lang-btn" data-lang="de" title="Deutsch">🇩🇪</button>
+                    <button class="lang-btn" data-lang="it" title="Italiano">🇮🇹</button>
                 </div>
 
                 <!-- Heure -->
@@ -261,7 +312,7 @@
                         <div class="hero-date" id="current-date">-- --- ----</div>
                     </div>
                     <div class="hero-weather" id="weather-info">
-                        <div class="weather-city" id="weather-city">Saint-Paul</div>
+                        <div class="weather-city" id="weather-city" style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 4px;">La Réunion</div>
                         <span class="weather-icon">☀️</span>
                         <span class="weather-temp">--°</span>
                         <span class="weather-desc" id="weather-desc">Ensoleillé</span>
@@ -273,13 +324,13 @@
                     <span class="rating-text" data-i18n="villa_premium">Logement Premium</span>
                 </div>
                 <h1 class="hero-title" id="guide-title" data-i18n="villa_title">Chargement...</h1>
-                <p class="hero-location">
-                    <svg class="location-icon" viewBox="0 0 24 24" fill="currentColor">
+                <p id="guide-address" style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 8px 0 4px; display: flex; align-items: center; gap: 6px;">
+                    <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                     </svg>
-                    <span id="guide-location" data-i18n="location">Île de la Réunion</span>
+                    <span id="guide-address-text"></span>
                 </p>
-                <p class="hero-tagline"><span data-i18n="tagline_1">Votre guide numérique</span><br><span data-i18n="tagline_2">pour un séjour d'exception</span></p>
+                <p id="guide-description" style="font-size: 1.05rem; line-height: 1.6; color: rgba(255,255,255,0.95); margin: 16px 0 24px; max-width: 700px; text-shadow: 0 2px 8px rgba(0,0,0,0.3);"></p>
             </div>
         </header>
 
@@ -385,6 +436,29 @@
             </div>
         </div>
 
+        <!-- Section Avis Clients -->
+        <section id="reviews-carousel-section" style="display: none; background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); padding: 48px 20px; margin: 32px 0;">
+            <div class="luxury-container">
+                <h2 style="text-align: center; color: var(--primary-color); font-size: 2rem; margin-bottom: 12px;">💬 Avis de nos voyageurs</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 32px; font-size: 1rem;">Ce qu'ils ont pensé de leur séjour</p>
+                
+                <div id="reviews-carousel" style="position: relative; overflow: hidden; max-width: 800px; margin: 0 auto;">
+                    <div id="reviews-track" style="display: flex; transition: transform 0.5s ease-in-out;">
+                        <!-- Les avis seront chargés ici -->
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <button onclick="prevReview()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.9); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10;">‹</button>
+                    <button onclick="nextReview()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(212, 175, 55, 0.9); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10;">›</button>
+                    
+                    <!-- Indicateurs -->
+                    <div id="reviews-indicators" style="display: flex; justify-content: center; gap: 8px; margin-top: 20px;">
+                        <!-- Les points seront générés automatiquement -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer class="luxury-footer">
             <a id="contact-phone" href="tel:+33612345678" class="contact-btn-luxury" style="margin-bottom: 0;">
@@ -395,16 +469,70 @@
                 <source srcset="img/logo_blanc.png" media="(prefers-color-scheme: dark)">
                 <img src="img/logo.png" alt="QRGUIDE.FR" class="footer-logo" style="height: 60px; width: auto; opacity: 0.9; display: block; margin: 0 auto -5px; padding: 0;">
             </picture>
+            <div style="text-align: center; margin-top: 12px; opacity: 0.4; font-size: 0.7rem; color: #999;">v1.1.3</div>
         </footer>
     </div>
 
+    <!-- Google Translate (caché, utilisé en arrière-plan) -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            console.log('🚀 googleTranslateElementInit appelée');
+            
+            try {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'fr',
+                    includedLanguages: 'fr,en,es,it',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+                console.log('✅ Widget Google Translate créé');
+                
+            } catch (error) {
+                console.error('❌ Erreur création Google Translate:', error);
+            }
+            
+            // Masquer le bandeau Google Translate en continu
+            setInterval(() => {
+                // Cacher le bandeau du haut
+                const banner = document.querySelector('.goog-te-banner-frame');
+                if (banner) banner.style.display = 'none';
+                
+                // Réinitialiser le margin-top du body
+                if (document.body.style.top) {
+                    document.body.style.top = '0px';
+                }
+                
+                // Cacher tous les éléments skiptranslate visibles
+                document.querySelectorAll('.skiptranslate').forEach(el => {
+                    if (el.id !== 'google_translate_element') {
+                        el.style.display = 'none';
+                    }
+                });
+                
+                // Cacher les iframes Google Translate
+                document.querySelectorAll('iframe.goog-te-banner-frame').forEach(iframe => {
+                    iframe.style.display = 'none';
+                });
+            }, 500);
+        }
+        
+        // Fonction pour changer la langue programmatiquement
+        function changeLanguage(lang) {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <!-- Scripts du guide -->
-    <script src="/demo-guide/js/translations.js"></script>
-    <script src="/demo-guide/js/main.js"></script>
+    <script src="/demo-guide/js/main.js?v=1.1.3"></script>
     
     <script>
         // Configuration Firebase
@@ -456,7 +584,7 @@
                 console.log('✅ Guide chargé:', data);
                 
                 // Remplir le contenu
-                populateGuide(data);
+                populateGuide(data, guideId);
                 
                 // Afficher le guide
                 document.getElementById('loading').style.display = 'none';
@@ -469,11 +597,9 @@
         }
 
         // Remplir les données du guide
-        function populateGuide(data) {
-            // Titre et localisation
+        function populateGuide(data, guideId) {
+            // Titre
             document.getElementById('guide-title').textContent = data.nom || 'Guide';
-            document.getElementById('guide-location').textContent = data.ville || 'Île de la Réunion';
-            document.getElementById('weather-city').textContent = data.ville || 'Saint-Paul';
             
             // Image
             const heroImage = document.getElementById('hero-image');
@@ -484,13 +610,145 @@
                 heroImage.src = 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1400&h=700&fit=crop&q=90';
             }
             
-            // Contact téléphone
-            if (data.hote_telephone) {
-                document.getElementById('contact-phone').href = `tel:${data.hote_telephone}`;
+            const descElement = document.getElementById('guide-description');
+            if (data.description) {
+                descElement.textContent = data.description;
+            } else {
+                descElement.style.display = 'none';
+            }
+            
+            // Afficher l'adresse complète sous le titre
+            const addressElement = document.getElementById('guide-address');
+            const addressText = document.getElementById('guide-address-text');
+            if (data.adresse && data.ville) {
+                addressText.textContent = `${data.adresse}, ${data.ville}`;
+                addressElement.style.display = 'flex';
+            } else if (data.adresse) {
+                addressText.textContent = data.adresse;
+                addressElement.style.display = 'flex';
+            } else {
+                addressElement.style.display = 'none';
             }
             
             // Stocker les données pour les sections
             window.guideData = data;
+            window.currentGuideId = guideId; // Stocker pour le carrousel
+            
+            // Mettre à jour la météo (non-bloquant)
+            updateWeather(data.ville || null).catch(err => console.log('Météo indisponible'));
+            
+            // Charger le carousel d'avis
+            loadReviewsCarousel();
+        }
+        
+        // Variables pour le carousel d'avis
+        let currentReviewIndex = 0;
+        let reviewsCarouselInterval;
+        
+        // Charger et afficher les avis en carousel
+        async function loadReviewsCarousel() {
+            const guideId = window.currentGuideId || getGuideIdFromUrl();
+            if (!guideId) {
+                console.log('Pas de guideId pour les avis');
+                return;
+            }
+            
+            try {
+                console.log('🌟 Chargement des avis pour:', guideId);
+                const reviewsSnapshot = await db.collection('guides').doc(guideId)
+                    .collection('reviews')
+                    .orderBy('timestamp', 'desc')
+                    .limit(10)
+                    .get();
+                
+                // Filtrer les avis approuvés côté client
+                const approvedReviews = reviewsSnapshot.docs.filter(doc => doc.data().approved !== false);
+                
+                if (approvedReviews.length === 0) {
+                    document.getElementById('reviews-carousel-section').style.display = 'none';
+                    return;
+                }
+                
+                const reviewsTrack = document.getElementById('reviews-track');
+                const reviewsIndicators = document.getElementById('reviews-indicators');
+                
+                reviewsTrack.innerHTML = approvedReviews.map((doc, index) => {
+                    const review = doc.data();
+                    const stars = '⭐'.repeat(review.rating || 5);
+                    const date = review.timestamp ? new Date(review.timestamp.toDate()).toLocaleDateString('fr-FR') : '';
+                    
+                    return `
+                        <div class="review-slide" style="min-width: 100%; padding: 0 20px; box-sizing: border-box;">
+                            <div style="background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; max-width: 600px; margin: 0 auto;">
+                                <div style="font-size: 1.8rem; margin-bottom: 16px;">${stars}</div>
+                                <p style="font-size: 1.1rem; line-height: 1.8; color: #333; margin-bottom: 20px; font-style: italic;">"${review.comment}"</p>
+                                <div style="border-top: 1px solid #eee; padding-top: 16px;">
+                                    <h4 style="color: var(--primary-color); margin: 0 0 4px 0; font-size: 1.1rem;">${review.name}</h4>
+                                    <p style="color: #999; font-size: 0.9rem; margin: 0;">${date}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Créer les indicateurs
+                reviewsIndicators.innerHTML = approvedReviews.map((_, index) => 
+                    `<div class="review-indicator" data-index="${index}" onclick="goToReview(${index})" style="width: 10px; height: 10px; border-radius: 50%; background: ${index === 0 ? 'var(--primary-color)' : '#ccc'}; cursor: pointer; transition: background 0.3s;"></div>`
+                ).join('');
+                
+                document.getElementById('reviews-carousel-section').style.display = 'block';
+                
+                // Démarrer le carousel automatique
+                startReviewsCarousel(approvedReviews.length);
+                
+            } catch (error) {
+                console.error('Erreur chargement avis carousel:', error);
+            }
+        }
+        
+        function startReviewsCarousel(totalReviews) {
+            if (totalReviews <= 1) return;
+            
+            // Changer d'avis toutes les 5 secondes
+            reviewsCarouselInterval = setInterval(() => {
+                currentReviewIndex = (currentReviewIndex + 1) % totalReviews;
+                updateCarousel();
+            }, 5000);
+        }
+        
+        function updateCarousel() {
+            const track = document.getElementById('reviews-track');
+            const indicators = document.querySelectorAll('.review-indicator');
+            
+            track.style.transform = `translateX(-${currentReviewIndex * 100}%)`;
+            
+            indicators.forEach((indicator, index) => {
+                indicator.style.background = index === currentReviewIndex ? 'var(--primary-color)' : '#ccc';
+            });
+        }
+        
+        function nextReview() {
+            const totalReviews = document.querySelectorAll('.review-slide').length;
+            clearInterval(reviewsCarouselInterval);
+            currentReviewIndex = (currentReviewIndex + 1) % totalReviews;
+            updateCarousel();
+            startReviewsCarousel(totalReviews);
+        }
+        
+        function prevReview() {
+            const totalReviews = document.querySelectorAll('.review-slide').length;
+            clearInterval(reviewsCarouselInterval);
+            currentReviewIndex = (currentReviewIndex - 1 + totalReviews) % totalReviews;
+            updateCarousel();
+            startReviewsCarousel(totalReviews);
+        }
+        
+        function goToReview(index) {
+            const totalReviews = document.querySelectorAll('.review-slide').length;
+            clearInterval(reviewsCarouselInterval);
+            currentReviewIndex = index;
+            updateCarousel();
+            startReviewsCarousel(totalReviews);
         }
 
         // Afficher une section (modal ou nouvelle page)
@@ -590,10 +848,15 @@
                             
                             ${data.instructions_depart ? `
                             <section class="info-section">
-                                <h2 class="section-title">✅ Instructions de départ</h2>
+                                <h2 class="section-title">✅ Checklist départ</h2>
                                 <div class="info-card">
-                                    <div class="info-list" style="white-space: pre-line;">
-                                        ${data.instructions_depart.replace(/\n/g, '<br>')}
+                                    <div class="checklist">
+                                        ${data.instructions_depart.split('\n').filter(line => line.trim()).map(item => `
+                                            <label class="checklist-item">
+                                                <input type="checkbox">
+                                                <span>${item.replace(/^[✓✔️☑️✅-]\s*/, '')}</span>
+                                            </label>
+                                        `).join('')}
                                     </div>
                                 </div>
                             </section>
@@ -632,15 +895,66 @@
                                     <div class="wifi-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 12px; color: white;">
                                         <p style="color: white; margin: 12px 0;"><strong>Réseau :</strong> ${data.wifi_nom || 'Non configuré'}</p>
                                         <p style="color: white; margin: 12px 0;"><strong>Mot de passe :</strong> <span class="wifi-password" style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 700; letter-spacing: 2px;">${data.wifi_password || 'Non configuré'}</span></p>
+                                        ${data.wifi_debit ? `<p style="color: white; margin: 12px 0;"><strong>Débit :</strong> ${data.wifi_debit}</p>` : ''}
                                     </div>
+                                    ${data.wifi_box_emplacement ? `
+                                    <div style="margin-top: 16px; padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px;">
+                                        <p class="info-text"><strong>📍 Emplacement de la box :</strong> ${data.wifi_box_emplacement}</p>
+                                    </div>
+                                    ` : ''}
+                                    ${data.wifi_nom && data.wifi_password ? `
+                                    <div style="text-align: center; margin-top: 24px; padding: 20px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;">
+                                        <p style="font-weight: 600; margin-bottom: 12px; color: #666;">📱 Scannez le QR code pour vous connecter</p>
+                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WIFI:T:WPA;S:${encodeURIComponent(data.wifi_nom)};P:${encodeURIComponent(data.wifi_password)};;" 
+                                             alt="QR Code WiFi" 
+                                             style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                        <p style="font-size: 0.85rem; color: #999; margin-top: 8px;">Connexion automatique sur iOS et Android</p>
+                                    </div>
+                                    ` : ''}
                                 </div>
                             </section>
                             
-                            ${data.multimedia_instructions ? `
+                            ${data.tv_marque || data.tv_instruction_1 || data.tv_instruction_2 || data.tv_instruction_3 ? `
                             <section class="info-section">
-                                <h2 class="section-title">📺 Multimédia</h2>
+                                <h2 class="section-title">📺 Télévision</h2>
+                                ${data.tv_marque ? `
                                 <div class="info-card">
-                                    <p class="info-text">${data.multimedia_instructions.replace(/\n/g, '<br>')}</p>
+                                    <p class="info-text"><strong>Marque :</strong> ${data.tv_marque}</p>
+                                    ${data.tv_plateformes ? `<p class="info-text"><strong>Plateformes :</strong> ${data.tv_plateformes}</p>` : ''}
+                                    ${data.tv_box ? `<p class="info-text"><strong>Box :</strong> ${data.tv_box}</p>` : ''}
+                                    ${data.tv_telecommande_emplacement ? `<p class="info-text"><strong>📍 Télécommande :</strong> ${data.tv_telecommande_emplacement}</p>` : ''}
+                                </div>
+                                ` : ''}
+                                ${data.tv_instruction_1 ? `
+                                <div class="info-card">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 8px;">1️⃣ ${data.tv_instruction_1_titre || 'Allumer la TV'}</h3>
+                                    <p class="info-text">${data.tv_instruction_1}</p>
+                                </div>
+                                ` : ''}
+                                ${data.tv_instruction_2 ? `
+                                <div class="info-card">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 8px;">2️⃣ ${data.tv_instruction_2_titre || 'Changer de source'}</h3>
+                                    <p class="info-text">${data.tv_instruction_2}</p>
+                                </div>
+                                ` : ''}
+                                ${data.tv_instruction_3 ? `
+                                <div class="info-card">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 8px;">3️⃣ ${data.tv_instruction_3_titre || 'Régler le volume'}</h3>
+                                    <p class="info-text">${data.tv_instruction_3}</p>
+                                </div>
+                                ` : ''}
+                            </section>
+                            ` : ''}
+                            
+                            ${data.enceinte_marque || data.enceinte_nom_bluetooth ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🔊 Enceinte Bluetooth</h2>
+                                <div class="info-card">
+                                    ${data.enceinte_marque ? `<p class="info-text"><strong>Marque :</strong> ${data.enceinte_marque}</p>` : ''}
+                                    ${data.enceinte_nom_bluetooth ? `<p class="info-text"><strong>Nom Bluetooth :</strong> ${data.enceinte_nom_bluetooth}</p>` : ''}
+                                    ${data.enceinte_emplacement ? `<p class="info-text"><strong>📍 Emplacement :</strong> ${data.enceinte_emplacement}</p>` : ''}
+                                    ${data.enceinte_chargeur ? `<p class="info-text"><strong>🔌 Chargeur :</strong> ${data.enceinte_chargeur}</p>` : ''}
+                                    ${data.enceinte_caracteristiques ? `<p class="info-text">${data.enceinte_caracteristiques}</p>` : ''}
                                 </div>
                             </section>
                             ` : ''}
@@ -714,16 +1028,21 @@
                     }
                     
                     let snacksHTML = '';
+                    console.log('[RESTAURANTS] Snacks:', data.snacks);
                     if (data.snacks && Array.isArray(data.snacks) && data.snacks.length > 0) {
                         snacksHTML = '<h2 class="section-title">🥐 Snacks & Boulangeries</h2>';
                         data.snacks.forEach(snack => {
+                            const adresse = snack.lien || snack.adresse || '';
                             snacksHTML += `
                                 <div class="info-card" style="margin-bottom: 20px;">
                                     <h3 style="color: var(--primary-color); margin-bottom: 12px;">${snack.nom}</h3>
                                     ${snack.type ? `<p class="info-text"><strong>Type :</strong> ${snack.type}</p>` : ''}
+                                    ${snack.description ? `<p class="info-text">${snack.description}</p>` : ''}
                                     <div class="info-list">
-                                        ${snack.adresse ? `<p>📍 ${snack.adresse}</p>` : ''}
-                                        ${snack.telephone ? `<p>📞 <a href="tel:${snack.telephone}" style="color: var(--primary-color);">${snack.telephone}</a></p>` : ''}
+                                        ${snack.distance ? `<p>📍 ${snack.distance}</p>` : ''}
+                                        ${snack.prix ? `<p>💰 ${snack.prix}</p>` : ''}
+                                        ${snack.horaires ? `<p>🕐 ${snack.horaires}</p>` : ''}
+                                        ${adresse ? `<p>🗺️ <a href="${adresse}" target="_blank" style="color: var(--primary-color);">${adresse}</a></p>` : ''}
                                     </div>
                                 </div>
                             `;
@@ -803,14 +1122,93 @@
                     modalContent = `
                         <div class="page-container">
                             <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">🚨 Urgence</h1>
+                            
+                            ${data.urgences ? `
                             <section class="info-section">
                                 <h2 class="section-title">📞 Numéros d'urgence</h2>
                                 <div class="info-card" style="background: #fff3cd; border-left: 4px solid #ffc107;">
                                     <div class="info-list" style="white-space: pre-line;">
-                                        ${(data.urgences || 'SAMU: 15\nPolice: 17\nPompiers: 18').replace(/\n/g, '<br>')}
+                                        ${data.urgences.replace(/\n/g, '<br>')}
                                     </div>
                                 </div>
                             </section>
+                            ` : ''}
+                            
+                            ${(data.incident_electricite || data.incident_fuite || data.incident_gaz || data.incident_enferme) ? `
+                            <section class="info-section">
+                                <h2 class="section-title">⚠️ En cas d'incident</h2>
+                                
+                                ${data.incident_electricite ? `
+                                <div class="info-card" style="margin-bottom: 16px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">💡 Panne d'électricité</h3>
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.incident_electricite.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${data.incident_fuite ? `
+                                <div class="info-card" style="margin-bottom: 16px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">💧 Fuite d'eau</h3>
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.incident_fuite.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${data.incident_gaz ? `
+                                <div class="info-card" style="margin-bottom: 16px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">⛽ Odeur de gaz</h3>
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.incident_gaz.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${data.incident_enferme ? `
+                                <div class="info-card" style="margin-bottom: 16px;">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">🔒 Enfermé dehors</h3>
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.incident_enferme.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </section>
+                            ` : ''}
+                            
+                            ${data.urgence_hopital_nom ? `
+                            <section class="info-section">
+                                <h2 class="section-title">🏥 Hôpital le plus proche</h2>
+                                <div class="info-card">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">${data.urgence_hopital_nom}</h3>
+                                    ${data.urgence_hopital_distance ? `<p class="info-text">📍 Distance : ${data.urgence_hopital_distance}</p>` : ''}
+                                    ${data.urgence_hopital_adresse ? `<p class="info-text">🗺️ Adresse : ${data.urgence_hopital_adresse}</p>` : ''}
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.urgence_pharmacie_nom ? `
+                            <section class="info-section">
+                                <h2 class="section-title">💊 Pharmacie la plus proche</h2>
+                                <div class="info-card">
+                                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">${data.urgence_pharmacie_nom}</h3>
+                                    ${data.urgence_pharmacie_distance ? `<p class="info-text">📍 Distance : ${data.urgence_pharmacie_distance}</p>` : ''}
+                                    ${data.urgence_pharmacie_horaires ? `<p class="info-text">🕐 Horaires : ${data.urgence_pharmacie_horaires}</p>` : ''}
+                                    ${data.urgence_pharmacie_telephone ? `<p class="info-text">📞 <a href="tel:${data.urgence_pharmacie_telephone}" style="color: var(--primary-color);">${data.urgence_pharmacie_telephone}</a></p>` : ''}
+                                </div>
+                            </section>
+                            ` : ''}
+                            
+                            ${data.urgence_procedures ? `
+                            <section class="info-section">
+                                <h2 class="section-title">📋 Procédures d'urgence logement</h2>
+                                <div class="info-card">
+                                    <div class="info-list" style="white-space: pre-line;">
+                                        ${data.urgence_procedures.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
                         </div>
                     `;
                     break;
@@ -819,19 +1217,54 @@
                     modalContent = `
                         <div class="page-container">
                             <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">❤️ Votre Hôte</h1>
+                            
+                            ${data.hote_noms || data.hote_nom ? `
                             <section class="info-section">
-                                ${data.hote_nom ? `<h2 class="section-title">${data.hote_nom}</h2>` : ''}
+                                <h2 class="section-title">👤 Votre contact</h2>
                                 <div class="info-card">
-                                    ${data.message_hote || data.hote_message ? `<p class="info-text">${(data.message_hote || data.hote_message).replace(/\n/g, '<br>')}</p>` : ''}
+                                    <h3 style="color: var(--primary-color); font-size: 1.4rem; margin-bottom: 16px;">${data.hote_noms || data.hote_nom}</h3>
+                                    ${data.hote_apropos ? `<p class="info-text" style="margin-bottom: 20px;">${data.hote_apropos.replace(/\n/g, '<br>')}</p>` : ''}
+                                    
                                     ${data.hote_telephone ? `
-                                    <a href="tel:${data.hote_telephone}" class="contact-button" style="margin-top: 16px;">
-                                        📱 Appeler ${data.hote_nom || 'votre hôte'}
+                                    <a href="tel:${data.hote_telephone}" class="contact-button" style="display: inline-flex; align-items: center; gap: 10px; background: var(--primary-color); color: white; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; margin-bottom: 12px;">
+                                        📱 ${data.hote_telephone}
                                     </a>
-                                    <p class="contact-number">${data.hote_telephone}</p>
                                     ` : ''}
-                                    ${data.hote_email ? `<p class="info-text" style="margin-top: 12px;">📧 <a href="mailto:${data.hote_email}" style="color: var(--primary-color);">${data.hote_email}</a></p>` : ''}
+                                    
+                                    ${data.hote_whatsapp && data.hote_whatsapp !== data.hote_telephone ? `
+                                    <a href="https://wa.me/${data.hote_whatsapp.replace(/[^0-9+]/g, '')}" target="_blank" class="contact-button" style="display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: white; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; margin-bottom: 12px; margin-left: 8px;">
+                                        💬 WhatsApp
+                                    </a>
+                                    ` : ''}
+                                    
+                                    ${data.hote_email ? `
+                                    <p class="info-text" style="margin-top: 12px;">
+                                        📧 <a href="mailto:${data.hote_email}" style="color: var(--primary-color); text-decoration: none;">${data.hote_email}</a>
+                                    </p>
+                                    ` : ''}
+                                    
+                                    ${data.hote_reponse_semaine || data.hote_reponse_weekend ? `
+                                    <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                                        <p style="font-weight: 600; margin-bottom: 8px;">⏰ Disponibilité</p>
+                                        ${data.hote_reponse_semaine ? `<p style="margin: 4px 0;">Semaine : ${data.hote_reponse_semaine}</p>` : ''}
+                                        ${data.hote_reponse_weekend ? `<p style="margin: 4px 0;">Week-end : ${data.hote_reponse_weekend}</p>` : ''}
+                                        ${data.hote_disponibilite_urgence ? `<p style="margin: 4px 0; color: #dc3545; font-weight: 600;">🚨 Urgence : ${data.hote_disponibilite_urgence}</p>` : ''}
+                                    </div>
+                                    ` : ''}
                                 </div>
                             </section>
+                            ` : ''}
+                            
+                            ${data.hote_engagement_qualite ? `
+                            <section class="info-section">
+                                <h2 class="section-title">✨ Notre engagement qualité</h2>
+                                <div class="info-card">
+                                    <div style="white-space: pre-line; line-height: 1.8;">
+                                        ${data.hote_engagement_qualite.replace(/\n/g, '<br>')}
+                                    </div>
+                                </div>
+                            </section>
+                            ` : ''}
                         </div>
                     `;
                     break;
@@ -840,9 +1273,10 @@
                     modalContent = `
                         <div class="page-container">
                             <h1 style="color: var(--primary-color); font-size: 2.2rem; margin-bottom: 24px;">📋 Informations Pratiques</h1>
+                            
                             ${data.regles ? `
                             <section class="info-section">
-                                <h2 class="section-title">📜 Règlement</h2>
+                                <h2 class="section-title">📜 Règlement intérieur</h2>
                                 <div class="info-card">
                                     <div class="info-list" style="white-space: pre-line;">
                                         ${data.regles.replace(/\n/g, '<br>')}
@@ -850,27 +1284,21 @@
                                 </div>
                             </section>
                             ` : ''}
-                            ${data.menage_tri ? `
+                            
+                            ${data.tri_dechets ? `
                             <section class="info-section">
-                                <h2 class="section-title">🧹 Ménage & Tri</h2>
+                                <h2 class="section-title">♻️ Tri des déchets</h2>
                                 <div class="info-card">
                                     <div class="info-list" style="white-space: pre-line;">
-                                        ${data.menage_tri.replace(/\n/g, '<br>')}
+                                        ${data.tri_dechets.replace(/\n/g, '<br>')}
                                     </div>
                                 </div>
                             </section>
                             ` : ''}
-                            ${data.instructions_cles ? `
-                            <section class="info-section">
-                                <h2 class="section-title">🔑 Clés</h2>
-                                <div class="info-card">
-                                    <p class="info-text">${data.instructions_cles.replace(/\n/g, '<br>')}</p>
-                                </div>
-                            </section>
-                            ` : ''}
+                            
                             ${data.conseils ? `
                             <section class="info-section">
-                                <h2 class="section-title">💡 Conseils</h2>
+                                <h2 class="section-title">💡 Conseils de séjour</h2>
                                 <div class="info-card">
                                     <div class="info-list" style="white-space: pre-line;">
                                         ${data.conseils.replace(/\n/g, '<br>')}
@@ -957,7 +1385,10 @@
             }
             
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const dateStr = now.toLocaleDateString('fr-FR', options);
+            // Détecter la langue active depuis localStorage ou cookie
+            const savedLang = localStorage.getItem('guide_language') || 'fr';
+            const locale = savedLang === 'en' ? 'en-US' : savedLang === 'es' ? 'es-ES' : savedLang === 'it' ? 'it-IT' : 'fr-FR';
+            const dateStr = now.toLocaleDateString(locale, options);
             const dateEl = document.getElementById('current-date');
             if (dateEl) {
                 dateEl.textContent = dateStr;
@@ -965,10 +1396,65 @@
         }
 
         // Météo
-        async function updateWeather() {
+        async function updateWeather(ville) {
             try {
-                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-21.0099&longitude=55.2698&current=temperature_2m,weathercode&timezone=Indian/Reunion');
-                const data = await response.json();
+                // Si pas de ville ou ville vide, utiliser coordonnées par défaut (La Réunion)
+                if (!ville || ville.trim() === '') {
+                    console.log('⚠️ Pas de ville, utilisation de Saint-Denis par défaut');
+                    ville = 'Saint-Denis, Réunion';
+                }
+                
+                // Utiliser la ville du logement ou défaut La Réunion
+                if (!ville || ville.trim() === '') {
+                    ville = 'Saint-Denis';
+                }
+                
+                console.log('🌤️ Récupération météo pour:', ville);
+                
+                let latitude, longitude, timezone;
+                
+                // Map des villes de La Réunion avec coordonnées exactes
+                const reunionCities = {
+                    'saint-gilles-les-bains': { lat: -21.0603, lon: 55.2239, name: 'Saint-Gilles-les-Bains' },
+                    'saint-gilles': { lat: -21.0603, lon: 55.2239, name: 'Saint-Gilles-les-Bains' },
+                    'la saline-les-bains': { lat: -21.0897, lon: 55.2803, name: 'La Saline-les-Bains' },
+                    'saint-denis': { lat: -20.8823, lon: 55.4504, name: 'Saint-Denis' },
+                    'saint-pierre': { lat: -21.3393, lon: 55.4781, name: 'Saint-Pierre' },
+                    'saint-paul': { lat: -21.0096, lon: 55.2699, name: 'Saint-Paul' },
+                    'le port': { lat: -20.9377, lon: 55.2931, name: 'Le Port' },
+                    'saint-leu': { lat: -21.1702, lon: 55.2898, name: 'Saint-Leu' }
+                };
+                
+                // Chercher dans notre map local d'abord
+                const villeNormalized = ville.toLowerCase().replace(/,.*$/, '').trim();
+                const cityData = reunionCities[villeNormalized];
+                
+                if (cityData) {
+                    latitude = cityData.lat;
+                    longitude = cityData.lon;
+                    timezone = 'Indian/Reunion';
+                    console.log(`📍 Coordonnées trouvées (local): ${cityData.name}`, latitude, longitude);
+                } else {
+                    // Essayer le géocodage Open-Meteo
+                    let geocodeUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(ville)},Reunion&count=1&language=fr&format=json`;
+                    const geocodeResponse = await fetch(geocodeUrl);
+                    const geocodeData = await geocodeResponse.json();
+                    
+                    if (geocodeData.results && geocodeData.results.length > 0) {
+                        ({ latitude, longitude, timezone } = geocodeData.results[0]);
+                        console.log('📍 Coordonnées trouvées (API):', latitude, longitude);
+                    } else {
+                        // Fallback: coordonnées de Saint-Denis
+                        latitude = -20.8823;
+                        longitude = 55.4504;
+                        timezone = 'Indian/Reunion';
+                        console.log('⚠️ Ville non trouvée, utilisation Saint-Denis');
+                    }
+                }
+                
+                // Récupérer la météo avec les coordonnées
+                const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weathercode&timezone=${timezone || 'auto'}`);
+                const data = await weatherResponse.json();
                 
                 const temp = Math.round(data.current.temperature_2m);
                 const weatherCode = data.current.weathercode;
@@ -986,11 +1472,25 @@
                 
                 const weather = weatherData[weatherCode] || { icon: '☀️', desc: 'Ensoleillé' };
                 
+                // Afficher la ville
+                const cityElement = document.getElementById('weather-city');
+                if (cityElement) {
+                    cityElement.textContent = ville || 'La Réunion';
+                }
+                
                 document.querySelector('.weather-icon').textContent = weather.icon;
                 document.querySelector('.weather-temp').textContent = `${temp}°C`;
                 document.getElementById('weather-desc').textContent = weather.desc;
             } catch (error) {
-                console.log('Météo non disponible');
+                console.log('Météo non disponible:', error);
+                // Affichage par défaut
+                const cityElement = document.getElementById('weather-city');
+                if (cityElement) {
+                    cityElement.textContent = 'La Réunion';
+                }
+                document.querySelector('.weather-icon').textContent = '☀️';
+                document.querySelector('.weather-temp').textContent = '--°';
+                document.getElementById('weather-desc').textContent = 'Chargement...';
             }
         }
 
@@ -998,9 +1498,78 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadGuideData();
             updateDateTime();
-            updateWeather();
             setInterval(updateDateTime, 1000);
-            setInterval(updateWeather, 600000);
+            // updateWeather() est appelé dans loadGuideData() avec la ville
+            setInterval(() => {
+                if (window.guideData && window.guideData.ville) {
+                    updateWeather(window.guideData.ville);
+                } else {
+                    updateWeather();
+                }
+            }, 600000); // Mise à jour toutes les 10 minutes
+            
+            // Événements boutons de langues
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.dataset.lang;
+                    console.log('👆 Clic sur langue:', lang);
+                    
+                    // Retirer active de TOUS les boutons
+                    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                    // Ajouter active UNIQUEMENT au bouton cliqué
+                    this.classList.add('active');
+                    
+                    // Sauvegarder la langue dans localStorage
+                    localStorage.setItem('guide_language', lang);
+                    console.log('💾 Langue sauvegardée:', lang);
+                    
+                    // Utiliser directement les cookies Google Translate (méthode moderne)
+                    const cookieValue = `/fr/${lang}`;
+                    document.cookie = `googtrans=${cookieValue}; path=/; max-age=31536000`;
+                    document.cookie = `googtrans=${cookieValue}; path=/; domain=.qrguide.fr; max-age=31536000`;
+                    console.log('🍪 Cookie googtrans défini:', cookieValue);
+                    
+                    // Recharger la page pour appliquer la traduction
+                    console.log('🔄 Rechargement pour appliquer la langue...');
+                    window.location.reload();
+                    
+                    // Timeout après 5 secondes si Google Translate ne charge pas
+                    setTimeout(() => clearInterval(interval), 5000);
+                });
+            });
+            
+            // Restaurer la langue sauvegardée au chargement
+            window.addEventListener('DOMContentLoaded', () => {
+                const savedLang = localStorage.getItem('guide_language');
+                console.log('🌐 Langue au chargement:', savedLang);
+                
+                if (savedLang) {
+                    // Retirer active de TOUS les boutons d'abord
+                    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+                    
+                    // Ajouter active UNIQUEMENT au bouton correspondant à la langue sauvegardée
+                    const targetBtn = document.querySelector(`.lang-btn[data-lang="${savedLang}"]`);
+                    if (targetBtn) {
+                        targetBtn.classList.add('active');
+                        console.log('🎯 Bouton activé:', savedLang);
+                    }
+                    
+                    // Si pas français, définir le cookie si nécessaire
+                    if (savedLang !== 'fr') {
+                        const currentCookie = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
+                        if (!currentCookie || !currentCookie.includes(`/fr/${savedLang}`)) {
+                            const cookieValue = `/fr/${savedLang}`;
+                            document.cookie = `googtrans=${cookieValue}; path=/; max-age=31536000`;
+                            document.cookie = `googtrans=${cookieValue}; path=/; domain=.qrguide.fr; max-age=31536000`;
+                            console.log('🍪 Cookie restauré:', cookieValue);
+                            console.log('🔄 Rechargement pour appliquer la traduction...');
+                            window.location.reload();
+                        } else {
+                            console.log('✅ Cookie déjà défini, page déjà traduite');
+                        }
+                    }
+                }
+            });
             
             // Gérer les clics sur les cartes pour naviguer vers les pages
             document.querySelectorAll('.luxury-card[data-page]').forEach(card => {

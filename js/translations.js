@@ -9,8 +9,6 @@ const translations = {
         villa_premium: "Villa Premium",
         villa_title: "Villa Vue Mer Cannes",
         location: "Cannes, Côte d'Azur",
-        tagline_1: "Votre guide numérique",
-        tagline_2: "pour un séjour d'exception",
         
         // Cartes principales
         welcome: "Bienvenue",

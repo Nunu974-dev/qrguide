@@ -32,7 +32,7 @@ Dans le Dashboard Stripe :
 
    **Pack Création** (inclus automatiquement avec chaque abonnement)
    - Name: "QRGuide - Pack Création"
-   - Price: 150€ (one-time)
+   - Price: 35€ (one-time)
    - Copiez le Price ID
 
    **Plaque QR Code** (optionnel, quantité variable)

@@ -72,6 +72,28 @@
             border-color: var(--primary-color);
         }
         
+        .password-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #999;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+        
         .btn-login {
             width: 100%;
             padding: 16px;
@@ -227,7 +249,12 @@
                 
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" required placeholder="••••••••">
+                    <div class="password-container">
+                        <input type="password" id="password" required placeholder="••••••••">
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            👁️
+                        </button>
+                    </div>
                 </div>
                 
                 <button type="submit" class="btn-login" id="login-btn">
@@ -302,6 +329,20 @@
                 </div>
             `;
             setTimeout(() => alertContainer.innerHTML = '', 5000);
+        }
+        
+        // Toggle visibilité mot de passe
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
         }
 
         // Connexion

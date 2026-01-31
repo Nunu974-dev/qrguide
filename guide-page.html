@@ -9,12 +9,73 @@
     <link rel="stylesheet" href="/demo-guide/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <style>
+        /* Sélecteur de langue */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .lang-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-btn:hover {
+            background: #f8f9fa;
+            border-color: #FF6B6B;
+            transform: scale(1.1);
+        }
+
+        .lang-btn.active {
+            background: #FF6B6B;
+            border-color: #FF6B6B;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+    </style>
+    
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="/firebase-config.js"></script>
+    <script src="/firebase-config.js?v=1.1.2"></script>
+    
+    <style>
+        /* Cacher le bandeau Google Translate */
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        body {
+            top: 0 !important;
+        }
+        .skiptranslate {
+            display: none !important;
+        }
+        iframe.goog-te-banner-frame {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
+    <!-- Google Translate caché (utilisé en arrière-plan) -->
+    <div id="google_translate_element" style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;"></div>
+    
     <div class="container page-container">
         <!-- Bouton retour -->
         <a href="#" onclick="history.back(); return false;" class="back-button">← Retour</a>
@@ -63,7 +124,7 @@
             },
             'wifi': {
                 title: '📶 Wi-Fi',
-                image: 'https://images.unsplash.com/photo-1551817958-20c1f0650b2e?w=800&h=400&fit=crop&q=90'
+                image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&h=400&fit=crop&q=90'
             },
             'equipements': {
                 title: '🏠 Équipements',
@@ -92,6 +153,10 @@
             'infos': {
                 title: 'ℹ️ Informations',
                 image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=400&fit=crop&q=90'
+            },
+            'livre-or': {
+                title: '📖 Livre d\'or',
+                image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=400&fit=crop&q=90'
             }
         };
 
@@ -110,10 +175,32 @@
 
             const data = guideDoc.data();
             const config = pageConfig[pageType];
+            
+            // Vérifier que la config existe
+            if (!config) {
+                console.error('Page type non trouvé:', pageType);
+                document.getElementById('page-content').innerHTML = '<p style="text-align: center; color: red;">Type de page non reconnu</p>';
+                return;
+            }
 
             // Définir le titre et l'image
             document.getElementById('page-title').textContent = config.title;
-            document.getElementById('header-image').src = data.photo_url || config.image;
+            
+            // Utiliser l'image par défaut pour toutes les pages (images Unsplash du demo-guide)
+            // Seules exceptions : photo de couverture (page d'accueil) et photo hôte (page hote) sont personnalisables
+            const headerImg = document.getElementById('header-image');
+            headerImg.src = config.image;
+            
+            // Log pour déboguer
+            console.log('📄 Page:', pageType, '- Image URL:', config.image);
+            
+            // Gérer l'erreur de chargement d'image
+            headerImg.onerror = function() {
+                console.error('❌ Erreur chargement image pour', pageType);
+                // Image de fallback
+                this.src = 'https://via.placeholder.com/800x400/d4af37/ffffff?text=' + encodeURIComponent(config.title);
+            };
+            
             document.title = config.title + ' - Guide de séjour';
 
             // Générer le contenu selon la page
@@ -132,7 +219,7 @@
                             </div>
                         </section>
                         
-                        ${data.premier_pas_1 || data.premier_pas_2 || data.premier_pas_3 || data.premier_pas_4 ? `
+                        ${data.show_premiers_pas !== false && (data.premier_pas_1 || data.premier_pas_2 || data.premier_pas_3 || data.premier_pas_4) ? `
                         <section class="info-section">
                             <h2 class="section-title">🎯 Premiers pas</h2>
                             <div class="info-card">
@@ -189,10 +276,10 @@
                         <section class="info-section">
                             <h2 class="section-title">📶 Wi-Fi</h2>
                             <div class="info-card">
-                                <div class="info-list">
-                                    ${data.wifi_nom ? `<p>📡 <strong>Réseau :</strong> ${data.wifi_nom}</p>` : ''}
-                                    ${data.wifi_password ? `<p>🔒 <strong>Mot de passe :</strong> ${data.wifi_password}</p>` : ''}
-                                </div>
+                                <p class="info-text">Connectez-vous facilement au Wi-Fi :</p>
+                                <a href="/guide-page.html?guide=${guideId}&page=wifi" class="contact-button" style="margin-top: 16px;">
+                                    📱 Voir les infos Wi-Fi
+                                </a>
                             </div>
                         </section>
                         ` : ''}
@@ -223,34 +310,21 @@
                             </div>
                         </section>
                         
+                        ${data.instructions_depart ? `
                         <section class="info-section">
                             <h2 class="section-title">✅ Checklist départ</h2>
                             <div class="info-card">
-                                <p class="info-note" style="margin-bottom: 16px;">Quelques petits gestes avant de partir :</p>
                                 <div class="checklist">
-                                    <label class="checklist-item">
-                                        <input type="checkbox">
-                                        <span>💡 Éteindre toutes les lumières</span>
-                                    </label>
-                                    <label class="checklist-item">
-                                        <input type="checkbox">
-                                        <span>❄️ Éteindre climatisation / chauffage</span>
-                                    </label>
-                                    <label class="checklist-item">
-                                        <input type="checkbox">
-                                        <span>🪟 Fermer les fenêtres</span>
-                                    </label>
-                                    <label class="checklist-item">
-                                        <input type="checkbox">
-                                        <span>🗑️ Sortir les poubelles (si possible)</span>
-                                    </label>
-                                    <label class="checklist-item">
-                                        <input type="checkbox">
-                                        <span>🍽️ Ranger la vaisselle</span>
-                                    </label>
+                                    ${data.instructions_depart.split('\n').filter(line => line.trim()).map(item => `
+                                        <label class="checklist-item">
+                                            <input type="checkbox">
+                                            <span>${item.replace(/^[✓✔️☑️✅-]\s*/, '')}</span>
+                                        </label>
+                                    `).join('')}
                                 </div>
                             </div>
                         </section>
+                        ` : ''}
                         
                         ${data.menage_tri ? `
                         <section class="info-section">
@@ -266,15 +340,6 @@
                             <h2 class="section-title">🔑 Les clés</h2>
                             <div class="info-card">
                                 <div style="white-space: pre-line;">${data.instructions_cles.replace(/\n/g, '<br>')}</div>
-                            </div>
-                        </section>
-                        ` : ''}
-                        
-                        ${data.instructions_depart ? `
-                        <section class="info-section">
-                            <h2 class="section-title">📜 Instructions supplémentaires</h2>
-                            <div class="info-card">
-                                <div style="white-space: pre-line;">${data.instructions_depart.replace(/\n/g, '<br>')}</div>
                             </div>
                         </section>
                         ` : ''}
@@ -299,15 +364,25 @@
                 case 'wifi':
                     return `
                         <section class="info-section">
-                            <h2 class="section-title">� Connexion WiFi</h2>
+                            <h2 class="section-title">📶 Connexion WiFi</h2>
                             <div class="info-card">
                                 ${data.wifi_nom ? `<p style="font-size: 0.9rem; margin-bottom: 8px; color: #666;">Nom du réseau</p><p style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0 0 12px 0;">${data.wifi_nom}</p>` : ''}
                                 ${data.wifi_password ? `<p style="font-size: 0.9rem; margin-bottom: 8px; color: #666;">Mot de passe</p><p style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0 0 12px 0; letter-spacing: 1px;">${data.wifi_password}</p>` : ''}
                                 ${data.wifi_debit ? `<p style="margin-top: 16px;">⚡ <strong>Débit :</strong> ${data.wifi_debit}</p>` : ''}
+                                
+                                ${data.wifi_nom && data.wifi_password ? `
+                                <div style="text-align: center; margin-top: 24px; padding: 20px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px;">
+                                    <p style="font-weight: 600; margin-bottom: 12px; color: #666;">📱 Scannez le QR code pour vous connecter</p>
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WIFI:T:WPA;S:${encodeURIComponent(data.wifi_nom)};P:${encodeURIComponent(data.wifi_password)};;" 
+                                         alt="QR Code WiFi" 
+                                         style="max-width: 200px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <p style="font-size: 0.85rem; color: #999; margin-top: 8px;">Connexion automatique sur iOS et Android</p>
+                                </div>
+                                ` : ''}
                             </div>
                         </section>
                         
-                        ${data.tv_marque ? `
+                        ${(data.tv_active === true || (data.tv_marque && data.tv_active !== false)) ? `
                         <section class="info-section">
                             <h2 class="section-title">📺 Télévision</h2>
                             <div class="info-card">
@@ -327,9 +402,9 @@
                                 ${data.tv_instruction_1 || data.tv_instruction_2 || data.tv_instruction_3 ? `
                                 <p style="font-weight: 600; margin-bottom: 12px;">🎮 Mode d'emploi</p>
                                 <div class="step-list">
-                                    ${data.tv_instruction_1 ? `<div class="step"><div class="step-number">1</div><div><p style="font-weight: 600;">Allumer la TV</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_1}</p></div></div>` : ''}
-                                    ${data.tv_instruction_2 ? `<div class="step"><div class="step-number">2</div><div><p style="font-weight: 600;">Changer de source</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_2}</p></div></div>` : ''}
-                                    ${data.tv_instruction_3 ? `<div class="step"><div class="step-number">3</div><div><p style="font-weight: 600;">Régler le volume</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_3}</p></div></div>` : ''}
+                                    ${data.tv_instruction_1 ? `<div class="step"><div class="step-number">1</div><div><p style="font-weight: 600;">${data.tv_instruction_1_titre || 'Instruction 1'}</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_1}</p></div></div>` : ''}
+                                    ${data.tv_instruction_2 ? `<div class="step"><div class="step-number">2</div><div><p style="font-weight: 600;">${data.tv_instruction_2_titre || 'Instruction 2'}</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_2}</p></div></div>` : ''}
+                                    ${data.tv_instruction_3 ? `<div class="step"><div class="step-number">3</div><div><p style="font-weight: 600;">${data.tv_instruction_3_titre || 'Instruction 3'}</p><p style="font-size: 0.9rem; color: #666; margin-top: 4px;">${data.tv_instruction_3}</p></div></div>` : ''}
                                 </div>
                                 ` : ''}
                                 
@@ -338,7 +413,7 @@
                         </section>
                         ` : ''}
                         
-                        ${data.enceinte_marque ? `
+                        ${(data.enceinte_active === true || (data.enceinte_marque && data.enceinte_active !== false)) ? `
                         <section class="info-section">
                             <h2 class="section-title">🔊 Enceinte Bluetooth</h2>
                             <div class="info-card">
@@ -355,7 +430,7 @@
                         </section>
                         ` : ''}
                         
-                        ${data.multimedia_bureau || data.multimedia_prises_usb || data.multimedia_chargeurs ? `
+                        ${(data.multimedia_active === true || ((data.multimedia_bureau || data.multimedia_prises_usb || data.multimedia_chargeurs) && data.multimedia_active !== false)) ? `
                         <section class="info-section">
                             <h2 class="section-title">🎮 Autres équipements</h2>
                             <div class="info-card">
@@ -400,23 +475,44 @@
                         </section>
                         ` : ''}
                         
-                        ${data.instructions_clim || data.clim_telecommande_emplacement ? `
+                        ${(data.clim_active !== false) && (data.instructions_clim || data.clim_telecommande_emplacement) ? `
                         <section class="info-section">
-                            <h2 class="section-title">❄️ Climatisation & Chauffage</h2>
+                            <h2 class="section-title">❄️ ${data.clim_titre || 'Climatisation'}</h2>
                             <div class="info-card">
                                 ${data.clim_telecommande_emplacement ? `
                                 <div style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(var(--primary-rgb), 0.08); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); margin-bottom: 16px;">
                                     <div style="font-size: 3rem;">🌡️</div>
                                     <div>
-                                        <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 1.1rem;">Télécommande ${data.clim_telecommande_emplacement}</p>
-                                        <p style="font-size: 0.95rem; color: #666; margin: 0;">Contrôle climatisation et chauffage</p>
+                                        <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 1.1rem;">${data.clim_telecommande_emplacement}</p>
                                     </div>
                                 </div>
                                 ` : ''}
                                 ${data.instructions_clim ? `
                                 <div style="padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border-left: 4px solid var(--primary-color);">
-                                    <p style="margin: 0;"><strong>💡 Conseil écologique :</strong></p>
+                                    <p style="margin: 0;"><strong>💡 Instructions :</strong></p>
                                     <p style="margin: 8px 0 0 0; font-size: 0.95rem; color: #666;">${data.instructions_clim.replace(/\n/g, '<br>')}</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </section>
+                        ` : ''}
+                        
+                        ${(data.chauffage_active !== false) && (data.instructions_chauffage || data.chauffage_telecommande_emplacement) ? `
+                        <section class="info-section">
+                            <h2 class="section-title">🔥 ${data.chauffage_titre || 'Chauffage'}</h2>
+                            <div class="info-card">
+                                ${data.chauffage_telecommande_emplacement ? `
+                                <div style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(var(--primary-rgb), 0.08); border-radius: 12px; border: 2px solid rgba(var(--primary-rgb), 0.2); margin-bottom: 16px;">
+                                    <div style="font-size: 3rem;">🌡️</div>
+                                    <div>
+                                        <p style="font-weight: 600; margin: 0 0 4px 0; font-size: 1.1rem;">${data.chauffage_telecommande_emplacement}</p>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                ${data.instructions_chauffage ? `
+                                <div style="padding: 16px; background: rgba(var(--primary-rgb), 0.05); border-radius: 12px; border-left: 4px solid var(--primary-color);">
+                                    <p style="margin: 0;"><strong>💡 Instructions :</strong></p>
+                                    <p style="margin: 8px 0 0 0; font-size: 0.95rem; color: #666;">${data.instructions_chauffage.replace(/\n/g, '<br>')}</p>
                                 </div>
                                 ` : ''}
                             </div>
@@ -621,6 +717,8 @@
                                         ` : ''}
                                     </div>
                                     
+                                    ${commerce.description ? `<p style="margin: 12px 0; line-height: 1.6; color: #666;">${commerce.description}</p>` : ''}
+                                    
                                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px;">
                                         ${commerce.distance ? `
                                             <div style="display: flex; align-items: center; gap: 8px;">
@@ -779,24 +877,81 @@
                             </div>
                         </section>
                         
-                        ${data.urgences ? `
+                        ${data.urgence_hopital_nom || data.urgence_hopital_adresse ? `
                         <section class="info-section">
-                            <h2 class="section-title">🏥 Hôpital & Services médicaux</h2>
-                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%);">
-                                <div style="white-space: pre-line;">${data.urgences.replace(/\n/g, '<br>')}</div>
+                            <h2 class="section-title">🏥 Hôpital le plus proche</h2>
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); border-left: 4px solid #dc2626;">
+                                ${data.urgence_hopital_nom ? `<h3 style="font-size: 1.3rem; margin: 0 0 12px 0; color: #991b1b;">${data.urgence_hopital_nom}</h3>` : ''}
+                                <div style="display: grid; gap: 12px;">
+                                    ${data.urgence_hopital_adresse ? `
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 1.8rem;">📍</span>
+                                        <div>
+                                            <p style="margin: 0; font-weight: 600;">Adresse</p>
+                                            <p style="margin: 4px 0 0 0; color: #666;">${data.urgence_hopital_adresse}</p>
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                    ${data.urgence_hopital_distance ? `
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 1.8rem;">🚗</span>
+                                        <div>
+                                            <p style="margin: 0; font-weight: 600;">Distance</p>
+                                            <p style="margin: 4px 0 0 0; color: #666;">${data.urgence_hopital_distance}</p>
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                </div>
                             </div>
                         </section>
                         ` : ''}
                         
+                        ${data.urgence_pharmacie_nom || data.urgence_pharmacie_horaires ? `
                         <section class="info-section">
-                            <h2 class="section-title">💊 Pharmacie de garde</h2>
-                            <div class="info-card" style="text-align: center;">
-                                <p style="margin: 0 0 16px 0;">Pour connaître la pharmacie de garde :</p>
-                                <a href="tel:3237" style="display: inline-block; padding: 12px 24px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 1rem;">
-                                    📞 Appeler le 32 37
-                                </a>
+                            <h2 class="section-title">💊 Pharmacie la plus proche</h2>
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%); border-left: 4px solid #22c55e;">
+                                ${data.urgence_pharmacie_nom ? `<h3 style="font-size: 1.3rem; margin: 0 0 12px 0; color: #15803d;">${data.urgence_pharmacie_nom}</h3>` : ''}
+                                <div style="display: grid; gap: 12px;">
+                                    ${data.urgence_pharmacie_distance ? `
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 1.8rem;">🚶</span>
+                                        <div>
+                                            <p style="margin: 0; font-weight: 600;">Distance</p>
+                                            <p style="margin: 4px 0 0 0; color: #666;">${data.urgence_pharmacie_distance}</p>
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                    ${data.urgence_pharmacie_horaires ? `
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 1.8rem;">⏰</span>
+                                        <div>
+                                            <p style="margin: 0; font-weight: 600;">Horaires</p>
+                                            <p style="margin: 4px 0 0 0; color: #666;">${data.urgence_pharmacie_horaires}</p>
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                    ${data.urgence_pharmacie_telephone ? `
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 1.8rem;">📞</span>
+                                        <div>
+                                            <p style="margin: 0; font-weight: 600;">Téléphone</p>
+                                            <p style="margin: 4px 0 0 0;"><a href="tel:${data.urgence_pharmacie_telephone}" style="color: var(--primary-color); font-weight: 600;">${data.urgence_pharmacie_telephone}</a></p>
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                </div>
                             </div>
                         </section>
+                        ` : ''}
+                        
+                        ${data.urgence_procedures ? `
+                        <section class="info-section">
+                            <h2 class="section-title">📋 Procédures d'urgence du logement</h2>
+                            <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%);">
+                                <div style="white-space: pre-line;">${data.urgence_procedures.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </section>
+                        ` : ''}
                         
                         <section class="info-section">
                             <div class="info-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid #3b82f6; text-align: center;">
@@ -942,32 +1097,6 @@
                         </section>
                         ` : ''}
                         
-                        ${data.hote_coups_de_coeur ? `
-                        <section class="info-section">
-                            <h2 class="section-title">❤️ Nos coups de cœur</h2>
-                            <div class="info-card">
-                                <div style="display: grid; gap: 12px;">
-                                    ${data.hote_coups_de_coeur.split('\n').filter(item => item.trim()).map(item => {
-                                        const parts = item.split(':');
-                                        const emoji = parts[0]?.trim() || '✨';
-                                        const rest = parts.slice(1).join(':').split('-');
-                                        const title = rest[0]?.trim() || item;
-                                        const description = rest[1]?.trim() || '';
-                                        return `
-                                        <div style="display: flex; gap: 14px; padding: 12px; background: rgba(var(--primary-rgb), 0.05); border-radius: 8px;">
-                                            <span style="font-size: 2rem;">${emoji}</span>
-                                            <div>
-                                                <h4 style="margin: 0 0 4px 0; font-size: 1.05rem;">${title}</h4>
-                                                ${description ? `<p style="margin: 0; font-size: 0.9rem; color: #666;">${description}</p>` : ''}
-                                            </div>
-                                        </div>
-                                        `;
-                                    }).join('')}
-                                </div>
-                            </div>
-                        </section>
-                        ` : ''}
-                        
                         ${data.hote_engagement_qualite ? `
                         <section class="info-section">
                             <div class="info-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 100%); border-left: 4px solid var(--primary-color);">
@@ -994,40 +1123,13 @@
                                     <p style="margin: 0 0 8px 0; font-weight: 600;">Suivez-nous :</p>
                                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                                         ${data.hote_instagram ? `
-                                        <a href="${data.hote_instagram}" target="_blank" style="display: inline-block; padding: 8px 16px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📷 Instagram</a>
+                                        <a href="${data.hote_instagram.startsWith('http') ? data.hote_instagram : 'https://instagram.com/' + data.hote_instagram.replace('@', '')}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 8px 16px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">📷 Instagram</a>
                                         ` : ''}
                                         ${data.hote_facebook ? `
-                                        <a href="${data.hote_facebook}" target="_blank" style="display: inline-block; padding: 8px 16px; background: #1877f2; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">👍 Facebook</a>
+                                        <a href="${data.hote_facebook.startsWith('http') ? data.hote_facebook : 'https://facebook.com/' + data.hote_facebook}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 8px 16px; background: #1877f2; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem;">👍 Facebook</a>
                                         ` : ''}
                                     </div>
                                 </div>
-                                ` : ''}
-                            </div>
-                        </section>
-                        ` : ''}
-                        
-                        ${data.hote_message_final || data.hote_telephone || data.hote_noms || data.hote_nom ? `
-                        <section class="info-section">
-                            <div class="info-card" style="text-align: center; background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 100%); border: 3px solid var(--primary-color);">
-                                <h3 style="font-size: 1.5rem; margin: 0 0 16px 0; color: var(--primary-color);">🙏 Merci de votre confiance !</h3>
-                                ${data.hote_message_final ? `<p style="margin: 0 0 12px 0;">${data.hote_message_final}</p>` : `
-                                <p style="margin: 0 0 12px 0;">
-                                    Nous mettons tout en œuvre pour que votre séjour soit parfait. Si vous avez la moindre question, suggestion ou besoin, <strong>n'hésitez surtout pas</strong> à nous contacter.
-                                </p>
-                                `}
-                                <p style="margin: 0 0 16px 0;">
-                                    Nous vous souhaitons un <strong>excellent séjour</strong> ! ☀️
-                                </p>
-                                ${data.hote_noms || data.hote_nom ? `
-                                <p style="font-style: italic; margin: 0 0 20px 0; color: #666;">
-                                    Avec toute notre bienveillance,<br>
-                                    <strong style="color: var(--primary-color);">${data.hote_noms || data.hote_nom}</strong> ❤️
-                                </p>
-                                ` : ''}
-                                ${data.hote_telephone ? `
-                                <a href="tel:${data.hote_telephone}" style="display: inline-block; padding: 14px 32px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem;">
-                                    📞 Nous contacter
-                                </a>
                                 ` : ''}
                             </div>
                         </section>
@@ -1235,12 +1337,18 @@
                         .orderBy('timestamp', 'desc');
 
                     reviewsRef.onSnapshot((snapshot) => {
-                        if (snapshot.empty) {
+                        // Filtrer uniquement les avis approuvés
+                        const approvedReviews = snapshot.docs.filter(doc => {
+                            const review = doc.data();
+                            return review.approved !== false; // Par défaut approuvé si le champ n'existe pas
+                        });
+                        
+                        if (approvedReviews.length === 0) {
                             reviewsList.innerHTML = '';
                             emptyReviews.style.display = 'block';
                         } else {
                             emptyReviews.style.display = 'none';
-                            reviewsList.innerHTML = snapshot.docs.map(doc => {
+                            reviewsList.innerHTML = approvedReviews.map(doc => {
                                 const review = doc.data();
                                 const stars = '⭐'.repeat(review.rating);
                                 const date = review.timestamp ? new Date(review.timestamp.toDate()).toLocaleDateString('fr-FR', {
@@ -1330,6 +1438,106 @@
             const currentPage = urlParams.get('page');
             if (currentPage === 'livre-or') {
                 setTimeout(loadGuestbook, 500);
+            }
+            
+            // Ajouter le footer avec version si pas déjà présent
+            if (!document.querySelector('.page-version-footer')) {
+                const footer = document.createElement('div');
+                footer.className = 'page-version-footer';
+                footer.style.cssText = 'text-align: center; margin-top: 40px; padding: 20px 0; opacity: 0.4; font-size: 0.7rem; color: #999;';
+                footer.textContent = 'v1.1.2';
+                const container = document.querySelector('.container.page-container') || document.querySelector('.container') || document.body;
+                console.log('🏷️ Ajout version v1.1.2 dans:', container?.className || 'body');
+                container?.appendChild(footer);
+            }
+        });
+    </script>
+    
+    <!-- Google Translate (caché, utilisé en arrière-plan) -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            console.log('🚀 googleTranslateElementInit appelée sur guide-page.html');
+            
+            try {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'fr',
+                    includedLanguages: 'fr,en,es,it',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+                console.log('✅ Widget Google Translate créé');
+                
+                // Attendre que le sélecteur soit créé, puis appliquer la langue
+                let attempts = 0;
+                const checkInterval = setInterval(() => {
+                    attempts++;
+                    const selectElem = document.querySelector('.goog-te-combo');
+                    if (selectElem) {
+                        clearInterval(checkInterval);
+                        const savedLang = localStorage.getItem('guide_language');
+                        console.log('🌍 Langue sauvegardée dans localStorage:', savedLang);
+                        console.log('🎯 Langue actuelle du sélecteur:', selectElem.value);
+                        
+                        if (savedLang && savedLang !== 'fr' && selectElem.value !== savedLang) {
+                            console.log('🔄 Changement de', selectElem.value, 'vers:', savedLang);
+                            selectElem.value = savedLang;
+                            selectElem.dispatchEvent(new Event('change'));
+                            console.log('✅ Langue appliquée via Google Translate');
+                        } else if (!savedLang || savedLang === 'fr') {
+                            console.log('✅ Langue française (par défaut)');
+                        } else {
+                            console.log('✅ Déjà en', savedLang);
+                        }
+                    } else {
+                        console.log(`⏳ Tentative ${attempts}/50: Sélecteur Google Translate non trouvé`);
+                    }
+                }, 100);
+                
+                // Timeout après 5 secondes
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    if (attempts >= 50) {
+                        console.error('❌ Timeout: Le sélecteur Google Translate n\'a pas été trouvé après 5 secondes');
+                    }
+                }, 5000);
+                
+                // Masquer le bandeau Google Translate en continu
+                setInterval(() => {
+                    // Cacher le bandeau du haut
+                    const banner = document.querySelector('.goog-te-banner-frame');
+                    if (banner) banner.style.display = 'none';
+                    
+                    // Réinitialiser le margin-top du body
+                    if (document.body.style.top) {
+                        document.body.style.top = '0px';
+                    }
+                    
+                    // Cacher tous les éléments skiptranslate visibles
+                    document.querySelectorAll('.skiptranslate').forEach(el => {
+                        if (el.id !== 'google_translate_element') {
+                            el.style.display = 'none';
+                        }
+                    });
+                    
+                    // Cacher les iframes Google Translate
+                    document.querySelectorAll('iframe.goog-te-banner-frame').forEach(iframe => {
+                        iframe.style.display = 'none';
+                    });
+                }, 500);
+            } catch (error) {
+                console.error('❌ Erreur création Google Translate:', error);
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <script>
+        // Vérifier que le div google_translate_element existe
+        window.addEventListener('DOMContentLoaded', () => {
+            const gtDiv = document.getElementById('google_translate_element');
+            console.log('📦 Div google_translate_element trouvé:', gtDiv ? 'OUI' : 'NON');
+            if (gtDiv) {
+                console.log('📍 Position du div:', gtDiv.getBoundingClientRect());
             }
         });
     </script>

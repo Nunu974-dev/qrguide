@@ -21,7 +21,7 @@
 2. Crée 5 produits :
    - **Mensuel** : 8€/mois (recurring monthly)
    - **Annuel** : 75€/an (recurring yearly)
-   - **Création** : 150€ (one-time)
+   - **Création** : 35€ (one-time)
    - **Plaque** : 45€ (one-time)
    - **Pack Complet** : 240€ (one-time)
 3. Copie chaque **Price ID** (price_...)

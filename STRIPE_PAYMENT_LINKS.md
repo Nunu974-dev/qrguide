@@ -16,7 +16,7 @@ Allez sur : https://dashboard.stripe.com/test/payment-links
 2. Remplissez :
    - **Produit** : Pack Création + Abonnement Mensuel
    - **Prix** : 158€ (paiement unique)
-   - **Description** : Pack Création (150€) + Premier mois d'abonnement (8€)
+   - **Description** : Pack Création (35€) + Premier mois d'abonnement (8€)
 3. **Paramètres avancés** :
    - URL de réussite : `https://qrguide.fr/success.html`
    - URL d'annulation : `https://qrguide.fr/abonnement.html`
@@ -31,7 +31,7 @@ Allez sur : https://dashboard.stripe.com/test/payment-links
 2. Remplissez :
    - **Produit** : Pack Création + Abonnement Annuel
    - **Prix** : 225€ (paiement unique)
-   - **Description** : Pack Création (150€) + Abonnement annuel (75€)
+   - **Description** : Pack Création 35€) + Abonnement annuel (75€)
 3. **Paramètres avancés** :
    - URL de réussite : `https://qrguide.fr/success.html`
    - URL d'annulation : `https://qrguide.fr/abonnement.html`

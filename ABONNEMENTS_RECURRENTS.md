@@ -35,7 +35,7 @@ app.post('/create-checkout-session', async (req, res) => {
         const { plan, plaqueQty, customerInfo, successUrl, cancelUrl } = req.body;
 
         // Pack Création + Plaques = paiement unique
-        let setupFeeAmount = 150; // Pack création
+        let setupFeeAmount = 35; // Pack création
         const plaques = parseInt(plaqueQty) || 0;
         if (plaques > 0) {
             setupFeeAmount += 45 * plaques;
@@ -149,7 +149,7 @@ const session = await stripe.checkout.sessions.create({
 ## 🎯 Recommandation
 
 **Utilisez Option 1 (mode subscription)** :
-- 1er paiement = Pack Création (150€) + Plaques + 1er mois/an (8€ ou 75€)
+- 1er paiement = Pack Création (35€) + Plaques + 1er mois/an (8€ ou 75€)
 - Puis renouvellement automatique chaque mois/an pour 8€ ou 75€
 - La carte est enregistrée automatiquement par Stripe
 - Vous n'avez rien à faire, Stripe gère tout

@@ -218,8 +218,8 @@ Le backend calcule automatiquement :
 
 | Formule | Calcul | Total |
 |---------|--------|-------|
-| **Mensuel** | 150€ (Pack) + 8€ (Mois 1) | **158€** |
-| **Annuel** | 150€ (Pack) + 75€ (An 1) | **225€** |
+| **Mensuel** | 35€ (Pack) + 8€ (Mois 1) | **158€** |
+| **Annuel** | 35€ (Pack) + 75€ (An 1) | **225€** |
 | **Mensuel + 1 plaque** | 158€ + 45€ | **203€** |
 | **Mensuel + 2 plaques** | 158€ + 90€ | **248€** |
 | **Annuel + 1 plaque** | 225€ + 45€ | **270€** |
@@ -227,7 +227,7 @@ Le backend calcule automatiquement :
 Tout est dans `server.js` lignes 26-31 :
 ```javascript
 const PRICES = {
-    packCreation: 150,
+    packCreation: 35,
     mensuel: 8,
     annuel: 75,
     plaqueQR: 45

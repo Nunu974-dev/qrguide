@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter des avis de test</title>
+    <style>
+        body { font-family: Arial; padding: 40px; max-width: 800px; margin: 0 auto; }
+        button { padding: 15px 30px; font-size: 18px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 8px; margin: 10px 0; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🌟 Ajouter des avis de test</h1>
+    <p>Entrez l'ID de votre guide :</p>
+    <input type="text" id="guideId" placeholder="ID du guide" style="width: 100%; padding: 10px; font-size: 16px;">
+    <br><br>
+    <button onclick="addTestReviews()">✨ Ajouter 3 avis de test</button>
+    <div id="result"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        async function addTestReviews() {
+            const guideId = document.getElementById('guideId').value.trim();
+            if (!guideId) {
+                alert('Entrez un ID de guide !');
+                return;
+            }
+
+            const result = document.getElementById('result');
+            result.innerHTML = '<p>🔄 Ajout des avis...</p>';
+
+            const testReviews = [
+                {
+                    name: "Sophie Martin",
+                    rating: 5,
+                    comment: "Séjour parfait ! Logement impeccable et hôte très accueillant. Je recommande vivement !",
+                    approved: true,
+                    timestamp: firebase.firestore.Timestamp.now()
+                },
+                {
+                    name: "Thomas Dubois",
+                    rating: 5,
+                    comment: "Excellent accueil, tout était conforme à la description. Nous reviendrons avec plaisir !",
+                    approved: true,
+                    timestamp: firebase.firestore.Timestamp.now()
+                },
+                {
+                    name: "Marie Laurent",
+                    rating: 4,
+                    comment: "Très bon séjour dans un cadre magnifique. Quelques petits détails à améliorer mais globalement parfait.",
+                    approved: true,
+                    timestamp: firebase.firestore.Timestamp.now()
+                }
+            ];
+
+            try {
+                for (let i = 0; i < testReviews.length; i++) {
+                    await db.collection('guides').doc(guideId).collection('reviews').add(testReviews[i]);
+                    result.innerHTML += `<p>✅ Avis ${i + 1}/3 ajouté</p>`;
+                }
+                
+                result.innerHTML += `<p style="color: green; font-weight: bold;">✅ 3 avis de test ajoutés avec succès !</p>`;
+                result.innerHTML += `<p>Rechargez votre guide pour voir le carrousel</p>`;
+                
+            } catch (error) {
+                result.innerHTML = `<p style="color: red;">❌ Erreur: ${error.message}</p>`;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

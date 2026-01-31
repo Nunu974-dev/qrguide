@@ -184,9 +184,10 @@ try {
                 <div class='steps'>
                     <h3>📋 Prochaines étapes</h3>
                     <ol>
-                        <li><strong>Sous 24h</strong> : Nous vous enverrons un formulaire pour collecter les informations de votre location (adresse, équipements, WiFi, activités locales, etc.)</li>
-                        <li><strong>Sous 48h</strong> : Notre équipe créera votre guide numérique personnalisé</li>
-                        <li><strong>Livraison</strong> : Vous recevrez par email votre guide digital + vos codes QR à imprimer</li>
+                        <li><strong>Immédiatement</strong> : Connectez-vous à votre espace personnel pour créer votre guide</li>
+                        <li><strong>En autonomie</strong> : Remplissez les informations de votre location (adresse, équipements, WiFi, activités, etc.)</li>
+                        <li><strong>Instantané</strong> : Votre guide est publié immédiatement et accessible via QR code</li>
+                        <li><strong>Livraison plaque (si commandée)</strong> : Réception sous 2 à 3 semaines</li>
                         <li><strong>Support continu</strong> : Modifications illimitées et assistance incluses</li>
                     </ol>
                 </div>
@@ -229,7 +230,7 @@ try {
     </html>
     ";
     
-    $mail->AltBody = "Bonjour $customerName,\n\nMerci pour votre commande de $amount€ pour l'abonnement $planType.$credentialsText\n\nPROCHAINES ÉTAPES:\n1. Sous 24h : Formulaire à remplir\n2. Sous 48h : Création de votre guide\n3. Livraison : Guide + QR code par email\n\nContact : contact@qrguide.fr | 06 92 63 03 64";
+    $mail->AltBody = "Bonjour $customerName,\n\nMerci pour votre commande de $amount€ pour l'abonnement $planType.$credentialsText\n\nPROCHAINES ÉTAPES:\n1. Immédiatement : Connectez-vous pour créer votre guide\n2. En autonomie : Remplissez les informations de votre location\n3. Instantané : Votre guide est publié et accessible via QR code\n4. Livraison plaque (si commandée) : 2 à 3 semaines\n\nContact : contact@qrguide.fr | 06 92 63 03 64";
     
     $mail->send();
     

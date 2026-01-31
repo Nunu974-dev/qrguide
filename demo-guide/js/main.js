@@ -28,62 +28,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // === SYSTÈME DE TRADUCTION ===
+// DÉSACTIVÉ - Utilisation de Google Translate à la place
 function applyTranslations(lang) {
-    // Vérifier si les traductions sont disponibles
-    if (typeof translations === 'undefined' || !translations[lang]) {
-        console.warn(`Traductions non disponibles pour la langue: ${lang}`);
-        return;
-    }
-    
-    const langData = translations[lang];
-    
-    // Traduire tous les éléments avec data-i18n
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-        const key = element.getAttribute('data-i18n');
-        if (langData[key]) {
-            element.textContent = langData[key];
-        }
-    });
-    
-    console.log(`✅ Traductions appliquées: ${lang.toUpperCase()}`);
+    console.log(`ℹ️ Système de traduction manuel désactivé - Google Translate utilisé`);
+    // Ne rien faire - Google Translate gère la traduction
 }
 
 // === SÉLECTEUR DE LANGUE ===
+// DÉSACTIVÉ - Utilisation de Google Translate à la place
 function initLanguageSelector() {
-    const langButtons = document.querySelectorAll('.lang-btn');
-    if (langButtons.length === 0) return;
-    
-    // Charger la langue sauvegardée
-    const savedLang = localStorage.getItem('qrguide_language') || 'fr';
-    document.documentElement.setAttribute('lang', savedLang);
-    
-    // Appliquer les traductions au chargement
-    applyTranslations(savedLang);
-    
-    // Mettre à jour le bouton actif
-    langButtons.forEach(btn => {
-        if (btn.dataset.lang === savedLang) {
-            btn.classList.add('active');
-        }
-        
-        btn.addEventListener('click', function() {
-            const selectedLang = this.dataset.lang;
-            
-            // Sauvegarder la langue
-            localStorage.setItem('qrguide_language', selectedLang);
-            document.documentElement.setAttribute('lang', selectedLang);
-            
-            // Mettre à jour les boutons
-            langButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Appliquer les traductions
-            applyTranslations(selectedLang);
-            
-            // Message de confirmation
-            console.log(`🌍 Langue changée: ${selectedLang}`)
-        });
-    });
+    console.log(`ℹ️ Sélecteur de langue manuel désactivé - Google Translate utilisé`);
+    // Ne rien faire - Google Translate gère la langue
 }
 
 // === APPLIQUER LA COULEUR PERSONNALISÉE ===

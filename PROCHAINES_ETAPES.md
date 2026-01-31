@@ -51,7 +51,7 @@
    - Créez 5 produits :
      * Abonnement Mensuel : 8€/mois
      * Abonnement Annuel : 75€/an
-     * Pack Création : 150€ (one-time)
+     * Pack Création : 35€ (one-time)
      * Plaque A4 : 45€ (one-time)
      * Plaque A5 : 35€ (one-time)
 

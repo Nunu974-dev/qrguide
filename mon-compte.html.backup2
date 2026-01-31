@@ -1714,20 +1714,10 @@
             const userDoc = await db.collection('users').doc(user.uid).get();
             const userData = userDoc.data();
             
-            // Permettre accès clients ET admins
-            if (!userData || (userData.role !== 'client' && userData.role !== 'admin')) {
-                alert('Accès réservé aux utilisateurs connectés');
+            if (!userData || userData.role !== 'client') {
+                alert('Accès réservé aux clients');
                 await auth.signOut();
                 window.location.href = 'login.html';
-                return;
-            }
-            
-            // Si admin qui veut éditer un guide client
-            const urlParams = new URLSearchParams(window.location.search);
-            const editGuideId = urlParams.get('editGuide');
-            if (editGuideId && userData.role === 'admin') {
-                console.log('🔧 Admin édite guide:', editGuideId);
-                await loadAndEditGuideAdmin(editGuideId);
                 return;
             }
             
@@ -1764,64 +1754,6 @@
             loadLogements();
         });
 
-        // Fonction pour charger et éditer un guide (mode admin)
-        async function loadAndEditGuideAdmin(guideId) {
-            try {
-                // Charger le guide depuis Firestore
-                const guideDoc = await db.collection('guides').doc(guideId).get();
-                if (!guideDoc.exists) {
-                    alert('Guide introuvable');
-                    window.close(); // Fermer l'onglet au lieu de rediriger
-                    return;
-                }
-                
-                const guideData = guideDoc.data();
-                console.log('📝 Guide chargé:', guideData);
-                
-                // Activer l'onglet Logements d'abord
-                showTab('logements');
-                
-                // Attendre que le DOM soit prêt
-                setTimeout(() => {
-                    // Masquer la section mes logements
-                    const mesLogementsSection = document.getElementById('mes-logements-section');
-                    const monCompteSection = document.getElementById('mon-compte-section');
-                    const guideFormSection = document.getElementById('guide-form-section');
-                    
-                    if (mesLogementsSection) mesLogementsSection.style.display = 'none';
-                    if (monCompteSection) monCompteSection.style.display = 'none';
-                    if (guideFormSection) guideFormSection.style.display = 'block';
-                    
-                    // Remplir le formulaire avec les données du guide
-                    isEditingActiveGuide = true;
-                    currentLogementId = guideId; // Utiliser l'ID du guide directement
-                    
-                    // Pré-remplir tous les champs
-                    Object.keys(guideData).forEach(key => {
-                        const field = document.getElementById(key);
-                        if (field) {
-                            if (field.type === 'checkbox') {
-                                field.checked = guideData[key];
-                            } else {
-                                field.value = guideData[key] || '';
-                            }
-                        }
-                    });
-                    
-                    // Changer le titre et le bouton
-                    const modalTitle = document.getElementById('modal-title');
-                    const submitBtn = document.getElementById('submitBtn');
-                    if (modalTitle) modalTitle.textContent = '✏️ Modifier le guide (Admin)';
-                    if (submitBtn) submitBtn.innerHTML = '✅ Enregistrer les modifications';
-                    
-                    showStep(1);
-                }, 100);
-            } catch (error) {
-                console.error('Erreur chargement guide:', error);
-                alert('Erreur lors du chargement du guide');
-            }
-        }
-        
         // Charger les logements
         async function loadLogements() {
             const logementsSnap = await db.collection('users').doc(currentUser.uid)
@@ -2985,24 +2917,6 @@
                 let guideId;
                 let logementRef;
                 
-                
-                // Vérifier si on est en mode admin
-                const urlParams = new URLSearchParams(window.location.search);
-                const adminEditGuideId = urlParams.get('editGuide');
-                
-                if (adminEditGuideId && currentLogementId) {
-                    console.log('Admin modifie guide:', adminEditGuideId);
-                    submitBtn.innerHTML = 'Enregistrement...';
-                    
-                    const formData = collectFormData();
-                    formData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-                    
-                    await db.collection('guides').doc(adminEditGuideId).update(formData);
-                    
-                    alert('Guide modifié avec succès !');
-                    window.location.href = 'demo-guide/admin.html';
-                    return;
-                }
                 // DÉTECTER SI C'EST UNE MISE À JOUR D'UN BROUILLON OU UNE NOUVELLE CRÉATION
                 if (currentLogementId) {
                     isEditMode = true;

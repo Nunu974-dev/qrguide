@@ -19,7 +19,7 @@
     <header class="admin-header">
         <div class="header-content">
             <h1>🏡 QRGUIDE Dashboard Admin</h1>
-            <p class="header-subtitle">Gestion des clients et abonnements</p>
+            <p class="header-subtitle">Gestion des clients et abonnements • <span style="opacity: 0.7; font-size: 0.85rem;">v2.2.1</span></p>
         </div>
         <button class="btn-logout" onclick="logout()">🚪 Déconnexion</button>
     </header>
@@ -30,7 +30,11 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <nav class="sidebar-nav">
-                <a href="#clients" class="nav-item active" data-section="clients">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#clients" class="nav-item" data-section="clients">
                     <span class="nav-icon">📋</span>
                     <span>Mes Clients</span>
                     <span class="badge" id="clients-count">0</span>
@@ -54,8 +58,112 @@
         <!-- CONTENU PRINCIPAL -->
         <main class="main-content">
             
+            <!-- SECTION: DASHBOARD -->
+            <section id="section-dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>📊 Tableau de Bord</h2>
+                </div>
+
+                <!-- Statistiques principales -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 32px;">
+                    <!-- Card: Aujourd'hui -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 16px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Aujourd'hui</p>
+                                <h3 style="margin: 8px 0 0 0; font-size: 2.5rem;" id="stats-today">0</h3>
+                            </div>
+                            <div style="font-size: 3rem; opacity: 0.3;">📅</div>
+                        </div>
+                        <p style="margin: 12px 0 0 0; opacity: 0.8; font-size: 0.85rem;">nouveaux clients</p>
+                    </div>
+
+                    <!-- Card: Cette semaine -->
+                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 24px; border-radius: 16px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Cette semaine</p>
+                                <h3 style="margin: 8px 0 0 0; font-size: 2.5rem;" id="stats-week">0</h3>
+                            </div>
+                            <div style="font-size: 3rem; opacity: 0.3;">📈</div>
+                        </div>
+                        <p style="margin: 12px 0 0 0; opacity: 0.8; font-size: 0.85rem;">nouveaux clients</p>
+                    </div>
+
+                    <!-- Card: Ce mois -->
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 24px; border-radius: 16px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Ce mois</p>
+                                <h3 style="margin: 8px 0 0 0; font-size: 2.5rem;" id="stats-month">0</h3>
+                            </div>
+                            <div style="font-size: 3rem; opacity: 0.3;">📊</div>
+                        </div>
+                        <p style="margin: 12px 0 0 0; opacity: 0.8; font-size: 0.85rem;">nouveaux clients</p>
+                    </div>
+
+                    <!-- Card: Total clients -->
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); padding: 24px; border-radius: 16px; color: white; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Total</p>
+                                <h3 style="margin: 8px 0 0 0; font-size: 2.5rem;" id="stats-total">0</h3>
+                            </div>
+                            <div style="font-size: 3rem; opacity: 0.3;">👥</div>
+                        </div>
+                        <p style="margin: 12px 0 0 0; opacity: 0.8; font-size: 0.85rem;">clients actifs</p>
+                    </div>
+                </div>
+
+                <!-- Répartition par plan -->
+                <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 32px;">
+                    <h3 style="margin: 0 0 20px 0; color: #333;">💳 Répartition par abonnement</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                        <div style="padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="margin: 0 0 8px 0; color: #666; font-size: 0.9rem;">Mensuel (8€/mois)</p>
+                            <h4 style="margin: 0; font-size: 2rem; color: #667eea;" id="plan-mensuel">0</h4>
+                        </div>
+                        <div style="padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="margin: 0 0 8px 0; color: #666; font-size: 0.9rem;">Annuel (75€/an)</p>
+                            <h4 style="margin: 0; font-size: 2rem; color: #764ba2;" id="plan-annuel">0</h4>
+                        </div>
+                        <div style="padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="margin: 0 0 8px 0; color: #666; font-size: 0.9rem;">Revenus récurrents</p>
+                            <h4 style="margin: 0; font-size: 2rem; color: #28a745;" id="revenue-monthly">0€/mois</h4>
+                        </div>
+                        <div style="padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="margin: 0 0 8px 0; color: #666; font-size: 0.9rem;">Revenus annuels totaux</p>
+                            <h4 style="margin: 0; font-size: 2rem; color: #d4af37;" id="revenue-total">0€/an</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plaques commandées -->
+                <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 32px;">
+                    <h3 style="margin: 0 0 20px 0; color: #333;">📦 Plaques QR Code</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                        <div style="padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="margin: 0 0 8px 0; color: #666; font-size: 0.9rem;">Plaques A4 (offertes)</p>
+                            <h4 style="margin: 0; font-size: 2rem; color: #667eea;" id="plaques-a4">0</h4>
+                        </div>
+                        <div style="padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                            <p style="margin: 0 0 8px 0; color: #666; font-size: 0.9rem;">Plaques A5 (option 35€)</p>
+                            <h4 style="margin: 0; font-size: 2rem; color: #764ba2;" id="plaques-a5">0</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Derniers clients -->
+                <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                    <h3 style="margin: 0 0 20px 0; color: #333;">🆕 Derniers clients inscrits</h3>
+                    <div id="recent-clients-list">
+                        <!-- Sera rempli dynamiquement -->
+                    </div>
+                </div>
+            </section>
+            
             <!-- SECTION: LISTE DES CLIENTS -->
-            <section id="section-clients" class="content-section active">
+            <section id="section-clients" class="content-section">
                 <div class="section-header">
                     <h2>📋 Mes Clients</h2>
                     <button class="btn-primary" onclick="showSection('new-client')">
@@ -802,6 +910,6 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="js/admin.js?v=2"></script>
+    <script src="js/admin-v2.js"></script>
 </body>
 </html>
