@@ -1781,16 +1781,13 @@
                 // Activer l'onglet Logements d'abord
                 showTab('logements');
                 
-                // Attendre que le DOM soit prêt
+                // Attendre que le DOM soit prêt, puis ouvrir le modal
                 setTimeout(() => {
-                    // Masquer la section mes logements
-                    const mesLogementsSection = document.getElementById('mes-logements-section');
-                    const monCompteSection = document.getElementById('mon-compte-section');
-                    const guideFormSection = document.getElementById('guide-form-section');
-                    
-                    if (mesLogementsSection) mesLogementsSection.style.display = 'none';
-                    if (monCompteSection) monCompteSection.style.display = 'none';
-                    if (guideFormSection) guideFormSection.style.display = 'block';
+                    // Ouvrir le modal de logement
+                    const modal = document.getElementById('logement-modal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                    }
                     
                     // Remplir le formulaire avec les données du guide
                     isEditingActiveGuide = true;
@@ -1815,7 +1812,7 @@
                     if (submitBtn) submitBtn.innerHTML = '✅ Enregistrer les modifications';
                     
                     showStep(1);
-                }, 100);
+                }, 300);
             } catch (error) {
                 console.error('Erreur chargement guide:', error);
                 alert('Erreur lors du chargement du guide');
