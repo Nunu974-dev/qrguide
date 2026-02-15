@@ -218,7 +218,7 @@ try {
                 <p>Le guide numérique nouvelle génération pour locations saisonnières et hôtels</p>
                 <p style='margin-top: 20px;'>
                     <a href='https://qrguide.fr'>Accueil</a> • 
-                    <a href='https://qrguide.fr/tarifs.html'>Tarifs</a> • 
+                    <a href='https://qrguide.fr/abonnement.html'>Tarifs</a> • 
                     <a href='https://qrguide.fr/contact.html'>Contact</a>
                 </p>
                 <p style='margin-top: 20px; color: #666; font-size: 12px;'>

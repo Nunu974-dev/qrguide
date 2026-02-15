@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution pour Locations Saisonnières - QRGUIDE.FR | Guide Numérique Airbnb & Gîtes</title>
+    <meta name="description" content="QRGUIDE.FR - Solution de guide numérique pour locations saisonnières, Airbnb, gîtes et maisons d'hôtes. Améliorez l'expérience voyageur et gagnez du temps.">
+    <meta name="keywords" content="guide numérique location, QR code Airbnb, guide voyageur, gîte, maison d'hôtes, location saisonnière">
+    <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="nav-links">
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="abonnement.html">S'abonner</a>
+                    <a href="location-saisonniere.html" class="active">Locations Saisonnières</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html">Location Voitures</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="login.html" style="margin-right: 12px;">Se connecter</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient">
+        <div class="container" style="max-width: 1200px; padding: 100px 20px 80px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <h1 style="font-size: 3.2rem; margin-bottom: 24px; line-height: 1.2; margin-top: 40px;">QRGUIDE pour Locations Saisonnières</h1>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+                        <a href="abonnement.html" class="btn-hero">Créer mon guide</a>
+                        <a href="demo-guide/index.html" target="_blank" class="btn-secondary">Voir la démo</a>
+                    </div>
+                    <p style="font-size: 1.3rem; margin-bottom: 0; line-height: 1.6; color: rgba(255,255,255,0.95);">Divisez par 10 les messages répétitifs. Une plaque QR, une expérience 5 étoiles pour vos voyageurs.</p>
+                </div>
+                <div style="position: relative;">
+                    <img src="img/Phone%20Qr%20guide%20mock%20up.png" alt="QR Guide Location Saisonnière" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="position: absolute; bottom: -20px; right: -20px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 4px;">÷10</div>
+                            <div style="font-size: 0.85rem; color: #666; font-weight: 600;">Messages répétitifs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problèmes Locations Saisonnières -->
+    <section class="section-white" id="problemes">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Les défis de la location saisonnière</h2>
+                <p style="font-size: 1.1rem; color: #666;">Vous reconnaissez ces situations ?</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <div class="feature-card" style="border-left: 4px solid #e74c3c; padding: 32px;">
+                    <div class="feature-icon">📱</div>
+                    <h3 style="margin: 16px 0;">Messages à toute heure</h3>
+                    <p style="line-height: 1.7;">"C'est quoi le code Wi-Fi ?" à 23h, "Où sont les poubelles ?" le dimanche... Votre téléphone n'arrête jamais.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #e67e22;">
+                    <div class="feature-icon">📝</div>
+                    <h3>Répéter sans cesse</h3>
+                    <p>Wi-Fi, chauffage, poubelles, bonnes adresses... Vous expliquez les mêmes choses à chaque voyageur.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #f39c12;">
+                    <div class="feature-icon">📄</div>
+                    <h3>Livrets papier obsolètes</h3>
+                    <p>Coûteux à imprimer, impossibles à mettre à jour, souvent perdus ou ignorés par les voyageurs.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #3498db;">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Barrière de langue</h3>
+                    <p>Difficile d'expliquer le fonctionnement du chauffage à des touristes qui ne parlent pas français.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #9b59b6;">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Avis difficiles à obtenir</h3>
+                    <p>Vos voyageurs oublient de laisser un avis sur Airbnb ou Google alors qu'ils étaient ravis.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #2ecc71;">
+                    <div class="feature-icon">🏘️</div>
+                    <h3>Gestion multi-logements</h3>
+                    <p>Vous avez plusieurs locations ? Multiplier les livrets et explications devient ingérable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution QRGUIDE -->
+    <section class="section-gray" id="avantages">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">QRGUIDE : Votre solution tout-en-un</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Un simple QR code à l'entrée révolutionne l'accueil de vos voyageurs</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">📱</div>
+                    <h3 style="color: white;">Accès instantané</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Un scan du QR code et toutes vos infos sont accessibles : WiFi, codes, règles, bonnes adresses... Zéro téléchargement.</p>
+                </div>
+
+                <div class="feature-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">🌍</div>
+                    <h3 style="color: white;">Multilingue automatique</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Votre guide s'adapte automatiquement à la langue du smartphone. Anglais, espagnol, allemand, chinois...</p>
+                </div>
+
+                <div class="feature-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">⚡</div>
+                    <h3 style="color: white;">Mise à jour en temps réel</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Nouveau restaurant, changement de règle ? Modifiez en 2 minutes depuis votre téléphone. C'est immédiat pour tous.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📉</div>
+                    <h3>÷10 messages répétitifs</h3>
+                    <p>Toutes les informations essentielles sont disponibles 24/7. Vos voyageurs trouvent leurs réponses sans vous déranger.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Image professionnelle</h3>
+                    <p>Un guide moderne et élégant qui valorise votre location. Vos voyageurs sont impressionnés dès l'arrivée.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Boostez vos avis</h3>
+                    <p>Liens directs vers Airbnb, Google... Au moment où vos voyageurs sont ravis, facilitez-leur la démarche d'avis positif.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Zéro papier</h3>
+                    <p>Plus d'impression, plus de stocks. Démarche écoresponsable appréciée par vos voyageurs.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏘️</div>
+                    <h3>Multi-logements</h3>
+                    <p>3 appartements, 5 villas ? Gérez tous vos guides depuis un seul compte. Dupliquez et personnalisez facilement.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>À vos couleurs</h3>
+                    <p>Logo, photos, couleurs... Votre guide reflète parfaitement l'identité de votre location.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Visuelle Plaque QR -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <span style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 24px;">🎨 INSTALLATION FACILE</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">Une plaque élégante à l'entrée</h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 24px; line-height: 1.7;">Plaque murale design ou chevalet de table, nous fournissons le support QR code parfait pour votre logement.</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: #2ecc71; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Design premium</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Plaque élégante avec votre nom de location</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: #2ecc71; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Pose ultra-simple</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Installation en 2 minutes avec adhésif ou vis</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px;">
+                            <span style="color: #2ecc71; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Instructions multilingues</strong>
+                                <span style="color: #666; font-size: 0.95rem;">"Scan me" visible en plusieurs langues</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="img/Qr%20guide%20mock%20up.png" alt="Plaque QR Guide Location" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Visuelle Interface -->
+    <section class="section-gray">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <img src="img/Phone%20Qr%20guide%20mock%20up.png" alt="Interface Mobile QR Guide" style="width: 100%; max-width: 500px; margin: 0 auto; display: block;">
+                </div>
+                <div>
+                    <span style="display: inline-block; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 24px;">📱 EXPÉRIENCE VOYAGEUR</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">Tout à portée de main</h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 24px; line-height: 1.7;">Vos voyageurs scannent le QR code dès leur arrivée et découvrent tout ce qu'ils doivent savoir.</p>
+                    <div style="background: #f8f9fa; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+                        <div style="margin-bottom: 16px;">
+                            <strong style="color: var(--primary-color); display: block; margin-bottom: 8px;">📍 Ils découvrent instantanément :</strong>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.9rem; color: #666;">
+                            <div>• Code WiFi</div>
+                            <div>• Mode d'emploi</div>
+                            <div>• Règles maison</div>
+                            <div>• Bonnes adresses</div>
+                            <div>• Activités locales</div>
+                            <div>• Numéros urgence</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.95rem; color: #666; line-height: 1.6;">💡 <strong>Résultat :</strong> Moins de messages, voyageurs autonomes, avis 5 étoiles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cas d'usage -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Comment vos voyageurs utilisent QRGUIDE</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Des scénarios concrets d'utilisation</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🏠</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Arrivée à 22h</h3>
+                    <p style="color: #666;">Marie arrive tard. Elle scanne le QR code et trouve instantanément le code WiFi, les infos sur le chauffage, et les restaurants ouverts tard près de chez vous.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🌍</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Touriste allemand</h3>
+                    <p style="color: #666;">Klaus ne parle pas français. Son smartphone détecte sa langue et affiche tout le guide en allemand : mode d'emploi, bonnes adresses, règles de tri.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🍽️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Découverte locale</h3>
+                    <p style="color: #666;">Sophie consulte vos bonnes adresses avec photos et descriptions. Elle clique sur le restaurant de fruits de mer et réserve directement via Google Maps.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🚨</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Urgence la nuit</h3>
+                    <p style="color: #666;">Pierre a un problème de plomberie à 3h du matin. Le guide affiche votre numéro d'urgence ET celui du plombier de garde. Gestion rapide.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🏖️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Activités & Loisirs</h3>
+                    <p style="color: #666;">La famille Dupont découvre vos suggestions de plages, randonnées et activités pour enfants. Ils cliquent et c'est parti avec l'itinéraire GPS.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">⭐</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Avis spontané</h3>
+                    <p style="color: #666;">Thomas a adoré son séjour. Avant de partir, il clique sur "Laisser un avis" dans le guide et partage son expérience 5 étoiles sur Airbnb.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Aperçu Interface -->
+    <section class="section-gray">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <span style="display: inline-block; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 24px;">⭐ SIMPLE & MODERNE</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">Une interface conçue pour vos voyageurs</h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 24px; line-height: 1.7;">Navigation intuitive, design élégant, informations organisées. Vos voyageurs trouvent ce qu'ils cherchent en quelques secondes.</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: #4facfe; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Adaptation automatique</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Le guide détecte la langue et s'adapte instantanément</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: #4facfe; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Navigation rapide</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Accès direct aux infos essentielles en un clic</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px;">
+                            <span style="color: #4facfe; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Liens interactifs</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Navigation GPS, appel direct, avis en un clic</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="img/Accueil.png" alt="Interface Mobile QR Guide" style="width: 100%; max-width: 400px; margin: 0 auto; display: block; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border-radius: 20px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Votre retour sur investissement</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Calculez vos gains de temps et d'argent</p>
+            </div>
+
+            <div style="max-width: 1100px; margin: 0 auto; background: #f8f9fa; padding: 48px 32px; border-radius: 20px;">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #e74c3c; margin-bottom: 8px;">÷10</div>
+                        <p style="color: #666; font-size: 0.9rem;">Messages<br>répétitifs</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #f39c12; margin-bottom: 8px;">2h/sem</div>
+                        <p style="color: #666; font-size: 0.9rem;">Temps gagné<br>par semaine</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #2ecc71; margin-bottom: 8px;">+50%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Avis Google<br>positifs</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #3498db; margin-bottom: 8px;">0€</div>
+                        <p style="color: #666; font-size: 0.9rem;">Impression<br>livrets papier</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 32px; border-radius: 16px; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 16px;">Pour 1 location saisonnière</h3>
+                    <div style="font-size: 3rem; font-weight: 700; margin-bottom: 8px;">12€/mois</div>
+                    <p style="opacity: 0.95; margin-bottom: 24px;">Soit moins d'une demi-heure de ménage. Pour des heures de temps gagné !</p>
+                    <a href="abonnement.html" class="btn-hero" style="background: white; color: var(--primary-color);">Voir les tarifs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">Ils ont transformé leur location avec QRGUIDE</h2>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Plus de messages à 23h pour le code Wi-Fi ! Les avis 5 étoiles ont explosé depuis que j'utilise QRGUIDE. Un vrai gain de temps au quotidien."</p>
+                    <div class="testimonial-author">
+                        <strong>Marie L.</strong>
+                        <span>Villa 4 chambres • Saint Leu</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"J'ai 3 appartements. Avant je passais des heures à répondre aux mêmes questions. Maintenant tout est dans le guide, c'est un gain de temps fou. Je recommande à 100% !"</p>
+                    <div class="testimonial-author">
+                        <strong>Thomas B.</strong>
+                        <span>3 appartements • Saint Paul</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Hyper facile à mettre à jour. Quand je découvre un bon restaurant, je l'ajoute en 2 minutes depuis mon téléphone. Mes voyageurs me remercient pour ces bonnes adresses !"</p>
+                    <div class="testimonial-author">
+                        <strong>Sophie M.</strong>
+                        <span>Maison créole • Saint Denis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Prêt à transformer votre location ?</h2>
+            <p>Divisez par 10 les messages répétitifs et offrez une expérience 5 étoiles</p>
+            <a href="abonnement.html" class="btn-hero">Voir les tarifs</a>
+            <p class="small-text">Sans engagement • À partir de 12€/mois • Support inclus</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières, hôtels et véhicules</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Solutions</h4>
+                    <a href="location-saisonniere.html">Locations Saisonnières</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html">Location Voitures</a>
+                    <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:0692630364">06 92 63 03 64</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="mentions-legales.html">Mentions légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="politique-confidentialite.html">Confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Fermer le menu en cliquant sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

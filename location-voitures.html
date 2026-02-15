@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution pour Location de Voitures - QRGUIDE.FR | Guide Numérique Véhicule</title>
+    <meta name="description" content="QRGUIDE.FR - Solution de guide numérique pour locations de voitures. Améliorez l'expérience client, réduisez les questions répétitives et valorisez vos services.">
+    <meta name="keywords" content="guide numérique voiture, QR code véhicule, location voiture, guide location automobile, expérience client location">
+    <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="nav-links">
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="abonnement.html">S'abonner</a>
+                    <a href="location-saisonniere.html">Locations Saisonnières</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html" class="active">Location Voitures</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="login.html" style="margin-right: 12px;">Se connecter</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient">
+        <div class="container" style="max-width: 1200px; padding: 100px 20px 80px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <h1 style="font-size: 3.2rem; margin-bottom: 24px; line-height: 1.2; margin-top: 40px;">QRGUIDE pour Location de Voitures</h1>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+                        <a href="contact.html" class="btn-hero">Demander une démo</a>
+                        <a href="#avantages" class="btn-secondary">Découvrir les avantages</a>
+                    </div>
+                    <p style="font-size: 1.3rem; margin-bottom: 0; line-height: 1.6; color: rgba(255,255,255,0.95);">Un autocollant sur le tableau de bord, toutes les infos du véhicule à portée de main</p>
+                </div>
+                <div style="position: relative;">
+                    <img src="img/image%20QR%20guide%20auto.png" alt="QR Code Voiture" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="position: absolute; bottom: -20px; right: -20px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 4px;">-70%</div>
+                            <div style="font-size: 0.85rem; color: #666; font-weight: 600;">Appels clients</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problèmes Location Voiture -->
+    <section class="section-white" id="problemes">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Les défis de la location de véhicules</h2>
+                <p style="font-size: 1.1rem; color: #666;">Vous reconnaissez ces situations ?</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <div class="feature-card" style="border-left: 4px solid #e74c3c; padding: 32px;">
+                    <div class="feature-icon">📞</div>
+                    <h3 style="margin: 16px 0;">Appels répétitifs</h3>
+                    <p style="line-height: 1.7;">"Comment marche le GPS ?", "Où est la roue de secours ?", "C'est quoi pour le carburant ?"... Les mêmes questions encore et encore.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #e67e22;">
+                    <div class="feature-icon">📄</div>
+                    <h3>Manuels papier perdus</h3>
+                    <p>Carnets d'entretien égarés, manuels absents, informations difficiles à trouver dans la boîte à gants.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #f39c12;">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Clients internationaux</h3>
+                    <p>Difficile d'expliquer le fonctionnement du véhicule à des touristes étrangers ne parlant pas français.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #3498db;">
+                    <div class="feature-icon">⚠️</div>
+                    <h3>Retours endommagés</h3>
+                    <p>Les clients ne savent pas comment utiliser correctement l'équipement, ce qui entraîne des dégâts.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #9b59b6;">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Remises longues</h3>
+                    <p>Vous perdez du temps à expliquer chaque fonctionnalité lors de la prise en main du véhicule.</p>
+                </div>
+
+                <div class="feature-card" style="border-left: 4px solid #2ecc71;">
+                    <div class="feature-icon">💰</div>
+                    <h3>Services sous-valorisés</h3>
+                    <p>GPS, siège bébé, assurances... Vos options ne sont pas assez mises en avant.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution QRGUIDE -->
+    <section class="section-gray" id="avantages">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">QRGUIDE : Votre guide véhicule intelligent</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Un simple autocollant QR sur le tableau de bord transforme l'expérience de location</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">📱</div>
+                    <h3 style="color: white;">Accès instantané</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Un scan et toutes les informations du véhicule s'affichent : caractéristiques, équipements, mode d'emploi, contacts urgence.</p>
+                </div>
+
+                <div class="feature-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">🌍</div>
+                    <h3 style="color: white;">Multilingue automatique</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Le guide s'adapte automatiquement à la langue du smartphone : français, anglais, allemand, espagnol, chinois...</p>
+                </div>
+
+                <div class="feature-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">⚡</div>
+                    <h3 style="color: white;">Toujours à jour</h3>
+                    <p style="color: rgba(255,255,255,0.95);">Modifiez les infos en temps réel : tarifs, options, procédures... Les changements sont instantanés.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📉</div>
+                    <h3>-70% d'appels clients</h3>
+                    <p>Toutes les informations essentielles sont disponibles 24/7 : fonctionnement GPS, plein de carburant, contrôles, urgences...</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Remise en 5 minutes</h3>
+                    <p>Plus besoin d'expliquer longuement. Le client scanne, découvre tout et vous gagnez un temps précieux.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Promouvoir vos options</h3>
+                    <p>GPS premium, assurance tous risques, équipements... Valorisez vos services additionnels avec photos et descriptions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Zéro papier</h3>
+                    <p>Plus de manuels perdus, plus de photocopies. Un autocollant résiste toute la durée de vie du véhicule.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Moins de litiges</h3>
+                    <p>Tout est documenté : état des lieux, consignes, procédures. Moins de conflits lors des retours.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Meilleurs avis</h3>
+                    <p>Facilitez la vie de vos clients et encouragez-les à laisser un avis positif en un clic.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Visuelle Scan -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <span style="display: inline-block; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 24px;">📱 SIMPLE & RAPIDE</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">Un scan, toutes les infos</h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 24px; line-height: 1.7;">Vos clients scannent le QR code sur le tableau de bord et accèdent instantanément à toutes les informations du véhicule sur leur smartphone.</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: #2ecc71; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Aucune application à télécharger</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Fonctionne directement dans le navigateur</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: #2ecc71; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Compatible tous smartphones</strong>
+                                <span style="color: #666; font-size: 0.95rem;">iOS, Android, tous navigateurs</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px;">
+                            <span style="color: #2ecc71; font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Accès instantané 24/7</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Toujours disponible, même hors connexion</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="img/image%20QR%20guide%20auto%20scan.png" alt="Scan QR Code Auto" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Visuelle Interface -->
+    <section class="section-gray">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <img src="img/Accueil%20qrguide%20auto.png" alt="Interface QR Guide Auto" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+                </div>
+                <div>
+                    <span style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 24px;">🎨 INTERFACE INTUITIVE</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">Une navigation claire et moderne</h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 24px; line-height: 1.7;">Interface élégante et facile à utiliser, optimisée pour tous les écrans. Vos clients trouvent rapidement ce qu'ils cherchent.</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: var(--primary-color); font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Design responsive</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Parfait sur smartphone, tablette et ordinateur</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: var(--primary-color); font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">Navigation intuitive</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Icônes claires, catégories organisées</span>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: start; gap: 12px;">
+                            <span style="color: var(--primary-color); font-size: 1.5rem;">✓</span>
+                            <div>
+                                <strong style="display: block; margin-bottom: 4px;">À vos couleurs</strong>
+                                <span style="color: #666; font-size: 0.95rem;">Personnalisable avec votre logo et charte graphique</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cas d'usage -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Comment vos clients utilisent QRGUIDE</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Des scénarios concrets d'utilisation</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🚗</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Prise en main rapide</h3>
+                    <p style="color: #666;">Marc loue une voiture à l'aéroport. Il scanne le QR code et découvre immédiatement comment activer le GPS, régler la climatisation et localiser les commandes essentielles.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🌍</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Touriste étranger</h3>
+                    <p style="color: #666;">Une famille japonaise loue un véhicule. Le guide s'affiche automatiquement en japonais : fonctionnement, règles de circulation, numéros d'urgence locaux.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">⚠️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Problème en route</h3>
+                    <p style="color: #666;">Sophie a un voyant qui s'allume. Elle consulte le guide pour comprendre le problème et trouve le numéro d'assistance 24/7 ainsi que la procédure à suivre.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">⛽</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Carburant et retour</h3>
+                    <p style="color: #666;">Pierre consulte le guide avant de rendre la voiture : type de carburant, stations proches, checklist de retour. Il évite les frais supplémentaires.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">👶</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Installation siège bébé</h3>
+                    <p style="color: #666;">Julie découvre dans le guide une vidéo montrant comment installer correctement le siège bébé avec les points d'ancrage ISOFIX.</p>
+                </div>
+
+                <div style="padding: 32px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🗺️</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 16px;">Découvertes locales</h3>
+                    <p style="color: #666;">Le guide propose des points d'intérêt, parkings gratuits, bonnes adresses. Les clients apprécient vos recommandations personnalisées.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ce qu'inclut le guide -->
+    <section class="section-gray">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Ce que contient le guide véhicule</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Tout ce dont vos clients ont besoin, organisé et accessible</p>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="feature-card">
+                    <div class="feature-icon">🚙</div>
+                    <h3>Caractéristiques véhicule</h3>
+                    <p>Modèle, année, motorisation, consommation, capacité coffre, nombre de places</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎛️</div>
+                    <h3>Mode d'emploi interactif</h3>
+                    <p>GPS, climatisation, régulateur, sièges chauffants, ouverture coffre... avec photos et vidéos</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⛽</div>
+                    <h3>Carburant & énergie</h3>
+                    <p>Type de carburant, localisation trappe, stations-service proches, autonomie électrique si hybride/électrique</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>Kit de dépannage</h3>
+                    <p>Emplacement roue de secours, cric, gilet, triangle, trousse premier secours</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📞</div>
+                    <h3>Contacts & assistance</h3>
+                    <p>Numéro assistance 24/7, dépannage, assurance, police, pompiers, médecins</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Documents & assurance</h3>
+                    <p>Contrat de location, couverture assurance, franchise, procédure accident</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🅿️</div>
+                    <h3>Stationnement</h3>
+                    <p>Dimensions véhicule, parkings recommandés, zones interdites, règles locales</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔙</div>
+                    <h3>Checklist retour</h3>
+                    <p>Niveau carburant, nettoyage, contrôles, horaires restitution, point de rendez-vous</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Bonnes adresses</h3>
+                    <p>Lieux à visiter, restaurants, parkings gratuits selon votre région</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Options premium</h3>
+                    <p>GPS premium, coffre de toit, porte-vélos, assurances complémentaires</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🚨</div>
+                    <h3>Que faire si...</h3>
+                    <p>Panne, accident, crevaison, perte clés, vol... Procédures et contacts</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Avis clients</h3>
+                    <p>Encouragez vos clients satisfaits à partager leur expérience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Visuelle Comptoir -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <span style="display: inline-block; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 24px;">⚡ REMISE ULTRA-RAPIDE</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">Gagnez un temps précieux au comptoir</h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 24px; line-height: 1.7;">Fini les longues explications ! Vos clients scannent le QR code et ont accès à tout : le guide se charge de l'explication du véhicule.</p>
+                    <div style="background: #f8f9fa; padding: 24px; border-radius: 12px; margin-bottom: 24px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                            <div>
+                                <div style="font-size: 2.5rem; font-weight: 700; color: #e74c3c; margin-bottom: 8px;">Avant</div>
+                                <p style="color: #666; margin: 0; font-size: 0.9rem;">15-20 min d'explications par véhicule</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2.5rem; font-weight: 700; color: #2ecc71; margin-bottom: 8px;">Après</div>
+                                <p style="color: #666; margin: 0; font-size: 0.9rem;">5 min : contrat + scan du QR code</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.95rem; color: #666; line-height: 1.6;">💡 <strong>Concentration sur l'essentiel :</strong> Votre équipe se concentre sur le service client et la relation, pas sur la répétition d'informations.</p>
+                </div>
+                <div>
+                    <img src="img/image%20QR%20guide%20auto%20comptoir.png" alt="Comptoir Location Voiture" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="section-gray">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; margin-bottom: 64px;">
+                <h2 style="margin-bottom: 16px;">Gagnez du temps et de l'argent</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Calculez vos économies</p>
+            </div>
+
+            <div style="max-width: 1100px; margin: 0 auto; background: white; padding: 48px 32px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #e74c3c; margin-bottom: 8px;">-70%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Appels clients<br>répétitifs</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #f39c12; margin-bottom: 8px;">-50%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Temps de remise<br>du véhicule</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #2ecc71; margin-bottom: 8px;">+25%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Ventes d'options<br>additionnelles</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #3498db; margin-bottom: 8px;">-40%</div>
+                        <p style="color: #666; font-size: 0.9rem;">Litiges et<br>réclamations</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 32px; border-radius: 16px; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 16px;">Pour une flotte de 20 véhicules</h3>
+                    <div style="font-size: 3rem; font-weight: 700; margin-bottom: 8px;">ROI immédiat</div>
+                    <p style="opacity: 0.95; margin-bottom: 24px;">Gain de temps + satisfaction client + ventes additionnelles</p>
+                    <a href="contact.html" class="btn-hero" style="background: white; color: var(--primary-color);">Demander un devis personnalisé</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tarifs Location Voitures -->
+    <section class="section-gray" id="tarifs">
+        <div class="container" style="max-width: 1000px;">
+            <div style="text-align: center; margin-bottom: 48px;">
+                <h2 style="margin-bottom: 16px;">Tarification simple et transparente</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">Un prix par véhicule, tout compris</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 48px 40px; border-radius: 20px; text-align: center; margin-bottom: 48px;">
+                <h3 style="color: white; font-size: 2rem; margin-bottom: 24px;">💰 Tarif par véhicule</h3>
+                <div style="font-size: 4rem; font-weight: 700; margin-bottom: 16px;">À partir de 4,99€</div>
+                <p style="font-size: 1.2rem; opacity: 0.95; margin-bottom: 32px;">Par véhicule et par mois (tarifs dégressifs selon la taille de flotte)</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 32px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 8px;">✓</div>
+                        <strong style="display: block; margin-bottom: 4px;">QR code PDF HD</strong>
+                        <span style="opacity: 0.9; font-size: 0.9rem;">Prêt à imprimer</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 8px;">✓</div>
+                        <strong style="display: block; margin-bottom: 4px;">Mise à jour illimitée</strong>
+                        <span style="opacity: 0.9; font-size: 0.9rem;">Modifiez quand vous voulez</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 8px;">✓</div>
+                        <strong style="display: block; margin-bottom: 4px;">Support inclus</strong>
+                        <span style="opacity: 0.9; font-size: 0.9rem;">Email & téléphone</span>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="btn-hero" style="background: white; color: var(--primary-color); font-size: 1.1rem; padding: 16px 40px;">💬 Demander un devis</a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">🚗</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">Petite flotte</h3>
+                    <p style="color: #666; margin-bottom: 16px; font-size: 2rem; font-weight: 700;">4,99€<span style="font-size: 1rem; font-weight: 400;">/véhicule/mois</span></p>
+                    <p style="color: #666; margin-bottom: 16px;">1 à 10 véhicules</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Configuration initiale</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Guide multilingue</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ QR code PDF HD</li>
+                        <li style="padding: 8px 0;">✓ Support email</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 3px solid var(--primary-color);">
+                    <div style="position: absolute; top: -12px; background: var(--primary-color); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">⭐ POPULAIRE</div>
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">🚙</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">Flotte moyenne</h3>
+                    <p style="color: #666; margin-bottom: 16px; font-size: 2rem; font-weight: 700;">3,99€<span style="font-size: 1rem; font-weight: 400;">/véhicule/mois</span></p>
+                    <p style="color: #666; margin-bottom: 16px;">11 à 50 véhicules</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Tout du pack Petite flotte</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Tableau de bord analytics</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Import en masse</li>
+                        <li style="padding: 8px 0;">✓ Support prioritaire</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="font-size: 2.5rem; margin-bottom: 16px;">🚐</div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 12px;">Grande flotte</h3>
+                    <p style="color: #666; margin-bottom: 16px; font-size: 2rem; font-weight: 700;">Sur devis</p>
+                    <p style="color: #666; margin-bottom: 16px;">51+ véhicules</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Tout du pack Moyen</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ API personnalisée</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Account manager dédié</li>
+                        <li style="padding: 8px 0;">✓ SLA garanti 24/7</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pack Création -->
+            <div style="margin-top: 48px; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 2px dashed var(--primary-color);">
+                <div style="display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;">
+                    <div style="text-align: center; padding: 24px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; color: white; min-width: 200px;">
+                        <div style="font-size: 2rem; margin-bottom: 8px;">🎨</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 4px;">3,50€</div>
+                        <div style="font-size: 0.9rem; opacity: 0.95;">par véhicule</div>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--primary-color); margin-bottom: 12px; font-size: 1.5rem;">Pack Création - Frais unique</h3>
+                        <p style="color: #666; line-height: 1.7; margin-bottom: 16px;">Frais de mise en place unique par véhicule comprenant la création du guide personnalisé, la configuration initiale et le QR code en version PDF HD.</p>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: #2ecc71; font-size: 1.2rem;">✓</span>
+                                <span style="font-size: 0.9rem; color: #666;">Création du guide</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: #2ecc71; font-size: 1.2rem;">✓</span>
+                                <span style="font-size: 0.9rem; color: #666;">Configuration complète</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: #2ecc71; font-size: 1.2rem;">✓</span>
+                                <span style="font-size: 0.9rem; color: #666;">QR code PDF HD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option Autocollant QR -->
+            <div style="margin-top: 24px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 32px 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(240, 147, 251, 0.2);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <span style="font-size: 2rem;">🏷️</span>
+                            <h3 style="color: white; margin: 0; font-size: 1.4rem;">Autocollant QR Code - Option</h3>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.95); line-height: 1.6; margin: 0;">Autocollant premium résistant et durable pour tableau de bord. Idéal si vous souhaitez une installation professionnelle clé en main.</p>
+                    </div>
+                    <div style="text-align: center; background: white; padding: 24px 32px; border-radius: 12px; min-width: 180px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #f5576c; margin-bottom: 4px;">5,90€</div>
+                        <div style="font-size: 0.9rem; color: #666;">par autocollant</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="section-white">
+        <div class="container" style="max-width: 1200px; padding: 60px 20px;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto; padding: 60px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white; box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);">
+                <h2 style="color: white; font-size: 2.5rem; margin-bottom: 24px;">Prêt à moderniser votre location ?</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 32px; opacity: 0.95;">Rejoignez les loueurs de véhicules qui ont choisi QRGUIDE pour améliorer l'expérience client</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="contact.html" class="btn-hero" style="background: white; color: var(--primary-color);">Demander une démo gratuite</a>
+                    <a href="contact.html" class="btn-secondary" style="background: rgba(255,255,255,0.2); border-color: white; color: white; backdrop-filter: blur(10px);">Poser vos questions</a>
+                </div>
+                <p style="margin-top: 24px; font-size: 0.9rem; opacity: 0.8;">✓ Sans engagement • ✓ Mise en place rapide • ✓ Support en français</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières, hôtels et véhicules</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Solutions</h4>
+                    <a href="location-saisonniere.html">Locations Saisonnières</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html">Location Voitures</a>
+                    <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:0692630364">06 92 63 03 64</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="mentions-legales.html">Mentions légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="politique-confidentialite.html">Confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Fermer le menu en cliquant sur un lien
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -73,9 +73,22 @@
             appearance: textfield;
         }
         
+        /* Style pour les options de choix de solution */
+        .solution-choice {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .solution-choice:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+        }
+        
         /* Responsive pour les 4 étapes et FAQ */
         @media (max-width: 768px) {
             .faq-grid {
+                grid-template-columns: 1fr !important;
+            }
+            div[style*="grid-template-columns: repeat(3, 1fr)"] {
                 grid-template-columns: 1fr !important;
             }
         }
@@ -107,10 +120,11 @@
                     <span></span>
                 </button>
                 <div class="nav-links">
-                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
-                    <a href="tarifs.html">Tarifs</a>
+                    <a href="abonnement.html">S'abonner</a>
+                    <a href="location-saisonniere.html">Locations Saisonnières</a>
                     <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html">Location Voitures</a>
                     <a href="contact.html">Contact</a>
                     <a href="login.html" style="margin-right: 12px;">Se connecter</a>
                     <a href="abonnement.html" class="btn-primary">S'abonner</a>
@@ -123,7 +137,7 @@
     <section class="contact-hero">
         <div class="container">
             <h1>Commencez dès aujourd'hui</h1>
-            <p>Remplissez le formulaire et créez votre guide immédiatement</p>
+            <p>Choisissez votre solution et lancez-vous</p>
             
             <div class="trust-badges">
                 <div class="trust-item">
@@ -142,8 +156,41 @@
         </div>
     </section>
 
-    <!-- Contact Form Section -->
-    <section class="contact-section">
+    <!-- Sélection du type de solution -->
+    <section style="padding: 60px 0; background: #f8f9fa;">
+        <div class="container" style="max-width: 1000px;">
+            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 40px; color: var(--text-dark);">Pour quel type d'activité ?</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px;">
+                <!-- Location Saisonnière -->
+                <label class="solution-choice" id="choice-saisonniere" style="padding: 32px; background: white; border: 3px solid var(--primary-color); border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(199, 169, 97, 0.3);">
+                    <input type="radio" name="solution-type" value="saisonniere" checked style="display: none;">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🏠</div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: var(--text-dark);">Locations Saisonnières</h3>
+                    <p style="color: #666; margin: 0; font-size: 0.95rem;">Airbnb, gîtes, maisons d'hôtes</p>
+                </label>
+
+                <!-- Hôtels -->
+                <label class="solution-choice" id="choice-hotel" style="padding: 32px; background: white; border: 3px solid #e9ecef; border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.3s ease;">
+                    <input type="radio" name="solution-type" value="hotel" style="display: none;">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🏨</div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: var(--text-dark);">Hôtels</h3>
+                    <p style="color: #666; margin: 0; font-size: 0.95rem;">Hôtels, chambres d'hôtes</p>
+                </label>
+
+                <!-- Location Voitures -->
+                <label class="solution-choice" id="choice-voiture" style="padding: 32px; background: white; border: 3px solid #e9ecef; border-radius: 16px; cursor: pointer; text-align: center; transition: all 0.3s ease;">
+                    <input type="radio" name="solution-type" value="voiture" style="display: none;">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🚗</div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: var(--text-dark);">Location de Voitures</h3>
+                    <p style="color: #666; margin: 0; font-size: 0.95rem;">Agences de location</p>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Locations Saisonnières -->
+    <section class="contact-section" id="content-saisonniere" style="display: block;">
         <div class="container" style="max-width: 900px;">
             <div style="max-width: 100%;">
                 <!-- Form -->
@@ -479,6 +526,239 @@
         </div>
     </section>
 
+    <!-- Content Hôtels -->
+    <section class="contact-section" id="content-hotel" style="display: none;">
+        <div class="container" style="max-width: 800px;">
+            <div style="text-align: center; padding: 80px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+                <div style="font-size: 4rem; margin-bottom: 24px;">🏨</div>
+                <h2 style="color: white; font-size: 2.5rem; margin-bottom: 20px;">Solution sur mesure pour votre hôtel</h2>
+                <p style="color: rgba(255,255,255,0.95); font-size: 1.2rem; margin-bottom: 40px; line-height: 1.6;">Chaque hôtel est unique. Nous établissons un devis personnalisé selon vos besoins spécifiques :</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; text-align: left;">
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.8rem; margin-bottom: 8px;">✓</div>
+                        <strong style="color: white; display: block; margin-bottom: 4px;">Nombre de chambres</strong>
+                        <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Tarif dégressif</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.8rem; margin-bottom: 8px;">✓</div>
+                        <strong style="color: white; display: block; margin-bottom: 4px;">Services personnalisés</strong>
+                        <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Sur mesure</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 20px; border-radius: 12px;">
+                        <div style="font-size: 1.8rem; margin-bottom: 8px;">✓</div>
+                        <strong style="color: white; display: block; margin-bottom: 4px;">Formation équipe</strong>
+                        <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">Incluse</span>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="btn-hero" style="display: inline-block; background: white; color: var(--primary-color); padding: 20px 50px; font-size: 1.3rem; text-decoration: none; border-radius: 12px; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.3s ease;">
+                    💬 Contactez-nous pour un devis
+                </a>
+
+                <p style="color: rgba(255,255,255,0.8); margin-top: 24px; font-size: 0.95rem;">Réponse sous 24h • Étude gratuite • Sans engagement</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Location Voitures -->
+    <!-- Content Location Voitures -->
+    <section class="contact-section" id="content-voiture" style="display: none;">
+        <div class="container" style="max-width: 900px;">
+            <div style="max-width: 100%;">
+                <!-- Form -->
+                <div class="contact-form-wrapper" style="max-width: 100%;">
+                    <form class="contact-form" id="contactFormVoiture">
+                        <!-- Sélection du nombre de véhicules -->
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">Combien de véhicules souhaitez-vous équiper ?</h3>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: 0 auto;">
+                                <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                                    <input type="radio" name="nb-vehicules" value="1-10" checked style="margin-right: 8px;">
+                                    <div>
+                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">1 à 10 véhicules</strong>
+                                        <small style="color: #666;">4,99€/véhicule/mois</small>
+                                    </div>
+                                </label>
+                                <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                                    <input type="radio" name="nb-vehicules" value="11-50" style="margin-right: 8px;">
+                                    <div>
+                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">11 à 50 véhicules</strong>
+                                        <small style="color: #666;">3,99€/véhicule/mois</small>
+                                    </div>
+                                </label>
+                                <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                                    <input type="radio" name="nb-vehicules" value="51+" style="margin-right: 8px;">
+                                    <div>
+                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">51+ véhicules</strong>
+                                        <small style="color: #666;">Demander un devis</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire de commande (1-50 véhicules) -->
+                        <div id="order-form-voiture" style="display: block;">
+                            <div style="text-align: center; margin-bottom: 40px;">
+                                <h2 style="font-size: 2rem; margin-bottom: 12px; color: var(--text-dark);">Choisissez votre formule</h2>
+                                <p style="font-size: 1.1rem; color: #666;">Abonnement mensuel par véhicule</p>
+                            </div>
+
+                        <div class="pricing-cards">
+                            <label class="pricing-card" id="card-mensuel-voiture">
+                                <input type="radio" name="plan-voiture" value="mensuel" id="plan-mensuel-voiture" checked>
+                                <div class="card-header">
+                                    <h4>Abonnement Mensuel</h4>
+                                </div>
+                                <div class="card-price">
+                                    <span class="price-main" id="price-mensuel-voiture">4,99€</span>
+                                    <span class="price-period">/véhicule/mois</span>
+                                </div>
+                                <div class="card-economy" style="opacity: 0; visibility: hidden; height: 40px;"></div>
+                                <div class="card-features">
+                                    <div class="feature">✓ Pack Création : 3,50€/véhicule</div>
+                                    <div class="feature">✓ Modifications illimitées</div>
+                                    <div class="feature">✓ Support prioritaire</div>
+                                </div>
+                                <div class="card-total">
+                                    Exemple 5 véhicules : <strong id="total-mensuel-voiture">42,45€</strong>
+                                </div>
+                            </label>
+
+                            <label class="pricing-card recommended" id="card-annuel-voiture">
+                                <input type="radio" name="plan-voiture" value="annuel" id="plan-annuel-voiture">
+                                <div class="card-header">
+                                    <div class="badge-popular">💎 Meilleur prix</div>
+                                    <h4>Abonnement Annuel</h4>
+                                </div>
+                                <div class="card-price">
+                                    <span class="price-main" id="price-annuel-voiture">48€</span>
+                                    <span class="price-period">/véhicule/an</span>
+                                </div>
+                                <div class="card-economy">Économisez 2 mois/an</div>
+                                <div class="card-features">
+                                    <div class="feature">✓ Pack Création : 3,50€/véhicule</div>
+                                    <div class="feature">✓ Modifications illimitées</div>
+                                    <div class="feature">✓ Support prioritaire</div>
+                                </div>
+                                <div class="card-total">
+                                    Exemple 5 véhicules : <strong id="total-annuel-voiture">257,50€</strong>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Pack Création Détails -->
+                        <div style="max-width: 900px; margin: 40px auto; padding: 32px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
+                            <h3 style="text-align: center; margin-bottom: 24px; color: var(--text-dark);">📦 Ce qui est inclus dans le Pack Création (3,50€/véhicule)</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                                <div style="display: flex; align-items: start; gap: 12px;">
+                                    <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                                    <div>
+                                        <strong>Configuration du guide</strong>
+                                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Guide personnalisé pour votre véhicule</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: start; gap: 12px;">
+                                    <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                                    <div>
+                                        <strong>QR code personnalisé</strong>
+                                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Fichier PDF haute qualité</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: start; gap: 12px;">
+                                    <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                                    <div>
+                                        <strong>Sections configurables</strong>
+                                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Équipements, consignes, contacts...</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: start; gap: 12px;">
+                                    <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                                    <div>
+                                        <strong>Modifications illimitées</strong>
+                                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Mettez à jour quand vous voulez</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: start; gap: 12px;">
+                                    <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
+                                    <div>
+                                        <strong>Support inclus</strong>
+                                        <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Assistance pour configurer vos guides</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left; margin: 24px 0 8px 0;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 4px; color: var(--text-dark);">Autocollants QR Code professionnels</h3>
+                            <p style="font-size: 1rem; color: #666; margin: 0;">Optionnel - Ajoutez des autocollants physiques à votre commande</p>
+                        </div>
+                        
+                        <div class="plaque-section" style="display: flex; gap: 20px; align-items: flex-start; background: #f8f9fa; padding: 24px; border-radius: 16px; border: 2px solid #e9ecef;">
+                            <div class="plaque-image" style="flex: 0 0 320px;">
+                                <img src="img/Qr guide exemple.png" alt="Autocollant QR Code" style="width: 100%; border-radius: 12px; display: block;">
+                            </div>
+                            <div class="plaque-details" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 100%;">
+                                <div>
+                                    <h4 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--text-dark);">Autocollant QR Code haute qualité</h4>
+                                    <p style="color: #666; margin-bottom: 12px; line-height: 1.6;">
+                                        ✓ Autocollant professionnel résistant<br>
+                                        ✓ Facile à coller sur le tableau de bord<br>
+                                        ✓ Livraison gratuite en France
+                                    </p>
+                                    
+                                    <!-- Quantité autocollants -->
+                                    <div style="margin-bottom: 16px;">
+                                        <label style="font-weight: 600; color: var(--text-dark); margin-bottom: 8px; display: block;">Quantité :</label>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <button type="button" onclick="changeQuantityVoiture(-1)" style="width: 40px; height: 40px; border: 2px solid #e9ecef; border-radius: 8px; background: white; cursor: pointer; font-size: 1.2rem; font-weight: 700;">-</button>
+                                            <input type="number" id="nb-autocollants-voiture" min="0" max="100" value="0" onchange="calculateTotalVoiture()" style="width: 80px; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; text-align: center; font-size: 1.1rem; font-weight: 600;">
+                                            <button type="button" onclick="changeQuantityVoiture(1)" style="width: 40px; height: 40px; border: 2px solid #e9ecef; border-radius: 8px; background: white; cursor: pointer; font-size: 1.2rem; font-weight: 700;">+</button>
+                                            <div style="margin-left: 12px;">
+                                                <strong style="color: var(--primary-color); font-size: 1.2rem;">5,90€</strong>
+                                                <span style="color: #666; font-size: 0.9rem;"> l'unité</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: white; padding: 16px; border-radius: 12px; border: 2px solid #dee2e6; margin-top: 16px;">
+                                    <p style="margin: 0; color: #666; font-size: 0.9rem;">💡 <strong>Astuce :</strong> Le QR code est inclus en PDF. Vous pouvez aussi l'imprimer vous-même.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total et bouton commander -->
+                        <div style="margin-top: 40px; padding: 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; text-align: center;">
+                            <div style="color: white; font-size: 1.1rem; margin-bottom: 12px; opacity: 0.95;">Total de votre commande</div>
+                            <div style="color: white; font-size: 3rem; font-weight: 700; margin-bottom: 8px;" id="total-final-voiture">—</div>
+                            <div style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 24px;" id="detail-prix-voiture">Sélectionnez vos options</div>
+                            <button type="submit" class="btn-hero" style="background: white; color: var(--primary-color); padding: 18px 48px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                                🚗 Valider ma commande
+                            </button>
+                            <p style="color: rgba(255,255,255,0.8); margin-top: 16px; font-size: 0.85rem;">Paiement sécurisé par Stripe • Sans engagement</p>
+                        </div>
+
+                        </div>
+
+                        <!-- Demande de devis (51+ véhicules) -->
+                        <div id="quote-form-voiture" style="display: none;">
+                            <div style="text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 16px; color: white;">
+                                <div style="font-size: 3rem; margin-bottom: 24px;">🚗</div>
+                                <h2 style="color: white; font-size: 2.2rem; margin-bottom: 16px;">Flotte de 51+ véhicules</h2>
+                                <p style="font-size: 1.2rem; margin-bottom: 32px; opacity: 0.95;">Contactez-nous pour une offre personnalisée adaptée à vos besoins</p>
+                                <a href="contact.html" class="btn-hero" style="display: inline-block; background: white; color: #4facfe; padding: 18px 40px; font-size: 1.2rem; text-decoration: none; border-radius: 12px; font-weight: 700;">
+                                    💬 Demander un devis personnalisé
+                                </a>
+                                <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">Réponse sous 24h • Tarifs préférentiels pour grandes flottes</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FAQ -->
     <section class="faq-section" style="background: #f8f9fa; padding: 60px 0;">
         <div class="container">
@@ -517,7 +797,7 @@
                     <h4>Produit</h4>
                     <a href="index.html#fonctionnalites">Fonctionnalités</a>
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
-                    <a href="tarifs.html">Tarifs</a>
+                    <a href="abonnement.html">Tarifs</a>
                     <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
                 </div>
                 <div class="footer-col">
@@ -569,11 +849,163 @@
 
         // Attacher les event listeners après le chargement du DOM
         document.addEventListener('DOMContentLoaded', function() {
+            // ============================================
+            // GESTION DU CHOIX DE SOLUTION (Saisonnière / Hôtel / Voiture)
+            // ============================================
+            const solutionChoices = document.querySelectorAll('.solution-choice');
+            const contentSaisonniere = document.getElementById('content-saisonniere');
+            const contentHotel = document.getElementById('content-hotel');
+            const contentVoiture = document.getElementById('content-voiture');
+            
+            function switchSolution(solutionType) {
+                // Mettre à jour les styles des cartes
+                solutionChoices.forEach(choice => {
+                    const input = choice.querySelector('input[type="radio"]');
+                    if (input.value === solutionType) {
+                        choice.style.borderColor = 'var(--primary-color)';
+                        choice.style.borderWidth = '3px';
+                        choice.style.boxShadow = '0 4px 20px rgba(199, 169, 97, 0.3)';
+                        input.checked = true;
+                    } else {
+                        choice.style.borderColor = '#e9ecef';
+                        choice.style.borderWidth = '3px';
+                        choice.style.boxShadow = 'none';
+                        input.checked = false;
+                    }
+                });
+                
+                // Afficher le bon contenu
+                contentSaisonniere.style.display = solutionType === 'saisonniere' ? 'block' : 'none';
+                contentHotel.style.display = solutionType === 'hotel' ? 'block' : 'none';
+                contentVoiture.style.display = solutionType === 'voiture' ? 'block' : 'none';
+            }
+            
+            // Event listeners pour les choix de solution
+            solutionChoices.forEach(choice => {
+                choice.addEventListener('click', function() {
+                    const input = this.querySelector('input[type="radio"]');
+                    switchSolution(input.value);
+                });
+            });
+            
             // Event listeners pour le basculement 1-3 / 4+ logements
             const logementsRadios = document.querySelectorAll('input[name="nb-logements"]');
             logementsRadios.forEach(radio => {
                 radio.addEventListener('change', toggleFormType);
             });
+
+            // ============================================
+            // GESTION SECTION LOCATION VOITURES
+            // ============================================
+            function toggleFormTypeVoiture() {
+                const selection = document.querySelector('input[name="nb-vehicules"]:checked');
+                if (!selection) return;
+                
+                const value = selection.value;
+                const orderFormVoiture = document.getElementById('order-form-voiture');
+                const quoteFormVoiture = document.getElementById('quote-form-voiture');
+                
+                if (value === '1-10' || value === '11-50') {
+                    if (orderFormVoiture) orderFormVoiture.style.display = 'block';
+                    if (quoteFormVoiture) quoteFormVoiture.style.display = 'none';
+                    calculateTotalVoiture();
+                } else if (value === '51+') {
+                    if (orderFormVoiture) orderFormVoiture.style.display = 'none';
+                    if (quoteFormVoiture) quoteFormVoiture.style.display = 'block';
+                }
+            }
+
+            // Fonction pour calculer le total voiture
+            window.calculateTotalVoiture = function() {
+                const nbVehiculesRadio = document.querySelector('input[name="nb-vehicules"]:checked');
+                if (!nbVehiculesRadio) return;
+                
+                const nbVehicules = nbVehiculesRadio.value;
+                const planRadio = document.querySelector('input[name="plan-voiture"]:checked');
+                if (!planRadio) return;
+                
+                const plan = planRadio.value;
+                
+                // Définir le prix par véhicule selon la tranche
+                let prixParVehicule = nbVehicules === '1-10' ? 4.99 : 3.99;
+                
+                // Exemple : 5 véhicules pour 1-10, 20 pour 11-50
+                let nbVehiculesExemple = nbVehicules === '1-10' ? 5 : 20;
+                
+                // Mettre à jour les prix affichés
+                document.getElementById('price-mensuel-voiture').textContent = prixParVehicule.toFixed(2) + '€';
+                document.getElementById('price-annuel-voiture').textContent = (prixParVehicule * 10).toFixed(0) + '€';
+                
+                // Calcul du total selon le plan
+                let totalAbonnement, totalCreation, totalAutocollants, totalGeneral;
+                const nbAutocollants = parseInt(document.getElementById('nb-autocollants-voiture')?.value || 0);
+                
+                totalCreation = nbVehiculesExemple * 3.50;
+                totalAutocollants = nbAutocollants * 5.90;
+                
+                if (plan === 'mensuel') {
+                    totalAbonnement = nbVehiculesExemple * prixParVehicule;
+                    totalGeneral = totalAbonnement + totalCreation + totalAutocollants;
+                    
+                    document.getElementById('total-mensuel-voiture').textContent = (totalAbonnement + totalCreation).toFixed(2) + '€';
+                    document.getElementById('total-annuel-voiture').textContent = ((nbVehiculesExemple * prixParVehicule * 10) + totalCreation).toFixed(2) + '€';
+                    
+                    document.getElementById('total-final-voiture').textContent = totalGeneral.toFixed(2) + '€';
+                    document.getElementById('detail-prix-voiture').innerHTML = 
+                        nbVehiculesExemple + ' véhicules × ' + prixParVehicule.toFixed(2) + '€/mois' +
+                        ' + Pack Création ' + totalCreation.toFixed(2) + '€' +
+                        (totalAutocollants > 0 ? ' + Autocollants ' + totalAutocollants.toFixed(2) + '€' : '');
+                } else {
+                    totalAbonnement = nbVehiculesExemple * prixParVehicule * 10; // 10 mois payés (2 offerts)
+                    totalGeneral = totalAbonnement + totalCreation + totalAutocollants;
+                    
+                    document.getElementById('total-mensuel-voiture').textContent = (nbVehiculesExemple * prixParVehicule + totalCreation).toFixed(2) + '€';
+                    document.getElementById('total-annuel-voiture').textContent = (totalAbonnement + totalCreation).toFixed(2) + '€';
+                    
+                    document.getElementById('total-final-voiture').textContent = totalGeneral.toFixed(2) + '€';
+                    document.getElementById('detail-prix-voiture').innerHTML = 
+                        nbVehiculesExemple + ' véhicules × ' + (prixParVehicule * 10).toFixed(0) + '€/an (2 mois offerts)' +
+                        ' + Pack Création ' + totalCreation.toFixed(2) + '€' +
+                        (totalAutocollants > 0 ? ' + Autocollants ' + totalAutocollants.toFixed(2) + '€' : '');
+                }
+            };
+
+            // Fonction pour changer la quantité d'autocollants
+            window.changeQuantityVoiture = function(delta) {
+                const input = document.getElementById('nb-autocollants-voiture');
+                if (!input) return;
+                
+                let currentValue = parseInt(input.value) || 0;
+                let newValue = Math.max(0, Math.min(100, currentValue + delta));
+                input.value = newValue;
+                calculateTotalVoiture();
+            };
+
+            // Event listeners pour la section voiture
+            const vehiculesRadios = document.querySelectorAll('input[name="nb-vehicules"]');
+            vehiculesRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleFormTypeVoiture();
+                    calculateTotalVoiture();
+                });
+            });
+
+            const plansVoitureRadios = document.querySelectorAll('input[name="plan-voiture"]');
+            plansVoitureRadios.forEach(radio => {
+                radio.addEventListener('change', calculateTotalVoiture);
+            });
+
+            const nbAutocollantsInput = document.getElementById('nb-autocollants-voiture');
+            if (nbAutocollantsInput) {
+                nbAutocollantsInput.addEventListener('change', calculateTotalVoiture);
+            }
+
+            // Initialiser le calcul pour la section voiture
+            setTimeout(() => {
+                if (document.getElementById('content-voiture').style.display !== 'none') {
+                    calculateTotalVoiture();
+                }
+            }, 100);
         });
 
         // ============================================

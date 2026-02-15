@@ -3,402 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarifs - QRGUIDE.FR</title>
+    <title>Redirection - QRGUIDE.FR</title>
     <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
-    <link rel="stylesheet" href="style.css?v=2">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- 🔥 Pré-warmup du backend dès le chargement de la page tarifs -->
+    <meta http-equiv="refresh" content="0; url=abonnement.html">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .redirect-container {
+            text-align: center;
+            padding: 40px;
+        }
+        .redirect-container h1 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .redirect-container p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+        .redirect-container a {
+            color: white;
+            text-decoration: underline;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
     <script>
-        (function() {
-            const BACKEND_URL = 'https://qrguide-backend.onrender.com';
-            console.log('🔥 Pré-warmup backend depuis tarifs.html...');
-            
-            // Faire 3 requêtes en parallèle pour réveiller le serveur
-            const requests = [
-                fetch(`${BACKEND_URL}/health`, { method: 'GET' }).catch(() => null),
-                fetch(`${BACKEND_URL}/create-checkout-session`, { method: 'OPTIONS' }).catch(() => null),
-                fetch(`${BACKEND_URL}/health`, { method: 'GET' }).catch(() => null)
-            ];
-            
-            Promise.race(requests).then(() => {
-                console.log('✅ Backend pré-réchauffé depuis tarifs.html');
-            }).catch(() => {
-                console.log('⚠️ Warmup backend en cours...');
-            });
-        })();
+        // Redirection immédiate
+        window.location.href = 'abonnement.html';
     </script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
-                <button class="mobile-menu-toggle" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <div class="nav-links">
-                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
-                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
-                    <a href="tarifs.html">Tarifs</a>
-                    <a href="hotels.html">Hôtels</a>
-                    <a href="contact.html">Contact</a>
-                    <a href="login.html" style="margin-right: 12px;">Se connecter</a>
-                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Tarifs -->
-    <section class="pricing-hero">
-        <div class="container">
-            <h1>Des tarifs simples et transparents</h1>
-            <p>Choisissez la formule adaptée à vos besoins. Sans surprise, sans frais cachés.</p>
-        </div>
-    </section>
-
-    <!-- Pricing Cards -->
-    <section class="pricing-section">
-        <div class="container">
-            <div style="text-align: center; max-width: 800px; margin: 0 auto 40px;">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; border-radius: 16px; margin-bottom: 40px;">
-                    <h3 style="color: white; margin-bottom: 12px; font-size: 1.3rem;">Pack Découverte inclus avec tous les abonnements</h3>
-                    <p style="margin: 0; opacity: 0.95; font-size: 1.1rem;">35€ • Création complète de votre guide personnalisé</p>
-                </div>
-            </div>
-
-            <div class="pricing-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 900px; margin: 0 auto;">
-                <!-- Abonnement Mensuel -->
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Abonnement Mensuel</h3>
-                        <div class="price">
-                            <span class="price-amount">8€</span>
-                            <span class="price-period">/mois</span>
-                        </div>
-                        <p class="price-description">Hébergement & mises à jour illimitées</p>
-                    </div>
-                    <div class="pricing-features">
-                        <div class="feature">✓ Pack découverte inclus (35€)</div>
-                        <div class="feature">✓ Hébergement sécurisé</div>
-                        <div class="feature">✓ Mises à jour illimitées</div>
-                        <div class="feature">✓ Support par email</div>
-                        <div class="feature">✓ Modifications en temps réel</div>
-                        <div class="feature">✓ Statistiques de consultation</div>
-                        <div class="feature">✓ SSL & sécurité inclus</div>
-                    </div>
-                    <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 12px;">
-                        <p style="margin: 0; font-size: 0.95rem; color: #666;"><strong>Premier paiement :</strong></p>
-                        <p style="margin: 4px 0 0 0; font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">43€</p>
-                        <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666;">Puis 8€/mois</p>
-                    </div>
-                    <a href="abonnement.html?plan=mensuel" class="btn-pricing" style="margin-top: 20px;">Choisir ce plan</a>
-                </div>
-
-                <!-- Abonnement Annuel -->
-                <div class="pricing-card featured">
-                    <div class="popular-badge">💎 Meilleur prix</div>
-                    <div class="pricing-header">
-                        <h3>Abonnement Annuel</h3>
-                        <div class="price">
-                            <span class="price-amount">75€</span>
-                            <span class="price-period">/an</span>
-                        </div>
-                        <p class="price-description">Soit 6,25€/mois • Économisez 21€/an</p>
-                    </div>
-                    <div class="pricing-features">
-                        <div class="feature">✓ Pack découverte inclus (35€)</div>
-                        <div class="feature">✓ Hébergement sécurisé</div>
-                        <div class="feature">✓ Mises à jour illimitées</div>
-                        <div class="feature">✓ Support par email</div>
-                        <div class="feature">✓ Modifications en temps réel</div>
-                        <div class="feature">✓ Statistiques de consultation</div>
-                        <div class="feature">✓ SSL & sécurité inclus</div>
-                        <div class="feature feature-special">✓ 2 mois offerts</div>
-                    </div>
-                    <div style="margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 12px;">
-                        <p style="margin: 0; font-size: 0.95rem; color: #666;"><strong>Premier paiement :</strong></p>
-                        <p style="margin: 4px 0 0 0; font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">110€</p>
-                        <p style="margin: 8px 0 0 0; font-size: 0.85rem; color: #666;">Puis 75€/an</p>
-                    </div>
-                    <a href="abonnement.html?plan=annuel" class="btn-pricing btn-primary" style="margin-top: 20px;">Choisir ce plan</a>
-                </div>
-            </div>
-            
-            <!-- Pack Création Détails -->
-            <div style="max-width: 900px; margin: 60px auto 0; padding: 32px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
-                <h3 style="text-align: center; margin-bottom: 24px; color: var(--text-dark);">📦 Ce qui est inclus dans le Pack Découverte (35€)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
-                    <div style="display: flex; align-items: start; gap: 12px;">
-                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
-                        <div>
-                            <strong>Création du site complet</strong>
-                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Design professionnel et responsive</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: start; gap: 12px;">
-                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
-                        <div>
-                            <strong>QR code personnalisé</strong>
-                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Fichier PDF haute qualité</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: start; gap: 12px;">
-                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
-                        <div>
-                            <strong>12 sections configurables</strong>
-                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Wi-Fi, équipements, recommandations...</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: start; gap: 12px;">
-                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
-                        <div>
-                            <strong>Accès instantané</strong>
-                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Créez votre guide immédiatement</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: start; gap: 12px;">
-                        <span style="color: var(--primary-color); font-size: 1.2rem;">✓</span>
-                        <div>
-                            <strong>Modifications illimitées</strong>
-                            <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: #666;">Mettez à jour votre guide autant que vous voulez</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- Plaque QR Code Section -->
-            <div class="plaque-section">
-                <h3>Option : Plaque QR Code professionnelle</h3>
-                <div class="plaque-product">
-                    <div class="plaque-carousel">
-                        <div class="carousel-images" onclick="openImageModal(event)">
-                            <img src="img/Qr%20guide%20exemple.png" alt="Plaque QR Guide" class="carousel-img active">
-                            <img src="img/Qr%20guide%20mock%20up.png" alt="Plaque QR Guide mockup" class="carousel-img">
-                            <img src="img/Qr%20guide%20exemple%202.png" alt="Plaque QR Guide exemple 2" class="carousel-img">
-                        </div>
-                        <div class="carousel-dots">
-                            <span class="dot active" onclick="currentSlide(0)"></span>
-                            <span class="dot" onclick="currentSlide(1)"></span>
-                            <span class="dot" onclick="currentSlide(2)"></span>
-                        </div>
-                    </div>
-                    <div class="plaque-details">
-                        <div class="plaque-price-tag">
-                            <span class="plaque-amount">À partir de 52,90€</span>                        
-                        </div>
-                        <h4>Plaque QR Code en PVC rigide</h4>
-                        <p class="plaque-description">Ajoutez une plaque professionnelle en PVC pour afficher votre QR code dans votre logement.</p>
-                        
-                        <ul class="plaque-features">
-                            <li>📏 <strong>Format A5 :</strong> 14.8 x 21 cm - 52,90€ TTC</li>
-                            <li>📏 <strong>Format A4 :</strong> 21 x 29.7 cm - 58,90€ TTC</li>
-                            <li>🎨 <strong>Matériau :</strong> PVC rigide haute qualité</li>
-                            <li>☀️ <strong>Résistance :</strong> UV et eau</li>
-                            <li>✨ <strong>Design :</strong> Logo QRGUIDE professionnel</li>
-                            <li>📦 <strong>Livraison :</strong> 15/20 jours ouvrés</li>
-                        </ul>
-                        
-                        <a href="abonnement.html" class="btn-hero">Commander une plaque</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Pricing -->
-    <section class="faq-section">
-        <div class="container">
-            <h2>Questions fréquentes</h2>
-            
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h4>Puis-je changer de formule ?</h4>
-                    <p>Oui, vous pouvez passer du mensuel à l'annuel à tout moment. La différence sera calculée au prorata.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Y a-t-il un engagement ?</h4>
-                    <p>Aucun. Vous pouvez annuler votre abonnement à tout moment. Pas de pénalité.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Que se passe-t-il si j'annule ?</h4>
-                    <p>Votre guide reste accessible jusqu'à la fin de la période payée. Vous pouvez exporter vos données.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Combien de modifications puis-je faire ?</h4>
-                    <p>Illimitées ! Modifiez votre guide autant que vous voulez, en temps réel.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Le support est-il inclus ?</h4>
-                    <p>Oui, le support par email est inclus dans tous les plans. Réponse sous 24h ouvrées.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Puis-je avoir plusieurs guides ?</h4>
-                    <p>Oui, contactez-nous pour un devis personnalisé si vous gérez plusieurs logements.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Final -->
-    <section class="final-cta">
-        <div class="container">
-            <h2>Prêt à vous lancer ?</h2>
-            <p>Créez votre guide en quelques minutes</p>
-            <a href="abonnement.html" class="btn-hero">Commencer maintenant</a>
-            <p class="small-text">Sans engagement • Accès immédiat • Support inclus</p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-col">
-                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
-                    <p>Le guide numérique nouvelle génération pour locations saisonnières et hôtels</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Produit</h4>
-                    <a href="index.html#fonctionnalites">Fonctionnalités</a>
-                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
-                    <a href="tarifs.html">Tarifs</a>
-                    <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Support</h4>
-                    <a href="contact.html">Contact</a>
-                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
-                    <a href="tel:0692630364">06 92 63 03 64</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Légal</h4>
-                    <a href="mentions-legales.html">Mentions légales</a>
-                    <a href="cgv.html">CGV</a>
-                    <a href="politique-confidentialite.html">Confidentialité</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Carousel functionality
-        let currentIndex = 0;
-        const images = document.querySelectorAll('.carousel-img');
-        const dots = document.querySelectorAll('.dot');
-
-        function showSlide(index) {
-            if (index >= images.length) currentIndex = 0;
-            if (index < 0) currentIndex = images.length - 1;
-            
-            images.forEach((img, i) => {
-                img.classList.remove('active');
-                dots[i].classList.remove('active');
-            });
-            
-            images[currentIndex].classList.add('active');
-            dots[currentIndex].classList.add('active');
-        }
-
-        function changeSlide(direction) {
-            currentIndex += direction;
-            showSlide(currentIndex);
-        }
-
-        function currentSlide(index) {
-            currentIndex = index;
-            showSlide(currentIndex);
-        }
-    </script>
-
-    <script>
-        // Toggle between monthly and yearly pricing
-        const toggle = document.getElementById('billing-toggle');
-        const monthlyElements = document.querySelectorAll('.monthly-price, .monthly-period, .monthly-desc');
-        const yearlyElements = document.querySelectorAll('.yearly-price, .yearly-period, .yearly-desc');
-        const billingOptions = document.querySelectorAll('.billing-option');
-
-        toggle.addEventListener('change', function() {
-            if (this.checked) {
-                monthlyElements.forEach(el => el.style.display = 'none');
-                yearlyElements.forEach(el => el.style.display = 'inline');
-                billingOptions[0].classList.remove('active');
-                billingOptions[1].classList.add('active');
-            } else {
-                monthlyElements.forEach(el => el.style.display = 'inline');
-                yearlyElements.forEach(el => el.style.display = 'none');
-                billingOptions[0].classList.add('active');
-                billingOptions[1].classList.remove('active');
-            }
-        });
-
-        billingOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                const billing = this.dataset.billing;
-                if (billing === 'yearly') {
-                    toggle.checked = true;
-                } else {
-                    toggle.checked = false;
-                }
-                toggle.dispatchEvent(new Event('change'));
-            });
-        });
-    </script>
-
-    <!-- Modal pour image plein écran -->
-    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
-        <span class="image-modal-close">&times;</span>
-        <img id="modalImg" src="" alt="">
+    <div class="redirect-container">
+        <h1>Redirection en cours...</h1>
+        <div class="spinner"></div>
+        <p>Vous allez être redirigé vers la page d'abonnement.</p>
+        <p>Si vous n'êtes pas redirigé automatiquement, <a href="abonnement.html">cliquez ici</a>.</p>
     </div>
-
-    <script>
-        function openImageModal(event) {
-            if (event.target.tagName === 'IMG') {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('modalImg');
-                modalImg.src = event.target.src;
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeImageModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    </script>
-
-    <script>
-        // Menu mobile toggle
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (mobileMenuToggle) {
-            mobileMenuToggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                navLinks.classList.toggle('active');
-                document.body.classList.toggle('menu-open');
-            });
-            
-            // Fermer le menu en cliquant sur un lien
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenuToggle.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    document.body.classList.remove('menu-open');
-                });
-            });
-        }
-    </script>
 </body>
 </html>
