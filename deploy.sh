@@ -6,8 +6,7 @@ lftp -e "
 set ftp:ssl-allow no;
 open 81.16.31.200;
 user u767867320.julienqrguide R598SkxkfByR#;
-cd /home/u767867320/domains/qrguide.fr/public_html;
-lcd /Users/julienchanewai/Desktop/QRGUIDE;
+lcd /Users/julienchanewai/Desktop/qr\ guide/site\ internet;
 
 # Upload seulement les fichiers HTML, CSS, JS, PHP
 mput -O . *.html;
