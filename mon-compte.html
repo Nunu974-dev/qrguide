@@ -746,6 +746,7 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" onclick="showTab('logements')">Mes Logements</button>
+            <button class="tab" onclick="showTab('restaurant')">🍽️ Mon Restaurant</button>
             <button class="tab" onclick="showTab('abonnement')">Mon Abonnement</button>
             <button class="tab" onclick="showTab('compte')">Mon Compte</button>
         </div>
@@ -762,6 +763,34 @@
                 <div class="icon">➕</div>
                 <h3>Créer un nouveau logement</h3>
                 <p>Vous pouvez créer jusqu'à 3 logements</p>
+            </div>
+        </div>
+
+        <!-- Tab: Mon Restaurant -->
+        <div id="tab-restaurant" class="tab-content">
+            <div class="form-section">
+                <h3>🍽️ Mon menu restaurant</h3>
+                <p style="color:#666;margin-bottom:16px;">Modifiez votre carte quand vous voulez (chaque jour, chaque semaine). Cliquez sur « Publier » : vos clients voient immédiatement la nouvelle version en scannant votre QR code.</p>
+                <div class="form-group"><label>Nom du restaurant</label><input type="text" id="resto-name" placeholder="Ex : Chez Marie"></div>
+                <div class="form-group"><label>Titre du menu</label><input type="text" id="resto-title" placeholder="Ex : Menu de la semaine du 20 au 26 octobre"></div>
+                <div class="form-group"><label>Plat du jour / message (facultatif)</label><input type="text" id="resto-special" placeholder="Ex : Plat du jour : cari de poulet – 14 €"></div>
+                <div class="form-group"><label>Lien avis Google (facultatif)</label><input type="text" id="resto-review" placeholder="https://g.page/..."></div>
+            </div>
+            <div class="form-section">
+                <h3>📋 Carte</h3>
+                <div id="resto-cats"></div>
+                <button class="btn btn-secondary" onclick="restoAddCat()">+ Ajouter une catégorie</button>
+            </div>
+            <div class="form-section">
+                <button class="btn btn-primary" onclick="restoSave()">✓ Publier le menu</button>
+                <span id="resto-msg" style="margin-left:12px;font-weight:600;"></span>
+                <div id="resto-share" style="display:none;margin-top:24px;text-align:center;">
+                    <img id="resto-qr" alt="QR code menu" style="max-width:220px;">
+                    <p id="resto-url" style="word-break:break-all;color:#666;font-size:.9rem;margin:10px 0;"></p>
+                    <button class="btn btn-secondary" onclick="window.open(restoUrl(),'_blank')">👁️ Voir mon menu</button>
+                    <button class="btn btn-secondary" onclick="restoDownloadQR()">📥 Télécharger le QR code</button>
+                    <button class="btn btn-secondary" onclick="copyToClipboard(restoUrl())">📋 Copier le lien</button>
+                </div>
             </div>
         </div>
 
@@ -1762,6 +1791,7 @@
             
             // Charger logements
             loadLogements();
+            loadRestaurant();
         });
 
         // Fonction pour charger et éditer un guide (mode admin)
@@ -1950,6 +1980,97 @@
                 document.getElementById('card-info').textContent = 'Carte : Erreur de synchronisation';
                 document.getElementById('sub-renewal').textContent = 'Prochain renouvellement : Erreur';
             }
+        }
+
+        // ===== Restaurant (menu) =====
+        let restoData = { name:'', title:'', special:'', reviewUrl:'', categories:[] };
+        const RESTO_DEFAULT_CATS = ['Entrées','Plats','Desserts','Boissons'];
+        function restoUrl() { return `https://qrguide.fr/menu.html?id=${currentUser.uid}`; }
+        function restoEsc(v) { return String(v ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+        async function loadRestaurant() {
+            try {
+                const doc = await db.collection('restaurants').doc(currentUser.uid).get();
+                if (doc.exists) {
+                    restoData = Object.assign(restoData, doc.data());
+                    restoData.categories = restoData.categories || [];
+                    document.getElementById('resto-share').style.display = 'block';
+                } else {
+                    restoData.categories = RESTO_DEFAULT_CATS.map(n => ({ name:n, items:[] }));
+                }
+            } catch (e) { console.error('Erreur chargement restaurant', e); }
+            document.getElementById('resto-name').value = restoData.name || '';
+            document.getElementById('resto-title').value = restoData.title || '';
+            document.getElementById('resto-special').value = restoData.special || '';
+            document.getElementById('resto-review').value = restoData.reviewUrl || '';
+            restoRender();
+            restoShowQR();
+        }
+
+        function restoShowQR() {
+            const url = restoUrl();
+            document.getElementById('resto-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}`;
+            document.getElementById('resto-url').textContent = url;
+        }
+
+        function restoRender() {
+            document.getElementById('resto-cats').innerHTML = restoData.categories.map((c, ci) => `
+                <div style="border:1px solid #e9ecef;border-radius:12px;padding:16px;margin-bottom:16px;background:#fafafa;">
+                    <div style="display:flex;gap:8px;margin-bottom:12px;">
+                        <input type="text" value="${restoEsc(c.name)}" oninput="restoData.categories[${ci}].name=this.value" style="flex:1;font-weight:700;padding:8px;border:1px solid #ddd;border-radius:8px;">
+                        <button class="btn btn-danger" onclick="restoDelCat(${ci})">Supprimer</button>
+                    </div>
+                    ${(c.items||[]).map((it, ii) => `
+                        <div style="display:grid;grid-template-columns:2fr 3fr 90px;gap:8px;margin-bottom:6px;">
+                            <input type="text" placeholder="Plat" value="${restoEsc(it.nom)}" oninput="restoData.categories[${ci}].items[${ii}].nom=this.value" style="padding:8px;border:1px solid #ddd;border-radius:8px;min-width:0;">
+                            <input type="text" placeholder="Description (facultatif)" value="${restoEsc(it.desc)}" oninput="restoData.categories[${ci}].items[${ii}].desc=this.value" style="padding:8px;border:1px solid #ddd;border-radius:8px;min-width:0;">
+                            <input type="text" placeholder="Prix €" value="${restoEsc(it.prix)}" oninput="restoData.categories[${ci}].items[${ii}].prix=this.value" style="padding:8px;border:1px solid #ddd;border-radius:8px;min-width:0;">
+                        </div>
+                        <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;font-size:.85rem;">
+                            <input type="text" placeholder="Allergènes (ex : gluten, lait)" value="${restoEsc(it.allergenes)}" oninput="restoData.categories[${ci}].items[${ii}].allergenes=this.value" style="flex:1;padding:6px 8px;border:1px solid #ddd;border-radius:8px;min-width:0;">
+                            <label style="white-space:nowrap;"><input type="checkbox" ${it.dispo===false?'':'checked'} onchange="restoData.categories[${ci}].items[${ii}].dispo=this.checked"> Disponible</label>
+                            <button class="btn btn-danger" style="padding:4px 10px;" onclick="restoDelItem(${ci},${ii})">✕</button>
+                        </div>`).join('')}
+                    <button class="btn btn-secondary" onclick="restoAddItem(${ci})">+ Ajouter un plat</button>
+                </div>`).join('');
+        }
+        function restoAddCat() { restoData.categories.push({ name:'Nouvelle catégorie', items:[] }); restoRender(); }
+        function restoDelCat(ci) { if (confirm('Supprimer cette catégorie et ses plats ?')) { restoData.categories.splice(ci,1); restoRender(); } }
+        function restoAddItem(ci) { restoData.categories[ci].items.push({ nom:'', desc:'', prix:'', allergenes:'', dispo:true }); restoRender(); }
+        function restoDelItem(ci, ii) { restoData.categories[ci].items.splice(ii,1); restoRender(); }
+
+        async function restoSave() {
+            const msg = document.getElementById('resto-msg');
+            const data = {
+                ownerUid: currentUser.uid,
+                name: document.getElementById('resto-name').value.trim(),
+                title: document.getElementById('resto-title').value.trim(),
+                special: document.getElementById('resto-special').value.trim(),
+                reviewUrl: document.getElementById('resto-review').value.trim(),
+                categories: restoData.categories.map(c => ({
+                    name: c.name,
+                    items: (c.items||[]).filter(i => (i.nom||'').trim()).map(i => ({ nom:i.nom.trim(), desc:i.desc||'', prix:i.prix||'', allergenes:i.allergenes||'', dispo:i.dispo!==false }))
+                })),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            if (!data.name) { msg.style.color = '#c0392b'; msg.textContent = 'Indiquez le nom du restaurant'; return; }
+            try {
+                await db.collection('restaurants').doc(currentUser.uid).set(data);
+                msg.style.color = '#2ecc71'; msg.textContent = '✓ Menu publié';
+                document.getElementById('resto-share').style.display = 'block';
+                restoShowQR();
+            } catch (e) {
+                console.error(e);
+                msg.style.color = '#c0392b'; msg.textContent = 'Erreur : ' + e.message;
+            }
+            setTimeout(() => { msg.textContent = ''; }, 4000);
+        }
+        async function restoDownloadQR() {
+            const r = await fetch(document.getElementById('resto-qr').src);
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(await r.blob());
+            a.download = 'qrcode-menu-restaurant.png';
+            a.click();
         }
 
         // Tabs

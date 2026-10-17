@@ -33,6 +33,12 @@ service cloud.firestore {
       }
     }
     
+    // Menus restaurants - lecture publique, écriture par le propriétaire
+    match /restaurants/{uid} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
     // Collection pages (livre d'or, etc.)
     match /pages/{pageId} {
       allow read: if true;
