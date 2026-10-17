@@ -121,10 +121,11 @@
                 </button>
                 <div class="nav-links">
                     <a href="index.html#comment-ca-marche">Comment ça marche</a>
-                    <a href="abonnement.html">S'abonner</a>
+                    <a href="abonnement.html" class="active">S'abonner</a>
                     <a href="location-saisonniere.html">Locations Saisonnières</a>
                     <a href="hotels.html">Hôtels</a>
                     <a href="location-voitures.html">Location Voitures</a>
+                    <a href="restaurants.html">Restaurants</a>
                     <a href="contact.html">Contact</a>
                     <a href="login.html" style="margin-right: 12px;">Se connecter</a>
                     <a href="abonnement.html" class="btn-primary">S'abonner</a>
@@ -572,7 +573,7 @@
                         <!-- Sélection du nombre de véhicules -->
                         <div style="text-align: center; margin-bottom: 32px;">
                             <h3 style="font-size: 1.3rem; margin-bottom: 16px; color: var(--text-dark);">Combien de véhicules souhaitez-vous équiper ?</h3>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: 0 auto;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 600px; margin: 0 auto;">
                                 <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
                                     <input type="radio" name="nb-vehicules" value="1-10" checked style="margin-right: 8px;">
                                     <div>
@@ -581,23 +582,16 @@
                                     </div>
                                 </label>
                                 <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
-                                    <input type="radio" name="nb-vehicules" value="11-50" style="margin-right: 8px;">
+                                    <input type="radio" name="nb-vehicules" value="11+" style="margin-right: 8px;">
                                     <div>
-                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">11 à 50 véhicules</strong>
-                                        <small style="color: #666;">3,99€/véhicule/mois</small>
-                                    </div>
-                                </label>
-                                <label class="logement-option" style="padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; text-align: center;">
-                                    <input type="radio" name="nb-vehicules" value="51+" style="margin-right: 8px;">
-                                    <div>
-                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">51+ véhicules</strong>
-                                        <small style="color: #666;">Demander un devis</small>
+                                        <strong style="font-size: 1.1rem; color: var(--text-dark); display: block; margin-bottom: 4px;">11+ véhicules</strong>
+                                        <small style="color: #666;">Sur devis</small>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
-                        <!-- Formulaire de commande (1-50 véhicules) -->
+                        <!-- Formulaire de commande (1-10 véhicules) -->
                         <div id="order-form-voiture" style="display: block;">
                             <div style="text-align: center; margin-bottom: 40px;">
                                 <h2 style="font-size: 2rem; margin-bottom: 12px; color: var(--text-dark);">Choisissez votre formule</h2>
@@ -621,7 +615,7 @@
                                     <div class="feature">✓ Support prioritaire</div>
                                 </div>
                                 <div class="card-total">
-                                    Exemple 5 véhicules : <strong id="total-mensuel-voiture">42,45€</strong>
+                                    Exemple 5 véhicules : <strong id="total-mensuel-voiture">42,45€/mois</strong>
                                 </div>
                             </label>
 
@@ -632,17 +626,18 @@
                                     <h4>Abonnement Annuel</h4>
                                 </div>
                                 <div class="card-price">
-                                    <span class="price-main" id="price-annuel-voiture">48€</span>
+                                    <span class="price-main" id="price-annuel-voiture">39,96€</span>
                                     <span class="price-period">/véhicule/an</span>
                                 </div>
-                                <div class="card-economy">Économisez 2 mois/an</div>
+                                <div class="card-economy">Économisez 24,34€/mois</div>
                                 <div class="card-features">
                                     <div class="feature">✓ Pack Création : 3,50€/véhicule</div>
                                     <div class="feature">✓ Modifications illimitées</div>
                                     <div class="feature">✓ Support prioritaire</div>
                                 </div>
                                 <div class="card-total">
-                                    Exemple 5 véhicules : <strong id="total-annuel-voiture">257,50€</strong>
+                                    Exemple 5 véhicules : <strong id="total-annuel-voiture">18,11€/mois</strong><br>
+                                    <span style="font-size: 0.9rem; opacity: 0.8;">Total annuel : 217,30€</span>
                                 </div>
                             </label>
                         </div>
@@ -696,7 +691,7 @@
                         
                         <div class="plaque-section" style="display: flex; gap: 20px; align-items: flex-start; background: #f8f9fa; padding: 24px; border-radius: 16px; border: 2px solid #e9ecef;">
                             <div class="plaque-image" style="flex: 0 0 320px;">
-                                <img src="img/Qr guide exemple.png" alt="Autocollant QR Code" style="width: 100%; border-radius: 12px; display: block;">
+                                <img src="img/Mock_up_qrguide_auto.png" alt="Autocollant QR Code" style="width: 100%; border-radius: 12px; display: block;">
                             </div>
                             <div class="plaque-details" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 100%;">
                                 <div>
@@ -741,11 +736,11 @@
 
                         </div>
 
-                        <!-- Demande de devis (51+ véhicules) -->
+                        <!-- Demande de devis (11+ véhicules) -->
                         <div id="quote-form-voiture" style="display: none;">
                             <div style="text-align: center; padding: 60px 40px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 16px; color: white;">
                                 <div style="font-size: 3rem; margin-bottom: 24px;">🚗</div>
-                                <h2 style="color: white; font-size: 2.2rem; margin-bottom: 16px;">Flotte de 51+ véhicules</h2>
+                                <h2 style="color: white; font-size: 2.2rem; margin-bottom: 16px;">Flotte de 11+ véhicules</h2>
                                 <p style="font-size: 1.2rem; margin-bottom: 32px; opacity: 0.95;">Contactez-nous pour une offre personnalisée adaptée à vos besoins</p>
                                 <a href="contact.html" class="btn-hero" style="display: inline-block; background: white; color: #4facfe; padding: 18px 40px; font-size: 1.2rem; text-decoration: none; border-radius: 12px; font-weight: 700;">
                                     💬 Demander un devis personnalisé
@@ -905,11 +900,11 @@
                 const orderFormVoiture = document.getElementById('order-form-voiture');
                 const quoteFormVoiture = document.getElementById('quote-form-voiture');
                 
-                if (value === '1-10' || value === '11-50') {
+                if (value === '1-10') {
                     if (orderFormVoiture) orderFormVoiture.style.display = 'block';
                     if (quoteFormVoiture) quoteFormVoiture.style.display = 'none';
                     calculateTotalVoiture();
-                } else if (value === '51+') {
+                } else if (value === '11+') {
                     if (orderFormVoiture) orderFormVoiture.style.display = 'none';
                     if (quoteFormVoiture) quoteFormVoiture.style.display = 'block';
                 }
@@ -921,50 +916,63 @@
                 if (!nbVehiculesRadio) return;
                 
                 const nbVehicules = nbVehiculesRadio.value;
+                // Seulement pour 1-10 véhicules
+                if (nbVehicules !== '1-10') return;
+                
                 const planRadio = document.querySelector('input[name="plan-voiture"]:checked');
                 if (!planRadio) return;
                 
                 const plan = planRadio.value;
                 
-                // Définir le prix par véhicule selon la tranche
-                let prixParVehicule = nbVehicules === '1-10' ? 4.99 : 3.99;
+                // Prix fixe pour 1-10 véhicules
+                const prixMensuel = 4.99;
+                const prixAnnuel = 39.96;
+                const packCreation = 3.50;
                 
-                // Exemple : 5 véhicules pour 1-10, 20 pour 11-50
-                let nbVehiculesExemple = nbVehicules === '1-10' ? 5 : 20;
+                // Exemple : 5 véhicules
+                const nbVehiculesExemple = 5;
                 
                 // Mettre à jour les prix affichés
-                document.getElementById('price-mensuel-voiture').textContent = prixParVehicule.toFixed(2) + '€';
-                document.getElementById('price-annuel-voiture').textContent = (prixParVehicule * 10).toFixed(0) + '€';
+                document.getElementById('price-mensuel-voiture').textContent = prixMensuel.toFixed(2) + '€';
+                document.getElementById('price-annuel-voiture').textContent = prixAnnuel.toFixed(2) + '€';
                 
                 // Calcul du total selon le plan
                 let totalAbonnement, totalCreation, totalAutocollants, totalGeneral;
                 const nbAutocollants = parseInt(document.getElementById('nb-autocollants-voiture')?.value || 0);
                 
-                totalCreation = nbVehiculesExemple * 3.50;
+                totalCreation = nbVehiculesExemple * packCreation;
                 totalAutocollants = nbAutocollants * 5.90;
                 
                 if (plan === 'mensuel') {
-                    totalAbonnement = nbVehiculesExemple * prixParVehicule;
+                    totalAbonnement = nbVehiculesExemple * prixMensuel;
                     totalGeneral = totalAbonnement + totalCreation + totalAutocollants;
                     
-                    document.getElementById('total-mensuel-voiture').textContent = (totalAbonnement + totalCreation).toFixed(2) + '€';
-                    document.getElementById('total-annuel-voiture').textContent = ((nbVehiculesExemple * prixParVehicule * 10) + totalCreation).toFixed(2) + '€';
+                    const totalMensuelAvecCreation = totalAbonnement + totalCreation;
+                    const totalAnnuelAvecCreation = (nbVehiculesExemple * prixAnnuel) + totalCreation;
+                    const coutMensuelAnnuel = totalAnnuelAvecCreation / 12;
                     
-                    document.getElementById('total-final-voiture').textContent = totalGeneral.toFixed(2) + '€';
+                    document.getElementById('total-mensuel-voiture').textContent = totalMensuelAvecCreation.toFixed(2) + '€/mois';
+                    document.getElementById('total-annuel-voiture').innerHTML = coutMensuelAvecCreation.toFixed(2) + '€/mois<br><span style="font-size: 0.9rem; opacity: 0.8;">Total annuel : ' + totalAnnuelAvecCreation.toFixed(2) + '€</span>';
+                    
+                    document.getElementById('total-final-voiture').textContent = totalGeneral.toFixed(2) + '€/mois';
                     document.getElementById('detail-prix-voiture').innerHTML = 
-                        nbVehiculesExemple + ' véhicules × ' + prixParVehicule.toFixed(2) + '€/mois' +
+                        nbVehiculesExemple + ' véhicules × ' + prixMensuel.toFixed(2) + '€/mois' +
                         ' + Pack Création ' + totalCreation.toFixed(2) + '€' +
                         (totalAutocollants > 0 ? ' + Autocollants ' + totalAutocollants.toFixed(2) + '€' : '');
                 } else {
-                    totalAbonnement = nbVehiculesExemple * prixParVehicule * 10; // 10 mois payés (2 offerts)
+                    totalAbonnement = nbVehiculesExemple * prixAnnuel;
                     totalGeneral = totalAbonnement + totalCreation + totalAutocollants;
                     
-                    document.getElementById('total-mensuel-voiture').textContent = (nbVehiculesExemple * prixParVehicule + totalCreation).toFixed(2) + '€';
-                    document.getElementById('total-annuel-voiture').textContent = (totalAbonnement + totalCreation).toFixed(2) + '€';
+                    const totalMensuelAvecCreation = (nbVehiculesExemple * prixMensuel) + totalCreation;
+                    const totalAnnuelAvecCreation = totalAbonnement + totalCreation;
+                    const coutMensuelAnnuel = totalAnnuelAvecCreation / 12;
+                    
+                    document.getElementById('total-mensuel-voiture').textContent = totalMensuelAvecCreation.toFixed(2) + '€/mois';
+                    document.getElementById('total-annuel-voiture').innerHTML = coutMensuelAnnuel.toFixed(2) + '€/mois<br><span style="font-size: 0.9rem; opacity: 0.8;">Total annuel : ' + totalAnnuelAvecCreation.toFixed(2) + '€</span>';
                     
                     document.getElementById('total-final-voiture').textContent = totalGeneral.toFixed(2) + '€';
                     document.getElementById('detail-prix-voiture').innerHTML = 
-                        nbVehiculesExemple + ' véhicules × ' + (prixParVehicule * 10).toFixed(0) + '€/an (2 mois offerts)' +
+                        nbVehiculesExemple + ' véhicules × ' + prixAnnuel.toFixed(2) + '€/an (2 mois offerts)' +
                         ' + Pack Création ' + totalCreation.toFixed(2) + '€' +
                         (totalAutocollants > 0 ? ' + Autocollants ' + totalAutocollants.toFixed(2) + '€' : '');
                 }

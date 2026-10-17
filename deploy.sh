@@ -16,6 +16,7 @@ mput -O . *.php;
 mput -O . *.json;
 
 # Upload dossiers importants
+mirror --reverse --verbose --only-newer --exclude .git --exclude .vscode --exclude .DS_Store img;
 mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPMailer/* --exclude .git --exclude .vscode --exclude .DS_Store --exclude node_modules js;
 mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPMailer/* --exclude .git --exclude .vscode --exclude .DS_Store pages;
 mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPMailer/* --exclude .git --exclude .vscode --exclude .DS_Store demo-guide;

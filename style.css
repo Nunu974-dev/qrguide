@@ -214,10 +214,7 @@ a {
     box-shadow: 0 4px 12px rgba(199, 169, 97, 0.5);
 }
 
-.pricing-card.recommended {
-    /* Retirer le style par défaut pour éviter la confusion avec la sélection */
-    /* Le badge "Meilleur prix" suffit pour indiquer la recommandation */
-}
+
 
 .card-header {
     position: relative;
@@ -1011,7 +1008,7 @@ a {
 
 .final-cta .small-text {
     margin-top: 16px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     opacity: 0.9;
 }
 
@@ -1966,7 +1963,7 @@ input:checked + .slider:before {
 .mobile-menu-toggle span {
     width: 28px;
     height: 3px;
-    background: var(--text-dark);
+    background: #ffffff !important;
     border-radius: 3px;
     transition: all 0.3s ease;
 }
@@ -2122,6 +2119,83 @@ input:checked + .slider:before {
     .features-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+    
+    /* Hero sections avec grid inline en une colonne sur mobile */
+    .hero-gradient > .container > div[style*="grid-template-columns: 1fr 1fr"],
+    section > .container > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+    }
+    
+    /* Ajuster le padding du container du hero sur mobile */
+    .hero-gradient > .container {
+        padding: 80px 20px 60px 20px !important;
+    }
+    
+    /* Image du hero : afficher en premier sur mobile */
+    .hero-gradient > .container > div > div[style*="position: relative"] {
+        order: -1;
+    }
+    
+    /* Titre du hero plus petit sur mobile */
+    .hero-gradient h1 {
+        font-size: 2rem !important;
+        margin-top: 0 !important;
+    }
+    
+    .hero-gradient p {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Carrousel horizontal pour les solutions sur mobile (effet pellicule) */
+    .solutions-container {
+        display: flex !important;
+        flex-direction: row;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 20px 20px 20px;
+        margin: 0 -20px;
+        /* Cache la scrollbar mais garde le scroll */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+    }
+    
+    .solutions-container::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    .solutions-container::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+    }
+    
+    .solutions-container::-webkit-scrollbar-thumb {
+        background: rgba(212, 175, 55, 0.5);
+        border-radius: 10px;
+    }
+    
+    .solutions-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(212, 175, 55, 0.8);
+    }
+    
+    .solution-card {
+        flex: 0 0 85% !important;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        max-width: 350px;
+    }
+    
+    /* Effet de pellicule : première et dernière carte avec padding */
+    .solution-card:first-child {
+        margin-left: 5%;
+    }
+    
+    .solution-card:last-child {
+        margin-right: 5%;
     }
     
     /* Cards avec padding réduit */
@@ -2392,7 +2466,7 @@ input:checked + .slider:before {
     
     /* Menu hamburger en blanc */
     .mobile-menu-toggle span {
-        background: #ffffff;
+        background: #ffffff !important;
     }
     
     /* Navigation links en blanc */

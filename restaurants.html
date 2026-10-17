@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution pour Restaurants - QRGUIDE.FR | Menu Digital par QR Code</title>
+    <meta name="description" content="QRGUIDE.FR - Menu digital par QR code pour restaurants : vos clients scannent, vous mettez à jour votre carte chaque jour depuis votre back-office.">
+    <meta name="keywords" content="menu QR code restaurant, carte digitale, menu du jour, back-office restaurant">
+    <link rel="icon" type="image/jpeg" href="img/logo_icone.jpg">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html"><img src="img/logo.png" alt="QRGUIDE.FR" class="logo"></a>
+                <button class="mobile-menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="nav-links">
+                    <a href="index.html#comment-ca-marche">Comment ça marche</a>
+                    <a href="abonnement.html">S'abonner</a>
+                    <a href="location-saisonniere.html">Locations Saisonnières</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html">Location Voitures</a>
+                    <a href="restaurants.html" class="active">Restaurants</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="login.html" style="margin-right: 12px;">Se connecter</a>
+                    <a href="abonnement.html" class="btn-primary">S'abonner</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <style>
+.rs-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.rs-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.rs-step{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,.08);position:relative}
+.rs-step .n{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f7971e,#ffd200);color:#1a1a1a;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.rs-demo{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+.rs-panel{background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.1);overflow:hidden}
+.rs-bar{background:#1a1a1a;color:#fff;padding:12px 18px;font-weight:600;display:flex;justify-content:space-between;align-items:center;font-size:.9rem}
+.rs-bar span.dot{color:#2ecc71;font-size:.8rem}
+.rs-body{padding:20px}
+.rs-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rs-tab{border:1px solid #ddd;background:#fff;border-radius:20px;padding:6px 14px;cursor:pointer;font-size:.85rem;font-family:inherit}
+.rs-tab.on{background:#f7971e;color:#fff;border-color:#f7971e}
+.rs-row{display:grid;grid-template-columns:1fr 80px 34px;gap:8px;margin-bottom:8px}
+.rs-row input{border:1px solid #ddd;border-radius:8px;padding:8px 10px;font-family:inherit;font-size:.9rem;min-width:0}
+.rs-row button{border:0;background:#fdecea;color:#c0392b;border-radius:8px;cursor:pointer}
+.rs-add{border:1px dashed #f7971e;background:#fffbea;color:#cc8800;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600;font-family:inherit;margin-right:8px}
+.rs-pub{background:linear-gradient(135deg,#f7971e,#ffd200);border:0;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;font-family:inherit;color:#1a1a1a}
+.rs-phone{width:290px;margin:0 auto;background:#111;border-radius:36px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.rs-screen{background:#fffaf0;border-radius:26px;height:540px;overflow-y:auto;position:relative}
+.rs-screen h4{margin:0;padding:22px 18px 4px;font-size:1.15rem;color:#1a1a1a}
+.rs-screen .sub{padding:0 18px 10px;color:#888;font-size:.78rem}
+.rs-sec{padding:6px 18px 4px;font-weight:700;color:#cc8800;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin-top:8px}
+.rs-item{display:flex;justify-content:space-between;gap:10px;padding:9px 18px;border-bottom:1px solid #f0e6d0;font-size:.88rem}
+.rs-item b{white-space:nowrap}
+.rs-flash{animation:rsf .9s}
+@keyframes rsf{0%{background:#fff3b0}100%{background:transparent}}
+.rs-qr{background:#fff;padding:14px;border-radius:14px;display:inline-block;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+@media(max-width:860px){.rs-grid,.rs-demo{grid-template-columns:1fr;gap:32px}}
+</style>
+
+<section class="hero-gradient">
+  <div class="container" style="max-width:1200px;padding:100px 20px 80px;">
+    <div class="rs-grid">
+      <div>
+        <h1 style="font-size:3.2rem;margin-bottom:24px;line-height:1.2;margin-top:40px;">QRGUIDE pour Restaurants</h1>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:32px;">
+          <a href="contact.html" class="btn-hero">Demander une démo</a>
+          <a href="#demo" class="btn-secondary">Essayer la démo</a>
+        </div>
+        <p style="font-size:1.3rem;margin-bottom:0;line-height:1.6;color:rgba(255,255,255,.95);">Un QR code sur chaque table : vos clients scannent et voient votre menu du jour. Vous le modifiez en 30 secondes depuis votre back-office.</p>
+      </div>
+      <div><img src="img/Qr%20guide%20mock%20up%20table.png" alt="QR code sur table de restaurant" style="width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white" id="fonctionnement">
+  <div class="container" style="max-width:1200px;padding:60px 20px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <h2 style="margin-bottom:16px;">Comment ça fonctionne</h2>
+      <p style="font-size:1.1rem;color:#666;">Trois étapes, aucune application à installer</p>
+    </div>
+    <div class="rs-steps">
+      <div class="rs-step"><div class="n">1</div><h3>Le QR code sur la table</h3><p style="color:#666;line-height:1.6;">Vous recevez un QR code à votre nom (chevalet, sticker ou plaque). Le même code reste valable à vie.</p></div>
+      <div class="rs-step"><div class="n">2</div><h3>Le client scanne</h3><p style="color:#666;line-height:1.6;">Il ouvre votre menu directement sur son téléphone : entrées, plats, desserts, boissons, allergènes et plat du jour.</p></div>
+      <div class="rs-step"><div class="n">3</div><h3>Vous gérez depuis le back-office</h3><p style="color:#666;line-height:1.6;">Nouveau menu chaque jour ou chaque semaine ? Vous modifiez, vous publiez : le QR code affiche immédiatement la nouvelle carte.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-gray" id="demo">
+  <div class="container" style="max-width:1200px;padding:60px 20px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <h2 style="margin-bottom:16px;">Essayez : modifiez le menu, le téléphone se met à jour</h2>
+      <p style="font-size:1.1rem;color:#666;max-width:720px;margin:0 auto;">À gauche, le back-office du restaurateur. À droite, ce que voit le client après avoir scanné le QR code.</p>
+    </div>
+    <div class="rs-demo">
+      <div class="rs-panel">
+        <div class="rs-bar"><span>⚙️ Back-office – Mon menu</span><span class="dot">● En ligne</span></div>
+        <div class="rs-body">
+          <label style="font-size:.8rem;color:#888;">Nom du menu</label>
+          <input id="rs-title" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:8px 10px;margin:4px 0 14px;font-family:inherit;box-sizing:border-box;" value="Menu de la semaine">
+          <div class="rs-tabs" id="rs-tabs"></div>
+          <div id="rs-rows"></div>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+            <button class="rs-add" id="rs-add">+ Ajouter un plat</button>
+            <button class="rs-pub" id="rs-pub">✓ Publier</button>
+            <span id="rs-msg" style="font-size:.85rem;color:#2ecc71;"></span>
+          </div>
+          <p style="margin:16px 0 0;font-size:.85rem;color:#888;line-height:1.5;">💡 Chaque jour ou chaque semaine : changez les plats et les prix, cliquez sur « Publier ». Pas de réimpression, le QR code reste le même.</p>
+        </div>
+      </div>
+      <div>
+        <div class="rs-phone"><div class="rs-screen" id="rs-screen"></div></div>
+        <div style="text-align:center;margin-top:28px;">
+          <div class="rs-qr"><svg id="rs-qr" width="120" height="120" viewBox="0 0 25 25" shape-rendering="crispEdges"></svg></div>
+          <p style="color:#666;font-size:.9rem;margin-top:10px;">Le QR code affiché sur vos tables (exemple)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white">
+  <div class="container" style="max-width:1200px;padding:60px 20px;">
+    <div class="features-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+      <div class="feature-card"><div class="feature-icon">📅</div><h3>Menu du jour & de la semaine</h3><p>Programmez ou modifiez votre carte en quelques clics, à tout moment.</p></div>
+      <div class="feature-card"><div class="feature-icon">🥜</div><h3>Allergènes</h3><p>Indiquez les allergènes de chaque plat pour rassurer vos clients.</p></div>
+      <div class="feature-card"><div class="feature-icon">🌍</div><h3>Multilingue</h3><p>Le menu s'adapte à la langue du téléphone de vos clients.</p></div>
+      <div class="feature-card"><div class="feature-icon">⭐</div><h3>Avis Google</h3><p>Un lien direct pour récolter plus d'avis après le repas.</p></div>
+      <div class="feature-card"><div class="feature-icon">🌱</div><h3>Zéro impression</h3><p>Fini les cartes plastifiées à refaire à chaque changement de prix.</p></div>
+      <div class="feature-card"><div class="feature-icon">📈</div><h3>Toujours à jour</h3><p>Rupture de stock ? Retirez le plat, c'est visible immédiatement.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-gray">
+  <div class="container" style="max-width:1200px;padding:60px 20px;">
+    <div style="text-align:center;max-width:900px;margin:0 auto;padding:60px 40px;background:linear-gradient(135deg,#f7971e 0%,#ffd200 100%);border-radius:20px;color:#1a1a1a;box-shadow:0 20px 60px rgba(247,151,30,.3);">
+      <h2 style="color:#1a1a1a;font-size:2.5rem;margin-bottom:24px;">Prêt à digitaliser votre carte ?</h2>
+      <p style="font-size:1.2rem;margin-bottom:32px;">Demandez une démo : on configure votre menu et votre QR code avec vous.</p>
+      <a href="contact.html" class="btn-hero" style="background:#1a1a1a;color:#fff;">Demander une démo gratuite</a>
+      <p style="margin-top:24px;font-size:.9rem;">✓ Sans engagement • ✓ Support en français</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <img src="img/logo_blanc.png" alt="QRGUIDE.FR" class="footer-logo">
+                    <p>Le guide numérique nouvelle génération pour locations saisonnières, hôtels, véhicules et restaurants</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Solutions</h4>
+                    <a href="location-saisonniere.html">Locations Saisonnières</a>
+                    <a href="hotels.html">Hôtels</a>
+                    <a href="location-voitures.html">Location Voitures</a>
+                    <a href="restaurants.html">Restaurants</a>
+                    <a href="demo-guide/index.html" target="_blank">Voir la démo</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@qrguide.fr">contact@qrguide.fr</a>
+                    <a href="tel:0692630364">06 92 63 03 64</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="mentions-legales.html">Mentions légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="politique-confidentialite.html">Confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QRGUIDE.FR - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+<script>
+const mt=document.querySelector('.mobile-menu-toggle'),nl=document.querySelector('.nav-links');
+if(mt){mt.addEventListener('click',function(){this.classList.toggle('active');nl.classList.toggle('active');document.body.classList.toggle('menu-open');});}
+(function(){
+  var cats=['Entrées','Plats','Desserts','Boissons'];
+  var data={
+    'Entrées':[['Salade de chou palmiste','9'],['Accras de morue','8']],
+    'Plats':[['Cari poulet, riz, grains','16'],['Poisson du jour grillé','19']],
+    'Desserts':[['Gâteau patate','6'],['Salade de fruits frais','5']],
+    'Boissons':[['Jus de fruits pressés','4'],['Café','2']]
+  };
+  var cur='Entrées',pub=JSON.parse(JSON.stringify(data)),pubTitle='Menu de la semaine';
+  var $=function(i){return document.getElementById(i)};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function tabs(){$('rs-tabs').innerHTML=cats.map(function(c){return '<button class="rs-tab'+(c===cur?' on':'')+'" data-c="'+c+'">'+c+'</button>'}).join('');}
+  function rows(){
+    $('rs-rows').innerHTML=data[cur].map(function(it,i){return '<div class="rs-row"><input value="'+esc(it[0])+'" data-i="'+i+'" data-k="0" placeholder="Plat"><input value="'+esc(it[1])+'" data-i="'+i+'" data-k="1" placeholder="Prix €"><button data-del="'+i+'" aria-label="Supprimer">✕</button></div>'}).join('');
+  }
+  function phone(flash){
+    var s=$('rs-screen');
+    s.innerHTML='<h4>🍽️ '+esc(pubTitle)+'</h4><div class="sub">Mis à jour aujourd\'hui</div>'+cats.map(function(c){
+      if(!pub[c].length)return '';
+      return '<div class="rs-sec">'+c+'</div>'+pub[c].map(function(it){return '<div class="rs-item"><span>'+esc(it[0])+'</span><b>'+esc(it[1])+' €</b></div>'}).join('');
+    }).join('');
+    if(flash){s.classList.remove('rs-flash');void s.offsetWidth;s.classList.add('rs-flash');}
+  }
+  $('rs-tabs').addEventListener('click',function(e){if(e.target.dataset.c){cur=e.target.dataset.c;tabs();rows();}});
+  $('rs-rows').addEventListener('input',function(e){var t=e.target;if(t.dataset.i!==undefined)data[cur][t.dataset.i][t.dataset.k]=t.value;});
+  $('rs-rows').addEventListener('click',function(e){if(e.target.dataset.del!==undefined){data[cur].splice(e.target.dataset.del,1);rows();}});
+  $('rs-add').addEventListener('click',function(){data[cur].push(['','']);rows();});
+  $('rs-pub').addEventListener('click',function(){
+    pub=JSON.parse(JSON.stringify(data));
+    cats.forEach(function(c){pub[c]=pub[c].filter(function(x){return x[0].trim()})});
+    pubTitle=$('rs-title').value||'Menu';phone(true);
+    $('rs-msg').textContent='Publié ! Le client voit le nouveau menu.';
+    setTimeout(function(){$('rs-msg').textContent=''},3000);
+  });
+  // faux QR code décoratif
+  var q='',seed=7;function r(){seed=(seed*9301+49297)%233280;return seed/233280}
+  function finder(x,y){return (x<7&&y<7)||(x>17&&y<7)||(x<7&&y>17)}
+  for(var y=0;y<25;y++)for(var x=0;x<25;x++){
+    var on;
+    if(finder(x,y)){var fx=x%18,fy=y%18;if(x>17)fx=x-18;if(y>17)fy=y-18;on=(fx==0||fx==6||fy==0||fy==6||(fx>=2&&fx<=4&&fy>=2&&fy<=4));}
+    else on=r()>.52;
+    if(on)q+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';
+  }
+  $('rs-qr').innerHTML=q;
+  tabs();rows();phone(false);
+})();
+</script>
+</body>
+</html>
