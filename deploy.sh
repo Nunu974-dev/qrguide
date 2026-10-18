@@ -21,6 +21,7 @@ mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPM
 mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPMailer/* --exclude .git --exclude .vscode --exclude .DS_Store pages;
 mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPMailer/* --exclude .git --exclude .vscode --exclude .DS_Store demo-guide;
 mirror --reverse --verbose --only-newer --exclude-glob img/* --exclude-glob PHPMailer/* --exclude .git --exclude .vscode --exclude .DS_Store data;
+mirror --reverse --verbose --only-newer --exclude .git --exclude .vscode --exclude .DS_Store demo-resto;
 
 bye
 "
