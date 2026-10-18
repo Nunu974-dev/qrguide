@@ -15,11 +15,19 @@ body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--dark
 .top a,.top .lang{pointer-events:auto;background:rgba(26,26,26,.85);color:#fff;text-decoration:none;font-size:.8rem;font-weight:600;padding:8px 12px;border-radius:20px;backdrop-filter:blur(8px)}
 .lang button{background:none;border:0;color:#fff;opacity:.6;cursor:pointer;font-size:1rem;padding:0 4px}
 .lang button.on{opacity:1}
-header{background:linear-gradient(160deg,#1a1a1a 0%,#3a2a10 60%,#f7971e 140%);color:#fff;padding:70px 20px 30px;text-align:center}
+header{position:relative;background:#1a1a1a center/cover no-repeat;color:#fff;padding:90px 20px 56px;text-align:center;min-height:320px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+header:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.55) 55%,rgba(26,26,26,.95) 100%)}
+header>*{position:relative}
+header h1{text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.stars{color:var(--g);letter-spacing:3px;font-size:.9rem;margin-bottom:4px}
+.powered{text-align:center;margin-top:28px;opacity:.7;font-size:.72rem}
+.powered .lg{margin:6px auto 0}
+.lg{width:132px;height:44px;overflow:hidden;display:block}
+.lg img{height:130px;width:auto;margin:-43px 0 0 -37px;display:block}
 header .em{font-size:2.6rem}
 header h1{margin:6px 0 4px;font-size:1.9rem}
 header p{margin:0;opacity:.85}
-.title{display:inline-block;margin-top:14px;background:var(--g);color:var(--dark);padding:6px 14px;border-radius:20px;font-weight:700;font-size:.85rem}
+.title{display:inline-block;margin-top:16px;background:var(--g);color:var(--dark);padding:6px 14px;border-radius:20px;font-weight:700;font-size:.85rem}
 .upd{font-size:.75rem;opacity:.65;margin-top:8px}
 main{max-width:680px;margin:0 auto;padding:0 16px 40px}
 .special{margin:-18px 0 8px;background:#fff;border:2px solid var(--y);border-radius:16px;padding:16px;box-shadow:0 8px 24px rgba(247,151,30,.2);display:flex;justify-content:space-between;gap:12px;align-items:center}
@@ -46,7 +54,7 @@ h2{color:#cc8800;text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;
 <body>
 <div class="top"><a href="../restaurants.html">← Retour au site</a><div class="lang"><button id="l-fr" class="on" onclick="setLang('fr')">🇫🇷</button><button id="l-en" onclick="setLang('en')">🇬🇧</button></div></div>
 <header>
-  <div class="em">🍽️</div>
+  <div class="stars">★★★★★</div>
   <h1 id="name"></h1><p id="tagline"></p>
   <div class="title" id="title"></div>
   <div class="upd" id="upd"></div>
@@ -58,6 +66,7 @@ h2{color:#cc8800;text-transform:uppercase;letter-spacing:.06em;font-size:.95rem;
   <div class="info" id="info"></div>
   <a class="btn alt" id="review" target="_blank" rel="noopener"></a>
   <div class="demo" id="demo"></div>
+  <div class="powered">Menu digital propulsé par<span class="lg"><img src="../img/logo.png" alt="QRGUIDE.FR"></span></div>
 </main>
 <script src="data.js"></script>
 <script>
@@ -68,6 +77,7 @@ function setLang(l){lang=l;document.getElementById('l-fr').className=l=='fr'?'on
 function render(){
   var t=T[lang];
   document.getElementById('name').textContent=D.name;
+  if(D.cover)document.querySelector('header').style.backgroundImage='url("'+D.cover.replace(/"/g,'')+'")';
   document.getElementById('tagline').textContent=D.tagline;
   document.getElementById('title').textContent=D.title;
   var u=D.updated?new Date(D.updated):new Date();

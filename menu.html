@@ -10,9 +10,11 @@
     <style>
         *{box-sizing:border-box}
         body{margin:0;font-family:Inter,sans-serif;background:#fffaf0;color:#1a1a1a}
-        header{background:linear-gradient(135deg,#f7971e,#ffd200);padding:32px 20px;text-align:center}
-        header h1{margin:0 0 6px;font-size:1.7rem}
-        header p{margin:0;font-weight:500}
+        header{position:relative;background:linear-gradient(135deg,#1a1a1a,#3a2a10) center/cover no-repeat;color:#fff;padding:90px 20px 48px;text-align:center;min-height:280px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+        header:before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.55) 55%,rgba(26,26,26,.95))}
+        header>*{position:relative}
+        header h1{margin:0 0 6px;font-size:1.9rem;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+        header p{margin:0;font-weight:500;opacity:.9}
         main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
         .special{background:#1a1a1a;color:#ffd200;padding:14px 16px;border-radius:12px;margin:8px 0 8px;font-weight:600;text-align:center}
         h2{color:#cc8800;text-transform:uppercase;letter-spacing:.05em;font-size:.95rem;margin:28px 0 8px;border-bottom:2px solid #f0e6d0;padding-bottom:6px}
@@ -24,6 +26,9 @@
         .btn{display:block;text-align:center;margin:28px auto 0;background:#1a1a1a;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600}
         .foot{text-align:center;color:#aaa;font-size:.78rem;margin-top:32px}
         .foot a{color:#aaa}
+        .foot .lg{margin:6px auto 0;opacity:.8}
+        .lg{width:132px;height:44px;overflow:hidden;display:block}
+        .lg img{height:130px;width:auto;margin:-43px 0 0 -37px;display:block}
     </style>
 </head>
 <body>
@@ -44,6 +49,7 @@
                 const r = doc.data();
                 document.title = (r.name || 'Menu') + ' - Menu';
                 document.getElementById('name').textContent = r.name || 'Menu';
+                if (/^https:\/\//.test(r.cover || '')) document.querySelector('header').style.backgroundImage = 'url("' + r.cover.replace(/"/g, '') + '")';
                 document.getElementById('title').textContent = r.title || '';
                 let h = r.special ? `<div class="special">${esc(r.special)}</div>` : '';
                 (r.categories || []).forEach(c => {
@@ -57,7 +63,7 @@
                         </div>`).join('');
                 });
                 if (/^https?:\/\//.test(r.reviewUrl || '')) h += `<a class="btn" href="${esc(r.reviewUrl)}" target="_blank" rel="noopener">⭐ Laisser un avis Google</a>`;
-                h += '<div class="foot">Propulsé par <a href="https://qrguide.fr">QRGUIDE.FR</a></div>';
+                h += '<div class="foot">Menu digital propulsé par<a href="https://qrguide.fr"><span class="lg"><img src="img/logo.png" alt="QRGUIDE.FR"></span></a></div>';
                 main.innerHTML = h;
             } catch (e) { main.innerHTML = '<p>Impossible de charger le menu.</p>'; }
         })();

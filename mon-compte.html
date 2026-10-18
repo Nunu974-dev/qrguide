@@ -774,6 +774,7 @@
                 <div class="form-group"><label>Nom du restaurant</label><input type="text" id="resto-name" placeholder="Ex : Chez Marie"></div>
                 <div class="form-group"><label>Titre du menu</label><input type="text" id="resto-title" placeholder="Ex : Menu de la semaine du 20 au 26 octobre"></div>
                 <div class="form-group"><label>Plat du jour / message (facultatif)</label><input type="text" id="resto-special" placeholder="Ex : Plat du jour : cari de poulet – 14 €"></div>
+                <div class="form-group"><label>Photo de fond du menu (lien https d'une image, facultatif)</label><input type="text" id="resto-cover" placeholder="https://..."></div>
                 <div class="form-group"><label>Lien avis Google (facultatif)</label><input type="text" id="resto-review" placeholder="https://g.page/..."></div>
             </div>
             <div class="form-section">
@@ -2003,6 +2004,7 @@
             document.getElementById('resto-title').value = restoData.title || '';
             document.getElementById('resto-special').value = restoData.special || '';
             document.getElementById('resto-review').value = restoData.reviewUrl || '';
+            document.getElementById('resto-cover').value = restoData.cover || '';
             restoRender();
             restoShowQR();
         }
@@ -2047,6 +2049,7 @@
                 title: document.getElementById('resto-title').value.trim(),
                 special: document.getElementById('resto-special').value.trim(),
                 reviewUrl: document.getElementById('resto-review').value.trim(),
+                cover: document.getElementById('resto-cover').value.trim(),
                 categories: restoData.categories.map(c => ({
                     name: c.name,
                     items: (c.items||[]).filter(i => (i.nom||'').trim()).map(i => ({ nom:i.nom.trim(), desc:i.desc||'', prix:i.prix||'', allergenes:i.allergenes||'', dispo:i.dispo!==false }))

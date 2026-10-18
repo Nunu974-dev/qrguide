@@ -13,6 +13,8 @@
 body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--dark)}
 .bar{background:var(--dark);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .bar b{color:var(--g)}
+.lg{width:132px;height:44px;overflow:hidden;display:block}
+.lg img{height:130px;width:auto;margin:-43px 0 0 -37px;display:block}
 .bar a{color:#fff;text-decoration:none;font-size:.85rem;opacity:.85;margin-left:14px}
 .demo{background:#fffbea;border-bottom:1px solid #f0dc8a;padding:10px 20px;font-size:.85rem;text-align:center}
 .demo button{margin-left:10px;border:1px solid var(--y);background:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit;color:#cc8800;font-weight:600}
@@ -48,7 +50,7 @@ input[type=text],textarea{width:100%;border:1px solid #d9dce1;border-radius:8px;
 </style>
 </head>
 <body>
-<div class="bar"><div><b>QRGUIDE</b> · Tableau de bord restaurateur</div><div><span id="who"></span><a href="index.html" target="_blank">👁️ Voir mon menu</a><a href="../restaurants.html">← Retour au site</a></div></div>
+<div class="bar"><div style="display:flex;align-items:center;gap:14px"><span class="lg"><img src="../img/logo_blanc.png" alt="QRGUIDE.FR"></span><span style="opacity:.7">Tableau de bord restaurateur</span></div><div><span id="who"></span><a href="index.html" target="_blank">👁️ Voir mon menu</a><a href="../restaurants.html">← Retour au site</a></div></div>
 <div class="demo">🎬 Démo : modifiez le menu, cliquez sur « Publier » et regardez le téléphone à droite se mettre à jour. <button onclick="if(confirm('Remettre le menu de démonstration ?')){demoReset();location.reload()}">Réinitialiser la démo</button></div>
 
 <div class="wrap">
@@ -85,6 +87,7 @@ input[type=text],textarea{width:100%;border:1px solid #d9dce1;border-radius:8px;
         <h3>Infos & horaires</h3><p class="sub">Affichés en bas du menu.</p>
         <label>Nom du restaurant</label><input type="text" id="in-name">
         <label>Slogan</label><input type="text" id="in-tag">
+        <label>Photo de fond du menu (lien d'une image)</label><input type="text" id="in-cover">
         <label>Horaires</label><input type="text" id="in-hours">
         <label>Téléphone</label><input type="text" id="in-phone">
         <label>WiFi</label><input type="text" id="in-wifi">
@@ -125,7 +128,7 @@ document.querySelectorAll('.side a').forEach(function(a){a.onclick=function(){do
 function fill(){
   $('who').textContent=D.name;$('title').value=D.title;
   $('sp-on').checked=!!D.special.on;$('sp-note').value=D.special.note;$('sp-text').value=D.special.text;$('sp-price').value=D.special.price;
-  $('in-name').value=D.name;$('in-tag').value=D.tagline;$('in-hours').value=D.hours;$('in-phone').value=D.phone;$('in-wifi').value=D.wifi;$('in-review').value=D.reviewUrl;
+  $('in-name').value=D.name;$('in-tag').value=D.tagline;$('in-cover').value=D.cover||'';$('in-hours').value=D.hours;$('in-phone').value=D.phone;$('in-wifi').value=D.wifi;$('in-review').value=D.reviewUrl;
   cats();stats();qr();last();
 }
 function cats(){
@@ -145,7 +148,7 @@ function last(){$('last').textContent=D.updated?'Dernière publication : '+new D
 function publish(){
   D.title=$('title').value;
   D.special={on:$('sp-on').checked,note:$('sp-note').value,text:$('sp-text').value,price:$('sp-price').value};
-  D.name=$('in-name').value;D.tagline=$('in-tag').value;D.hours=$('in-hours').value;D.phone=$('in-phone').value;D.wifi=$('in-wifi').value;D.reviewUrl=$('in-review').value;
+  D.name=$('in-name').value;D.tagline=$('in-tag').value;D.cover=$('in-cover').value;D.hours=$('in-hours').value;D.phone=$('in-phone').value;D.wifi=$('in-wifi').value;D.reviewUrl=$('in-review').value;
   D.categories.forEach(function(c){c.items=c.items.filter(function(i){return (i.nom||'').trim()})});
   D.updated=new Date().toISOString();demoSave(D);
   $('who').textContent=D.name;$('pv').contentWindow.location.reload();cats();last();
