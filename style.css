@@ -2483,3 +2483,43 @@ input:checked + .slider:before {
         border-bottom: 1px solid #333;
     }
 }
+
+/* ===========================
+   Menu de navigation - version propre (priorité sur les règles précédentes)
+   =========================== */
+.header .nav { gap: 24px; flex-wrap: nowrap; }
+.header .logo { flex-shrink: 0; }
+.header .nav-links { gap: 22px; flex-wrap: nowrap; }
+.header .nav-links a { font-size: 14.5px; font-weight: 500; white-space: nowrap; position: relative; border-bottom: 0; padding: 0; width: auto; }
+.header .nav-links a:not(.btn-primary).active { color: var(--primary-color); font-weight: 600; }
+.header .nav-links a:not(.btn-primary).active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
+    background: var(--primary-color); border-radius: 2px;
+}
+.header .nav-links .btn-primary { padding: 9px 20px; font-size: 14px; border-radius: 8px; white-space: nowrap; }
+
+/* Hamburger lisible : sombre en mode clair, blanc en mode sombre, sans cadre */
+.mobile-menu-toggle { background: none !important; border: 0 !important; box-shadow: none !important; outline: none; }
+.mobile-menu-toggle span { background: #1a1a1a !important; }
+@media (prefers-color-scheme: dark) { .mobile-menu-toggle span { background: #ffffff !important; } }
+
+/* Menu replié (hamburger) dès 1180px pour que rien ne dépasse du bandeau */
+@media (max-width: 1180px) {
+    .mobile-menu-toggle { display: flex; }
+    .header .nav-links {
+        position: fixed; top: 70px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0;
+        padding: 12px 20px 20px; background: rgba(255,255,255,.98); backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0,0,0,.12); transform: translateY(-120%); opacity: 0; visibility: hidden;
+        transition: all .3s ease; max-height: calc(100vh - 70px); overflow-y: auto;
+    }
+    .header .nav-links.active { transform: translateY(0); opacity: 1; visibility: visible; }
+    .header .nav-links a { font-size: 16px; padding: 14px 8px; border-bottom: 1px solid #e9ecef; text-align: center; width: 100%; }
+    .header .nav-links a.active::after { display: none; }
+    .header .nav-links a:last-child { border-bottom: 0; }
+    .header .nav-links .btn-primary { margin-top: 12px; padding: 14px 24px; font-size: 16px; }
+}
+@media (max-width: 1180px) and (prefers-color-scheme: dark) {
+    .header .nav-links { background: rgba(26,26,26,.98); }
+    .header .nav-links a { border-bottom-color: #333; }
+}
+body.menu-open { overflow: hidden; }
