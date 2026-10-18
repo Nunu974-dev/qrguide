@@ -6,7 +6,7 @@ var DEMO_DEFAULT = {
   title: 'Menu de la semaine',
   special: { on: true, text: 'Cari de poulet fermier, riz, grains, rougail', price: '14', note: 'Plat du jour' },
   hours: 'Midi 11h30–14h30 · Soir 18h30–22h · Fermé le dimanche',
-  cover: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80',
+  cover: '../img/resto-fond.jpg',
   phone: '0262 00 00 00',
   wifi: 'FOURNIL-GUEST / bonappetit974',
   reviewUrl: 'https://www.google.com/maps',
